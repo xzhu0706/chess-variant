@@ -6,7 +6,7 @@ class Game extends Component {
     }
     render() {
         return (
-            <div>Game Page</div>
+            <div>Game Page {this.props.match.params.token}</div>
         );
     }
 };
