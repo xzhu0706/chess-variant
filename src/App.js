@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './pages/Home';
+import Game from './pages/Game';
 import './App.css';
 
 class App extends Component {
-    state = {
-        
-    }
-    render() {
-        return (
-            <div>test</div>
-        );
+  constructor(props) {
+    super(props);
+    this.state = {
 
-    }
-};
+    };
+  }
+
+  render() {
+    return (
+      <Router>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/game/:token" component={Game} />
+        </Switch>
+      </Router>
+    );
+  }
+}
 
 export default App;
