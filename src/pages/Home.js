@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Column } from 'react-foundation';
+import Image from 'react-bootstrap/Image';
 
 class Home extends Component {
   constructor(props) {
@@ -17,13 +18,18 @@ class Home extends Component {
     ];
 
     const imgStyle = {
-      width: '10em',
-      height: '10em',
+      width: '15em',
+      height: '15em',
+    };
+
+    const top = {
+      background: '#efd5be',
+      padding: '.5em',
     };
 
     return (
       <div>
-        <div>
+        <div style={top}>
           <a href="/">Chess-Variant.com</a>
         </div>
         <div>
@@ -37,7 +43,7 @@ class Home extends Component {
               </div>
             </Column>
             <Column>
-              <img src="https://cdn0.iconfinder.com/data/icons/sports-and-games-4/512/172-512.png" alt="Chess Piece" style={imgStyle} />
+              <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
             </Column>
           </Row>
         </div>
