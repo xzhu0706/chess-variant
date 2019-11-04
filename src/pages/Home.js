@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import Image from 'react-bootstrap/Image';
 import {
-  Row, Col, Button, Nav, Navbar,
+  Row, Col, Button, Nav, Navbar, Image, Container,
 } from 'react-bootstrap';
 import Amplify, { Auth } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
@@ -61,57 +60,67 @@ class Home extends Component {
     const { username, showAuth } = this.state;
 
     return (
-      <div>
-        <Navbar style={top}>
-          <Navbar.Brand href="/">
-            Chess-Variant.com
-          </Navbar.Brand>
-          {username
-            ? (
-              <Nav className="ml-auto">
-                <Nav.Link>
-                  Hello
-                  {' '}
-                  {username}
-                </Nav.Link>
-                <Nav.Link>
-                  <Button className="float-right" variant="danger" onClick={this.handleSignOut}>Sign Out</Button>
-                </Nav.Link>
-              </Nav>
-            )
-            : (
-              <Nav className="ml-auto">
-                <Button className="float-right" variant="primary" onClick={this.handleShowAuth}>Sign In</Button>
-              </Nav>
-            )}
-        </Navbar>
+      <Container>
+        <div>
+          <Navbar style={top}>
+            <Navbar.Brand href="/">
+              Chess-Variant.com
+            </Navbar.Brand>
+            {username
+              ? (
+                <Nav className="ml-auto">
+                  <Nav.Link>
+                    Hello
+                    {' '}
+                    {username}
+                  </Nav.Link>
+                  <Nav.Link>
+                    <Button className="float-right" variant="danger" onClick={this.handleSignOut}>Sign Out</Button>
+                  </Nav.Link>
+                </Nav>
+              )
+              : (
+                <Nav className="ml-auto">
+                  <Button className="float-right" variant="primary" onClick={this.handleShowAuth}>Sign In</Button>
+                </Nav>
+              )}
+          </Navbar>
 
-        <Authenticator
-          hideDefault={!showAuth}
-          hide={[Greetings]}
-          onStateChange={this.handleAuthStateChange}
-        />
+          <Authenticator
+            hideDefault={!showAuth}
+            hide={[Greetings]}
+            onStateChange={this.handleAuthStateChange}
+          />
 
-        {!showAuth && (
-          <div>
-            <Row>
-              <Col>
-                <div className="col">
-                  <h1>Welcome to Chess-Variants</h1>
-                  <ul>
-                    {descripList.map((description) => (
-                      <li key={description.key}>{description.description}</li>
-                    ))}
-                  </ul>
-                </div>
-              </Col>
-              <Col>
-                <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
-              </Col>
-            </Row>
-          </div>
-        )}
-      </div>
+          {!showAuth && (
+            <div>
+              <Row>
+                <Col>
+                  <div className="col">
+                    <h1>Welcome to Chess-Variants</h1>
+                    <ul>
+                      {descripList.map((description) => (
+                        <li key={description.key}>{description.description}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Col>
+                <Col>
+                  <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
+                </Col>
+              </Row>
+              <Row>
+                <Col className="text-center">
+                  <Button variant="info" size="lg">Play Now</Button>
+                </Col>
+                <Col className="text-center">
+                  <Button variant="info" size="lg">Create Variant</Button>
+                </Col>
+              </Row>
+            </div>
+          )}
+        </div>
+      </Container>
     );
   }
 }
