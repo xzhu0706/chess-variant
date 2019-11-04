@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Row, Column } from 'react-foundation';
 import Image from 'react-bootstrap/Image';
+import { Row, Col } from 'react-bootstrap';
 
 class Home extends Component {
   constructor(props) {
@@ -34,17 +34,17 @@ class Home extends Component {
         </div>
         <div>
           <Row>
-            <Column>
+            <Col>
               <div className="col">
                 <h1>Welcome to Chess-Variants</h1>
                 <ul>
                   {descripList.map((description) => (<li key={description.key}>{description.description}</li>))}
                 </ul>
               </div>
-            </Column>
-            <Column>
+            </Col>
+            <Col>
               <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
-            </Column>
+            </Col>
           </Row>
         </div>
       </div>
