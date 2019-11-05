@@ -1,19 +1,19 @@
 {
-    "local": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-chess-variant-local-162800-authRole",
-            "UnauthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-local-162800-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-local-162800-authRole",
-            "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-chess-variant-local-162800-deployment",
-            "UnauthRoleName": "amplify-chess-variant-local-162800-unauthRole",
-            "StackName": "amplify-chess-variant-local-162800",
-            "StackId": "arn:aws:cloudformation:us-east-1:990932120713:stack/amplify-chess-variant-local-162800/cfe65ac0-fe80-11e9-b414-0ee829539650"
-        },
-        "categories": {
-            "auth": {
-                "chessvariant878b0ed7": {}
-            }
-        }
-    }
+	"dev": {
+		"awscloudformation": {
+			"AuthRoleName": "amplify-chess-variant-dev-182241-authRole",
+			"UnauthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-dev-182241-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-dev-182241-authRole",
+			"Region": "us-east-1",
+			"DeploymentBucketName": "amplify-chess-variant-dev-182241-deployment",
+			"UnauthRoleName": "amplify-chess-variant-dev-182241-unauthRole",
+			"StackName": "amplify-chess-variant-dev-182241",
+			"StackId": "arn:aws:cloudformation:us-east-1:990932120713:stack/amplify-chess-variant-dev-182241/ff8db500-ff59-11e9-95c8-12c395c1242e"
+		},
+		"categories": {
+			"auth": {
+				"chessvariant878b0ed7": {}
+			}
+		}
+	}
 }
