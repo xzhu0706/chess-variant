@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Row, Col, Button, Nav, Navbar, Image, Container,
+  Row, Col, Button, Nav, Navbar, Image, Container, Table,
 } from 'react-bootstrap';
 import Amplify, { Auth } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
@@ -133,6 +133,30 @@ class Home extends Component {
                   </Col>
                   <Col className="text-center">
                     <Image src="https://user-images.githubusercontent.com/45343196/68171724-ee277b00-ff42-11e9-99c5-4443583046ed.png" alt="Base Variant" />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Table striped bordered hover variant="light" size="sm">
+                      <thead>
+                        <tr>
+                          <th>Room #</th>
+                          <th>Variant Type</th>
+                          <th>Player</th>
+                        </tr>
+                      </thead>
+                    </Table>
+                  </Col>
+                  <Col>
+                    <Table striped bordered hover variant="light" size="sm">
+                      <thead>
+                        <tr>
+                          <th>Room #</th>
+                          <th>Variant Type</th>
+                          <th>Player</th>
+                        </tr>
+                      </thead>
+                    </Table>
                   </Col>
                 </Row>
 
