@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Nav, Navbar} from 'react-bootstrap';
+import {Button, Nav, Navbar} from 'react-bootstrap';
 import Amplify, { Auth } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
 import awsconfig from '../aws-exports';
@@ -59,7 +59,8 @@ class Home extends Component {
   render() {
     const top = {
       background: '#efd5be',
-    }; 
+    };
+
     const { username, showAuth } = this.state;
     const welcome = !showAuth? <Welcome descripList = {descripList}/> : ''
     const lobby = !showAuth? <Lobby games = {games} /> : ''
