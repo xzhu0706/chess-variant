@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {
-  Row, Col, Button, Nav, Navbar, Image, Container, Table,
+  Row, Col, Button, Image, Container, Table,
 } from 'react-bootstrap';
 import Amplify, { Auth } from 'aws-amplify';
-import { Authenticator, Greetings } from 'aws-amplify-react';
+// import { Authenticator, Greetings } from 'aws-amplify-react';
 import awsconfig from '../aws-exports';
 
 Amplify.configure(awsconfig);
@@ -72,7 +72,7 @@ class Home extends Component {
       <div style={top}>
         <Container>
           <div>
-            <Navbar style={top}>
+            {/* <Navbar style={top}>
               <Navbar.Brand href="/">
                 Chess-Variant.com
               </Navbar.Brand>
@@ -94,13 +94,13 @@ class Home extends Component {
                     <Button className="float-right" variant="primary" onClick={this.handleShowAuth}>Sign In</Button>
                   </Nav>
                 )}
-            </Navbar>
+            </Navbar> */}
 
-            <Authenticator
+            {/* <Authenticator
               hideDefault={!showAuth}
               hide={[Greetings]}
               onStateChange={this.handleAuthStateChange}
-            />
+            /> */}
 
             {!showAuth && (
               <div style={white}>
