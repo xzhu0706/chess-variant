@@ -5,6 +5,8 @@ import {
 import Amplify, { Auth } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
 import awsconfig from '../aws-exports';
+import Variant from '../component/Variant';
+import templogo from '../images/templogo.png';
 
 Amplify.configure(awsconfig);
 
@@ -116,7 +118,7 @@ class Home extends Component {
                     </div>
                   </Col>
                   <Col className="text-center">
-                    <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
+                    <Image src={templogo} alt="Chess Piece" style={imgStyle} fluid />
                   </Col>
                 </Row>
                 <Row style={rowStyle}>
@@ -129,10 +131,10 @@ class Home extends Component {
                 </Row>
                 <Row style={rowStyle}>
                   <Col className="text-center">
-                    <Image src="https://user-images.githubusercontent.com/45343196/68171724-ee277b00-ff42-11e9-99c5-4443583046ed.png" alt="Base Variant" />
+                    <Variant />
                   </Col>
                   <Col className="text-center">
-                    <Image src="https://user-images.githubusercontent.com/45343196/68171724-ee277b00-ff42-11e9-99c5-4443583046ed.png" alt="Base Variant" />
+                    <Variant />
                   </Col>
                 </Row>
                 <Row>
