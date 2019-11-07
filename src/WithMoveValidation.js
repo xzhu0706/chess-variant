@@ -77,33 +77,30 @@ class HumanVsHuman extends Component {
     }));
   };
 
-  onMouseOverSquare = square => {
-    // get list of possible moves for this square
-    let moves = this.game.moves({
-      square: square,
-      verbose: true
-    });
+  // onMouseOverSquare = square => {
+  //   // get list of possible moves for this square
+  //   let moves = this.game.moves({
+  //     square: square,
+  //     verbose: true
+  //   });
 
-    // exit if there are no moves available for this square
-    if (moves.length === 0) return;
+  //   // exit if there are no moves available for this square
+  //   if (moves.length === 0) return;
 
-    let squaresToHighlight = [];
-    for (var i = 0; i < moves.length; i++) {
-      squaresToHighlight.push(moves[i].to);
-    }
+  //   let squaresToHighlight = [];
+  //   for (var i = 0; i < moves.length; i++) {
+  //     squaresToHighlight.push(moves[i].to);
+  //   }
 
-    this.highlightSquare(square, squaresToHighlight);
-  };
+  //   this.highlightSquare(square, squaresToHighlight);
+  // };
 
-  onMouseOutSquare = square => this.removeHighlightSquare(square);
+  // onMouseOutSquare = square => this.removeHighlightSquare(square);
 
   // central squares get diff dropSquareStyles
   onDragOverSquare = square => {
     this.setState({
-      dropSquareStyle:
-        square === "e4" || square === "d4" || square === "e5" || square === "d5"
-          ? { backgroundColor: "cornFlowerBlue" }
-          : { boxShadow: "inset 0 0 1px 4px rgb(255, 255, 0)" }
+      dropSquareStyle:{ backgroundColor: "#f7ecb2" }
     });
   };
 
@@ -131,7 +128,7 @@ class HumanVsHuman extends Component {
 
   onSquareRightClick = square =>
     this.setState({
-      squareStyles: { [square]: { backgroundColor: "deepPink" } }
+      squareStyles: { [square]: { backgroundColor: "#e86c65" } }
     });
 
   render() {
@@ -172,8 +169,8 @@ export default function WithMoveValidation() {
             roughSquare={roughSquare}
             position={position}
             onDrop={onDrop}
-            onMouseOverSquare={onMouseOverSquare}
-            onMouseOutSquare={onMouseOutSquare}
+            // onMouseOverSquare={onMouseOverSquare}
+            // onMouseOutSquare={onMouseOutSquare}
             boardStyle={{
               borderRadius: "5px",
               boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
@@ -191,7 +188,7 @@ export default function WithMoveValidation() {
               )
             }}
             lightSquareStyle={{ backgroundColor: "White" }}
-            darkSquareStyle={{ backgroundColor: "#64daed" }}      
+            darkSquareStyle={{ backgroundColor: "#65cae8" }}      
             squareStyles={squareStyles}
             dropSquareStyle={dropSquareStyle}
             onDragOverSquare={onDragOverSquare}
@@ -209,15 +206,15 @@ const squareStyling = ({ pieceSquare, history }) => {
   const targetSquare = history.length && history[history.length - 1].to;
 
   return {
-    [pieceSquare]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+    [pieceSquare]: { backgroundColor: "rgba(209, 212, 155, 0.83)" },
     ...(history.length && {
       [sourceSquare]: {
-        backgroundColor: "rgba(255, 255, 0, 0.4)"
+        backgroundColor: "rgba(209, 212, 155, 0.83)"
       }
     }),
     ...(history.length && {
       [targetSquare]: {
-        backgroundColor: "rgba(255, 255, 0, 0.4)"
+        backgroundColor: "rgba(209, 212, 155, 0.83)"
       }
     })
   };
@@ -229,7 +226,9 @@ const roughSquare = ({ squareElement, squareWidth }) => {
   const chessSquare = rc.rectangle(0, 0, squareWidth, squareWidth, {
     roughness: 0.5,
     bowing: 2.7,
-    strokeWidth: 0.5
+    strokeWidth: 0.5,
+    //fill: "AliceBlue",
+    //fillStyle: "cross-hatch" // why doesn't this work? (doesn't create cross hatches)?
   });
   squareElement.appendChild(chessSquare);
 };
