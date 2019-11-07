@@ -9,6 +9,8 @@
     "aws-amplify": "^1.2.4",
     "aws-amplify-react": "^2.5.4",
     "bootstrap": "^4.3.1",
+    "chess.js": "seyson/chess.js#master",
+    "chessboardjsx": "2.2.0",
     "date-fns": "^2.6.0",
     "material-table": "^1.53.0",
     "prop-types": "^15.7.2",
@@ -16,7 +18,8 @@
     "react-bootstrap": "^1.0.0-beta.14",
     "react-dom": "^16.10.2",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "roughjs": "2.1.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -55,7 +58,6 @@
     "jest": "^24.9.0",
     "jest-dom": "^4.0.0",
     "lint-staged": "^9.4.2",
-    "npm": "^6.12.1",
     "react-testing-library": "^8.0.1"
   },
   "husky": {
