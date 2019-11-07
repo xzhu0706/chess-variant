@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Chess from  "chess.js";
 import Chessboard from "chessboardjsx";
+import rough from "roughjs"; // can give the squares a rough appearance
+import bk_test from "./bk.svg"; // testing the use of custom icons
 
 class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
@@ -167,6 +169,7 @@ export default function WithMoveValidation() {
           <Chessboard
             id="humanVsHuman"
             width={640}
+            roughSquare={roughSquare}
             position={position}
             onDrop={onDrop}
             onMouseOverSquare={onMouseOverSquare}
@@ -175,6 +178,20 @@ export default function WithMoveValidation() {
               borderRadius: "5px",
               boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
             }}
+            pieces={{
+              bK: ({ squareWidth, isDragging }) => (
+                <img
+                  style={{
+                    width: isDragging ? squareWidth * 1.25 : squareWidth,
+                    height: isDragging ? squareWidth * 1.25 : squareWidth
+                  }}
+                  src={bk_test}
+                  alt={"bk_test"}
+                />
+              )
+            }}
+            lightSquareStyle={{ backgroundColor: "White" }}
+            darkSquareStyle={{ backgroundColor: "#64daed" }}      
             squareStyles={squareStyles}
             dropSquareStyle={dropSquareStyle}
             onDragOverSquare={onDragOverSquare}
@@ -204,4 +221,15 @@ const squareStyling = ({ pieceSquare, history }) => {
       }
     })
   };
+};
+
+// customize the look of chessboard squares using roughjs
+const roughSquare = ({ squareElement, squareWidth }) => {
+  let rc = rough.svg(squareElement);
+  const chessSquare = rc.rectangle(0, 0, squareWidth, squareWidth, {
+    roughness: 0.5,
+    bowing: 2.7,
+    strokeWidth: 0.5
+  });
+  squareElement.appendChild(chessSquare);
 };
