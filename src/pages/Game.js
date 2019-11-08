@@ -2,22 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class Game extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    };
-  }
-
   render() {
-    const { match } = this.props;
-
     return (
-      <div>
-        Game Page
-        {match.params.token}
+      <div className="App">
       </div>
-    );
+    )
   }
 }
 

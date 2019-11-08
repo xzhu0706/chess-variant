@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Button, Nav, Navbar} from 'react-bootstrap';
+import {Nav, Navbar} from 'react-bootstrap';
 import Amplify, { Auth } from 'aws-amplify';
-import { Authenticator, Greetings } from 'aws-amplify-react';
+import {Authenticator, Greetings } from 'aws-amplify-react';
 import awsconfig from '../aws-exports';
-import Welcome from './Welcome';
+import CreateGameDialog from './CreateGameDialog';
 import Lobby from './Lobby';
+import Image from 'react-bootstrap/Image';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Button from '@material-ui/core/Button';
 
 Amplify.configure(awsconfig);
 const games = [
@@ -16,19 +19,13 @@ const games = [
 
 ]
 
-const descripList = [
-  { description: 'Design your own variants', key: 0 },
-  { description: 'Test your variant against others', key: 1 },
-  { description: 'Play variants created from other players', key: 2 },
-];
-
-
 class Home extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       username: '',
       showAuth: false,
+      showDialog: false
     };
   }
 
@@ -56,20 +53,32 @@ class Home extends Component {
     });
   }
 
+  makeDialogVisible = () => {
+    this.setState({showDialog: true})
+  }
+
   render() {
-    const top = {
-      background: '#efd5be',
-    }; 
+    
+    const imgStyle = {
+      width: '2em',
+      height: '2em'
+  }
     const { username, showAuth } = this.state;
-    const welcome = !showAuth? <Welcome descripList = {descripList}/> : ''
-    const lobby = !showAuth? <Lobby games = {games} /> : ''
+    const lobby = !showAuth? <Lobby games = {games} makeDialogVisible = {this.makeDialogVisible} /> : ''
     return (
       <div>
-        <Navbar style={top}>
-          <Navbar.Brand href="/">
-            Chess-Variant.com
+        <Navbar style={{fontFamily: "AppleSDGothicNeo-Bold", color:"black"}} bg='black' variant='light'>
+          <Navbar.Brand style={{ fontFamily: "chalkduster" }}>
+            <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
+            <a style={{ color: "#333333", fontSize: "28px", marginLeft: "5px" }} href="/">Chess Variants</a>
           </Navbar.Brand>
-          {username
+          <Nav className="ml-auto">
+            <Nav.Link href="#home">Explore Variants</Nav.Link>
+            <Nav.Link href="#home">Learn</Nav.Link>
+            <Nav.Link href="#features">Leaderboard</Nav.Link>
+            <Nav.Link href="#pricing">Community</Nav.Link>
+          
+            {username
             ? (
               <Nav className="ml-auto">
                 <Nav.Link>
@@ -83,18 +92,30 @@ class Home extends Component {
               </Nav>
             )
             : (
-              <Nav className="ml-auto">
-                <Button className="float-right" variant="primary" onClick={this.handleShowAuth}>Sign In</Button>
-              </Nav>
+                <Nav className="ml-auto">
+                  <Button
+                    style={{fontFamily: "AppleSDGothicNeo-Bold", color: "#333333", height: "35px" }}
+                    variant="outlined"
+                    color="#333333"
+                    startIcon={<AccountCircle/>}
+                  >
+                    SIGN IN
+                  </Button>
+                  {/*<Button style={{ backgroundColor: "white", color: "black" }} className="float-right" onClick={this.handleShowAuth}>Sign In</Button>*/}
+                </Nav>
             )}
-          </Navbar>
+
+          </Nav>
+
+
+        </Navbar>
         <Authenticator
           hideDefault={!showAuth}
           hide={[Greetings]}
           onStateChange={this.handleAuthStateChange}
         />
+        <CreateGameDialog showDialog={this.state.showDialog}></CreateGameDialog>
         {lobby}
-        {welcome}
       </div>
     );
   }

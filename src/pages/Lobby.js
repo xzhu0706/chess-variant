@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import MaterialTable from 'material-table';
 import Container from '@material-ui/core/Container';
 import { forwardRef } from 'react';
-
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../graphql/queries';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Check from '@material-ui/icons/Check';
@@ -21,10 +22,30 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import Button from '@material-ui/core/Button';
 
 const lobbyColumns = [
-    {title: 'Player', field: 'player'},
-    {title: 'Skill Level', field: 'skillLevel'},
-    {title: 'Time', field: 'timing'},
-    {title: 'Variant', field: 'variant'}
+    {title: 'Player', field: 'player', cellStyle: {
+        backgroundColor: '#FFF',
+        fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+        fontSize: "16px",
+        color: '#333333'
+    }},
+    {title: 'Skill Level', field: 'skillLevel', cellStyle: {
+        backgroundColor: '#FFF',
+        fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+        fontSize: "16px",
+        color: '#333333'
+    }},
+    {title: 'Time', field: 'timing', cellStyle: {
+        backgroundColor: '#FFF',
+        fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+        fontSize: "16px",
+        color: '#333333'
+    }},
+    {title: 'Variant', field: 'variant', cellStyle: {
+        backgroundColor: '#FFF',
+        fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+        fontSize: "16px",
+        color: '#333333'
+    }}
 ]
 
 const tableIcons = {
@@ -49,42 +70,57 @@ const tableIcons = {
 
 
 class Lobby extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            games: []
+        }
+    }
+    async componentDidMount(){
+        let games = await API.graphql(graphqlOperation(queries.listGames))
+        this.setState({games: games})
+    }
+
     render(){
         const lobbyStyle = {
-            float: "right",
-            marginTop: "50px",
             display: "flex",
             flexDirection: "column",
-            alignItems: "flex-end"
+            alignItems: "flex-end",
+            padding: "70px 0",
+            textAlign: "center"
+
         }
         const createGameButtonStyle = {
-            width: "40%",
+            width: "30%",
             padding: "10px", 
             marginBottom: "10px",
-            backgroundColor: '#36454f',
-            color: '#FFF'
+            backgroundColor: '#333333',
+            color: '#FFF',
+            fontFamily: "AppleSDGothicNeo-Bold"
         }
         return (
             <Container maxWidth='sm' style={lobbyStyle}>
-                <Button style={createGameButtonStyle} variant="contained">Create a game</Button>
+                <Button style={createGameButtonStyle} variant="contained" onClick={this.props.makeDialogVisible}>
+                    Create a game
+                </Button>
+                <div style={{width: "100%"}}>
                 <MaterialTable
                     icons = {tableIcons}
                     columns={lobbyColumns}
                     data={this.props.games}
                     title='Lobby'
+                    maxWidth="md"
                     options={{
                         headerStyle: {
                             backgroundColor: '#FFF',
-                            fontFamily: "Verdana",
-                            fontWeight: "normal",
-                            fontSize: "16px",
-                            color: '#000'
+                            fontFamily: "AppleSDGothicNeo-SemiBold, verdana",
+                            fontSize: "18px",
+                            color: '#333333'
                         },
+                        paging: false,
                         searchFieldStyle:{
                             fontSize: "14px",
-                            width: "100%",
-                            display: "flex"
-                            
+                            fontFamily: 'verdana'
                         }
                     }}
                     localization = {{
@@ -93,6 +129,7 @@ class Lobby extends Component{
                         }
                     }}
                 />
+                </div>
             </Container>
         )
     }

@@ -15,5 +15,22 @@
                 "chessvariant878b0ed7": {}
             }
         }
+    },
+    "env": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-chess-variant-env-185911-authRole",
+            "UnauthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-env-185911-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-env-185911-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-chess-variant-env-185911-deployment",
+            "UnauthRoleName": "amplify-chess-variant-env-185911-unauthRole",
+            "StackName": "amplify-chess-variant-env-185911",
+            "StackId": "arn:aws:cloudformation:us-east-1:990932120713:stack/amplify-chess-variant-env-185911/6dc00300-00f1-11ea-81c2-0e8cd4caae34"
+        },
+        "categories": {
+            "auth": {
+                "chessvariant878b0ed7": {}
+            }
+        }
     }
 }
