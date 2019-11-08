@@ -7,21 +7,10 @@
 		}
 	},
 	"function": {},
-	"api": {
-		"ChessVariantsAPI": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authchessvariant878b0ed7"
-						}
-					}
-				}
-			}
+	"hosting": {
+		"S3AndCloudFront": {
+			"service": "S3AndCloudFront",
+			"providerPlugin": "awscloudformation"
 		}
 	}
 }
