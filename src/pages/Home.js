@@ -87,7 +87,7 @@ class Home extends Component {
                   {username}
                 </Nav.Link>
                 <Nav.Link>
-                  <Button className="float-right" variant="danger" onClick={this.handleSignOut}>Sign Out</Button>
+                  <Button onClick={this.handleSignOut}>Sign Out</Button>
                 </Nav.Link>
               </Nav>
             )
@@ -98,6 +98,7 @@ class Home extends Component {
                     variant="outlined"
                     color="#333333"
                     startIcon={<AccountCircle/>}
+                    onClick={this.handleShowAuth}
                   >
                     SIGN IN
                   </Button>
