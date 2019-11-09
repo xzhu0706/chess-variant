@@ -1,3 +1,15 @@
+If you are on Linux and want to run this project locally on your machine, it is possible that `npm install` (`sudo npm install`) will fail to run the post-install script in `package.json` which copies our own version of `chess.js` into the `chess.js` library folder in `node_modules`.
+
+If you get a warning like
+
+![image](https://user-images.githubusercontent.com/43935729/68522062-3f05df00-0275-11ea-8245-c0244532b827.png)
+
+then it is imperative that you run `sudo npm run postinstall`, or if that doesn't work, that you re-install with the `--unsafe-perm` flag (`npm install --unsafe-perm`).
+
+Alternatively, you can try to manually copy `chess.js` to the `node_modules/chess.js` folder.
+
+<hr>
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
