@@ -150,7 +150,7 @@ export default function WithMoveValidation() {
           <div>
             <Chessboard
               id="humanVsHuman"
-              width={640}
+              width={540}
               roughSquare={roughSquare}
               position={position}
               onDrop={onDrop}
