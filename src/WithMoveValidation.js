@@ -9,7 +9,7 @@ class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = {
-    fen: "start",
+    fen: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
     dropSquareStyle: {}, // square styles for active drop square
     squareStyles: {}, // custom square styles
     pieceSquare: "", // piece on the most recently selected square
@@ -17,7 +17,7 @@ class HumanVsHuman extends Component {
   };
 
   componentDidMount() {
-    this.game = new Chess();
+    this.game = new Chess(this.state.fen);
   }
 
   // highlight hint squares
@@ -57,9 +57,9 @@ class HumanVsHuman extends Component {
     if (move === null) return;
 
     // legal move, so update the fen
-    this.setState(() => ({
+    this.setState(({ pieceSquare }) => ({
       fen: this.game.fen(),
-      pieceSquare: ""
+      pieceSquare: "",
     }));
   };
 
@@ -105,7 +105,7 @@ class HumanVsHuman extends Component {
     // legal move, so update the fen
     this.setState({
       fen: this.game.fen(),
-      pieceSquare: "" // is this line necessary?
+      pieceSquare: ""
     });
   };
 
@@ -113,9 +113,9 @@ class HumanVsHuman extends Component {
   // This will allow the user to have multiple squares be highlighted simultaneously,
   // for whatever reason (annotation?)
   onSquareRightClick = square =>
-    this.setState({
-      squareStyles: { ...this.state.squareStyles, [square]: { backgroundColor: "#e86c65" } }
-    });
+    this.setState(({ squareStyles }) => ({
+      squareStyles: { ...squareStyles, [square]: { backgroundColor: "#e86c65" } }
+    }));
 
   render() {
     const { fen, dropSquareStyle, squareStyles } = this.state;
@@ -159,18 +159,18 @@ export default function WithMoveValidation() {
                 boxShadow: `0 2px 3px rgba(0, 0, 0, 0.5)`
               }}
               pieces={{
-                bK: ({ squareWidth, isDragging }) => (
+                bK: ({ squareWidth }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.10 : squareWidth,
-                      height: isDragging ? squareWidth * 1.10 : squareWidth
+                      width: squareWidth,
+                      height: squareWidth
                     }}
                     src={bk_test}
                     alt={"bk_test"}
                   />
                 )
               }}
-              lightSquareStyle={{ backgroundColor: "White" }}
+              lightSquareStyle={{ backgroundColor: "#ffffff" }}
               darkSquareStyle={{ backgroundColor: "#65cae8" }}      
               squareStyles={squareStyles}
               dropSquareStyle={dropSquareStyle}
@@ -179,6 +179,7 @@ export default function WithMoveValidation() {
               onSquareRightClick={onSquareRightClick}
               draggable={true}
             />
+            <div>fen: {position}</div>
           </div>
         )}
       </HumanVsHuman>
