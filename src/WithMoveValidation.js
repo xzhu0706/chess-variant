@@ -179,7 +179,7 @@ export default function WithMoveValidation() {
               onSquareRightClick={onSquareRightClick}
               draggable={true}
             />
-            <div>fen: {position}</div>
+            <div>fen: {position}</div> { /* should this be a child component? */ }
           </div>
         )}
       </HumanVsHuman>

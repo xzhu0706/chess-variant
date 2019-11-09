@@ -9,7 +9,7 @@
     "aws-amplify": "^1.2.4",
     "aws-amplify-react": "^2.5.4",
     "bootstrap": "^4.3.1",
-    "chess.js": "seyson/chess.js#master",
+    "chess.js": "0.10.2",
     "chessboardjsx": "2.2.0",
     "date-fns": "^2.6.0",
     "material-table": "^1.53.0",
@@ -27,7 +27,8 @@
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "cp src/chess.js node_modules/chess.js"
   },
   "eslintConfig": {
     "extends": "react-app"
