@@ -3,13 +3,6 @@ import PropTypes from 'prop-types';
 import WithMoveValidation from "../WithMoveValidation";
 
 class Game extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    };
-  }
-
   render() {
     //const { match } = this.props;
     return (
@@ -22,7 +15,7 @@ class Game extends Component {
           <WithMoveValidation />
         </div>
       </div>
-    );
+    )
   }
 }
 
