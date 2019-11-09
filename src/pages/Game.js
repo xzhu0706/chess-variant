@@ -27,6 +27,10 @@ class Game extends Component {
 
   async componentDidMount() {
     const user = await Auth.currentUserInfo();
+    if (!user) {
+      console.log('not logged in');
+      return;
+    }
     const { match } = this.props;
     this.setState({
       currentUser: {
