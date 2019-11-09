@@ -50,12 +50,16 @@ class HumanVsHuman extends Component {
       from: sourceSquare,
       to: targetSquare,
       promotion: "q" // always promote to a queen for example simplicity
+      // fix this so the user can choose what to promote to
     });
 
     // illegal move
     if (move === null) return;
+
+    // legal move, so update the fen
     this.setState(() => ({
-      fen: this.game.fen()
+      fen: this.game.fen(),
+      pieceSquare: ""
     }));
   };
 
@@ -101,10 +105,13 @@ class HumanVsHuman extends Component {
     // legal move, so update the fen
     this.setState({
       fen: this.game.fen(),
-      pieceSquare: "",
+      pieceSquare: "" // is this line necessary?
     });
   };
 
+  // When right clicking, we preserve the old squareStyles (we merely append the new style).
+  // This will allow the user to have multiple squares be highlighted simultaneously,
+  // for whatever reason (annotation?)
   onSquareRightClick = square =>
     this.setState({
       squareStyles: { ...this.state.squareStyles, [square]: { backgroundColor: "#e86c65" } }
@@ -172,9 +179,6 @@ export default function WithMoveValidation() {
               onSquareRightClick={onSquareRightClick}
               draggable={true}
             />
-            
-            <div>fen: {}</div>
-            <div>turn: </div>
           </div>
         )}
       </HumanVsHuman>
@@ -182,19 +186,12 @@ export default function WithMoveValidation() {
   );
 }
 
-// const squareStyling = ({ pieceSquare }) => {
-//   const k = {
-//     [pieceSquare]: { backgroundColor: "rgba(209, 212, 255, 0.83)" }
-//   };
-//   return k;
-// };
-
-// customize the look of chessboard squares using roughjs
+// give squares a rough appearance using roughjs
 const roughSquare = ({ squareElement, squareWidth }) => {
   let rc = rough.svg(squareElement);
   const chessSquare = rc.rectangle(0, 0, squareWidth, squareWidth, {
     roughness: 0.5,
-    bowing: 2.7,
+    bowing: 2.5,
     strokeWidth: 0.5,
     //fill: "AliceBlue",
     //fillStyle: "cross-hatch" // why doesn't this work? (doesn't create cross hatches)?
