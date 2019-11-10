@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import Chess from  "chess.js";
 import Chessboard from "chessboardjsx";
 import rough from "roughjs"; // can give the squares a rough appearance
-import bk_test from "./bk.svg"; // testing the use of custom icons
+import wn_test from "./wn.svg"; // testing the use of custom icons
+import bn_test from "./bn.svg"; // testing the use of custom icons
 
 class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
@@ -159,14 +160,24 @@ export default function WithMoveValidation() {
                 boxShadow: `0 2px 3px rgba(0, 0, 0, 0.5)`
               }}
               pieces={{
-                bK: ({ squareWidth }) => (
+                wN: ({ squareWidth }) => (
                   <img
                     style={{
                       width: squareWidth,
                       height: squareWidth
                     }}
-                    src={bk_test}
-                    alt={"bk_test"}
+                    src={wn_test}
+                    alt={"wn_test"}
+                  />
+                ),
+                bN: ({ squareWidth }) => (
+                  <img
+                    style={{
+                      width: squareWidth,
+                      height: squareWidth
+                    }}
+                    src={bn_test}
+                    alt={"bn_test"}
                   />
                 )
               }}
