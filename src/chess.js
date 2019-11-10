@@ -613,7 +613,8 @@ var Chess = function(fen) {
               capturePossible = 1;
           }
         }
-      } else {
+      }
+      else {
         for (var j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
           var offset = PIECE_OFFSETS[piece.type][j];
           var square = i;
@@ -637,6 +638,9 @@ var Chess = function(fen) {
         }
       }
     }
+
+    /* now that we've added moves on all the squares, if capturePossible is 1, we have to restrict
+       those moves to capturing moves */
 
     /* are we generating moves for a single square? */
     if (typeof options !== 'undefined' && 'square' in options) {
@@ -1322,9 +1326,9 @@ var Chess = function(fen) {
 
     game_over: function() {
       return half_moves >= 100 ||
-             in_checkmate() ||
+             //in_checkmate() ||
              in_stalemate() ||
-             insufficient_material() ||
+             //insufficient_material() ||
              in_threefold_repetition();
     },
 

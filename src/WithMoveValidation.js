@@ -10,24 +10,25 @@ class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = {
-    fen: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+    fen: "8/p1p3B1/2B5/8/n7/8/P1PQ1KPP/R5NR b - - 0 15",
     pgn: "",
     dropSquareStyle: {}, // square styles for active drop square
     squareStyles: {}, // custom square styles
     pieceSquare: "", // piece on the most recently selected square
     square: "", // currently clicked square
+    gameOver: false
   };
 
   componentDidMount() {
     this.game = new Chess(this.state.fen);
     this.setState({
-      pgn: this.game.pgn()
+      pgn: this.game.pgn(),
+      gameOver: this.game.game_over()
     });
   }
 
   // highlight hint squares
   highlightSquare = (hintSquares) => {
-    console.log(this.game.pgn());
     const highlightStyles = [...hintSquares].reduce(
       (a, c) => {
         return {
@@ -35,8 +36,8 @@ class HumanVsHuman extends Component {
           ...{
             [c]: {
               background:
-                "radial-gradient(circle, rgba(255, 120, 12, 0.57), 50%, transparent 10%)",
-              borderRadius: "50%"
+                "radial-gradient(circle, rgba(255, 120, 12, 67%), 50%, transparent 10%)",
+              borderRadius: "50%",
             }
           }
         };
@@ -49,7 +50,22 @@ class HumanVsHuman extends Component {
     }));
   };
 
+  terminateGame = () => {
+    this.setState({
+      gameOver: true
+    });
+    console.log("game over!");
+    if (this.game.in_threefold_repetition()) {
+      console.log("draw by three-fold repetition");
+    }
+    else {
+      console.log(`stalemate: ${this.game.turn()} wins`);
+    }
+  }
+
   onDrop = ({ sourceSquare, targetSquare }) => {
+    if (this.state.gameOver) return;
+
     // see if the move is legal
     let move = this.game.move({
       from: sourceSquare,
@@ -67,6 +83,11 @@ class HumanVsHuman extends Component {
       pgn: this.game.pgn(),
       pieceSquare: "",
     }));
+
+    // end the game if the game state is finished
+    if (this.game.game_over()) {
+      this.terminateGame();
+    }
   };
 
   // onDragOverSquare = square => {
@@ -76,6 +97,8 @@ class HumanVsHuman extends Component {
   // };
 
   onSquareClick = (square) => {
+    if (this.state.gameOver) return;
+
     // highlight the square you just clicked
     this.setState(() => ({
       squareStyles: { [square]: { backgroundColor: "#38f" } },
@@ -88,13 +111,8 @@ class HumanVsHuman extends Component {
       verbose: true
     });
 
-    // we only need the destination of each possible move, which is moves[i].to
+    // highlight the to square of every possible move, moves[i].to
     const hintSquares = moves.map(move => move.to);
-    // for (let i = 0; i < moves.length; i++) {
-    //   hintSquares.push(moves[i].to);
-    // }
-
-    // highlight the destination square of each possible move
     this.highlightSquare(hintSquares);
 
     // process the case where the user has registered a move by clicking
@@ -114,6 +132,11 @@ class HumanVsHuman extends Component {
       pgn: this.game.pgn(),
       pieceSquare: ""
     });
+
+    // end the game if the game state is finished
+    if (this.game.game_over()) {
+      this.terminateGame();
+    }
   };
 
   // When right clicking, we preserve the old squareStyles (we merely append the new style).
@@ -200,6 +223,7 @@ export default function WithMoveValidation() {
             />
             <div>fen: {position}</div> { /* should this be a child component? */ }
             <div>pgn: {pgn}</div>
+            <div id="game_over_message"></div>
           </div>
         )}
       </HumanVsHuman>
