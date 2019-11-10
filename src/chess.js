@@ -540,14 +540,14 @@ var Chess = function(fen) {
   }
 
   function generate_moves(options) {
-    // adds a move to the list of available moves (if a pawn is moving to rank 1 or rank 8,
+    // add_move() adds a move to the list of available moves (if a pawn is moving to rank 1 or rank 8,
     // then we add all the possible promotion moves)
     function add_move(board, moves, from, to, flags) {
       /* if pawn promotion */
       if (board[from].type === PAWN &&
          (rank(to) === RANK_8 || rank(to) === RANK_1)) {
           var pieces = [QUEEN, ROOK, BISHOP, KNIGHT, KING]; // promotion to king is allowed in antichess
-          for (var i = 0, len = pieces.length; i < len; i++) {
+          for (let i = 0, len = pieces.length; i < len; i++) {
             moves.push(build_move(board, from, to, flags, pieces[i]));
           }
       } else {
@@ -579,7 +579,8 @@ var Chess = function(fen) {
       }
     }
 
-    for (var i = first_sq; i <= last_sq; i++) {
+    var capturePossible = 0;
+    for (let i = first_sq; i <= last_sq; i++) {
       /* did we run off the end of the board */
       if (i & 0x88) { i += 7; continue; }
 
@@ -589,11 +590,19 @@ var Chess = function(fen) {
       }
 
       if (piece.type === PAWN) {
-        // add pawn captures first in antichess:
-        // if we added at least one, then don't add any non-capturing moves
+        /* single square, non-capturing */
+        var square = i + PAWN_OFFSETS[us][0];
+        if (board[square] == null) {
+            add_move(board, moves, i, square, BITS.NORMAL);
 
+          /* double square */
+          var square = i + PAWN_OFFSETS[us][1];
+          if (second_rank[us] === rank(i) && board[square] == null) {
+            add_move(board, moves, i, square, BITS.BIG_PAWN);
+          }
+        }
+        
         /* pawn captures */
-        var capturePossible = 0;
         for (j = 2; j < 4; j++) {
           var square = i + PAWN_OFFSETS[us][j];
           if (square & 0x88) continue;
@@ -621,6 +630,7 @@ var Chess = function(fen) {
             } else {
               if (board[square].color === us) break;
               add_move(board, moves, i, square, BITS.CAPTURE);
+              capturePossible = 1;
               break;
             }
 
@@ -629,22 +639,6 @@ var Chess = function(fen) {
           }
         }
       }
-
-      /* possibly add non-capturing pawn moves */
-      if (capturePossible === 0) {
-        /* single square, non-capturing */
-        var square = i + PAWN_OFFSETS[us][0];
-        if (board[square] == null) {
-            add_move(board, moves, i, square, BITS.NORMAL);
-
-          /* double square */
-          var square = i + PAWN_OFFSETS[us][1];
-          if (second_rank[us] === rank(i) && board[square] == null) {
-            add_move(board, moves, i, square, BITS.BIG_PAWN);
-          }
-        }
-      }
-
     }
 
     /* check for castling if: a) we're generating all moves, or b) we're doing
@@ -687,22 +681,34 @@ var Chess = function(fen) {
     /* return all pseudo-legal moves (this includes moves that allow the king
      * to be captured)
      */
-    if (!legal) {
+    // if (!legal) {
+    //   return moves;
+    // }
+
+    if (capturePossible) { // if a capture is possible, only generate capturing moves
+      let legal_moves = [];
+      for (let i = 0, len = moves.length; i < len; i++) {
+        if (moves[i].flags & (BITS.CAPTURE | BITS.EP_CAPTURE)) {
+          legal_moves.push(moves[i]);
+        }
+      }
+      return legal_moves;
+    }
+    else {
       return moves;
     }
 
     /* filter out illegal moves */
-    // legalize moves that result in check in antichess
-    var legal_moves = [];
-    for (var i = 0, len = moves.length; i < len; i++) {
-      //make_move(moves[i]);
-      //if (!king_attacked(us)) {
-        legal_moves.push(moves[i]);
-      //}
-      //undo_move();
-    }
+    // var legal_moves = [];
+    // for (var i = 0, len = moves.length; i < len; i++) {
+    //   make_move(moves[i]);
+    //   if (!king_attacked(us)) {
+    //     legal_moves.push(moves[i]);
+    //   }
+    //   undo_move();
+    // }
     
-    return legal_moves;
+    // return legal_moves;
   }
 
   /* convert a move from 0x88 coordinates to Standard Algebraic Notation
