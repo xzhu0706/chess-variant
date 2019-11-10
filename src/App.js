@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Game from './pages/Game';
 import VariantDocumentation from './pages/VariantDocumentation';
 import './App.css';
+import NavBar from './components/NavBar';
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class App extends Component {
   render() {
     return (
       <Router>
+        <NavBar />
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/game/:token" component={Game} />

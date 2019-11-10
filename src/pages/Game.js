@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { Auth } from 'aws-amplify';
 import PropTypes from 'prop-types';
-import WithMoveValidation from "../WithMoveValidation";
+import WithMoveValidation from '../WithMoveValidation';
 import ChatMessages from '../components/ChatMessages';
 import ChatInput from '../components/ChatInput';
-import { Auth } from 'aws-amplify';
 import './Game.css';
 
 class Game extends Component {
@@ -19,9 +19,9 @@ class Game extends Component {
         // }
       ],
       currentUser: {
-        username: 'default user'
+        username: 'default user',
       },
-      gameToken: ''
+      gameToken: '',
     };
   }
 
@@ -34,9 +34,9 @@ class Game extends Component {
     const { match } = this.props;
     this.setState({
       currentUser: {
-        username: user.username
+        username: user.username,
       },
-      gameToken: match.params.token
+      gameToken: match.params.token,
     });
   }
 
@@ -70,7 +70,7 @@ class Game extends Component {
     return (
       <div className="container">
 
-        <div className="row" style={{minHeight: '100px'}}>
+        <div className="row" style={{minHeight: '50px'}}>
         {
           
         }
