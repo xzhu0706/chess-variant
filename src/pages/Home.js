@@ -1,19 +1,31 @@
 import React, { Component } from 'react';
-import {
-  Row, Col, Button, Nav, Navbar, Image, Container, Table,
-} from 'react-bootstrap';
+import {Nav, Navbar} from 'react-bootstrap';
 import Amplify, { Auth } from 'aws-amplify';
-import { Authenticator, Greetings } from 'aws-amplify-react';
+import {Authenticator, Greetings } from 'aws-amplify-react';
 import awsconfig from '../aws-exports';
+import CreateGameDialog from './CreateGameDialog';
+import Lobby from './Lobby';
+import Image from 'react-bootstrap/Image';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Button from '@material-ui/core/Button';
 
 Amplify.configure(awsconfig);
+const games = [
+  {player: 'Magnus Carlsen', skillLevel: 'Expert', timing: '10+30', variant: 'Classic'},
+  {player: 'Fabio', skillLevel: 'Beginner', timing: '10+30', variant: 'Crazyhouse'},
+  {player: 'Gary Kasparov', skillLevel: 'Expert', timing: '10+30', variant: 'King of the hill'}, 
+  {player: 'Ding Liren', skillLevel: 'Advanced', timing: '7+0', variant: 'Atomic'},
+  {player: 'Max', skillLevel: 'Intermediate', timing: '10+30', variant: 'Horde'}
+
+]
 
 class Home extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       username: '',
       showAuth: false,
+      showDialog: false
     };
   }
 
@@ -41,129 +53,70 @@ class Home extends Component {
     });
   }
 
+  makeDialogVisible = () => {
+    this.setState({showDialog: true})
+  }
+
   render() {
-    const descripList = [
-      { description: 'Design your own variants', key: 0 },
-      { description: 'Test your variant against others', key: 1 },
-      { description: 'Play variants created from other players', key: 2 },
-    ];
-
+    
     const imgStyle = {
-      width: '15em',
-      height: '15em',
-    };
-
-    const top = {
-      background: '#efd5be',
-    };
-
-    const white = {
-      background: '#ecdfd3',
-    };
-
-    const rowStyle = {
-      marginTop: '.5em',
-      marginBottom: '1em',
-    };
-
+      width: '2em',
+      height: '2em'
+  }
     const { username, showAuth } = this.state;
-
+    const lobby = !showAuth? <Lobby games = {games} makeDialogVisible = {this.makeDialogVisible} /> : ''
     return (
-      <div style={top}>
-        <Container>
-          <div>
-            <Navbar style={top}>
-              <Navbar.Brand href="/">
-                Chess-Variant.com
-              </Navbar.Brand>
-              {username
-                ? (
-                  <Nav className="ml-auto">
-                    <Nav.Link>
-                      Hello
-                      {' '}
-                      {username}
-                    </Nav.Link>
-                    <Nav.Link>
-                      <Button className="float-right" variant="danger" onClick={this.handleSignOut}>Sign Out</Button>
-                    </Nav.Link>
-                  </Nav>
-                )
-                : (
-                  <Nav className="ml-auto">
-                    <Button className="float-right" variant="primary" onClick={this.handleShowAuth}>Sign In</Button>
-                  </Nav>
-                )}
-            </Navbar>
-
-            <Authenticator
-              hideDefault={!showAuth}
-              hide={[Greetings]}
-              onStateChange={this.handleAuthStateChange}
-            />
-
-            {!showAuth && (
-              <div style={white}>
-                <Row style={rowStyle}>
-                  <Col>
-                    <div className="col">
-                      <h1>Welcome to Chess-Variants</h1>
-                      <ul>
-                        {descripList.map((description) => (
-                          <li key={description.key}>{description.description}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </Col>
-                  <Col className="text-center">
-                    <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
-                  </Col>
-                </Row>
-                <Row style={rowStyle}>
-                  <Col className="text-center">
-                    <Button variant="info" size="lg">Play Now</Button>
-                  </Col>
-                  <Col className="text-center">
-                    <Button variant="info" size="lg">Create Variant</Button>
-                  </Col>
-                </Row>
-                <Row style={rowStyle}>
-                  <Col className="text-center">
-                    <Image src="https://user-images.githubusercontent.com/45343196/68171724-ee277b00-ff42-11e9-99c5-4443583046ed.png" alt="Base Variant" />
-                  </Col>
-                  <Col className="text-center">
-                    <Image src="https://user-images.githubusercontent.com/45343196/68171724-ee277b00-ff42-11e9-99c5-4443583046ed.png" alt="Base Variant" />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Table striped bordered hover variant="light" size="sm">
-                      <thead>
-                        <tr>
-                          <th>Room #</th>
-                          <th>Variant Type</th>
-                          <th>Player</th>
-                        </tr>
-                      </thead>
-                    </Table>
-                  </Col>
-                  <Col>
-                    <Table striped bordered hover variant="light" size="sm">
-                      <thead>
-                        <tr>
-                          <th>Room #</th>
-                          <th>Variant Type</th>
-                          <th>Player</th>
-                        </tr>
-                      </thead>
-                    </Table>
-                  </Col>
-                </Row>
-
-              </div>
+      <div>
+        <Navbar style={{fontFamily: "AppleSDGothicNeo-Bold", color:"black"}} bg='black' variant='light'>
+          <Navbar.Brand style={{ fontFamily: "chalkduster" }}>
+            <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
+            <a style={{ color: "#333333", fontSize: "28px", marginLeft: "5px" }} href="/">Chess Variants</a>
+          </Navbar.Brand>
+          <Nav className="ml-auto">
+            <Nav.Link href="#home">Explore Variants</Nav.Link>
+            <Nav.Link href="#home">Learn</Nav.Link>
+            <Nav.Link href="#features">Leaderboard</Nav.Link>
+            <Nav.Link href="#pricing">Community</Nav.Link>
+          
+            {username
+            ? (
+              <Nav className="ml-auto">
+                <Nav.Link>
+                  Hello
+                  {' '}
+                  {username}
+                </Nav.Link>
+                <Nav.Link>
+                  <Button onClick={this.handleSignOut}>Sign Out</Button>
+                </Nav.Link>
+              </Nav>
+            )
+            : (
+                <Nav className="ml-auto">
+                  <Button
+                    style={{fontFamily: "AppleSDGothicNeo-Bold", color: "#333333", height: "35px" }}
+                    variant="outlined"
+                    color="#333333"
+                    startIcon={<AccountCircle/>}
+                    onClick={this.handleShowAuth}
+                  >
+                    SIGN IN
+                  </Button>
+                  {/*<Button style={{ backgroundColor: "white", color: "black" }} className="float-right" onClick={this.handleShowAuth}>Sign In</Button>*/}
+                </Nav>
             )}
-          </div>
-        </Container>
+
+          </Nav>
+
+
+        </Navbar>
+        <Authenticator
+          hideDefault={!showAuth}
+          hide={[Greetings]}
+          onStateChange={this.handleAuthStateChange}
+        />
+        <CreateGameDialog showDialog={this.state.showDialog}></CreateGameDialog>
+        {lobby}
       </div>
     );
   }
