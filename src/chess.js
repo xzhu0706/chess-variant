@@ -562,7 +562,7 @@ var Chess = function(fen) {
 
     var first_sq = SQUARES.a8;
     var last_sq = SQUARES.h1;
-    var single_square = false;
+    //var single_square = false; // not used since we've disabled castling
 
     /* do we want legal moves? */
     var legal = (typeof options !== 'undefined' && 'legal' in options) ?
@@ -572,7 +572,7 @@ var Chess = function(fen) {
     if (typeof options !== 'undefined' && 'square' in options) {
       if (options.square in SQUARES) {
         first_sq = last_sq = SQUARES[options.square];
-        single_square = true;
+        //single_square = true; // not used since we've disabled castling
       } else {
         /* invalid square */
         return [];
@@ -589,19 +589,11 @@ var Chess = function(fen) {
       }
 
       if (piece.type === PAWN) {
-        /* single square, non-capturing */
-        var square = i + PAWN_OFFSETS[us][0];
-        if (board[square] == null) {
-            add_move(board, moves, i, square, BITS.NORMAL);
-
-          /* double square */
-          var square = i + PAWN_OFFSETS[us][1];
-          if (second_rank[us] === rank(i) && board[square] == null) {
-            add_move(board, moves, i, square, BITS.BIG_PAWN);
-          }
-        }
+        // add pawn captures first in antichess:
+        // if we added at least one, then don't add any non-capturing moves
 
         /* pawn captures */
+        var capturePossible = 0;
         for (j = 2; j < 4; j++) {
           var square = i + PAWN_OFFSETS[us][j];
           if (square & 0x88) continue;
@@ -609,8 +601,10 @@ var Chess = function(fen) {
           if (board[square] != null &&
               board[square].color === them) {
               add_move(board, moves, i, square, BITS.CAPTURE);
+              capturePossible = 1;
           } else if (square === ep_square) {
               add_move(board, moves, i, ep_square, BITS.EP_CAPTURE);
+              capturePossible = 1;
           }
         }
       } else {
@@ -635,6 +629,22 @@ var Chess = function(fen) {
           }
         }
       }
+
+      /* possibly add non-capturing pawn moves */
+      if (capturePossible === 0) {
+        /* single square, non-capturing */
+        var square = i + PAWN_OFFSETS[us][0];
+        if (board[square] == null) {
+            add_move(board, moves, i, square, BITS.NORMAL);
+
+          /* double square */
+          var square = i + PAWN_OFFSETS[us][1];
+          if (second_rank[us] === rank(i) && board[square] == null) {
+            add_move(board, moves, i, square, BITS.BIG_PAWN);
+          }
+        }
+      }
+
     }
 
     /* check for castling if: a) we're generating all moves, or b) we're doing
