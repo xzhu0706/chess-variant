@@ -70,7 +70,7 @@ class Game extends Component {
     return (
       <div className="container">
 
-        <div className="row" style={{minHeight: '100px'}}>
+        <div className="row" style={{minHeight: '50px'}}>
         {
           
         }
