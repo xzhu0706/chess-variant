@@ -488,7 +488,7 @@ var Chess = function(fen) {
     var sq = SQUARES[square];
 
     /* don't let the user place more than one king */
-    /* commenting this out for the antichess variant: the king is not a special piece */
+    /* commenting this out: the king is not a special piece in antichess */
     // if (piece.type == KING &&
     //     !(kings[piece.color] == EMPTY || kings[piece.color] == sq)) {
     //   return false;
@@ -546,7 +546,7 @@ var Chess = function(fen) {
       /* if pawn promotion */
       if (board[from].type === PAWN &&
          (rank(to) === RANK_8 || rank(to) === RANK_1)) {
-          var pieces = [QUEEN, ROOK, BISHOP, KNIGHT, KING]; // added king for the antichess variant
+          var pieces = [QUEEN, ROOK, BISHOP, KNIGHT, KING]; // promotion to king is allowed in antichess
           for (var i = 0, len = pieces.length; i < len; i++) {
             moves.push(build_move(board, from, to, flags, pieces[i]));
           }
@@ -640,38 +640,39 @@ var Chess = function(fen) {
     /* check for castling if: a) we're generating all moves, or b) we're doing
      * single square move generation on the king's square
      */
-    if ((!single_square) || last_sq === kings[us]) {
-      /* king-side castling */
-      if (castling[us] & BITS.KSIDE_CASTLE) {
-        var castling_from = kings[us];
-        var castling_to = castling_from + 2;
+    // there is no castling in antichess: the king is just another piece
+    // if ((!single_square) || last_sq === kings[us]) {
+    //   /* king-side castling */
+    //   if (castling[us] & BITS.KSIDE_CASTLE) {
+    //     var castling_from = kings[us];
+    //     var castling_to = castling_from + 2;
 
-        if (board[castling_from + 1] == null &&
-            board[castling_to]       == null &&
-            !attacked(them, kings[us]) &&
-            !attacked(them, castling_from + 1) &&
-            !attacked(them, castling_to)) {
-          add_move(board, moves, kings[us] , castling_to,
-                   BITS.KSIDE_CASTLE);
-        }
-      }
+    //     if (board[castling_from + 1] == null &&
+    //         board[castling_to]       == null &&
+    //         !attacked(them, kings[us]) &&
+    //         !attacked(them, castling_from + 1) &&
+    //         !attacked(them, castling_to)) {
+    //       add_move(board, moves, kings[us] , castling_to,
+    //                BITS.KSIDE_CASTLE);
+    //     }
+    //   }
 
-      /* queen-side castling */
-      if (castling[us] & BITS.QSIDE_CASTLE) {
-        var castling_from = kings[us];
-        var castling_to = castling_from - 2;
+    //   /* queen-side castling */
+    //   if (castling[us] & BITS.QSIDE_CASTLE) {
+    //     var castling_from = kings[us];
+    //     var castling_to = castling_from - 2;
 
-        if (board[castling_from - 1] == null &&
-            board[castling_from - 2] == null &&
-            board[castling_from - 3] == null &&
-            !attacked(them, kings[us]) &&
-            !attacked(them, castling_from - 1) &&
-            !attacked(them, castling_to)) {
-          add_move(board, moves, kings[us], castling_to,
-                   BITS.QSIDE_CASTLE);
-        }
-      }
-    }
+    //     if (board[castling_from - 1] == null &&
+    //         board[castling_from - 2] == null &&
+    //         board[castling_from - 3] == null &&
+    //         !attacked(them, kings[us]) &&
+    //         !attacked(them, castling_from - 1) &&
+    //         !attacked(them, castling_to)) {
+    //       add_move(board, moves, kings[us], castling_to,
+    //                BITS.QSIDE_CASTLE);
+    //     }
+    //   }
+    // }
 
     /* return all pseudo-legal moves (this includes moves that allow the king
      * to be captured)
@@ -681,7 +682,7 @@ var Chess = function(fen) {
     }
 
     /* filter out illegal moves */
-    // there is no check in antichess
+    // legalize moves that result in check in antichess
     var legal_moves = [];
     for (var i = 0, len = moves.length; i < len; i++) {
       //make_move(moves[i]);
