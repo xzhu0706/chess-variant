@@ -11,6 +11,7 @@ class HumanVsHuman extends Component {
 
   state = {
     fen: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+    pgn: "",
     dropSquareStyle: {}, // square styles for active drop square
     squareStyles: {}, // custom square styles
     pieceSquare: "", // piece on the most recently selected square
@@ -19,10 +20,14 @@ class HumanVsHuman extends Component {
 
   componentDidMount() {
     this.game = new Chess(this.state.fen);
+    this.setState({
+      pgn: this.game.pgn()
+    });
   }
 
   // highlight hint squares
   highlightSquare = (hintSquares) => {
+    console.log(this.game.pgn());
     const highlightStyles = [...hintSquares].reduce(
       (a, c) => {
         return {
@@ -38,7 +43,6 @@ class HumanVsHuman extends Component {
       },
       {}
     );
-    //console.log(highlightStyles);
     // show hints
     this.setState(({squareStyles}) => ({
       squareStyles: { ...squareStyles, ...highlightStyles }
@@ -60,6 +64,7 @@ class HumanVsHuman extends Component {
     // legal move, so update the fen
     this.setState(({ pieceSquare }) => ({
       fen: this.game.fen(),
+      pgn: this.game.pgn(),
       pieceSquare: "",
     }));
   };
@@ -85,7 +90,7 @@ class HumanVsHuman extends Component {
 
     // we only need the destination of each possible move, which is moves[i].to
     let hintSquares = [];
-    for (var i = 0; i < moves.length; i++) {
+    for (let i = 0; i < moves.length; i++) {
       hintSquares.push(moves[i].to);
     }
 
@@ -106,6 +111,7 @@ class HumanVsHuman extends Component {
     // legal move, so update the fen
     this.setState({
       fen: this.game.fen(),
+      pgn: this.game.pgn(),
       pieceSquare: ""
     });
   };
@@ -119,11 +125,12 @@ class HumanVsHuman extends Component {
     }));
 
   render() {
-    const { fen, dropSquareStyle, squareStyles } = this.state;
+    const { fen, pgn, dropSquareStyle, squareStyles } = this.state;
 
     return this.props.children({
       squareStyles,
       position: fen,
+      pgn,
       onMouseOverSquare: this.onMouseOverSquare,
       onMouseOutSquare: this.onMouseOutSquare,
       onDrop: this.onDrop,
@@ -141,6 +148,7 @@ export default function WithMoveValidation() {
       <HumanVsHuman>
         {({
           position,
+          pgn,
           onDrop,
           squareStyles,
           dropSquareStyle,
@@ -191,6 +199,7 @@ export default function WithMoveValidation() {
               draggable={true}
             />
             <div>fen: {position}</div> { /* should this be a child component? */ }
+            <div>pgn: {pgn}</div>
           </div>
         )}
       </HumanVsHuman>
