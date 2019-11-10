@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import VariantNav from '../components/VariantNav';
 
 class VariantDocumentation extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class VariantDocumentation extends Component {
   render() {
     return (
       <div>
-            hello
+        <VariantNav />
       </div>
     );
   }
