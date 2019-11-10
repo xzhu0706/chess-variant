@@ -89,10 +89,10 @@ class HumanVsHuman extends Component {
     });
 
     // we only need the destination of each possible move, which is moves[i].to
-    let hintSquares = [];
-    for (let i = 0; i < moves.length; i++) {
-      hintSquares.push(moves[i].to);
-    }
+    const hintSquares = moves.map(move => move.to);
+    // for (let i = 0; i < moves.length; i++) {
+    //   hintSquares.push(moves[i].to);
+    // }
 
     // highlight the destination square of each possible move
     this.highlightSquare(hintSquares);
