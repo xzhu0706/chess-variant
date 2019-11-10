@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
+import { withRouter, Link } from 'react-router-dom';
 import { Nav, Navbar } from 'react-bootstrap';
 import Amplify, { Auth } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
-import awsconfig from '../aws-exports';
 import Button from '@material-ui/core/Button';
 import Image from 'react-bootstrap/Image';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Dialog from '@material-ui/core/Dialog';
-import { withRouter, Link } from 'react-router-dom';
+import awsconfig from '../aws-exports';
 
 Amplify.configure(awsconfig);
 
 class NavBar extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       username: '',
       showAuth: false,
@@ -24,8 +24,8 @@ class NavBar extends Component {
     const user = await Auth.currentUserInfo();
     if (user) {
       this.setState({
-        username: user.username
-      })
+        username: user.username,
+      });
     }
   }
 
@@ -36,9 +36,9 @@ class NavBar extends Component {
   }
 
   handleCloseAuth = () => {
-	  this.setState({
-		  showAuth: false,
-	  })
+    this.setState({
+      showAuth: false,
+    });
   }
 
   handleAuthStateChange = (state) => {
@@ -62,30 +62,32 @@ class NavBar extends Component {
   render() {
     const imgStyle = {
       width: '2em',
-      height: '2em'
-    }
+      height: '2em',
+    };
     const { username, showAuth } = this.state;
-    const { handleShowAuth, handleCloseAuth, handleAuthStateChange, handleSignOut } = this;
+    const {
+      handleShowAuth, handleCloseAuth, handleAuthStateChange, handleSignOut,
+    } = this;
     return (
       <div>
-        <Navbar style={{fontFamily: 'AppleSDGothicNeo-Bold', color:'black'}} bg='black' variant='light'>
+        <Navbar style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: 'black' }} bg="black" variant="light">
           <Navbar.Brand style={{ fontFamily: 'chalkduster' }}>
-            <Image src='https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png' alt='Chess Piece' style={imgStyle} fluid />
-            <Link to='/'>
-              <a style={{ color: '#333333', fontSize: '28px', marginLeft: '5px' }} >Chess Variants</a>
+            <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
+            <Link to="/">
+              <a style={{ color: '#333333', fontSize: '28px', marginLeft: '5px' }}>Chess Variants</a>
             </Link>
           </Navbar.Brand>
-          <Nav className='ml-auto'>
-            <Link to=''><Nav.Item className='nav-link'>Explore Variants</Nav.Item></Link>
-            <Link to=''><Nav.Item className='nav-link'>Learn</Nav.Item></Link>
-            <Link to=''><Nav.Item className='nav-link'>Leaderboard</Nav.Item></Link>
-            <Link to=''><Nav.Item className='nav-link'>Community</Nav.Item></Link>
-          
+          <Nav className="ml-auto">
+            <Link to=""><Nav.Item className="nav-link">Explore Variants</Nav.Item></Link>
+            <Link to=""><Nav.Item className="nav-link">Learn</Nav.Item></Link>
+            <Link to=""><Nav.Item className="nav-link">Leaderboard</Nav.Item></Link>
+            <Link to=""><Nav.Item className="nav-link">Community</Nav.Item></Link>
+
             {username
-            ? (
-                <Nav className='ml-auto'>
-                  <Link to='/game/123'>
-                    <Nav.Item className='nav-link'>
+              ? (
+                <Nav className="ml-auto">
+                  <Link to="/game/123">
+                    <Nav.Item className="nav-link">
                       Hello
                       {' '}
                       {username}
@@ -96,23 +98,23 @@ class NavBar extends Component {
                   </Nav.Item>
                 </Nav>
               )
-            : (
-                <Nav className='ml-auto'>
+              : (
+                <Nav className="ml-auto">
                   <Button
                     style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: '35px' }}
-                    variant='outlined'
-                    color='#333333'
-                    startIcon={<AccountCircle/>}
+                    variant="outlined"
+                    color="#333333"
+                    startIcon={<AccountCircle />}
                     onClick={handleShowAuth}
                   >
                     SIGN IN
                   </Button>
                 </Nav>
-            )}
+              )}
           </Nav>
         </Navbar>
 
-        <Dialog onClose={handleCloseAuth} aria-labelledby='simple-dialog-title' open={showAuth}>
+        <Dialog onClose={handleCloseAuth} aria-labelledby="simple-dialog-title" open={showAuth}>
           <Authenticator
             hideDefault={!showAuth}
             hide={[Greetings]}
