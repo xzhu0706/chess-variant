@@ -12,7 +12,7 @@ import awsconfig from '../aws-exports';
 import CreateGameDialog from './CreateGameDialog';
 import Lobby from './Lobby';
 import PopularVariants from '../components/PopularVariants';
-import variant1 from '../Images/variant1.png';
+import AntiChess from '../Images/AntiChess.png';
 import variant2 from '../Images/variant2.jpg';
 
 Amplify.configure(awsconfig);
@@ -136,7 +136,7 @@ class Home extends Component {
         <h1 className="text-center" style={{ fontFamily: 'AppleSDGothicNeo-Bold' }}>Popular Variants</h1>
         <Row>
           <Col className="text-center">
-            <PopularVariants src={variant1} />
+            <PopularVariants name="Anti Chess" src={AntiChess} description="Win by losing all your pieces or being stalemated" />
           </Col>
           <Col className="text-center">
             <PopularVariants src={variant2} />
