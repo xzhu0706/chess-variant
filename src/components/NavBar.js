@@ -78,7 +78,7 @@ class NavBar extends Component {
             </Link>
           </Navbar.Brand>
           <Nav className="ml-auto">
-            <Link to=""><Nav.Item className="nav-link">Explore Variants</Nav.Item></Link>
+            <Link to="/variants"><Nav.Item className="nav-link">Explore Variants</Nav.Item></Link>
             <Link to=""><Nav.Item className="nav-link">Learn</Nav.Item></Link>
             <Link to=""><Nav.Item className="nav-link">Leaderboard</Nav.Item></Link>
             <Link to=""><Nav.Item className="nav-link">Community</Nav.Item></Link>
