@@ -71,8 +71,7 @@ var Chess = function(fen) {
   // };
 
   var PIECE_OFFSETS = {
-    n: [-18, -33, -31, -14,  18, 33, 31,  14, 
-        -17, -16, -15,   1,  17, 16, 15,  -1],
+    n: [-18, -33, -31, -14,  18, 33, 31,  14],
     b: [-17, -15,  17,  15],
     r: [-16,   1,  16,  -1],
     q: [-17, -16, -15,   1,  17, 16, 15,  -1],
@@ -111,9 +110,9 @@ var Chess = function(fen) {
      0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
      0, 0, 0, 0,20, 0, 0, 24,  0, 0,20, 0, 0, 0, 0, 0,
      0, 0, 0, 0, 0,20, 2, 24,  2,20, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0, 2,55, 58, 55, 2, 0, 0, 0, 0, 0, 0,
-    24,24,24,24,24,24,58,  0, 58,24,24,24,24,24,24, 0,
-     0, 0, 0, 0, 0, 2,55, 58, 55, 2, 0, 0, 0, 0, 0, 0,
+     0, 0, 0, 0, 0, 2,53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
+    24,24,24,24,24,24,56,  0, 56,24,24,24,24,24,24, 0,
+     0, 0, 0, 0, 0, 2,53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
      0, 0, 0, 0, 0,20, 2, 24,  2,20, 0, 0, 0, 0, 0, 0,
      0, 0, 0, 0,20, 0, 0, 24,  0, 0,20, 0, 0, 0, 0, 0,
      0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
@@ -540,8 +539,8 @@ var Chess = function(fen) {
   }
 
   function generate_moves(options) {
-    // add_move() adds a move to the list of available moves (if a pawn is moving to rank 1 or rank 8,
-    // then we add all the possible promotion moves)
+    // add_move() appends a move to the list of available moves (if a pawn is moving to rank 1 or rank 8,
+    // then we might append multiple moves: all the possible promoting outcomes)
     function add_move(board, moves, from, to, flags) {
       /* if pawn promotion */
       if (board[from].type === PAWN &&
@@ -555,31 +554,29 @@ var Chess = function(fen) {
       }
     }
 
+    // initialize moves array and other variables
     var moves = [];
     var us = turn;
     var them = swap_color(us);
     var second_rank = {b: RANK_7, w: RANK_2};
-
     var first_sq = SQUARES.a8;
     var last_sq = SQUARES.h1;
     //var single_square = false; // not used since we've disabled castling
 
     /* do we want legal moves? */
-    var legal = (typeof options !== 'undefined' && 'legal' in options) ?
-                options.legal : true;
+    // var legal = (typeof options !== 'undefined' && 'legal' in options) ?
+    //             options.legal : true;
 
     /* are we generating moves for a single square? */
     if (typeof options !== 'undefined' && 'square' in options) {
-      if (options.square in SQUARES) {
-        first_sq = last_sq = SQUARES[options.square];
-        //single_square = true; // not used since we've disabled castling
-      } else {
+      if (!(options.square in SQUARES)) {
         /* invalid square */
         return [];
       }
     }
 
     var capturePossible = 0;
+
     for (let i = first_sq; i <= last_sq; i++) {
       /* did we run off the end of the board */
       if (i & 0x88) { i += 7; continue; }
@@ -641,61 +638,28 @@ var Chess = function(fen) {
       }
     }
 
-    /* check for castling if: a) we're generating all moves, or b) we're doing
-     * single square move generation on the king's square
-     */
-    // there is no castling in antichess: the king is just another piece
-    // if ((!single_square) || last_sq === kings[us]) {
-    //   /* king-side castling */
-    //   if (castling[us] & BITS.KSIDE_CASTLE) {
-    //     var castling_from = kings[us];
-    //     var castling_to = castling_from + 2;
-
-    //     if (board[castling_from + 1] == null &&
-    //         board[castling_to]       == null &&
-    //         !attacked(them, kings[us]) &&
-    //         !attacked(them, castling_from + 1) &&
-    //         !attacked(them, castling_to)) {
-    //       add_move(board, moves, kings[us] , castling_to,
-    //                BITS.KSIDE_CASTLE);
-    //     }
-    //   }
-
-    //   /* queen-side castling */
-    //   if (castling[us] & BITS.QSIDE_CASTLE) {
-    //     var castling_from = kings[us];
-    //     var castling_to = castling_from - 2;
-
-    //     if (board[castling_from - 1] == null &&
-    //         board[castling_from - 2] == null &&
-    //         board[castling_from - 3] == null &&
-    //         !attacked(them, kings[us]) &&
-    //         !attacked(them, castling_from - 1) &&
-    //         !attacked(them, castling_to)) {
-    //       add_move(board, moves, kings[us], castling_to,
-    //                BITS.QSIDE_CASTLE);
-    //     }
-    //   }
-    // }
-
-    /* return all pseudo-legal moves (this includes moves that allow the king
-     * to be captured)
-     */
-    // if (!legal) {
-    //   return moves;
-    // }
-
-    if (capturePossible) { // if a capture is possible, only generate capturing moves
-      let legal_moves = [];
-      for (let i = 0, len = moves.length; i < len; i++) {
-        if (moves[i].flags & (BITS.CAPTURE | BITS.EP_CAPTURE)) {
-          legal_moves.push(moves[i]);
-        }
+    /* are we generating moves for a single square? */
+    if (typeof options !== 'undefined' && 'square' in options) {
+      if (capturePossible) {
+        const legal_capturing_moves = moves.filter(move =>
+          move.from === SQUARES[options.square] && move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE));
+        return legal_capturing_moves;
       }
-      return legal_moves;
+      else {
+        const legal_moves = moves.filter(move =>
+          move.from === SQUARES[options.square]);
+        return legal_moves;
+      }
     }
     else {
-      return moves;
+      if (capturePossible) {
+        const legal_capturing_moves = moves.filter(move =>
+          move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE));
+        return legal_capturing_moves;
+      }
+      else {
+        return moves;
+      }
     }
 
     /* filter out illegal moves */
@@ -1721,4 +1685,3 @@ var Chess = function(fen) {
 if (typeof exports !== 'undefined') exports.Chess = Chess;
 /* export Chess object for any RequireJS compatible environment */
 if (typeof define !== 'undefined') define( function () { return Chess;  });
-
