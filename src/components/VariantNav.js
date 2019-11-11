@@ -3,6 +3,7 @@ import Tab from 'react-bootstrap/Tab';
 import {
   Nav, Row, Col,
 } from 'react-bootstrap';
+import AntiChess from './AntiChess';
 
 function VariantNav() {
   return (
@@ -13,18 +14,12 @@ function VariantNav() {
             <Nav.Item>
               <Nav.Link eventKey="first">Anti Chess</Nav.Link>
             </Nav.Item>
-            <Nav.Item>
-              <Nav.Link eventKey="second">Tab 2</Nav.Link>
-            </Nav.Item>
           </Nav>
         </Col>
         <Col sm={9}>
           <Tab.Content>
             <Tab.Pane eventKey="first">
-                Anti Chess Description
-            </Tab.Pane>
-            <Tab.Pane eventKey="second">
-                Variant Description
+              <AntiChess />
             </Tab.Pane>
           </Tab.Content>
         </Col>
