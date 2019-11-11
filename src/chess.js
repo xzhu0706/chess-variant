@@ -70,12 +70,10 @@ var Chess = function(fen) {
   //   k: [-17, -16, -15,   1,  17, 16, 15,  -1]
   // };
 
-  // modified:
   var PIECE_OFFSETS = {
-    n: [-18, -33, -31, -14,  18, 33, 31,  14, 
-        -17, -16, -15,   1,  17, 16, 15,  -1],
+    n: [-18, -33, -31, -14,  18, 33, 31,  14],
     b: [-17, -15,  17,  15],
-    r: [-16,   1,  16,  -1],////
+    r: [-16,   1,  16,  -1],
     q: [-17, -16, -15,   1,  17, 16, 15,  -1],
     k: [-17, -16, -15,   1,  17, 16, 15,  -1]
   };
@@ -100,11 +98,11 @@ var Chess = function(fen) {
   // ];
   
 
-  // note that assuming that the piece being attacked is in the center,
-  // the numbers mean: which pieces can attack the center piece?
-  // the diagonals are 20 because bishops and queens are the only pieces
-  // that can attack from those positions: this is 010100=kqrbnp (see SHIFTS which is a few lines down).
-  // modified so that rooks can move like knights
+  // the ATTACKS array is a bit-mask of attacks based on a 6-bit string of the form kqrbnp.
+  // For example:
+  // kqrbnp = 010100 = 20 (only the queen and bishop can attack the center piece)
+  // kqrbnp = 000010 =  2 (only the knight can attack the center piece)
+  // kqrbnp = 011000 = 24 (only the queen and rook can attack the center piece)
   var ATTACKS = [
     20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20, 0,
      0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
@@ -112,9 +110,9 @@ var Chess = function(fen) {
      0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
      0, 0, 0, 0,20, 0, 0, 24,  0, 0,20, 0, 0, 0, 0, 0,
      0, 0, 0, 0, 0,20, 2, 24,  2,20, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0, 2,55, 58, 55, 2, 0, 0, 0, 0, 0, 0,
-    24,24,24,24,24,24,58,  0, 58,24,24,24,24,24,24, 0,
-     0, 0, 0, 0, 0, 2,55, 58, 55, 2, 0, 0, 0, 0, 0, 0,
+     0, 0, 0, 0, 0, 2,53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
+    24,24,24,24,24,24,56,  0, 56,24,24,24,24,24,24, 0,
+     0, 0, 0, 0, 0, 2,53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
      0, 0, 0, 0, 0,20, 2, 24,  2,20, 0, 0, 0, 0, 0, 0,
      0, 0, 0, 0,20, 0, 0, 24,  0, 0,20, 0, 0, 0, 0, 0,
      0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
@@ -147,11 +145,11 @@ var Chess = function(fen) {
   var FLAGS = {
     NORMAL: 'n',
     CAPTURE: 'c',
-    BIG_PAWN: 'b',
-    EP_CAPTURE: 'e',
+    BIG_PAWN: 'b', // 
+    EP_CAPTURE: 'e', // en passant
     PROMOTION: 'p',
-    KSIDE_CASTLE: 'k',
-    QSIDE_CASTLE: 'q'
+    KSIDE_CASTLE: 'k', // 
+    QSIDE_CASTLE: 'q' // 
   };
 
   var BITS = {
@@ -187,11 +185,6 @@ var Chess = function(fen) {
   // for example, the top row starts with 0x00 = 0000 0000 and ends with 0x07 = 0000 0111,
   // the second row starts with 0x10 = 0001 0000 and ends with 0x17 = 0001 0111 and so on,
   // until 0111 0111 = 119.
-  // 1 byte offset means, since there are only 8 values per row (0000-0111), that
-  // in terms of bits, all squares are of the form 0rrr0fff where rrr gives the
-  // rank/row and fff gives the file/column. Also, (square & 0x88) = (square & 10001000) tells us
-  // whether the square is valid (it could not be, e.g., values 8-15 are not valid squares on the board).
-  // There are other benefits to this method (called "0x88").
 
   var ROOKS = {
     w: [{square: SQUARES.a1, flag: BITS.QSIDE_CASTLE},
@@ -238,6 +231,21 @@ var Chess = function(fen) {
 
   function load(fen) {
     var tokens = fen.split(/\s+/);
+    /*
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    becomes
+    tokens[0] = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR' // the board position
+    tokens[1] = 'w'    // it's white's turn
+    tokens[2] = 'KQkq' // K = white can castle kingside
+    tokens[3] = '-'    // en passant target square: if a pawn has just moved 2 squares,
+                       // this is the square behind the pawn (e.g. "e3")
+    tokens[4] = '0'    // number of half-moves in the game since the last capture or pawn advance
+                       // (if this number reaches 50, a draw can be claimed).
+    tokens[5] = '1'    // number of full-moves; this is the number that we're at in the PGN
+                       // (e.g. "1. e4 e5 2. Nf3")
+    In chess, one "full" move is really 2 moves. If White plays e4 and then Black plays e5,
+    that counts as one move.
+    */
     var position = tokens[0];
     var square = 0;
 
@@ -247,6 +255,7 @@ var Chess = function(fen) {
 
     clear();
 
+    // e.g., position = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
     for (var i = 0; i < position.length; i++) {
       var piece = position.charAt(i);
 
@@ -255,7 +264,9 @@ var Chess = function(fen) {
       } else if (is_digit(piece)) {
         square += parseInt(piece, 10);
       } else {
-        var color = (piece < 'a') ? WHITE : BLACK;
+        var color = (piece < 'a') ? WHITE : BLACK; // if it's a capital letter then it's a white piece
+        // convert the square to algebra form (e.g., 0 -> "a8"), and put the piece object, which has
+        // a type and a color, on the board
         put({type: piece.toLowerCase(), color: color}, algebraic(square));
         square++;
       }
@@ -264,16 +275,16 @@ var Chess = function(fen) {
     turn = tokens[1];
 
     if (tokens[2].indexOf('K') > -1) {
-      castling.w |= BITS.KSIDE_CASTLE;
+      castling.w |= BITS.KSIDE_CASTLE; // (castling.w |= BITS.KSIDE_CASTLE) is castling.w with the 5th bit activated
     }
     if (tokens[2].indexOf('Q') > -1) {
-      castling.w |= BITS.QSIDE_CASTLE;
+      castling.w |= BITS.QSIDE_CASTLE; // (castling.w |= BITS.QSIDE_CASTLE) is castling.w with the 6th bit activated
     }
     if (tokens[2].indexOf('k') > -1) {
-      castling.b |= BITS.KSIDE_CASTLE;
+      castling.b |= BITS.KSIDE_CASTLE; 
     }
     if (tokens[2].indexOf('q') > -1) {
-      castling.b |= BITS.QSIDE_CASTLE;
+      castling.b |= BITS.QSIDE_CASTLE; 
     }
 
     ep_square = (tokens[3] === '-') ? EMPTY : SQUARES[tokens[3]];
@@ -420,7 +431,6 @@ var Chess = function(fen) {
     /* do we have an empty castling flag? */
     cflags = cflags || '-';
     var epflags = (ep_square === EMPTY) ? '-' : algebraic(ep_square);
-
     return [fen, turn, cflags, epflags, half_moves, move_number].join(' ');
   }
 
@@ -458,6 +468,7 @@ var Chess = function(fen) {
   }
 
   function put(piece, square) {
+    //console.log("put() was called with piece.type = " + piece.type + ", piece.type = " + piece.color + " and square = " + square);
     /* check for valid piece object */
     if (!('type' in piece && 'color' in piece)) {
       return false;
@@ -476,10 +487,11 @@ var Chess = function(fen) {
     var sq = SQUARES[square];
 
     /* don't let the user place more than one king */
-    if (piece.type == KING &&
-        !(kings[piece.color] == EMPTY || kings[piece.color] == sq)) {
-      return false;
-    }
+    /* commenting this out: the king is not a special piece in antichess */
+    // if (piece.type == KING &&
+    //     !(kings[piece.color] == EMPTY || kings[piece.color] == sq)) {
+    //   return false;
+    // }
 
     board[sq] = {type: piece.type, color: piece.color};
     if (piece.type === KING) {
@@ -522,16 +534,19 @@ var Chess = function(fen) {
     } else if (flags & BITS.EP_CAPTURE) {
         move.captured = PAWN;
     }
+
     return move;
   }
 
   function generate_moves(options) {
+    // add_move() appends a move to the list of available moves (if a pawn is moving to rank 1 or rank 8,
+    // then we might append multiple moves: all the possible promoting outcomes)
     function add_move(board, moves, from, to, flags) {
       /* if pawn promotion */
       if (board[from].type === PAWN &&
          (rank(to) === RANK_8 || rank(to) === RANK_1)) {
-          var pieces = [QUEEN, ROOK, BISHOP, KNIGHT];
-          for (var i = 0, len = pieces.length; i < len; i++) {
+          var pieces = [QUEEN, ROOK, BISHOP, KNIGHT, KING]; // promotion to king is allowed in antichess
+          for (let i = 0, len = pieces.length; i < len; i++) {
             moves.push(build_move(board, from, to, flags, pieces[i]));
           }
       } else {
@@ -539,31 +554,30 @@ var Chess = function(fen) {
       }
     }
 
+    // initialize moves array and other variables
     var moves = [];
     var us = turn;
     var them = swap_color(us);
     var second_rank = {b: RANK_7, w: RANK_2};
-
     var first_sq = SQUARES.a8;
     var last_sq = SQUARES.h1;
-    var single_square = false;
+    //var single_square = false; // not used since we've disabled castling
 
     /* do we want legal moves? */
-    var legal = (typeof options !== 'undefined' && 'legal' in options) ?
-                options.legal : true;
+    // var legal = (typeof options !== 'undefined' && 'legal' in options) ?
+    //             options.legal : true;
 
     /* are we generating moves for a single square? */
     if (typeof options !== 'undefined' && 'square' in options) {
-      if (options.square in SQUARES) {
-        first_sq = last_sq = SQUARES[options.square];
-        single_square = true;
-      } else {
+      if (!(options.square in SQUARES)) {
         /* invalid square */
         return [];
       }
     }
 
-    for (var i = first_sq; i <= last_sq; i++) {
+    var capturePossible = 0;
+
+    for (let i = first_sq; i <= last_sq; i++) {
       /* did we run off the end of the board */
       if (i & 0x88) { i += 7; continue; }
 
@@ -584,7 +598,7 @@ var Chess = function(fen) {
             add_move(board, moves, i, square, BITS.BIG_PAWN);
           }
         }
-
+        
         /* pawn captures */
         for (j = 2; j < 4; j++) {
           var square = i + PAWN_OFFSETS[us][j];
@@ -593,11 +607,14 @@ var Chess = function(fen) {
           if (board[square] != null &&
               board[square].color === them) {
               add_move(board, moves, i, square, BITS.CAPTURE);
+              capturePossible = 1;
           } else if (square === ep_square) {
               add_move(board, moves, i, ep_square, BITS.EP_CAPTURE);
+              capturePossible = 1;
           }
         }
-      } else {
+      }
+      else {
         for (var j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
           var offset = PIECE_OFFSETS[piece.type][j];
           var square = i;
@@ -611,6 +628,7 @@ var Chess = function(fen) {
             } else {
               if (board[square].color === us) break;
               add_move(board, moves, i, square, BITS.CAPTURE);
+              capturePossible = 1;
               break;
             }
 
@@ -621,60 +639,44 @@ var Chess = function(fen) {
       }
     }
 
-    /* check for castling if: a) we're generating all moves, or b) we're doing
-     * single square move generation on the king's square
-     */
-    if ((!single_square) || last_sq === kings[us]) {
-      /* king-side castling */
-      if (castling[us] & BITS.KSIDE_CASTLE) {
-        var castling_from = kings[us];
-        var castling_to = castling_from + 2;
+    /* now that we've added moves on all the squares, if capturePossible is 1, we have to restrict
+       those moves to capturing moves */
 
-        if (board[castling_from + 1] == null &&
-            board[castling_to]       == null &&
-            !attacked(them, kings[us]) &&
-            !attacked(them, castling_from + 1) &&
-            !attacked(them, castling_to)) {
-          add_move(board, moves, kings[us] , castling_to,
-                   BITS.KSIDE_CASTLE);
-        }
+    /* are we generating moves for a single square? */
+    if (typeof options !== 'undefined' && 'square' in options) {
+      if (capturePossible) {
+        const legal_capturing_moves = moves.filter(move =>
+          move.from === SQUARES[options.square] && move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE));
+        return legal_capturing_moves;
       }
-
-      /* queen-side castling */
-      if (castling[us] & BITS.QSIDE_CASTLE) {
-        var castling_from = kings[us];
-        var castling_to = castling_from - 2;
-
-        if (board[castling_from - 1] == null &&
-            board[castling_from - 2] == null &&
-            board[castling_from - 3] == null &&
-            !attacked(them, kings[us]) &&
-            !attacked(them, castling_from - 1) &&
-            !attacked(them, castling_to)) {
-          add_move(board, moves, kings[us], castling_to,
-                   BITS.QSIDE_CASTLE);
-        }
+      else {
+        const legal_moves = moves.filter(move =>
+          move.from === SQUARES[options.square]);
+        return legal_moves;
       }
     }
-
-    /* return all pseudo-legal moves (this includes moves that allow the king
-     * to be captured)
-     */
-    if (!legal) {
-      return moves;
+    else {
+      if (capturePossible) {
+        const legal_capturing_moves = moves.filter(move =>
+          move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE));
+        return legal_capturing_moves;
+      }
+      else {
+        return moves;
+      }
     }
 
     /* filter out illegal moves */
-    var legal_moves = [];
-    for (var i = 0, len = moves.length; i < len; i++) {
-      make_move(moves[i]);
-      if (!king_attacked(us)) {
-        legal_moves.push(moves[i]);
-      }
-      undo_move();
-    }
+    // var legal_moves = [];
+    // for (var i = 0, len = moves.length; i < len; i++) {
+    //   make_move(moves[i]);
+    //   if (!king_attacked(us)) {
+    //     legal_moves.push(moves[i]);
+    //   }
+    //   undo_move();
+    // }
     
-    return legal_moves;
+    // return legal_moves;
   }
 
   /* convert a move from 0x88 coordinates to Standard Algebraic Notation
@@ -780,7 +782,8 @@ var Chess = function(fen) {
   }
 
   function in_check() {
-    return king_attacked(turn);
+    //return king_attacked(turn);
+    return false; // there is no check in the antichess variant
   }
 
   function in_checkmate() {
@@ -1323,9 +1326,9 @@ var Chess = function(fen) {
 
     game_over: function() {
       return half_moves >= 100 ||
-             in_checkmate() ||
+             //in_checkmate() ||
              in_stalemate() ||
-             insufficient_material() ||
+             //insufficient_material() ||
              in_threefold_repetition();
     },
 
@@ -1686,4 +1689,3 @@ var Chess = function(fen) {
 if (typeof exports !== 'undefined') exports.Chess = Chess;
 /* export Chess object for any RequireJS compatible environment */
 if (typeof define !== 'undefined') define( function () { return Chess;  });
-
