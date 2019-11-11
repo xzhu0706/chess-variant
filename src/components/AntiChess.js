@@ -1,18 +1,18 @@
 import React from 'react';
 import Antichess from '../WithMoveValidation'
 import { Row, Col } from 'react-bootstrap';
-import wb from '../pieces/fairy/wb_180.svg';
-import wr from '../pieces/fairy/wr_180.svg';
-import wn from '../pieces/fairy/wn_180.svg';
-import wp from '../pieces/fairy/wp_180.svg';
-import wk from '../pieces/fairy/wk_180.svg';
-import wq from '../pieces/fairy/wq_180.svg';
-import bb from '../pieces/fairy/bb_180.svg';
-import br from '../pieces/fairy/br_180.svg';
-import bn from '../pieces/fairy/bn_180.svg';
-import bp from '../pieces/fairy/bp_180.svg';
-import bk from '../pieces/fairy/bk_180.svg';
-import bq from '../pieces/fairy/bq_180.svg';
+import wb from '../pieces/standard/wb.svg';
+import wr from '../pieces/standard/wr.svg';
+import wn from '../pieces/standard/wn.svg';
+import wp from '../pieces/standard/wp.svg';
+import wk from '../pieces/standard/wk.svg';
+import wq from '../pieces/standard/wq.svg';
+import bb from '../pieces/standard/bb.svg';
+import br from '../pieces/standard/br.svg';
+import bn from '../pieces/standard/bn.svg';
+import bp from '../pieces/standard/bp.svg';
+import bk from '../pieces/standard/bk.svg';
+import bq from '../pieces/standard/bq.svg';
 
 function AntiChess() {
   return (
