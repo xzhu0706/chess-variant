@@ -1,6 +1,6 @@
 import React from 'react';
 import Antichess from '../WithMoveValidation'
-import { Row, Col, Image } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import wb from '../pieces/fairy/wb_180.svg';
 import wr from '../pieces/fairy/wr_180.svg';
 import wn from '../pieces/fairy/wn_180.svg';
@@ -21,20 +21,20 @@ function AntiChess() {
       <h2>Pieces</h2>
       <table>
       <tr>
-          <td><img style={{width: "3em", height: "3em"}} src={wp} /></td>
-          <td><img style={{width: "3em", height: "3em"}} src={wr} /></td>
-          <td><img style={{width: "3em", height: "3em"}} src={wn} /></td>
-          <td><img style={{width: "3em", height: "3em"}} src={wb} /></td>
-          <td><img style={{width: "3em", height: "3em"}} src={wq} /></td>
-          <td><img style={{width: "3em", height: "3em"}} src={wk} /></td>
+          <td><img style={{width: "3em", height: "3em"}} src={wp} alt="white pawn" /></td>
+          <td><img style={{width: "3em", height: "3em"}} src={wr} alt="white rook" /></td>
+          <td><img style={{width: "3em", height: "3em"}} src={wn} alt="white knight" /></td>
+          <td><img style={{width: "3em", height: "3em"}} src={wb} alt="white bishop" /></td>
+          <td><img style={{width: "3em", height: "3em"}} src={wq} alt="white queen" /></td>
+          <td><img style={{width: "3em", height: "3em"}} src={wk} alt="white king" /></td>
         </tr>
         <tr>
-          <td><img style={{width: "3em", height: "3em"}} src={bp} /></td>
-          <td><img style={{width: "3em", height: "3em"}} src={br} /></td>
-          <td><img style={{width: "3em", height: "3em"}} src={bn} /></td>
-          <td><img style={{width: "3em", height: "3em"}} src={bb} /></td>
-          <td><img style={{width: "3em", height: "3em"}} src={bq} /></td>
-          <td><img style={{width: "3em", height: "3em"}} src={bk} /></td>
+          <td><img style={{width: "3em", height: "3em"}} src={bp} alt="black pawn" /></td>
+          <td><img style={{width: "3em", height: "3em"}} src={br} alt="black rook" /></td>
+          <td><img style={{width: "3em", height: "3em"}} src={bn} alt="black knight" /></td>
+          <td><img style={{width: "3em", height: "3em"}} src={bb} alt="black bishop" /></td>
+          <td><img style={{width: "3em", height: "3em"}} src={bq} alt="black queen" /></td>
+          <td><img style={{width: "3em", height: "3em"}} src={bk} alt="black king" /></td>
         </tr>
       </table>
       <h2>Rules</h2>
@@ -55,6 +55,7 @@ function AntiChess() {
           ...
         </Col>
       </Row>
+      <h2>Strategies</h2>
     </div>
   );
 }
