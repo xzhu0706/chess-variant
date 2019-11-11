@@ -11,7 +11,7 @@ class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = {
-    fen: "8/p1p5/2B3n1/8/8/8/P1PQ1KPP/R5NR b - - 0 15",
+    fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     pgn: "",
     dropSquareStyle: {}, // square styles for active drop square
     squareStyles: {}, // custom square styles
@@ -32,8 +32,10 @@ class HumanVsHuman extends Component {
   }
 
   componentDidMount() {
-    this.game = new Chess(this.state.fen); // initialize the game
+    this.game = new Chess(this.props.fen); // initialize the game
+    // note that if this.props.fen is improperly formed, chess.js will just use the default position
     this.setState({
+      fen: this.game.fen(),
       pgn: this.game.pgn(),
       turn: this.game.turn()
     });
@@ -190,10 +192,11 @@ class HumanVsHuman extends Component {
   }
 }
 
-export default function WithMoveValidation() {
+export default function WithMoveValidation(start_fen) {
   return (
     <div>
-      <HumanVsHuman>
+      <HumanVsHuman fen={start_fen}>
+        { /* HumanVsHuman calls the following function as this.props.children() in its render() method */ }
         {({
           squareStyles,
           fen,

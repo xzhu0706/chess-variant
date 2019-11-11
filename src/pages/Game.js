@@ -78,7 +78,7 @@ class Game extends Component {
 
         <div className="row">
           <div style={boardsContainer} className="col-xl-8">
-            <WithMoveValidation />
+            { WithMoveValidation() }
           </div>
 
           <div className="col-xl-4 chat-box">
