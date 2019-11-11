@@ -206,49 +206,53 @@ export default function WithMoveValidation() {
           onSquareClick,
           onSquareRightClick
         }) => (
-          <div>
-            <Chessboard
-              id="humanVsHuman"
-              width={540}
-              roughSquare={roughSquare}
-              position={fen}
-              onDrop={onDrop}
-              boardStyle={{
-                borderRadius: "5px",
-                boxShadow: `0 2px 3px rgba(0, 0, 0, 0.5)`
-              }}
-              pieces={{
-                wN: ({ squareWidth }) => (
-                  <img
-                    style={{
-                      width: squareWidth,
-                      height: squareWidth
-                    }}
-                    src={wn_test}
-                    alt={"wn_test"}
-                  />
-                ),
-                bN: ({ squareWidth }) => (
-                  <img
-                    style={{
-                      width: squareWidth,
-                      height: squareWidth
-                    }}
-                    src={bn_test}
-                    alt={"bn_test"}
-                  />
-                )
-              }}
-              lightSquareStyle={{ backgroundColor: "#ffffff" }}
-              darkSquareStyle={{ backgroundColor: "#65cae8" }}      
-              squareStyles={squareStyles}
-              dropSquareStyle={dropSquareStyle}
-              // onDragOverSquare={onDragOverSquare}
-              onSquareClick={onSquareClick}
-              onSquareRightClick={onSquareRightClick}
-              draggable={true}
-            />
-            <GameData fen={fen} pgn={pgn} turn={turn} game_state={game_state} />
+          <div className="row">
+            <div className="col-lg-5">
+              <GameData fen={fen} pgn={pgn} turn={turn} game_state={game_state} />
+            </div>
+            <div className="col-lg-7">
+              <Chessboard
+                id="humanVsHuman"
+                width={540}
+                roughSquare={roughSquare}
+                position={fen}
+                onDrop={onDrop}
+                boardStyle={{
+                  borderRadius: "5px",
+                  boxShadow: `0 2px 3px rgba(0, 0, 0, 0.5)`
+                }}
+                pieces={{
+                  wN: ({ squareWidth }) => (
+                    <img
+                      style={{
+                        width: squareWidth,
+                        height: squareWidth
+                      }}
+                      src={wn_test}
+                      alt={"wn_test"}
+                    />
+                  ),
+                  bN: ({ squareWidth }) => (
+                    <img
+                      style={{
+                        width: squareWidth,
+                        height: squareWidth
+                      }}
+                      src={bn_test}
+                      alt={"bn_test"}
+                    />
+                  )
+                }}
+                lightSquareStyle={{ backgroundColor: "#ffffff" }}
+                darkSquareStyle={{ backgroundColor: "#65cae8" }}      
+                squareStyles={squareStyles}
+                dropSquareStyle={dropSquareStyle}
+                // onDragOverSquare={onDragOverSquare}
+                onSquareClick={onSquareClick}
+                onSquareRightClick={onSquareRightClick}
+                draggable={true}
+              />
+            </div>
           </div>
         )}
       </HumanVsHuman>

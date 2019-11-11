@@ -68,7 +68,7 @@ class Game extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div id="game-container">
 
         <div className="row" style={{minHeight: '50px'}}>
         {
@@ -77,11 +77,11 @@ class Game extends Component {
         </div>
 
         <div className="row">
-          <div style={boardsContainer} className="col-sm">
+          <div style={boardsContainer} className="col-xl-8">
             <WithMoveValidation />
           </div>
 
-          <div className="col-sm chat-box">
+          <div className="col-xl-4 chat-box">
             <ChatMessages
               messages={this.state.messages}
               currentMember={this.state.currentUser}
