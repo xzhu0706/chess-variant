@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Chess from  "chess.js";
 import Chessboard from "chessboardjsx";
-import rough from "roughjs"; // can give the squares a rough appearance
+//import rough from "roughjs"; // can give the squares a rough appearance
 import bk_test from "./bk.svg"; // testing the use of custom icons
 
 class HumanVsHuman extends Component {
@@ -151,7 +151,6 @@ export default function WithMoveValidation() {
             <Chessboard
               id="humanVsHuman"
               width={540}
-              roughSquare={roughSquare}
               position={position}
               onDrop={onDrop}
               boardStyle={{
@@ -187,7 +186,7 @@ export default function WithMoveValidation() {
   );
 }
 
-// give squares a rough appearance using roughjs
+/*give squares a rough appearance using roughjs
 const roughSquare = ({ squareElement, squareWidth }) => {
   let rc = rough.svg(squareElement);
   const chessSquare = rc.rectangle(0, 0, squareWidth, squareWidth, {
@@ -198,4 +197,4 @@ const roughSquare = ({ squareElement, squareWidth }) => {
     //fillStyle: "cross-hatch" // why doesn't this work? (doesn't create cross hatches)?
   });
   squareElement.appendChild(chessSquare);
-};
+};*/

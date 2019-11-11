@@ -6,6 +6,24 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import Slider from '@material-ui/core/Slider';
+
+const marks = [
+    {
+      value: 0,
+    },
+    {
+      value: 1,
+    },
+    {
+      value: 2,
+      label: '37°C',
+    },
+    {
+      value: 3,
+      label: '100°C',
+    },
+  ];
 
 
 class CreateGameDialog extends Component{
@@ -21,7 +39,6 @@ class CreateGameDialog extends Component{
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value="Variant"
-                        
                         >
                             <MenuItem value={10}>Standard</MenuItem>
                             <MenuItem value={20}>Crazyhouse</MenuItem>
@@ -30,7 +47,16 @@ class CreateGameDialog extends Component{
                         </Select>
                         
                     </FormControl>
-                    
+                    <div style = {{width: "100%"}}>
+                        <Slider
+                            defaultValue={5}
+                            aria-labelledby="discrete-slider-custom"
+                            step={1}
+                            min = {1}
+                            max = {180}
+                            valueLabelDisplay="auto"
+                        />
+                        </div>
                 </DialogContent>
             </Dialog>
         )
