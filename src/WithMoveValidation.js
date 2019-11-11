@@ -33,7 +33,8 @@ class HumanVsHuman extends Component {
 
   componentDidMount() {
     this.game = new Chess(this.props.fen); // initialize the game
-    // note that if this.props.fen is improperly formed, chess.js will just use the default position
+    // note that if this.props.fen is improperly formed,
+    // chess.js will just initialize the game to the default position
     this.setState({
       fen: this.game.fen(),
       pgn: this.game.pgn(),
@@ -192,7 +193,7 @@ class HumanVsHuman extends Component {
   }
 }
 
-export default function WithMoveValidation(start_fen) {
+export default function WithMoveValidation(start_fen, customWidth=540, showData=true) {
   return (
     <div>
       <HumanVsHuman fen={start_fen}>
@@ -210,13 +211,18 @@ export default function WithMoveValidation(start_fen) {
           onSquareRightClick
         }) => (
           <div className="row">
-            <div className="col-lg-5">
-              <GameData fen={fen} pgn={pgn} turn={turn} game_state={game_state} />
-            </div>
+            {
+              showData ? (
+              <div className="col-lg-5">
+                <GameData fen={fen} pgn={pgn} turn={turn} game_state={game_state} />
+              </div>
+              ) :
+              null
+            }
             <div className="col-lg-7">
               <Chessboard
                 id="humanVsHuman"
-                width={540}
+                width={customWidth}
                 roughSquare={roughSquare}
                 position={fen}
                 onDrop={onDrop}
