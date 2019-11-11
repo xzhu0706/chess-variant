@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Auth } from 'aws-amplify';
+import PropTypes from 'prop-types';
 import WithMoveValidation from '../WithMoveValidation';
 import ChatMessages from '../components/ChatMessages';
 import ChatInput from '../components/ChatInput';
@@ -68,20 +68,20 @@ class Game extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div id="game-container">
 
-        <div className="row" style={{ minHeight: '100px' }}>
-          {
-
-          }
+        <div className="row" style={{minHeight: '50px'}}>
+        {
+          
+        }
         </div>
 
         <div className="row">
-          <div style={boardsContainer} className="col-sm">
+          <div style={boardsContainer} className="col-xl-8">
             <WithMoveValidation />
           </div>
 
-          <div className="col-sm chat-box">
+          <div className="col-xl-4 chat-box">
             <ChatMessages
               messages={this.state.messages}
               currentMember={this.state.currentUser}

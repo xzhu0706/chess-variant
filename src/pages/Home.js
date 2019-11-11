@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import { Nav, Navbar } from 'react-bootstrap';
 import Amplify, { Auth } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
@@ -8,8 +9,15 @@ import Button from '@material-ui/core/Button';
 import awsconfig from '../aws-exports';
 import CreateGameDialog from './CreateGameDialog';
 import Lobby from './Lobby';
+=======
+import { Row, Col } from 'react-bootstrap';
+import CreateGameDialog from './CreateGameDialog';
+import Lobby from './Lobby';
+import PopularVariants from '../components/PopularVariants';
+import AntiChess from '../Images/AntiChess.png';
+import variant2 from '../Images/variant2.jpg';
+>>>>>>> upstream/master
 
-Amplify.configure(awsconfig);
 const games = [
   {
     player: 'Magnus Carlsen', skillLevel: 'Expert', timing: '10+30', variant: 'Classic',
@@ -33,34 +41,14 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
+<<<<<<< HEAD
       username: '',
       showAuth: false,
       showDialog: false,
+=======
+      showDialog: false
+>>>>>>> upstream/master
     };
-  }
-
-  handleShowAuth = (e) => {
-    e.preventDefault();
-    this.setState({
-      showAuth: true,
-    });
-  }
-
-  handleAuthStateChange = (state) => {
-    if (state === 'signedIn') {
-      const { username } = Auth.user;
-      this.setState({
-        showAuth: false,
-        username,
-      });
-    }
-  }
-
-  handleSignOut = () => {
-    Auth.signOut();
-    this.setState({
-      username: '',
-    });
   }
 
   makeDialogVisible = () => {
@@ -68,6 +56,7 @@ class Home extends Component {
   }
 
   render() {
+<<<<<<< HEAD
     const imgStyle = {
       width: '2em',
       height: '2em',
@@ -126,6 +115,27 @@ class Home extends Component {
         />
         <CreateGameDialog showDialog={this.state.showDialog} />
         {lobby}
+=======
+    return (
+      <div>
+        <CreateGameDialog 
+          showDialog={this.state.showDialog}
+        />
+        <Lobby 
+          games={games} 
+          makeDialogVisible={this.makeDialogVisible} 
+        />
+
+        <h1 className="text-center" style={{ fontFamily: 'AppleSDGothicNeo-Bold' }}>Popular Variants</h1>
+        <Row>
+          <Col className="text-center">
+            <PopularVariants name="Anti Chess" src={AntiChess} description="Win by losing all your pieces or being stalemated" />
+          </Col>
+          <Col className="text-center">
+            <PopularVariants src={variant2} />
+          </Col>
+        </Row>
+>>>>>>> upstream/master
       </div>
     );
   }

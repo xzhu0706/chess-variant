@@ -17,11 +17,9 @@ const marks = [
   },
   {
     value: 2,
-    label: '37°C',
   },
   {
     value: 3,
-    label: '100°C',
   },
 ];
 
