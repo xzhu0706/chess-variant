@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Chess from  "chess.js";
-import Chessboard from "chessboardjsx";
-//import rough from "roughjs"; // can give the squares a rough appearance
-import bk_test from "./bk.svg"; // testing the use of custom icons
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Chess from 'chess.js';
+import Chessboard from 'chessboardjsx';
+// import rough from "roughjs"; // can give the squares a rough appearance
+import bk_test from './bk.svg'; // testing the use of custom icons
 
 class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = {
-    fen: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+    fen: 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1',
     dropSquareStyle: {}, // square styles for active drop square
     squareStyles: {}, // custom square styles
-    pieceSquare: "", // piece on the most recently selected square
-    square: "", // currently clicked square
+    pieceSquare: '', // piece on the most recently selected square
+    square: '', // currently clicked square
   };
 
   componentDidMount() {
@@ -23,33 +23,31 @@ class HumanVsHuman extends Component {
   // highlight hint squares
   highlightSquare = (hintSquares) => {
     const highlightStyles = [...hintSquares].reduce(
-      (a, c) => {
-        return {
-          ...a,
-          ...{
-            [c]: {
-              background:
-                "radial-gradient(circle, rgba(255, 120, 12, 0.57), 50%, transparent 10%)",
-              borderRadius: "50%"
-            }
-          }
-        };
-      },
-      {}
+      (a, c) => ({
+        ...a,
+        ...{
+          [c]: {
+            background:
+                'radial-gradient(circle, rgba(255, 120, 12, 0.57), 50%, transparent 10%)',
+            borderRadius: '50%',
+          },
+        },
+      }),
+      {},
     );
-    //console.log(highlightStyles);
+    // console.log(highlightStyles);
     // show hints
-    this.setState(({squareStyles}) => ({
-      squareStyles: { ...squareStyles, ...highlightStyles }
+    this.setState(({ squareStyles }) => ({
+      squareStyles: { ...squareStyles, ...highlightStyles },
     }));
   };
 
   onDrop = ({ sourceSquare, targetSquare }) => {
     // see if the move is legal
-    let move = this.game.move({
+    const move = this.game.move({
       from: sourceSquare,
       to: targetSquare,
-      promotion: "q" // always promote to a queen for example simplicity
+      promotion: 'q', // always promote to a queen for example simplicity
       // fix this so the user can choose what to promote to
     });
 
@@ -59,7 +57,7 @@ class HumanVsHuman extends Component {
     // legal move, so update the fen
     this.setState(({ pieceSquare }) => ({
       fen: this.game.fen(),
-      pieceSquare: "",
+      pieceSquare: '',
     }));
   };
 
@@ -72,19 +70,19 @@ class HumanVsHuman extends Component {
   onSquareClick = (square) => {
     // highlight the square you just clicked
     this.setState(() => ({
-      squareStyles: { [square]: { backgroundColor: "#38f" } },
-      pieceSquare: square
+      squareStyles: { [square]: { backgroundColor: '#38f' } },
+      pieceSquare: square,
     }));
     // get list of possible moves for the piece on this square
     // (returns empty array if there are no possible moves or there is no piece)
-    let moves = this.game.moves({
-      square: square,
-      verbose: true
+    const moves = this.game.moves({
+      square,
+      verbose: true,
     });
 
     // we only need the destination of each possible move, which is moves[i].to
-    let hintSquares = [];
-    for (var i = 0; i < moves.length; i++) {
+    const hintSquares = [];
+    for (let i = 0; i < moves.length; i++) {
       hintSquares.push(moves[i].to);
     }
 
@@ -92,30 +90,29 @@ class HumanVsHuman extends Component {
     this.highlightSquare(hintSquares);
 
     // process the case where the user has registered a move by clicking
-    let move = this.game.move({
+    const move = this.game.move({
       from: this.state.pieceSquare,
       to: square,
-      promotion: "q" // always promote to a queen for example simplicity
+      promotion: 'q', // always promote to a queen for example simplicity
       // fix this so the user can choose what to promote to
     });
-    
+
     // illegal move
     if (move === null) return;
 
     // legal move, so update the fen
     this.setState({
       fen: this.game.fen(),
-      pieceSquare: ""
+      pieceSquare: '',
     });
   };
 
   // When right clicking, we preserve the old squareStyles (we merely append the new style).
   // This will allow the user to have multiple squares be highlighted simultaneously,
   // for whatever reason (annotation?)
-  onSquareRightClick = square =>
-    this.setState(({ squareStyles }) => ({
-      squareStyles: { ...squareStyles, [square]: { backgroundColor: "#e86c65" } }
-    }));
+  onSquareRightClick = (square) => this.setState(({ squareStyles }) => ({
+    squareStyles: { ...squareStyles, [square]: { backgroundColor: '#e86c65' } },
+  }));
 
   render() {
     const { fen, dropSquareStyle, squareStyles } = this.state;
@@ -129,7 +126,7 @@ class HumanVsHuman extends Component {
       dropSquareStyle,
       // onDragOverSquare: this.onDragOverSquare,
       onSquareClick: this.onSquareClick,
-      onSquareRightClick: this.onSquareRightClick
+      onSquareRightClick: this.onSquareRightClick,
     });
   }
 }
@@ -145,7 +142,7 @@ export default function WithMoveValidation() {
           dropSquareStyle,
           // onDragOverSquare,
           onSquareClick,
-          onSquareRightClick
+          onSquareRightClick,
         }) => (
           <div>
             <Chessboard
@@ -154,31 +151,36 @@ export default function WithMoveValidation() {
               position={position}
               onDrop={onDrop}
               boardStyle={{
-                borderRadius: "5px",
-                boxShadow: `0 2px 3px rgba(0, 0, 0, 0.5)`
+                borderRadius: '5px',
+                boxShadow: '0 2px 3px rgba(0, 0, 0, 0.5)',
               }}
               pieces={{
                 bK: ({ squareWidth }) => (
                   <img
                     style={{
                       width: squareWidth,
-                      height: squareWidth
+                      height: squareWidth,
                     }}
                     src={bk_test}
-                    alt={"bk_test"}
+                    alt="bk_test"
                   />
-                )
+                ),
               }}
-              lightSquareStyle={{ backgroundColor: "#ffffff" }}
-              darkSquareStyle={{ backgroundColor: "#65cae8" }}      
+              lightSquareStyle={{ backgroundColor: '#ffffff' }}
+              darkSquareStyle={{ backgroundColor: '#65cae8' }}
               squareStyles={squareStyles}
               dropSquareStyle={dropSquareStyle}
               // onDragOverSquare={onDragOverSquare}
               onSquareClick={onSquareClick}
               onSquareRightClick={onSquareRightClick}
-              draggable={true}
+              draggable
             />
-            <div>fen: {position}</div> { /* should this be a child component? */ }
+            <div>
+fen:
+              {position}
+            </div>
+            {' '}
+            { /* should this be a child component? */ }
           </div>
         )}
       </HumanVsHuman>
@@ -186,7 +188,7 @@ export default function WithMoveValidation() {
   );
 }
 
-/*give squares a rough appearance using roughjs
+/* give squares a rough appearance using roughjs
 const roughSquare = ({ squareElement, squareWidth }) => {
   let rc = rough.svg(squareElement);
   const chessSquare = rc.rectangle(0, 0, squareWidth, squareWidth, {
@@ -197,4 +199,4 @@ const roughSquare = ({ squareElement, squareWidth }) => {
     //fillStyle: "cross-hatch" // why doesn't this work? (doesn't create cross hatches)?
   });
   squareElement.appendChild(chessSquare);
-};*/
+}; */

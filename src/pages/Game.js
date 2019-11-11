@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import WithMoveValidation from "../WithMoveValidation";
+import { Auth } from 'aws-amplify';
+import WithMoveValidation from '../WithMoveValidation';
 import ChatMessages from '../components/ChatMessages';
 import ChatInput from '../components/ChatInput';
-import { Auth } from 'aws-amplify';
 import './Game.css';
 
 class Game extends Component {
@@ -19,9 +19,9 @@ class Game extends Component {
         // }
       ],
       currentUser: {
-        username: 'default user'
+        username: 'default user',
       },
-      gameToken: ''
+      gameToken: '',
     };
   }
 
@@ -34,9 +34,9 @@ class Game extends Component {
     const { match } = this.props;
     this.setState({
       currentUser: {
-        username: user.username
+        username: user.username,
       },
-      gameToken: match.params.token
+      gameToken: match.params.token,
     });
   }
 
@@ -44,36 +44,36 @@ class Game extends Component {
     if (!message) {
       return;
     }
-    const messages = this.state.messages;
+    const { messages } = this.state;
     messages.push({
       text: message,
-      member: this.state.currentUser
-    })
-    this.setState({messages: messages})
+      member: this.state.currentUser,
+    });
+    this.setState({ messages });
 
-    setTimeout(this.onReceiveMessage, 1000) // need to be removed later
+    setTimeout(this.onReceiveMessage, 1000); // need to be removed later
     // TODO: call api
   }
 
   onReceiveMessage = (message, opponent) => {
     // TODO
     // below is fake static data, need to get data from socket
-    const messages = this.state.messages;
+    const { messages } = this.state;
     messages.push({
       text: 'hello world',
-      member: {username: 'alan turing'}
-    })
-    this.setState({messages: messages})
+      member: { username: 'alan turing' },
+    });
+    this.setState({ messages });
   }
 
   render() {
     return (
       <div className="container">
 
-        <div className="row" style={{minHeight: '100px'}}>
-        {
-          
-        }
+        <div className="row" style={{ minHeight: '100px' }}>
+          {
+
+          }
         </div>
 
         <div className="row">
@@ -92,7 +92,7 @@ class Game extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -107,9 +107,9 @@ Game.propTypes = {
 export default Game;
 
 const boardsContainer = {
-  display: "flex",
-  justifyContent: "space-around",
-  alignItems: "center",
-  flexWrap: "wrap",
-  width: "100vw",
+  display: 'flex',
+  justifyContent: 'space-around',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  width: '100vw',
 };
