@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Chess from  "chess.js";
 import Chessboard from "chessboardjsx";
 import rough from "roughjs"; // can give the squares a rough appearance
+import GameData from './GameData.js';
 import wn_test from "./wn.svg"; // testing the use of custom icons
 import bn_test from "./bn.svg"; // testing the use of custom icons
 
@@ -10,21 +11,33 @@ class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = {
-    fen: "8/p1p3B1/2B5/8/n7/8/P1PQ1KPP/R5NR b - - 0 15",
+    fen: "8/p1p5/2B3n1/8/8/8/P1PQ1KPP/R5NR b - - 0 15",
     pgn: "",
     dropSquareStyle: {}, // square styles for active drop square
     squareStyles: {}, // custom square styles
     pieceSquare: "", // piece on the most recently selected square
     square: "", // currently clicked square
-    gameOver: false
+    gameOver: false,
+    gameResult: "", // checkmate, stalemate, insufficient material, ...
+    turn: ""
   };
 
+  updateGameResult() {
+    if (this.game.game_over()) {
+      this.setState({
+        gameOver: true,
+        gameResult: this.game.in_stalemate() ? "stalemate" : "repetition"
+      });
+    }
+  }
+
   componentDidMount() {
-    this.game = new Chess(this.state.fen);
+    this.game = new Chess(this.state.fen); // initialize the game
     this.setState({
       pgn: this.game.pgn(),
-      gameOver: this.game.game_over()
+      turn: this.game.turn()
     });
+    this.updateGameResult(); // in case the FEN string gives an ending position
   }
 
   // highlight hint squares
@@ -55,11 +68,12 @@ class HumanVsHuman extends Component {
       gameOver: true
     });
     console.log("game over!");
+    
     if (this.game.in_threefold_repetition()) {
-      console.log("draw by three-fold repetition");
+      console.log("Draw by three-fold repetition");
     }
     else {
-      console.log(`stalemate: ${this.game.turn()} wins`);
+      console.log(`${this.game.turn() === 'w' ? 'White' : 'Black'} wins by stalemate`);
     }
   }
 
@@ -82,6 +96,7 @@ class HumanVsHuman extends Component {
       fen: this.game.fen(),
       pgn: this.game.pgn(),
       pieceSquare: "",
+      turn: this.game.turn()
     }));
 
     // end the game if the game state is finished
@@ -130,7 +145,8 @@ class HumanVsHuman extends Component {
     this.setState({
       fen: this.game.fen(),
       pgn: this.game.pgn(),
-      pieceSquare: ""
+      pieceSquare: "",
+      turn: this.game.turn()
     });
 
     // end the game if the game state is finished
@@ -148,14 +164,23 @@ class HumanVsHuman extends Component {
     }));
 
   render() {
-    const { fen, pgn, dropSquareStyle, squareStyles } = this.state;
-
+    const { fen, pgn, turn, dropSquareStyle, squareStyles } = this.state;
+    let game_state = '';
+    if (this.state.gameOver === true) {
+      if (this.game.in_stalemate()) {
+        game_state = 'stalemate';
+      } else {
+        game_state = 'repetition';
+      }
+    }
     return this.props.children({
       squareStyles,
-      position: fen,
+      fen,
       pgn,
-      onMouseOverSquare: this.onMouseOverSquare,
-      onMouseOutSquare: this.onMouseOutSquare,
+      game_state,
+      turn,
+      // onMouseOverSquare: this.onMouseOverSquare,
+      // onMouseOutSquare: this.onMouseOutSquare,
       onDrop: this.onDrop,
       dropSquareStyle,
       // onDragOverSquare: this.onDragOverSquare,
@@ -170,10 +195,12 @@ export default function WithMoveValidation() {
     <div>
       <HumanVsHuman>
         {({
-          position,
-          pgn,
-          onDrop,
           squareStyles,
+          fen,
+          pgn,
+          game_state,
+          turn,
+          onDrop,
           dropSquareStyle,
           // onDragOverSquare,
           onSquareClick,
@@ -184,7 +211,7 @@ export default function WithMoveValidation() {
               id="humanVsHuman"
               width={540}
               roughSquare={roughSquare}
-              position={position}
+              position={fen}
               onDrop={onDrop}
               boardStyle={{
                 borderRadius: "5px",
@@ -221,9 +248,7 @@ export default function WithMoveValidation() {
               onSquareRightClick={onSquareRightClick}
               draggable={true}
             />
-            <div>fen: {position}</div> { /* should this be a child component? */ }
-            <div>pgn: {pgn}</div>
-            <div id="game_over_message"></div>
+            <GameData fen={fen} pgn={pgn} turn={turn} game_state={game_state} />
           </div>
         )}
       </HumanVsHuman>
