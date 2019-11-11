@@ -1,6 +1,12 @@
+#game-container {
+	width: 97.5%;
+	margin: auto 0 auto auto;
+}
+
+
 .chat-box {
-	margin: 10px 0;
-  }
+	margin: 10px auto;
+}
   
 .Messages-list {
 	padding: 20px;
@@ -59,4 +65,5 @@
 	width: 100%;
 	justify-content: space-between;
 	max-width: 550px;
+	margin: auto;
 }
