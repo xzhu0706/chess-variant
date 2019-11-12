@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Amplify, {Auth} from 'aws-amplify'
 import {
-    Row, Col, Image, ListGroup, ListGroupItem
+    Row, Col, Image, ListGroup, ListGroupItem, Table
 } from 'react-bootstrap'
 
 
@@ -49,7 +49,7 @@ const Profile = (props) => (
                         phone={props.phone}
                     />
                     </Col>
-
+                        <MatchHistory/>
                     <Col sm= {{ span: 6}}>
                     </Col>
                 </Row>
@@ -70,6 +70,20 @@ const AccountInfo = (props) => (
 
 const MatchHistory = (props) => (
     <div>
+        <Table striped bordered hover>
+            <thead>
+                <tr>
+                    <td>#</td>
+                    <td>Variant</td>
+                    <td>Opponent</td>
+                    <td>Variant</td>
+                    <td>Outcome</td>
+                    <td>end FEN</td>
+                </tr>
+            </thead>
+            <tbody>
 
+            </tbody>
+        </Table>
     </div>
 )
