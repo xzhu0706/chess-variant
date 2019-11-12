@@ -42,16 +42,34 @@ export default class Account extends Component {
 const Profile = (props) => (
         <div>
                 <Row>
-                    <Col sm={{ span: 2, offset: 2}}>
-                        <Image src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg' thumbnail />
-                        <ListGroup>
-                            <ListGroupItem variant="flush">{props.username}</ListGroupItem>
-                            <ListGroupItem>{props.email}</ListGroupItem>
-                            <ListGroupItem>{props.phone}</ListGroupItem>
-                        </ListGroup>
+                <Col sm={{ span: 2, offset: 2}}>
+                    <AccountInfo 
+                        username={props.username}
+                        email={props.email}
+                        phone={props.phone}
+                    />
                     </Col>
+
                     <Col sm= {{ span: 6}}>
                     </Col>
                 </Row>
         </div>
     )
+
+const AccountInfo = (props) => (
+    <div>
+                    
+                        <Image src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg' thumbnail />
+                        <ListGroup>
+                            <ListGroupItem variant="flush">{props.username}</ListGroupItem>
+                            <ListGroupItem>{props.email}</ListGroupItem>
+                            <ListGroupItem>{props.phone}</ListGroupItem>
+                        </ListGroup>    
+    </div>
+)
+
+const MatchHistory = (props) => (
+    <div>
+
+    </div>
+)
