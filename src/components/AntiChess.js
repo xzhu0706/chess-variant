@@ -44,14 +44,14 @@ function AntiChess() {
       A player wins when he or she runs out of legal moves.</p>
       <Row>
         <Col>
-          {Antichess("k7/8/8/8/8/8/8/R7 w KQkq - 0 1", 320, false)}
+          {Antichess('', '', 'w', "k7/8/8/8/8/8/8/R7 w KQkq - 0 1", 320, false)}
           Black wins in one...
           this needs to be styled, put in a center-aligned box of some kind, with this being the "caption"... (sidenote: should we write a function that stylizes text like "1. Ng4 g4"?)
         </Col>
       </Row>
       <Row>
         <Col>
-          {Antichess(undefined, 320, false)}
+          {Antichess('', '', 'w', undefined, 320, false)}
           ...
         </Col>
       </Row>

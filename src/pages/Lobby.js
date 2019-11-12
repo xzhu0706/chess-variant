@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import MaterialTable from 'material-table';
 import Container from '@material-ui/core/Container';
 import { forwardRef } from 'react';
+import { Link } from 'react-router-dom';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import AddBox from '@material-ui/icons/AddBox';
@@ -45,7 +46,8 @@ const lobbyColumns = [
         fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
         fontSize: "16px",
         color: '#333333'
-    }}
+    }},
+    {title: '', field: 'join'}
 ]
 
 const tableIcons = {
@@ -77,8 +79,27 @@ class Lobby extends Component{
         }
     }
     async componentDidMount(){
-        let games = await API.graphql(graphqlOperation(queries.listGames))
-        this.setState({games: games})
+        // let games = await API.graphql(graphqlOperation(queries.listGames))
+        // this.setState({games: games})
+        const games = await API.graphql(graphqlOperation(queries.listGames))
+        const tableData = [];
+        games.data.listGames.items.forEach((game) => {
+            const linkToBtn = (<Link to={`/game/${game.id}`}>
+                <Button variant='contained' color='primary'>
+                    JOIN
+                </Button>
+            </Link>)
+            const row = {
+                player: game.creator,
+                skillLevel: 'Beginner',
+                timing: 'unlimited',
+                variant: game.variant,
+                join: linkToBtn
+            }
+            tableData.push(row)
+        })
+        this.setState({games: tableData})
+        console.log('lobby',games, tableData, this.state.games)
     }
 
     render(){
@@ -107,7 +128,7 @@ class Lobby extends Component{
                 <MaterialTable
                     icons = {tableIcons}
                     columns={lobbyColumns}
-                    data={this.props.games}
+                    data={this.state.games}
                     title='Lobby'
                     maxWidth="md"
                     options={{

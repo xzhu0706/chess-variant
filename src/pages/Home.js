@@ -5,6 +5,9 @@ import Lobby from './Lobby';
 import PopularVariants from '../components/PopularVariants';
 import AntiChess from '../Images/AntiChess.png';
 import variant2 from '../Images/variant2.jpg';
+import { API, graphqlOperation } from 'aws-amplify';
+import * as mutations from '../graphql/mutations';
+
 
 const games = [
   {
@@ -33,8 +36,16 @@ class Home extends Component {
     };
   }
 
-  makeDialogVisible = () => {
-    this.setState({ showDialog: true });
+  makeDialogVisible = async () => {
+    // this.setState({ showDialog: true });
+    const data = {
+      creator: 'xiaohong',
+      variant: 'Anti Chess',
+      started: false,
+      white: 'xiaohong'
+    }
+    const newGame = await API.graphql(graphqlOperation(mutations.createGame, {input: data}));
+    console.log('new game',newGame)
   }
 
   render() {
