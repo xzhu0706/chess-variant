@@ -86,7 +86,7 @@ class NavBar extends Component {
             {username
               ? (
                 <Nav className="ml-auto">
-                  <Link to="/game/123">
+                  <Link to="/account">
                     <Nav.Item className="nav-link">
                       Hello
                       {' '}
