@@ -60,14 +60,16 @@ function AntiChess() {
         <Row>
           <Col xs={8} xl={6} style={{marginBottom: "1rem"}}>
             <div>
-              {Antichess('', 'w', '', undefined, 384, false)} </div>
+              {Antichess('', 'w', '', undefined, 384, false)} 
+            </div>
             <div style={{bodyStyle}}>
             { /* <span style={{fontFamily: "serif", fontWeight: "bold"}}>1. ♘f3 d4</span> */ }
             </div>
           </Col>
           <Col xs={8} xl={6}>
             <div>
-              {Antichess('', 'w', '', "8/8/8/8/7r/8/P7/8 w - - 0 1", 384, false)} </div>
+              {Antichess('', 'w', '', '8/8/8/8/7r/8/P7/8 w - - 0 1', 384, false)} 
+            </div>
           </Col>
         </Row>
         <Row>
