@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Chess from  "chess.js";
 import Chessboard from "chessboardjsx";
-import rough from "roughjs"; // can give the squares a rough appearance
+// import rough from "roughjs"; // can give the squares a rough appearance
 import GameData from './GameData.js';
 import wn_test from "./wn.svg"; // testing the use of custom icons
 import bn_test from "./bn.svg"; // testing the use of custom icons
@@ -223,7 +223,7 @@ export default function WithMoveValidation(start_fen, customWidth=540, showData=
               <Chessboard
                 id="humanVsHuman"
                 width={customWidth}
-                roughSquare={roughSquare}
+                //roughSquare={roughSquare}
                 position={fen}
                 onDrop={onDrop}
                 boardStyle={{
@@ -270,14 +270,14 @@ export default function WithMoveValidation(start_fen, customWidth=540, showData=
 }
 
 // give squares a rough appearance using roughjs
-const roughSquare = ({ squareElement, squareWidth }) => {
-  let rc = rough.svg(squareElement);
-  const chessSquare = rc.rectangle(0, 0, squareWidth, squareWidth, {
-    roughness: 0.5,
-    bowing: 2.5,
-    strokeWidth: 0.5,
-    //fill: "AliceBlue",
-    //fillStyle: "cross-hatch" // why doesn't this work? (doesn't create cross hatches)?
-  });
-  squareElement.appendChild(chessSquare);
-};
+// const roughSquare = ({ squareElement, squareWidth }) => {
+//   let rc = rough.svg(squareElement);
+//   const chessSquare = rc.rectangle(0, 0, squareWidth, squareWidth, {
+//     roughness: 0.5,
+//     bowing: 2.5,
+//     strokeWidth: 0.5,
+//     //fill: "AliceBlue",
+//     //fillStyle: "cross-hatch" // why doesn't this work? (doesn't create cross hatches)?
+//   });
+//   squareElement.appendChild(chessSquare);
+// };
