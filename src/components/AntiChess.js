@@ -15,10 +15,21 @@ import bk from '../pieces/standard/bk.svg';
 import bq from '../pieces/standard/bq.svg';
 
 function AntiChess() {
+  const headingStyle = {
+    fontFamily: "Helvetica, Arial, sans-serif",
+    fontWeight: "bold",
+  };
+  const bodyStyle = {
+    fontFamily: "Lucida Bright, Lucidabright, Lucida Serif, Lucida," +
+      "Bitstream Charter, Bitstream Vera Serif, DejaVu Serif, Century Schoolbook L," +
+      "serif",
+    fontSize: "110%",
+  };
+
   return (
     <div>
-      <h1 className="text-center">Antichess (Losing Chess)</h1>
-      <h2>Pieces</h2>
+      <h1 className="text-center" style={{fontFamily: "Helvetica, Arial, sans-serif"}}>Antichess (Losing Chess)</h1>
+      <h2 style={headingStyle}>Pieces</h2>
       <table>
       <tr>
           <td><img style={{width: "3em", height: "3em"}} src={wp} alt="white pawn" /></td>
@@ -37,16 +48,18 @@ function AntiChess() {
           <td><img style={{width: "3em", height: "3em"}} src={bk} alt="black king" /></td>
         </tr>
       </table>
-      <h2>Rules</h2>
-      <p>Antichess (also known as losing chess, giveaway chess and suicide chess) is a variant in which the goal is to lose all of one's pieces or otherwise be stalemated.
-      Captures are mandatory whenever they are possible (if multiple captures are possible, the player can choose).
-      In addition, the king is not a special piece in that it cannot be checked (or checkmated), castling is disallowed and pawns that reach the opponent's back rank can promote to a king.
-      A player wins when he or she runs out of legal moves.</p>
+      <h2 style={headingStyle}>Rules</h2>
+      <p style={bodyStyle}>Antichess (also known as losing chess, giveaway chess and suicide chess) is a variant in which the goal is to lose all of one's pieces or otherwise be stalemated.
+      Captures are mandatory whenever a capture is possible (if multiple captures are possible, the player can choose).
+      In antichess the king is not a special piece in that it cannot be checked (or checkmated), castling is disallowed and pawns that reach the opponent's back rank can promote to a king.
+      A player wins only when he or she runs out of legal moves.</p>
       <Row>
         <Col>
-          {Antichess("k7/8/8/8/8/8/8/R7 w KQkq - 0 1", 320, false)}
+          {Antichess("8/8/8/8/7r/8/P7/8 w - - 0 1", 320, false)}
+          <div style={{bodyStyle}}>
           Black wins in one...
-          this needs to be styled, put in a center-aligned box of some kind, with this being the "caption"... (sidenote: should we write a function that stylizes text like "1. Ng4 g4"?)
+          { /* <span style={{fontFamily: "serif", fontWeight: "bold"}}>1. ♘f3 d4</span> */ }
+          </div>
         </Col>
       </Row>
       <Row>
@@ -55,7 +68,7 @@ function AntiChess() {
           ...
         </Col>
       </Row>
-      <h2>Strategies</h2>
+      <h2 style={headingStyle}>Strategies</h2>
     </div>
   );
 }
