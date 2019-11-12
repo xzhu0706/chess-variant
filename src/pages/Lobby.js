@@ -5,6 +5,7 @@ import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
+import * as subscriptions from '../graphql/subscriptions';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Check from '@material-ui/icons/Check';
@@ -78,12 +79,10 @@ class Lobby extends Component{
             games: []
         }
     }
-    async componentDidMount(){
-        // let games = await API.graphql(graphqlOperation(queries.listGames))
-        // this.setState({games: games})
-        const games = await API.graphql(graphqlOperation(queries.listGames))
+
+    getLobby(data) {
         const tableData = [];
-        games.data.listGames.items.forEach((game) => {
+        data.forEach((game) => {
             const linkToBtn = (<Link to={`/game/${game.id}`}>
                 <Button variant='contained' color='primary'>
                     JOIN
@@ -99,7 +98,40 @@ class Lobby extends Component{
             tableData.push(row)
         })
         this.setState({games: tableData})
-        console.log('lobby',games, tableData, this.state.games)
+        console.log('lobby',tableData, this.state.games)
+    }
+
+    async componentDidMount(){
+        const games = await API.graphql(graphqlOperation(queries.listGames))
+        this.getLobby(games.data.listGames.items)
+
+        this.subscription = API.graphql(
+            graphqlOperation(subscriptions.onCreateGame)
+        ).subscribe({
+            next: gameData => {
+                const game = gameData.value.data.onCreateGame
+                console.log('lobby subscription', gameData, game)
+                const linkToBtn = (<Link to={`/game/${game.id}`}>
+                    <Button variant='contained' color='primary'>
+                        JOIN
+                    </Button>
+                </Link>)
+                const row = {
+                    player: game.creator,
+                    skillLevel: 'Beginner',
+                    timing: 'unlimited',
+                    variant: game.variant,
+                    join: linkToBtn
+                }
+                const tableData = this.state.games.slice();
+                tableData.push(row);
+                this.setState({games: tableData});
+            }
+          })
+    }
+
+    componentWillUnmount() {
+        this.subscription.unsubscribe();
     }
 
     render(){
