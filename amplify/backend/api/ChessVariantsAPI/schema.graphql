@@ -8,9 +8,14 @@ type User @model {
 
 type Game @model {
   id: ID!
-  creator: User! @connection
+  creator: User @connection
   creatorSocketId: String!
   creatorOrientation: String!
   variant: String
+}
+
+type SocketId @model {
+  id: ID!
+  socketId: String!
 }
 

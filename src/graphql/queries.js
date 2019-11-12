@@ -67,3 +67,24 @@ export const listGames = `query ListGames(
   }
 }
 `;
+export const getSocketId = `query GetSocketId($id: ID!) {
+  getSocketId(id: $id) {
+    id
+    socketId
+  }
+}
+`;
+export const listSocketIds = `query ListSocketIds(
+  $filter: ModelSocketIdFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSocketIds(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      socketId
+    }
+    nextToken
+  }
+}
+`;

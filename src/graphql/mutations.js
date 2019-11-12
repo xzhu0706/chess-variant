@@ -79,3 +79,24 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
   }
 }
 `;
+export const createSocketId = `mutation CreateSocketId($input: CreateSocketIdInput!) {
+  createSocketId(input: $input) {
+    id
+    socketId
+  }
+}
+`;
+export const updateSocketId = `mutation UpdateSocketId($input: UpdateSocketIdInput!) {
+  updateSocketId(input: $input) {
+    id
+    socketId
+  }
+}
+`;
+export const deleteSocketId = `mutation DeleteSocketId($input: DeleteSocketIdInput!) {
+  deleteSocketId(input: $input) {
+    id
+    socketId
+  }
+}
+`;

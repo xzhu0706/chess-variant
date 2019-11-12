@@ -79,3 +79,24 @@ export const onDeleteGame = `subscription OnDeleteGame {
   }
 }
 `;
+export const onCreateSocketId = `subscription OnCreateSocketId {
+  onCreateSocketId {
+    id
+    socketId
+  }
+}
+`;
+export const onUpdateSocketId = `subscription OnUpdateSocketId {
+  onUpdateSocketId {
+    id
+    socketId
+  }
+}
+`;
+export const onDeleteSocketId = `subscription OnDeleteSocketId {
+  onDeleteSocketId {
+    id
+    socketId
+  }
+}
+`;
