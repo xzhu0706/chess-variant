@@ -48,9 +48,11 @@ class Game extends Component {
       next: gameData => {
         const gameState = gameData.value.data.onUpdateGame
         console.log('game data subscription', gameData, gameState)
-        this.setState({
-          gameState
-        })
+        if (gameState.id === this.state.gameToken) {
+          this.setState({
+            gameState
+          })
+        }
       }
     })
 
