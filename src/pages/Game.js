@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { Auth } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../graphql/queries';
+import * as mutations from '../graphql/mutations';
+import * as subscriptions from '../graphql/subscriptions';
 import PropTypes from 'prop-types';
 import WithMoveValidation from '../WithMoveValidation';
 import ChatMessages from '../components/ChatMessages';
@@ -19,25 +23,49 @@ class Game extends Component {
         // }
       ],
       currentUser: {
-        username: 'default user',
+        username: 'Anonymous',
       },
       gameToken: '',
+      gameState: {},
     };
   }
 
   async componentDidMount() {
-    const user = await Auth.currentUserInfo();
-    if (!user) {
-      console.log('not logged in');
-      return;
-    }
     const { match } = this.props;
+    const gameToken = match.params.token;
+    const user = await Auth.currentUserInfo();
+    const username = user ? user.username : 'Anonymous';
     this.setState({
       currentUser: {
-        username: user.username,
+        username: username,
       },
-      gameToken: match.params.token,
+      gameToken: gameToken,
     });
+
+    this.subscription = API.graphql(
+      graphqlOperation(subscriptions.onUpdateGame)
+    ).subscribe({
+      next: gameData => {
+        const gameState = gameData.value.data.onUpdateGame
+        console.log('game data subscription', gameData, gameState)
+        this.setState({
+          gameState
+        })
+      }
+    })
+
+    try {
+      const retrieveGame = await API.graphql(graphqlOperation(queries.getGame, { id: gameToken }));
+      const gameState = retrieveGame.data.getGame;
+      this.setState({ gameState })
+      console.log(this.state.gameState, gameToken)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
 
   onSendMessage = (message) => {
@@ -67,6 +95,8 @@ class Game extends Component {
   }
 
   render() {
+    const { gameToken, gameState } = this.state;
+    console.log(gameState)
     return (
       <div id="game-container">
 
@@ -78,10 +108,10 @@ class Game extends Component {
 
         <div className="row">
           <div style={boardsContainer} className="col-xl-8">
-            { WithMoveValidation() }
+            { WithMoveValidation(gameToken, gameState.turn, gameState.pgn, gameState.fen) }
           </div>
 
-          <div className="col-xl-4 chat-box">
+          {/* <div className="col-xl-4 chat-box">
             <ChatMessages
               messages={this.state.messages}
               currentMember={this.state.currentUser}
@@ -89,7 +119,7 @@ class Game extends Component {
             <ChatInput
               onSendMessage={this.onSendMessage}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     )
