@@ -3,6 +3,7 @@ import { Auth } from 'aws-amplify';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
+import * as subscriptions from '../graphql/subscriptions';
 import PropTypes from 'prop-types';
 import WithMoveValidation from '../WithMoveValidation';
 import ChatMessages from '../components/ChatMessages';
@@ -40,6 +41,19 @@ class Game extends Component {
       },
       gameToken: gameToken,
     });
+
+    this.subscription = API.graphql(
+      graphqlOperation(subscriptions.onUpdateGame)
+    ).subscribe({
+      next: gameData => {
+        const gameState = gameData.value.data.onUpdateGame
+        console.log('game data subscription', gameData, gameState)
+        this.setState({
+          gameState
+        })
+      }
+    })
+
     try {
       const retrieveGame = await API.graphql(graphqlOperation(queries.getGame, { id: gameToken }));
       const gameState = retrieveGame.data.getGame;
@@ -48,6 +62,10 @@ class Game extends Component {
     } catch (err) {
       console.log(err)
     }
+  }
+
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
 
   onSendMessage = (message) => {
@@ -93,7 +111,7 @@ class Game extends Component {
             { WithMoveValidation(gameToken, gameState.turn, gameState.pgn, gameState.fen) }
           </div>
 
-          <div className="col-xl-4 chat-box">
+          {/* <div className="col-xl-4 chat-box">
             <ChatMessages
               messages={this.state.messages}
               currentMember={this.state.currentUser}
@@ -101,7 +119,7 @@ class Game extends Component {
             <ChatInput
               onSendMessage={this.onSendMessage}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     )
