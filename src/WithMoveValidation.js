@@ -15,7 +15,7 @@ class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = {
-    fen: "",
+    fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     pgn: "",
     dropSquareStyle: {}, // square styles for active drop square
     squareStyles: {}, // custom square styles
@@ -37,7 +37,8 @@ class HumanVsHuman extends Component {
 
   componentDidMount() {
     console.log('component reload', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn)
-    this.game = new Chess(this.props.fen); // initialize the game
+    this.game = new Chess(this.props.fen || this.state.fen); 
+    // initialize the game
     // note that if this.props.fen is improperly formed,
     // chess.js will just initialize the game to the default position
     this.setState({

@@ -42,9 +42,12 @@ class Home extends Component {
       creator: 'xiaohong',
       variant: 'Anti Chess',
       started: false,
-      white: 'xiaohong'
+      white: 'xiaohong',
+      turn: 'w',
     }
     const newGame = await API.graphql(graphqlOperation(mutations.createGame, {input: data}));
+    const newGameToken = newGame.data.createGame.id;
+    this.props.history.push(`/game/${newGameToken}`); // direct to game page
     console.log('new game',newGame)
   }
 
