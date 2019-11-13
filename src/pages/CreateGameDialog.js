@@ -14,6 +14,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 function CreateGameDialog(props) {
 
     const [open, setOpen] = React.useState(false);
+    const [variant, setVariant] = React.useState('');
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -21,6 +23,10 @@ function CreateGameDialog(props) {
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const handleChange = event => {
+        setVariant(event.target.value);
     };
 
         return (
@@ -36,10 +42,10 @@ function CreateGameDialog(props) {
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value="Variant"
-                        
+                            value={variant}
+                            onChange={handleChange}
                         >
-                            <MenuItem value={10}>Standard</MenuItem>
+                            <MenuItem value={10}>Antichess</MenuItem>
                             <MenuItem value={20}>Crazyhouse</MenuItem>
                             <MenuItem value={30}>King of the hill</MenuItem>
                             <MenuItem value={30}>Horde</MenuItem>
@@ -62,5 +68,4 @@ function CreateGameDialog(props) {
         )
     
 }
-
 export default CreateGameDialog
