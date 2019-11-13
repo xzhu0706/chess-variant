@@ -23,6 +23,9 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Button from '@material-ui/core/Button';
 
+import CreateGameDialog from './CreateGameDialog';
+
+
 const lobbyColumns = [
     {title: 'Player', field: 'player', cellStyle: {
         backgroundColor: '#FFF',
@@ -153,9 +156,12 @@ class Lobby extends Component{
         }
         return (
             <Container maxWidth='sm' style={lobbyStyle}>
-                <Button style={createGameButtonStyle} variant="contained" onClick={this.props.makeDialogVisible}>
+                {/* <Button style={createGameButtonStyle} variant="contained" onClick={this.props.makeDialogVisible}>
                     Create a game
-                </Button>
+                </Button> */}
+                <CreateGameDialog 
+                    onClick={this.props.makeDialogVisible}
+                 />
                 <div style={{width: "100%"}}>
                 <MaterialTable
                     icons = {tableIcons}

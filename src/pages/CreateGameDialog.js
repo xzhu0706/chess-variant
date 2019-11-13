@@ -11,7 +11,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 
-function CreateGameDialog() {
+function CreateGameDialog(props) {
 
     const [open, setOpen] = React.useState(false);
 
@@ -26,7 +26,7 @@ function CreateGameDialog() {
         return (
             <div>
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                 Open form dialog
+                 Create A Game
             </Button>
             <Dialog open={open} onClose={handleClose} maxWidth='sm' fullWidth={true}>
                 <DialogTitle id="form-dialog-title">Create a Game</DialogTitle>
@@ -53,7 +53,7 @@ function CreateGameDialog() {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={props.onClick} color="primary">
                         Submit
                     </Button>
                 </DialogActions>
