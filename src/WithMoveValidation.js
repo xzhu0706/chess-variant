@@ -7,7 +7,7 @@ import GameData from './GameData.js';
 import wn_test from "./wn.svg"; // testing the use of custom icons
 import bn_test from "./bn.svg"; // testing the use of custom icons
 import { API, graphqlOperation } from 'aws-amplify';
-import * as queries from './graphql/queries';
+//import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
 
 

@@ -29,29 +29,31 @@ function AntiChess() {
   return (
     <div>
       <h1 className="text-center" style={headingStyle}>Antichess (Losing Chess)</h1>
-      <p>
+      <div>
         <h2 style={headingStyle}>Pieces</h2>
         <table>
-        <tr>
-            <td><img style={{width: "3em", height: "3em"}} src={wp} alt="white pawn" /></td>
-            <td><img style={{width: "3em", height: "3em"}} src={wr} alt="white rook" /></td>
-            <td><img style={{width: "3em", height: "3em"}} src={wn} alt="white knight" /></td>
-            <td><img style={{width: "3em", height: "3em"}} src={wb} alt="white bishop" /></td>
-            <td><img style={{width: "3em", height: "3em"}} src={wq} alt="white queen" /></td>
-            <td><img style={{width: "3em", height: "3em"}} src={wk} alt="white king" /></td>
-          </tr>
-          <tr>
-            <td><img style={{width: "3em", height: "3em"}} src={bp} alt="black pawn" /></td>
-            <td><img style={{width: "3em", height: "3em"}} src={br} alt="black rook" /></td>
-            <td><img style={{width: "3em", height: "3em"}} src={bn} alt="black knight" /></td>
-            <td><img style={{width: "3em", height: "3em"}} src={bb} alt="black bishop" /></td>
-            <td><img style={{width: "3em", height: "3em"}} src={bq} alt="black queen" /></td>
-            <td><img style={{width: "3em", height: "3em"}} src={bk} alt="black king" /></td>
-          </tr>
+          <tbody>
+            <tr>
+              <td><img style={{width: "3em", height: "3em"}} src={wp} alt="white pawn" /></td>
+              <td><img style={{width: "3em", height: "3em"}} src={wr} alt="white rook" /></td>
+              <td><img style={{width: "3em", height: "3em"}} src={wn} alt="white knight" /></td>
+              <td><img style={{width: "3em", height: "3em"}} src={wb} alt="white bishop" /></td>
+              <td><img style={{width: "3em", height: "3em"}} src={wq} alt="white queen" /></td>
+              <td><img style={{width: "3em", height: "3em"}} src={wk} alt="white king" /></td>
+            </tr>
+            <tr>
+              <td><img style={{width: "3em", height: "3em"}} src={bp} alt="black pawn" /></td>
+              <td><img style={{width: "3em", height: "3em"}} src={br} alt="black rook" /></td>
+              <td><img style={{width: "3em", height: "3em"}} src={bn} alt="black knight" /></td>
+              <td><img style={{width: "3em", height: "3em"}} src={bb} alt="black bishop" /></td>
+              <td><img style={{width: "3em", height: "3em"}} src={bq} alt="black queen" /></td>
+              <td><img style={{width: "3em", height: "3em"}} src={bk} alt="black king" /></td>
+            </tr>
+          </tbody>
         </table>
-      </p>
+      </div>
 
-      <p>
+      <div>
         <h2 style={headingStyle}>Rules</h2>
         <p style={bodyStyle}>Antichess (also known as losing chess, giveaway chess and suicide chess) is a variant in which the goal is to lose all of one's pieces or otherwise be stalemated.
         Captures are mandatory whenever a capture is possible (if multiple captures are possible, the player can choose).
@@ -75,11 +77,11 @@ function AntiChess() {
         <Row>
           
         </Row>
-      </p>
+      </div>
 
-      <p>
+      <div>
         <h2 style={headingStyle}>Strategies</h2>
-      </p>
+      </div>
     </div>
   );
 }

@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Auth } from 'aws-amplify';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
-import * as mutations from '../graphql/mutations';
+//import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
 import PropTypes from 'prop-types';
 import WithMoveValidation from '../WithMoveValidation';
-import ChatMessages from '../components/ChatMessages';
-import ChatInput from '../components/ChatInput';
+//import ChatMessages from '../components/ChatMessages';
+//import ChatInput from '../components/ChatInput';
 import './Game.css';
 
 class Game extends Component {
