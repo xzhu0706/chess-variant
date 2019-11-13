@@ -78,7 +78,6 @@ class Lobby extends Component{
         this.state = {
             games: []
         }
-        this.subscription = undefined;
     }
 
     getLobby(data) {

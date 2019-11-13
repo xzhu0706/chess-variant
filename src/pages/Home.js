@@ -40,7 +40,7 @@ class Home extends Component {
     // this.setState({ showDialog: true });
     const data = {
       creator: 'xiaohong',
-      variant: 'Anti Chess',
+      variant: 'Antichess',
       started: false,
       white: 'xiaohong',
       turn: 'w',
