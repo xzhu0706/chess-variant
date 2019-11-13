@@ -73,9 +73,7 @@ class NavBar extends Component {
         <Navbar style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: 'black' }} bg="black" variant="light">
           <Navbar.Brand style={{ fontFamily: 'chalkduster' }}>
             <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
-            <Link to="/">
-              <a href="/" style={{ color: '#333333', fontSize: '28px', marginLeft: '5px' }}>Chess Variants</a>
-            </Link>
+            <Link to="/" style={{ color: '#333333', fontSize: '28px', marginLeft: '5px' }}>Chess Variants</Link>
           </Navbar.Brand>
           <Nav className="ml-auto">
             <Link to="/variants"><Nav.Item className="nav-link">Explore Variants</Nav.Item></Link>
@@ -103,7 +101,6 @@ class NavBar extends Component {
                   <Button
                     style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: '35px' }}
                     variant="outlined"
-                    color="#333333"
                     startIcon={<AccountCircle />}
                     onClick={handleShowAuth}
                   >

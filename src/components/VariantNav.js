@@ -12,7 +12,7 @@ function VariantNav() {
         <Col sm={2}>
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
-              <Nav.Link eventKey="first">Anti Chess</Nav.Link>
+              <Nav.Link eventKey="first">Antichess</Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>

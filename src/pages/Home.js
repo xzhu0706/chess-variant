@@ -40,7 +40,7 @@ class Home extends Component {
     // this.setState({ showDialog: true });
     const data = {
       creator: 'xiaohong',
-      variant: 'Anti Chess',
+      variant: 'Antichess',
       started: false,
       white: 'xiaohong',
       turn: 'w',
@@ -65,10 +65,10 @@ class Home extends Component {
         <h1 className="text-center" style={{ fontFamily: 'AppleSDGothicNeo-Bold' }}>Popular Variants</h1>
         <Row>
           <Col className="text-center">
-            <PopularVariants name="Anti Chess" src={AntiChess} description="Win by losing all your pieces or being stalemated" />
+            <PopularVariants name="Antichess" src={AntiChess} description="Win by losing all your pieces or being stalemated" />
           </Col>
           <Col className="text-center">
-            <PopularVariants src={variant2} />
+            <PopularVariants name="" description="" src={variant2} />
           </Col>
         </Row>
       </div>
