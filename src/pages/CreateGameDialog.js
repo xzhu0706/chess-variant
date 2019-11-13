@@ -10,6 +10,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
+const createGameButtonStyle = {
+    padding: "10px 40px 10px 40px",
+    marginBottom: "10px",
+    backgroundColor: '#333333',
+    color: '#FFF',
+    fontFamily: "AppleSDGothicNeo-Bold"
+}
 
 function CreateGameDialog(props) {
 
@@ -31,7 +38,7 @@ function CreateGameDialog(props) {
 
         return (
             <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+            <Button variant="contained" onClick={handleClickOpen} style={createGameButtonStyle}>
                  Create A Game
             </Button>
             <Dialog open={open} onClose={handleClose} maxWidth='sm' fullWidth={true}>
