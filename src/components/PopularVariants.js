@@ -1,14 +1,15 @@
 import React from 'react';
 import Image from 'react-bootstrap/Image';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 function PopularVariant({ src, name, description }) {
   return (
     <div>
       <h3>{name}</h3>
-      <a href="/variants">
+      <Link to="/variants">
         <Image src={src} alt="Variant" width={400} height={400} />
-      </a>
+      </Link>
       <p>{description}</p>
     </div>
   );
