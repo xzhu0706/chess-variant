@@ -43,7 +43,7 @@ class HumanVsHuman extends Component {
       this.setState({
         fen: nextProps.fen,
       })
-      this.game = new Chess(nextProps.fen)
+      this.game = new Chess(nextProps.fen);
     }
     if (nextProps.pgn !== this.props.pgn) {
       this.setState({
@@ -158,6 +158,13 @@ class HumanVsHuman extends Component {
       squareStyles: { ...squareStyles, [square]: { backgroundColor: "#e86c65" } }
     }));
 
+  calcWidth = (dimensions) => {
+    if (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) {
+      return Math.min(560/640 * dimensions.screenWidth, 560/640 * dimensions.screenHeight);
+    }
+    return 560;
+  }
+th
   render() {
     console.log(this.state);
     const { fen, pgn, turn, gameResult, squareStyles } = this.state;
@@ -169,6 +176,7 @@ class HumanVsHuman extends Component {
       turn,
       onSquareClick: this.onSquareClick,
       onSquareRightClick: this.onSquareRightClick,
+      calcWidth: this.calcWidth
     });
   }
 }
@@ -187,6 +195,7 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
           turn,
           onSquareClick,
           onSquareRightClick,
+          calcWidth,
         }) => (
           <div className="row">
             {
@@ -233,6 +242,7 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
                 squareStyles={squareStyles}
                 onSquareClick={onSquareClick}
                 onSquareRightClick={onSquareRightClick}
+                calcWidth={calcWidth}
                 draggable={false}
               />
             </div>

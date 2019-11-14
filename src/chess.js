@@ -1354,13 +1354,13 @@ var Chess = function(fen) {
       var header_exists = false;
 
       /* add the PGN header headerrmation */
-      for (var i in header) {
-        /* TODO: order of enumerated properties in header object is not
-         * guaranteed, see ECMA-262 spec (section 12.6.4)
-         */
-        result.push('[' + i + ' \"' + header[i] + '\"]' + newline);
-        header_exists = true;
-      }
+      // for (var i in header) {
+      //   /* TODO: order of enumerated properties in header object is not
+      //    * guaranteed, see ECMA-262 spec (section 12.6.4)
+      //    */
+      //   result.push('[' + i + ' \"' + header[i] + '\"]' + newline);
+      //   header_exists = true;
+      // }
 
       if (header_exists && history.length) {
         result.push(newline);
