@@ -70,7 +70,7 @@ function AntiChess() {
           </Col>
           <Col xs={8} xl={6}>
             <div>
-              {Antichess('', 'w', '', '8/8/8/8/7r/8/P7/8 w - - 0 1', 384, false)} 
+              {Antichess('', 'w', '', '8/8/8/8/7r/8/P7/8 w - - 0 1', 384, true)} 
             </div>
           </Col>
         </Row>

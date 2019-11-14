@@ -17,33 +17,21 @@ class HumanVsHuman extends Component {
   state = {
     fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     pgn: "",
-    dropSquareStyle: {}, // square styles for active drop square
     squareStyles: {}, // custom square styles
     pieceSquare: "", // piece on the most recently selected square
-    square: "", // currently clicked square
     gameOver: false,
     gameResult: "", // checkmate, stalemate, insufficient material, ...
     turn: ""
   };
 
-  updateGameResult() {
-    if (this.game.game_over()) {
-      this.setState({
-        gameOver: true,
-        gameResult: this.game.in_stalemate() ? "stalemate" : "repetition"
-      });
-    }
-  }
-
   componentDidMount() {
     console.log('component reload', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn)
     this.game = new Chess(this.props.fen || this.state.fen); 
-    // initialize the game
+    // initialize the internal game
     // note that if this.props.fen is improperly formed,
-    // chess.js will just initialize the game to the default position
+    // chess.js will just initialize the game's fen to the default position
     this.setState({
       fen: this.game.fen(),
-      pgn: this.game.pgn(),
       turn: this.game.turn(),
     });
     this.updateGameResult(); // in case the FEN string gives an ending position
@@ -92,53 +80,14 @@ class HumanVsHuman extends Component {
     }));
   };
 
-  terminateGame = () => {
-    this.setState({
-      gameOver: true
-    });
-    console.log("game over!");
-    
-    if (this.game.in_threefold_repetition()) {
-      console.log("Draw by three-fold repetition");
-    }
-    else {
-      console.log(`${this.game.turn() === 'w' ? 'White' : 'Black'} wins by stalemate`);
+  updateGameResult() {
+    if (this.game.game_over()) {
+      this.setState({
+        gameOver: true,
+        gameResult: this.game.in_stalemate() ? "stalemate" : "repetition"
+      });
     }
   }
-
-  onDrop = ({ sourceSquare, targetSquare }) => {
-    if (this.state.gameOver) return;
-
-    // see if the move is legal
-    let move = this.game.move({
-      from: sourceSquare,
-      to: targetSquare,
-      promotion: "q" // always promote to a queen for example simplicity
-      // fix this so the user can choose what to promote to
-    });
-
-    // illegal move
-    if (move === null) return;
-
-    // legal move, so update the fen
-    this.setState(({ pieceSquare }) => ({
-      fen: this.game.fen(),
-      pgn: this.game.pgn(),
-      pieceSquare: "",
-      turn: this.game.turn()
-    }));
-
-    // end the game if the game state is finished
-    if (this.game.game_over()) {
-      this.terminateGame();
-    }
-  };
-
-  // onDragOverSquare = square => {
-  //   this.setState({
-  //     dropSquareStyle:{ backgroundColor: "#38f" }
-  //   });
-  // };
 
   onSquareClick = (square) => {
     if (this.state.gameOver) return;
@@ -155,7 +104,7 @@ class HumanVsHuman extends Component {
       verbose: true
     });
 
-    // highlight the to square of every possible move, moves[i].to
+    // highlight the destination square of every possible move, moves[i].to
     const hintSquares = moves.map(move => move.to);
     this.highlightSquare(hintSquares);
 
@@ -170,7 +119,7 @@ class HumanVsHuman extends Component {
     // illegal move
     if (move === null) return;
 
-    // legal move, so update the fen
+    // legal move, so update the game state
     this.setState({
       fen: this.game.fen(),
       pgn: this.game.pgn(),
@@ -178,10 +127,8 @@ class HumanVsHuman extends Component {
       turn: this.game.turn()
     });
 
-    // end the game if the game state is finished
-    if (this.game.game_over()) {
-      this.terminateGame();
-    }
+    // end the game if necessary
+    this.updateGameResult();
 
     // call API
     if (this.props.gameToken) {
@@ -212,28 +159,16 @@ class HumanVsHuman extends Component {
     }));
 
   render() {
-    const { fen, pgn, turn, dropSquareStyle, squareStyles } = this.state;
-    let game_state = '';
-    if (this.state.gameOver === true) {
-      if (this.game.in_stalemate()) {
-        game_state = 'stalemate';
-      } else {
-        game_state = 'repetition';
-      }
-    }
+    console.log(this.state);
+    const { fen, pgn, turn, gameResult, squareStyles } = this.state;
     return this.props.children({
       squareStyles,
       fen,
       pgn,
-      game_state,
+      gameResult,
       turn,
-      // onMouseOverSquare: this.onMouseOverSquare,
-      // onMouseOutSquare: this.onMouseOutSquare,
-      onDrop: this.onDrop,
-      dropSquareStyle,
-      // onDragOverSquare: this.onDragOverSquare,
       onSquareClick: this.onSquareClick,
-      onSquareRightClick: this.onSquareRightClick
+      onSquareRightClick: this.onSquareRightClick,
     });
   }
 }
@@ -248,19 +183,16 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
           squareStyles,
           fen,
           pgn,
-          game_state,
+          gameResult,
           turn,
-          onDrop,
-          dropSquareStyle,
-          // onDragOverSquare,
           onSquareClick,
-          onSquareRightClick
+          onSquareRightClick,
         }) => (
           <div className="row">
             {
               showData ? (
               <div className="col-lg-5">
-                <GameData fen={fen} pgn={pgn} turn={turn} game_state={game_state} />
+                <GameData fen={fen} pgn={pgn} turn={turn} gameResult={gameResult} />
               </div>
               ) :
               null
@@ -269,9 +201,7 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
               <Chessboard
                 id="humanVsHuman"
                 width={customWidth}
-                //roughSquare={roughSquare}
                 position={fen}
-                onDrop={onDrop}
                 boardStyle={{
                   borderRadius: "5px",
                   boxShadow: `0 2px 3px rgba(0, 0, 0, 0.5)`
@@ -301,11 +231,9 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
                 lightSquareStyle={{ backgroundColor: "#ffffff" }}
                 darkSquareStyle={{ backgroundColor: "#65cae8" }}      
                 squareStyles={squareStyles}
-                dropSquareStyle={dropSquareStyle}
-                // onDragOverSquare={onDragOverSquare}
                 onSquareClick={onSquareClick}
                 onSquareRightClick={onSquareRightClick}
-                draggable={true}
+                draggable={false}
               />
             </div>
           </div>
@@ -314,16 +242,3 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
     </div>
   );
 }
-
-// give squares a rough appearance using roughjs
-// const roughSquare = ({ squareElement, squareWidth }) => {
-//   let rc = rough.svg(squareElement);
-//   const chessSquare = rc.rectangle(0, 0, squareWidth, squareWidth, {
-//     roughness: 0.5,
-//     bowing: 2.5,
-//     strokeWidth: 0.5,
-//     //fill: "AliceBlue",
-//     //fillStyle: "cross-hatch" // why doesn't this work? (doesn't create cross hatches)?
-//   });
-//   squareElement.appendChild(chessSquare);
-// };
