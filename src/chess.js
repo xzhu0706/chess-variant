@@ -69,12 +69,12 @@ const Chess = function (fen) {
   //   k: [-17, -16, -15,   1,  17, 16, 15,  -1]
   // };
 
-  var PIECE_OFFSETS = {
-    n: [-18, -33, -31, -14,  18, 33, 31,  14],
-    b: [-17, -15,  17,  15],
-    r: [-16,   1,  16,  -1],
-    q: [-17, -16, -15,   1,  17, 16, 15,  -1],
-    k: [-17, -16, -15,   1,  17, 16, 15,  -1]
+  const PIECE_OFFSETS = {
+    n: [-18, -33, -31, -14, 18, 33, 31, 14],
+    b: [-17, -15, 17, 15],
+    r: [-16, 1, 16, -1],
+    q: [-17, -16, -15, 1, 17, 16, 15, -1],
+    k: [-17, -16, -15, 1, 17, 16, 15, -1],
   };
 
   // original:
@@ -102,22 +102,22 @@ const Chess = function (fen) {
   // kqrbnp = 010100 = 20 (only the queen and bishop can attack the center piece)
   // kqrbnp = 000010 =  2 (only the knight can attack the center piece)
   // kqrbnp = 011000 = 24 (only the queen and rook can attack the center piece)
-  var ATTACKS = [
-    20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20, 0,
-     0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
-     0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
-     0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
-     0, 0, 0, 0,20, 0, 0, 24,  0, 0,20, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0,20, 2, 24,  2,20, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0, 2,53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
-    24,24,24,24,24,24,56,  0, 56,24,24,24,24,24,24, 0,
-     0, 0, 0, 0, 0, 2,53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0,20, 2, 24,  2,20, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0,20, 0, 0, 24,  0, 0,20, 0, 0, 0, 0, 0,
-     0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
-     0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
-     0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
-    20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20
+  const ATTACKS = [
+    20, 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 20, 0,
+    0, 20, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 20, 0, 0,
+    0, 0, 20, 0, 0, 0, 0, 24, 0, 0, 0, 0, 20, 0, 0, 0,
+    0, 0, 0, 20, 0, 0, 0, 24, 0, 0, 0, 20, 0, 0, 0, 0,
+    0, 0, 0, 0, 20, 0, 0, 24, 0, 0, 20, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 20, 2, 24, 2, 20, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 2, 53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
+    24, 24, 24, 24, 24, 24, 56, 0, 56, 24, 24, 24, 24, 24, 24, 0,
+    0, 0, 0, 0, 0, 2, 53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 20, 2, 24, 2, 20, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 20, 0, 0, 24, 0, 0, 20, 0, 0, 0, 0, 0,
+    0, 0, 0, 20, 0, 0, 0, 24, 0, 0, 0, 20, 0, 0, 0, 0,
+    0, 0, 20, 0, 0, 0, 0, 24, 0, 0, 0, 0, 20, 0, 0, 0,
+    0, 20, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 20, 0, 0,
+    20, 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 20,
   ];
 
   // how to shift the board in order to make a move (?)
@@ -146,11 +146,11 @@ const Chess = function (fen) {
   const FLAGS = {
     NORMAL: 'n',
     CAPTURE: 'c',
-    BIG_PAWN: 'b', // 
+    BIG_PAWN: 'b', //
     EP_CAPTURE: 'e', // en passant
     PROMOTION: 'p',
-    KSIDE_CASTLE: 'k', // 
-    QSIDE_CASTLE: 'q' // 
+    KSIDE_CASTLE: 'k', //
+    QSIDE_CASTLE: 'q', //
   };
 
   const BITS = {
@@ -287,7 +287,7 @@ const Chess = function (fen) {
   }
 
   function load(fen) {
-    var tokens = fen.split(/\s+/);
+    const tokens = fen.split(/\s+/);
     /*
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     becomes
@@ -303,8 +303,8 @@ const Chess = function (fen) {
     In chess, one "full" move is really 2 moves. If White plays e4 and then Black plays e5,
     that counts as one move.
     */
-    var position = tokens[0];
-    var square = 0;
+    const position = tokens[0];
+    let square = 0;
 
     if (!validate_fen(fen).valid) {
       return false;
@@ -313,18 +313,18 @@ const Chess = function (fen) {
     clear();
 
     // e.g., position = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
-    for (var i = 0; i < position.length; i++) {
-      var piece = position.charAt(i);
+    for (let i = 0; i < position.length; i++) {
+      const piece = position.charAt(i);
 
       if (piece === '/') {
         square += 8;
       } else if (is_digit(piece)) {
         square += parseInt(piece, 10);
       } else {
-        var color = (piece < 'a') ? WHITE : BLACK; // if it's a capital letter then it's a white piece
+        const color = (piece < 'a') ? WHITE : BLACK; // if it's a capital letter then it's a white piece
         // convert the square to algebra form (e.g., 0 -> "a8"), and put the piece object, which has
         // a type and a color, on the board
-        put({type: piece.toLowerCase(), color: color}, algebraic(square));
+        put({ type: piece.toLowerCase(), color }, algebraic(square));
         square++;
       }
     }
@@ -338,10 +338,10 @@ const Chess = function (fen) {
       castling.w |= BITS.QSIDE_CASTLE; // (castling.w |= BITS.QSIDE_CASTLE) is castling.w with the 6th bit activated
     }
     if (tokens[2].indexOf('k') > -1) {
-      castling.b |= BITS.KSIDE_CASTLE; 
+      castling.b |= BITS.KSIDE_CASTLE;
     }
     if (tokens[2].indexOf('q') > -1) {
-      castling.b |= BITS.QSIDE_CASTLE; 
+      castling.b |= BITS.QSIDE_CASTLE;
     }
 
     ep_square = (tokens[3] === '-') ? EMPTY : SQUARES[tokens[3]];
@@ -487,7 +487,7 @@ const Chess = function (fen) {
 
     /* do we have an empty castling flag? */
     cflags = cflags || '-';
-    var epflags = (ep_square === EMPTY) ? '-' : algebraic(ep_square);
+    const epflags = (ep_square === EMPTY) ? '-' : algebraic(ep_square);
     return [fen, turn, cflags, epflags, half_moves, move_number].join(' ');
   }
 
@@ -525,7 +525,7 @@ const Chess = function (fen) {
   }
 
   function put(piece, square) {
-    //console.log("put() was called with piece.type = " + piece.type + ", piece.type = " + piece.color + " and square = " + square);
+    // console.log("put() was called with piece.type = " + piece.type + ", piece.type = " + piece.color + " and square = " + square);
     /* check for valid piece object */
     if (!('type' in piece && 'color' in piece)) {
       return false;
@@ -600,25 +600,25 @@ const Chess = function (fen) {
     // then we might append multiple moves: all the possible promoting outcomes)
     function add_move(board, moves, from, to, flags) {
       /* if pawn promotion */
-      if (board[from].type === PAWN &&
-         (rank(to) === RANK_8 || rank(to) === RANK_1)) {
-          var pieces = [QUEEN, ROOK, BISHOP, KNIGHT, KING]; // promotion to king is allowed in antichess
-          for (let i = 0, len = pieces.length; i < len; i++) {
-            moves.push(build_move(board, from, to, flags, pieces[i]));
-          }
+      if (board[from].type === PAWN
+         && (rank(to) === RANK_8 || rank(to) === RANK_1)) {
+        const pieces = [QUEEN, ROOK, BISHOP, KNIGHT, KING]; // promotion to king is allowed in antichess
+        for (let i = 0, len = pieces.length; i < len; i++) {
+          moves.push(build_move(board, from, to, flags, pieces[i]));
+        }
       } else {
         moves.push(build_move(board, from, to, flags));
       }
     }
 
     // initialize moves array and other variables
-    var moves = [];
-    var us = turn;
-    var them = swap_color(us);
-    var second_rank = {b: RANK_7, w: RANK_2};
-    var first_sq = SQUARES.a8;
-    var last_sq = SQUARES.h1;
-    //var single_square = false; // not used since we've disabled castling
+    const moves = [];
+    const us = turn;
+    const them = swap_color(us);
+    const second_rank = { b: RANK_7, w: RANK_2 };
+    const first_sq = SQUARES.a8;
+    const last_sq = SQUARES.h1;
+    // var single_square = false; // not used since we've disabled castling
 
     /* do we want legal moves? */
     // var legal = (typeof options !== 'undefined' && 'legal' in options) ?
@@ -632,7 +632,7 @@ const Chess = function (fen) {
       }
     }
 
-    var capturePossible = 0;
+    let capturePossible = 0;
 
     for (let i = first_sq; i <= last_sq; i++) {
       /* did we run off the end of the board */
@@ -655,23 +655,22 @@ const Chess = function (fen) {
             add_move(board, moves, i, square, BITS.BIG_PAWN);
           }
         }
-        
+
         /* pawn captures */
         for (j = 2; j < 4; j++) {
           var square = i + PAWN_OFFSETS[us][j];
           if (square & 0x88) continue;
 
-          if (board[square] != null &&
-              board[square].color === them) {
-              add_move(board, moves, i, square, BITS.CAPTURE);
-              capturePossible = 1;
+          if (board[square] != null
+              && board[square].color === them) {
+            add_move(board, moves, i, square, BITS.CAPTURE);
+            capturePossible = 1;
           } else if (square === ep_square) {
-              add_move(board, moves, i, ep_square, BITS.EP_CAPTURE);
-              capturePossible = 1;
+            add_move(board, moves, i, ep_square, BITS.EP_CAPTURE);
+            capturePossible = 1;
           }
         }
-      }
-      else {
+      } else {
         for (var j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
           const offset = PIECE_OFFSETS[piece.type][j];
           var square = i;
@@ -702,26 +701,21 @@ const Chess = function (fen) {
     /* are we generating moves for a single square? */
     if (typeof options !== 'undefined' && 'square' in options) {
       if (capturePossible) {
-        const legal_capturing_moves = moves.filter(move =>
-          move.from === SQUARES[options.square] && move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE));
+        const legal_capturing_moves = moves.filter((move) => move.from === SQUARES[options.square] && move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE));
         return legal_capturing_moves;
       }
-      else {
-        const legal_moves = moves.filter(move =>
-          move.from === SQUARES[options.square]);
-        return legal_moves;
-      }
+
+      const legal_moves = moves.filter((move) => move.from === SQUARES[options.square]);
+      return legal_moves;
     }
-    else {
-      if (capturePossible) {
-        const legal_capturing_moves = moves.filter(move =>
-          move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE));
-        return legal_capturing_moves;
-      }
-      else {
-        return moves;
-      }
+
+    if (capturePossible) {
+      const legal_capturing_moves = moves.filter((move) => move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE));
+      return legal_capturing_moves;
     }
+
+    return moves;
+
 
     /* filter out illegal moves */
     // var legal_moves = [];
@@ -732,7 +726,7 @@ const Chess = function (fen) {
     //   }
     //   undo_move();
     // }
-    
+
     // return legal_moves;
   }
 
@@ -836,7 +830,7 @@ const Chess = function (fen) {
   }
 
   function in_check() {
-    //return king_attacked(turn);
+    // return king_attacked(turn);
     return false; // there is no check in the antichess variant
   }
 
@@ -1377,12 +1371,12 @@ const Chess = function (fen) {
       return in_threefold_repetition();
     },
 
-    game_over: function() {
-      return half_moves >= 100 ||
-             //in_checkmate() ||
-             in_stalemate() ||
-             //insufficient_material() ||
-             in_threefold_repetition();
+    game_over() {
+      return half_moves >= 100
+             // in_checkmate() ||
+             || in_stalemate()
+             // insufficient_material() ||
+             || in_threefold_repetition();
     },
 
     validate_fen(fen) {
@@ -1737,4 +1731,4 @@ const Chess = function (fen) {
  * environment */
 if (typeof exports !== 'undefined') exports.Chess = Chess;
 /* export Chess object for any RequireJS compatible environment */
-if (typeof define !== 'undefined') define( function () { return Chess;  });
+if (typeof define !== 'undefined') define(() => Chess);

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Auth } from 'aws-amplify';
-import { API, graphqlOperation } from 'aws-amplify';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
+
+import PropTypes from 'prop-types';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
-import PropTypes from 'prop-types';
 import WithMoveValidation from '../WithMoveValidation';
 import ChatMessages from '../components/ChatMessages';
 import ChatInput from '../components/ChatInput';
@@ -37,32 +37,32 @@ class Game extends Component {
     const username = user ? user.username : 'Anonymous';
     this.setState({
       currentUser: {
-        username: username,
+        username,
       },
-      gameToken: gameToken,
+      gameToken,
     });
 
     this.subscription = API.graphql(
-      graphqlOperation(subscriptions.onUpdateGame)
+      graphqlOperation(subscriptions.onUpdateGame),
     ).subscribe({
-      next: gameData => {
-        const gameState = gameData.value.data.onUpdateGame
-        console.log('game data subscription', gameData, gameState)
+      next: (gameData) => {
+        const gameState = gameData.value.data.onUpdateGame;
+        console.log('game data subscription', gameData, gameState);
         if (gameState.id === this.state.gameToken) {
           this.setState({
-            gameState
-          })
+            gameState,
+          });
         }
-      }
-    })
+      },
+    });
 
     try {
       const retrieveGame = await API.graphql(graphqlOperation(queries.getGame, { id: gameToken }));
       const gameState = retrieveGame.data.getGame;
-      this.setState({ gameState })
-      console.log(this.state.gameState, gameToken)
+      this.setState({ gameState });
+      console.log(this.state.gameState, gameToken);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 
@@ -98,14 +98,14 @@ class Game extends Component {
 
   render() {
     const { gameToken, gameState } = this.state;
-    console.log(gameState)
+    console.log(gameState);
     return (
       <div id="game-container">
 
-        <div className="row" style={{minHeight: '50px'}}>
-        {
-          
-        }
+        <div className="row" style={{ minHeight: '50px' }}>
+          {
+
+          }
         </div>
 
         <div className="row">

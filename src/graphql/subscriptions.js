@@ -1,72 +1,135 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateUser = `subscription OnCreateUser {
+  onCreateUser {
+    id
+    username
+    points
+    skillLevel
+    rank
+  }
+}
+`;
+export const onUpdateUser = `subscription OnUpdateUser {
+  onUpdateUser {
+    id
+    username
+    points
+    skillLevel
+    rank
+  }
+}
+`;
+export const onDeleteUser = `subscription OnDeleteUser {
+  onDeleteUser {
+    id
+    username
+    points
+    skillLevel
+    rank
+  }
+}
+`;
 export const onCreateGame = `subscription OnCreateGame {
   onCreateGame {
     id
-    creator
+    gameRoomID
+    creator {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
     variant
-    started
-    white
-    black
-    history
-    fen
-    pgn
-    turn
-    result
   }
 }
 `;
 export const onUpdateGame = `subscription OnUpdateGame {
   onUpdateGame {
     id
-    creator
+    gameRoomID
+    creator {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
     variant
-    started
-    white
-    black
-    history
-    fen
-    pgn
-    turn
-    result
   }
 }
 `;
 export const onDeleteGame = `subscription OnDeleteGame {
   onDeleteGame {
     id
-    creator
+    gameRoomID
+    creator {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
     variant
-    started
-    white
-    black
-    history
+  }
+}
+`;
+export const onCreateGameRoom = `subscription OnCreateGameRoom {
+  onCreateGameRoom {
+    id
+    opponent {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
+    variant
     fen
-    pgn
-    turn
-    result
   }
 }
 `;
-export const onCreateSocketId = `subscription OnCreateSocketId {
-  onCreateSocketId {
+export const onUpdateGameRoom = `subscription OnUpdateGameRoom {
+  onUpdateGameRoom {
     id
-    socketId
+    opponent {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
+    variant
+    fen
   }
 }
 `;
-export const onUpdateSocketId = `subscription OnUpdateSocketId {
-  onUpdateSocketId {
+export const onDeleteGameRoom = `subscription OnDeleteGameRoom {
+  onDeleteGameRoom {
     id
-    socketId
-  }
-}
-`;
-export const onDeleteSocketId = `subscription OnDeleteSocketId {
-  onDeleteSocketId {
-    id
-    socketId
+    opponent {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
+    variant
+    fen
   }
 }
 `;

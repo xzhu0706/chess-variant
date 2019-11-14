@@ -1,0 +1,26 @@
+type User @model {
+  id: ID!
+  username: String!
+  points: Int #not required for now
+  skillLevel: String #not required for now
+  rank: Int #not required for now
+}
+
+type Game @model {
+  id: ID!
+  gameRoomID: ID!
+  creator: User @connection
+  creatorOrientation: String!
+  time: String!
+  variant: String!
+}
+
+type GameRoom @model {
+  id: ID!
+  opponent: User @connection
+  creatorOrientation: String!
+  time: String!
+  variant: String!
+  fen: String!
+}
+

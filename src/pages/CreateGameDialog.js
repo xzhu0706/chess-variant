@@ -12,98 +12,98 @@ import { withStyles } from '@material-ui/core/styles';
 
 
 const PrettoSlider = withStyles({
-    root: {
-      color: '#52af77',
-      height: 8,
+  root: {
+    color: '#52af77',
+    height: 8,
+  },
+  thumb: {
+    height: 24,
+    width: 24,
+    backgroundColor: '#fff',
+    border: '2px solid #333333',
+    marginTop: -8,
+    marginLeft: -12,
+    '&:focus,&:hover,&$active': {
+      boxShadow: 'inherit',
     },
-    thumb: {
-      height: 24,
-      width: 24,
-      backgroundColor: '#fff',
-      border: '2px solid #333333',
-      marginTop: -8,
-      marginLeft: -12,
-      '&:focus,&:hover,&$active': {
-        boxShadow: 'inherit',
-      },
-    },
-    active: {},
-    valueLabel: {
-      left: 'calc(-50% + 4px)',
-    },
-    track: {
-      height: 8,
-      borderRadius: 4,
-    },
-    rail: {
-      height: 8,
-      borderRadius: 4,
-      backgroundColor: '#333333',
-    },
-  })(Slider);
+  },
+  active: {},
+  valueLabel: {
+    left: 'calc(-50% + 4px)',
+  },
+  track: {
+    height: 8,
+    borderRadius: 4,
+  },
+  rail: {
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#333333',
+  },
+})(Slider);
 
 class CreateGameDialog extends Component {
-    constructor(props){
-        super(props)
-        this.state = {
-            minutesPerSide: 5,
-            variant: 'standard',
-        }
-        this.variant = 'standard';
-        this.timePerSide = 5;
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      minutesPerSide: '5',
+      variant: 'standard',
+    };
+  }
 
     setVariant = (e) => {
-        this.setState({variant: e.target.value})
+      this.setState({ variant: e.target.value });
     }
 
     setMinutesPerSide = (e) => {
-        this.setState({minutesPerSide: e.target.value});
-        console.log(e.target.value)
+      this.setState({ minutesPerSide: e.target.value });
+      console.log(e.target.value);
     }
 
     render() {
-        return (
-            <Dialog open={this.props.showDialog} maxWidth="sm" fullWidth>
-                <DialogTitle id="form-dialog-title">Create a game</DialogTitle>
-                <DialogContent>
-                    <FormControl style={{ minWidth: 120 }}>
-                        <select
-                            value = {this.state.variant}
-                            onChange = {this.setVariant}
-                        >
-                            <option value='Standard'>Standard</option>
-                            <option value='Antichess'>Antichess</option>
-                        </select>
+      return (
+        <Dialog open={this.props.showDialog} maxWidth="sm" fullWidth>
+          <DialogTitle id="form-dialog-title">Create a game</DialogTitle>
+          <DialogContent>
+            <FormControl style={{ minWidth: 120 }}>
+              <select
+                value={this.state.variant}
+                onChange={this.setVariant}
+              >
+                <option value="Standard">Standard</option>
+                <option value="Antichess">Antichess</option>
+              </select>
 
-                    </FormControl>
-                    <div style={{ width: '100%', marginTop: "15px" }}>
-                        <InputLabel id="demo-simple-select-label">Minutes per side: {this.state.minutesPerSide}</InputLabel>
-                        <input 
-                            onChange = { this.setMinutesPerSide } 
-                            type="range" 
-                            className="custom-range" 
-                            id="customRange1"
-                         />
+            </FormControl>
+            <div style={{ width: '100%', marginTop: '15px' }}>
+              <InputLabel id="demo-simple-select-label">
+                Minutes per side: {this.state.minutesPerSide}
+              </InputLabel>
+              <input
+                onChange={this.setMinutesPerSide}
+                type="range"
+                className="custom-range"
+                id="customRange1"
+              />
 
-                    </div>
-                    <div style={{display:'flex', justifyContent:'center'}}>
-                        <Button 
-                            style={{marginRight:"20px", padding: "20px", color: 'black'}}
-                            variant='contained'
-                            onClick = {() => this.props.createGame({orientation: 'white', variant: this.variant, minutesPerSide: this.minutesPerSide})}
-                        > WHITE
-                        </Button>
-                        <Button 
-                            style={{padding: "20px", backgroundColor: '#333333', color: 'white'}}
-                            variant='contained'
-                            onClick = {() => this.props.createGame({orientation: 'black', variant: this.variant, minutesPerSide: this.minutesPerSide})}
-                        >BLACK
-                        </Button>
-                    </div>
-                </DialogContent>
-            </Dialog>
-        );
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Button
+                style={{ marginRight: '20px', padding: '20px', color: 'black' }}
+                variant="contained"
+                onClick={(gameInfo, event) => this.props.createGame(event, {creatorOrientation: 'white', variant: this.state.variant, time: this.state.minutesPerSide})}
+              >WHITE
+              </Button>
+              <Button
+                style={{ padding: '20px', backgroundColor: '#333333', color: 'white' }}
+                variant="contained"
+                onClick={(event) => this.props.createGame(event, {creatorOrientation: 'black', variant: this.state.variant, time: this.state.minutesPerSide})}
+              >BLACK
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      );
     }
 }
 

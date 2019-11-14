@@ -1,10 +1,10 @@
 {
-    "AppSyncApiName": "ChessVariantsAPI",
+    "AppSyncApiName": "chessvariants",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
     "DynamoDBEnableServerSideEncryption": "false",
     "AuthCognitoUserPoolId": {
         "Fn::GetAtt": [
-            "authchessvariant878b0ed7",
+            "authchessvariants34a8e197",
             "Outputs.UserPoolId"
         ]
     }
