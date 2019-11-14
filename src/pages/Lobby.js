@@ -1,8 +1,10 @@
 import React, { Component, forwardRef } from 'react';
 import MaterialTable from 'material-table';
 import Container from '@material-ui/core/Container';
-
+import { Link } from 'react-router-dom';
 import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../graphql/queries';
+import * as subscriptions from '../graphql/subscriptions';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Check from '@material-ui/icons/Check';
@@ -19,50 +21,35 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Button from '@material-ui/core/Button';
-import * as queries from '../graphql/queries';
+
 
 const lobbyColumns = [
-  {
-    title: 'Player',
-    field: 'player',
-    cellStyle: {
-      backgroundColor: '#FFF',
-      fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
-      fontSize: '16px',
-      color: '#333333',
-    },
-  },
-  {
-    title: 'Skill Level',
-    field: 'skillLevel',
-    cellStyle: {
-      backgroundColor: '#FFF',
-      fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
-      fontSize: '16px',
-      color: '#333333',
-    },
-  },
-  {
-    title: 'Time',
-    field: 'timing',
-    cellStyle: {
-      backgroundColor: '#FFF',
-      fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
-      fontSize: '16px',
-      color: '#333333',
-    },
-  },
-  {
-    title: 'Variant',
-    field: 'variant',
-    cellStyle: {
-      backgroundColor: '#FFF',
-      fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
-      fontSize: '16px',
-      color: '#333333',
-    },
-  },
-];
+    {title: 'Player', field: 'player', cellStyle: {
+        backgroundColor: '#FFF',
+        fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+        fontSize: "16px",
+        color: '#333333'
+    }},
+    {title: 'Skill Level', field: 'skillLevel', cellStyle: {
+        backgroundColor: '#FFF',
+        fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+        fontSize: "16px",
+        color: '#333333'
+    }},
+    {title: 'Time', field: 'timing', cellStyle: {
+        backgroundColor: '#FFF',
+        fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+        fontSize: "16px",
+        color: '#333333'
+    }},
+    {title: 'Variant', field: 'variant', cellStyle: {
+        backgroundColor: '#FFF',
+        fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+        fontSize: "16px",
+        color: '#333333'
+    }},
+    {title: '', field: 'join'}
+]
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -85,20 +72,43 @@ const tableIcons = {
 };
 
 
-class Lobby extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      games: [],
-    };
-  }
+class Lobby extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            games: []
+        }
+    }
 
-  async componentDidMount() {
-    const games = await API.graphql(graphqlOperation(queries.listGames));
-    this.setState({ games });
-  }
+    async componentDidMount(){
+        const queryResult = await API.graphql(graphqlOperation(queries.listGames))
+        const games = queryResult.map((game) => {
+            let player = games.data.user? game.data.user.username : 'anonymous';
+            let skillLevel = games.data.user? game.data.user.skillLevel : 'n/a';
+            let timing = games.data.time;
+            let variant = games.data.variant;
+            return {
+               player: player, skillLevel: skillLevel, timing: timing, variant: variant
+            }
 
-  render() {
+        })
+        this.setState({games})
+        const subscription = API.graphql(
+            graphqlOperation(subscriptions.onCreateGame)
+        ).subscribe({
+            next: (gameData) => {
+                let creator = gameData.user
+                let player = creator? creator.username : 'anonymous'
+                let skillLevel = creator? creator.skillLevel: 'anonymous'
+                let timing = gameData.time
+                let variant = gameData.variant
+                let games = [{player, skillLevel, timing, variant}, ...games]
+                this.setState({games})
+            }
+        });
+    }
+
+   render() {
     const lobbyStyle = {
       display: 'flex',
       flexDirection: 'column',
@@ -115,41 +125,42 @@ class Lobby extends Component {
       color: '#FFF',
       fontFamily: 'AppleSDGothicNeo-Bold',
     };
+
     return (
-      <Container maxWidth="sm" style={lobbyStyle}>
-        <Button style={createGameButtonStyle} variant="contained" onClick={this.props.makeDialogVisible}>
-                    Create a game
-        </Button>
-        <div style={{ width: '100%' }}>
-          <MaterialTable
-            icons={tableIcons}
-            columns={lobbyColumns}
-            data={this.props.games}
-            title="Lobby"
-            maxWidth="md"
-            options={{
-              headerStyle: {
-                backgroundColor: '#FFF',
-                fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
-                fontSize: '18px',
-                color: '#333333',
-              },
-              paging: false,
-              searchFieldStyle: {
-                fontSize: '14px',
-                fontFamily: 'verdana',
-              },
-            }}
-            localization={{
-              toolbar: {
-                searchPlaceholder: 'keywords',
-              },
-            }}
-          />
-        </div>
-      </Container>
-    );
-  }
+        <Container maxWidth="sm" style={lobbyStyle}>
+            <Button style={createGameButtonStyle} variant="contained" onClick={this.props.makeDialogVisible}>
+                Create a game
+            </Button>
+            <div style={{ width: "100%" }}>
+                <MaterialTable
+                    icons={tableIcons}
+                    columns={lobbyColumns}
+                    data={this.state.games}
+                    title='Lobby'
+                    maxWidth="md"
+                    options={{
+                        headerStyle: {
+                            backgroundColor: '#FFF',
+                            fontFamily: "AppleSDGothicNeo-SemiBold, verdana",
+                            fontSize: "18px",
+                            color: '#333333'
+                        },
+                        paging: false,
+                        searchFieldStyle: {
+                            fontSize: "14px",
+                            fontFamily: 'verdana'
+                        }
+                    }}
+                    localization={{
+                        toolbar: {
+                            searchPlaceholder: "keywords"
+                        }
+                    }}
+                />
+            </div>
+        </Container>
+        )
+    }
 }
 
 export default Lobby;

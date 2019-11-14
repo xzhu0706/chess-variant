@@ -2,20 +2,18 @@ type User @model {
   id: ID!
   username: String!
   points: Int!
-  skillLevel: String!
+  skillLevel: String
   rank: Int!
 }
 
 type Game @model {
   id: ID!
   creator: User @connection
-  creatorSocketId: String!
   creatorOrientation: String!
-  variant: String
+  currentFen: String!
+  time: String!
+  available: Boolean!
+  variant: String!
 }
 
-type SocketId @model {
-  id: ID!
-  socketId: String!
-}
 

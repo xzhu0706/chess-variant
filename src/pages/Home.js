@@ -5,6 +5,9 @@ import Lobby from './Lobby';
 import PopularVariants from '../components/PopularVariants';
 import AntiChess from '../Images/AntiChess.png';
 import variant2 from '../Images/variant2.jpg';
+import { API, graphqlOperation } from 'aws-amplify';
+import * as mutations from '../graphql/mutations';
+
 
 const games = [
   {
@@ -33,22 +36,27 @@ class Home extends Component {
     };
   }
 
-  makeDialogVisible = () => {
+  makeDialogVisible = async () => {
     this.setState({ showDialog: true });
+  }
+
+  createGame(gameInfo) {
+
   }
 
   render() {
     return (
       <div>
         <CreateGameDialog 
-          showDialog={this.state.showDialog}
+          showDialog={ this.state.showDialog }
+          createGame = { this.createGame }
         />
         <Lobby 
           games={games} 
-          makeDialogVisible={this.makeDialogVisible} 
+          makeDialogVisible={ this.makeDialogVisible } 
         />
 
-        <h1 className="text-center" style={{ fontFamily: 'AppleSDGothicNeo-Bold' }}>Popular Variants</h1>
+        {/*<h1 className="text-center" style={{ fontFamily: 'AppleSDGothicNeo-Bold' }}>Popular Variants</h1>
         <Row>
           <Col className="text-center">
             <PopularVariants name="Anti Chess" src={AntiChess} description="Win by losing all your pieces or being stalemated" />
@@ -56,7 +64,7 @@ class Home extends Component {
           <Col className="text-center">
             <PopularVariants src={variant2} />
           </Col>
-        </Row>
+    </Row>*/}
       </div>
     );
   }

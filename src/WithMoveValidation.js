@@ -2,16 +2,20 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Chess from  "chess.js";
 import Chessboard from "chessboardjsx";
-import rough from "roughjs"; // can give the squares a rough appearance
+// import rough from "roughjs"; // can give the squares a rough appearance
 import GameData from './GameData.js';
 import wn_test from "./wn.svg"; // testing the use of custom icons
 import bn_test from "./bn.svg"; // testing the use of custom icons
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from './graphql/queries';
+import * as mutations from './graphql/mutations';
+
 
 class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = {
-    fen: "8/p1p5/2B3n1/8/8/8/P1PQ1KPP/R5NR b - - 0 15",
+    fen: "",
     pgn: "",
     dropSquareStyle: {}, // square styles for active drop square
     squareStyles: {}, // custom square styles
@@ -32,12 +36,36 @@ class HumanVsHuman extends Component {
   }
 
   componentDidMount() {
-    this.game = new Chess(this.state.fen); // initialize the game
+    console.log('component reload', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn)
+    this.game = new Chess(this.props.fen); // initialize the game
+    // note that if this.props.fen is improperly formed,
+    // chess.js will just initialize the game to the default position
     this.setState({
+      fen: this.game.fen(),
       pgn: this.game.pgn(),
-      turn: this.game.turn()
+      turn: this.game.turn(),
     });
     this.updateGameResult(); // in case the FEN string gives an ending position
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('getting props', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn, this.game.fen())
+    if (nextProps.fen !== this.props.fen) {
+      this.setState({
+        fen: nextProps.fen,
+      })
+      this.game = new Chess(nextProps.fen)
+    }
+    if (nextProps.pgn !== this.props.pgn) {
+      this.setState({
+        pgn: nextProps.pgn
+      })
+    }
+    if (nextProps.turn !== this.props.turn)  {
+      this.setState({
+        turn: nextProps.turn
+      })
+    }
   }
 
   // highlight hint squares
@@ -153,7 +181,26 @@ class HumanVsHuman extends Component {
     if (this.game.game_over()) {
       this.terminateGame();
     }
+
+    // call API
+    if (this.props.gameToken) {
+      console.log('update db')
+      this.updateDatabase();
+    }
   };
+
+  updateDatabase = async () => {
+    // TODO
+    const data = {
+      id: this.props.gameToken,
+      fen: this.game.fen(),
+      pgn: this.game.pgn(),
+      turn: this.game.turn(),
+      // game result?
+    }
+    const updateGame = await API.graphql(graphqlOperation(mutations.updateGame, {input: data}));
+    console.log('update db', updateGame)
+  }
 
   // When right clicking, we preserve the old squareStyles (we merely append the new style).
   // This will allow the user to have multiple squares be highlighted simultaneously,
@@ -189,10 +236,12 @@ class HumanVsHuman extends Component {
   }
 }
 
-export default function WithMoveValidation() {
+export default function WithMoveValidation(gameToken='', turn='w', pgn='', start_fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', customWidth=540, showData=true) {
+  console.log('func reload', start_fen, pgn, gameToken, turn)
   return (
     <div>
-      <HumanVsHuman>
+      <HumanVsHuman fen={start_fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'} pgn={pgn} turn={turn} gameToken={gameToken}>
+        { /* HumanVsHuman calls the following function as this.props.children() in its render() method */ }
         {({
           squareStyles,
           fen,
@@ -206,14 +255,19 @@ export default function WithMoveValidation() {
           onSquareRightClick,
         }) => (
           <div className="row">
-            <div className="col-lg-5">
-              <GameData fen={fen} pgn={pgn} turn={turn} game_state={game_state} />
-            </div>
+            {
+              showData ? (
+              <div className="col-lg-5">
+                <GameData fen={fen} pgn={pgn} turn={turn} game_state={game_state} />
+              </div>
+              ) :
+              null
+            }
             <div className="col-lg-7">
               <Chessboard
                 id="humanVsHuman"
-                width={540}
-                roughSquare={roughSquare}
+                width={customWidth}
+                //roughSquare={roughSquare}
                 position={fen}
                 onDrop={onDrop}
                 boardStyle={{
@@ -259,15 +313,15 @@ export default function WithMoveValidation() {
   );
 }
 
-//give squares a rough appearance using roughjs
-const roughSquare = ({ squareElement, squareWidth }) => {
-  let rc = rough.svg(squareElement);
-  const chessSquare = rc.rectangle(0, 0, squareWidth, squareWidth, {
-    roughness: 0.5,
-    bowing: 2.5,
-    strokeWidth: 0.5,
-    //fill: "AliceBlue",
-    //fillStyle: "cross-hatch" // why doesn't this work? (doesn't create cross hatches)?
-  });
-  squareElement.appendChild(chessSquare);
-};
+// give squares a rough appearance using roughjs
+// const roughSquare = ({ squareElement, squareWidth }) => {
+//   let rc = rough.svg(squareElement);
+//   const chessSquare = rc.rectangle(0, 0, squareWidth, squareWidth, {
+//     roughness: 0.5,
+//     bowing: 2.5,
+//     strokeWidth: 0.5,
+//     //fill: "AliceBlue",
+//     //fillStyle: "cross-hatch" // why doesn't this work? (doesn't create cross hatches)?
+//   });
+//   squareElement.appendChild(chessSquare);
+// };

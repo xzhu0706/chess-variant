@@ -74,7 +74,7 @@ class NavBar extends Component {
           <Navbar.Brand style={{ fontFamily: 'chalkduster' }}>
             <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
             <Link to="/">
-              <a style={{ color: '#333333', fontSize: '28px', marginLeft: '5px' }}>Chess Variants</a>
+              <a href="/" style={{ color: '#333333', fontSize: '28px', marginLeft: '5px' }}>Chess Variants</a>
             </Link>
           </Navbar.Brand>
           <Nav className="ml-auto">
@@ -86,7 +86,7 @@ class NavBar extends Component {
             {username
               ? (
                 <Nav className="ml-auto">
-                  <Link to="/game/123">
+                  <Link to="/account">
                     <Nav.Item className="nav-link">
                       Hello
                       {' '}

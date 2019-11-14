@@ -17,12 +17,6 @@ function GameData(props) {
             <div>FEN: {props.fen}</div>
             <div>PGN: {props.pgn}</div>
             <div style={mystyle}>{state_msg}</div>
-            Rules: 
-            <ol>
-                <li>You win by losing all of your pieces or achieving stalemate.</li>
-                <li>Capturing is compulsory whenever possible.</li>
-                <li>The king is not a special piece: it can be captured, castling isn't allowed, and you can promote to a king.</li>
-            </ol> 
         </div>
     );
 }

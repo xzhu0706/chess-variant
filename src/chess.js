@@ -69,23 +69,12 @@ const Chess = function (fen) {
   //   k: [-17, -16, -15,   1,  17, 16, 15,  -1]
   // };
 
-<<<<<<< HEAD
-  // modified:
-  const PIECE_OFFSETS = {
-    n: [-18, -33, -31, -14, 18, 33, 31, 14,
-      -17, -16, -15, 1, 17, 16, 15, -1],
-    b: [-17, -15, 17, 15],
-    r: [-16, 1, 16, -1], // //
-    q: [-17, -16, -15, 1, 17, 16, 15, -1],
-    k: [-17, -16, -15, 1, 17, 16, 15, -1],
-=======
   var PIECE_OFFSETS = {
     n: [-18, -33, -31, -14,  18, 33, 31,  14],
     b: [-17, -15,  17,  15],
     r: [-16,   1,  16,  -1],
     q: [-17, -16, -15,   1,  17, 16, 15,  -1],
     k: [-17, -16, -15,   1,  17, 16, 15,  -1]
->>>>>>> upstream/master
   };
 
   // original:
@@ -108,29 +97,6 @@ const Chess = function (fen) {
   // ];
 
 
-<<<<<<< HEAD
-  // note that assuming that the piece being attacked is in the center,
-  // the numbers mean: which pieces can attack the center piece?
-  // the diagonals are 20 because bishops and queens are the only pieces
-  // that can attack from those positions: this is 010100=kqrbnp (see SHIFTS which is a few lines down).
-  // modified so that rooks can move like knights
-  const ATTACKS = [
-    20, 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 20, 0,
-    0, 20, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 20, 0, 0,
-    0, 0, 20, 0, 0, 0, 0, 24, 0, 0, 0, 0, 20, 0, 0, 0,
-    0, 0, 0, 20, 0, 0, 0, 24, 0, 0, 0, 20, 0, 0, 0, 0,
-    0, 0, 0, 0, 20, 0, 0, 24, 0, 0, 20, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 20, 2, 24, 2, 20, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 2, 55, 58, 55, 2, 0, 0, 0, 0, 0, 0,
-    24, 24, 24, 24, 24, 24, 58, 0, 58, 24, 24, 24, 24, 24, 24, 0,
-    0, 0, 0, 0, 0, 2, 55, 58, 55, 2, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 20, 2, 24, 2, 20, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 20, 0, 0, 24, 0, 0, 20, 0, 0, 0, 0, 0,
-    0, 0, 0, 20, 0, 0, 0, 24, 0, 0, 0, 20, 0, 0, 0, 0,
-    0, 0, 20, 0, 0, 0, 0, 24, 0, 0, 0, 0, 20, 0, 0, 0,
-    0, 20, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 20, 0, 0,
-    20, 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 20,
-=======
   // the ATTACKS array is a bit-mask of attacks based on a 6-bit string of the form kqrbnp.
   // For example:
   // kqrbnp = 010100 = 20 (only the queen and bishop can attack the center piece)
@@ -152,7 +118,6 @@ const Chess = function (fen) {
      0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
      0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
     20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20
->>>>>>> upstream/master
   ];
 
   // how to shift the board in order to make a move (?)
@@ -322,11 +287,6 @@ const Chess = function (fen) {
   }
 
   function load(fen) {
-<<<<<<< HEAD
-    const tokens = fen.split(/\s+/);
-    const position = tokens[0];
-    let square = 0;
-=======
     var tokens = fen.split(/\s+/);
     /*
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
@@ -345,7 +305,6 @@ const Chess = function (fen) {
     */
     var position = tokens[0];
     var square = 0;
->>>>>>> upstream/master
 
     if (!validate_fen(fen).valid) {
       return false;

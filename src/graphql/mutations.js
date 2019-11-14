@@ -1,81 +1,51 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createUser = `mutation CreateUser($input: CreateUserInput!) {
-  createUser(input: $input) {
-    id
-    username
-    points
-    skillLevel
-    rank
-  }
-}
-`;
-export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
-  updateUser(input: $input) {
-    id
-    username
-    points
-    skillLevel
-    rank
-  }
-}
-`;
-export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
-  deleteUser(input: $input) {
-    id
-    username
-    points
-    skillLevel
-    rank
-  }
-}
-`;
 export const createGame = `mutation CreateGame($input: CreateGameInput!) {
   createGame(input: $input) {
     id
-    creator {
-      id
-      username
-      points
-      skillLevel
-      rank
-    }
-    creatorSocketId
-    creatorOrientation
+    creator
     variant
+    started
+    white
+    black
+    history
+    fen
+    pgn
+    turn
+    result
   }
 }
 `;
 export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
   updateGame(input: $input) {
     id
-    creator {
-      id
-      username
-      points
-      skillLevel
-      rank
-    }
-    creatorSocketId
-    creatorOrientation
+    creator
     variant
+    started
+    white
+    black
+    history
+    fen
+    pgn
+    turn
+    result
   }
 }
 `;
 export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
   deleteGame(input: $input) {
     id
-    creator {
-      id
-      username
-      points
-      skillLevel
-      rank
-    }
-    creatorSocketId
-    creatorOrientation
+    creator
     variant
+    started
+    white
+    black
+    history
+    fen
+    pgn
+    turn
+    result
   }
 }
 `;
