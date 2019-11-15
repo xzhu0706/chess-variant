@@ -125,28 +125,37 @@ class Lobby extends Component {
         this.setState({ games })
       },
     });
+
+    API.graphql(graphqlOperation(subscriptions.onDeleteGame),).subscribe({
+      next: (gameData) => {
+        let game = gameData.value.data.onDeleteGame
+        let gameRoomID = game.gameRoomID
+        
+      },
+    });
   }
 
   createGame = async (event, gameInfo) => {
     this.setState({showDialog: false})
     gameInfo['fen'] = 'init'
-    //alert(JSON.stringify(gameInfo))
     let gameRoom = await API.graphql(graphqlOperation(mutations.createGameRoom, { 'input': gameInfo }))
     let gameRoomID = gameRoom.data.createGameRoom.id
-    alert(gameRoomID)
     delete gameInfo.fen
     gameInfo['gameRoomID'] = gameRoomID
     let userInfo = await Auth.currentUserInfo()
-    //gameInfo['creator'] = {userInfo.id, userInfo.username}
-    alert(JSON.stringify(gameInfo))
+    if(userInfo) {
+      let user = {}
+      user.id = userInfo.id
+      user.username = userInfo.username
+      gameInfo['creator'] = user
+    }
     let newGame = await API.graphql(graphqlOperation(mutations.createGame, { input: gameInfo }))
-    alert(newGame)
   }
 
   constructRowFromGameData = (game) => {
-    const creator = game.user
+    const creator = game.creator
     const player = creator ? creator.username : 'anonymous'
-    const skillLevel = creator ? creator.skillLevel : 'n/a'
+    const skillLevel = 'n/a'
     const timing = game.time;
     const variant = game.variant
     const gameRoomID = game.gameRoomID
@@ -157,6 +166,10 @@ class Lobby extends Component {
     this.setState({showDialog: true})
   }
 
+  joinGame = (event, rowData) => {
+    alert(JSON.stringify(rowData))
+  }
+
   render() {
     const lobbyStyle = {
       display: 'flex',
@@ -164,8 +177,8 @@ class Lobby extends Component {
       alignItems: 'flex-end',
       padding: '70px 0',
       textAlign: 'center',
-
     };
+
     const createGameButtonStyle = {
       width: '30%',
       padding: '10px',
@@ -183,6 +196,7 @@ class Lobby extends Component {
         </Button>
         <div style={{ width: '100%' }}>
           <MaterialTable
+            onRowClick = {(event, rowData) => this.joinGame(event, rowData)}
             icons={tableIcons}
             columns={lobbyColumns}
             data={this.state.games}
@@ -212,4 +226,5 @@ class Lobby extends Component {
     );
   }
 }
+
 export default Lobby;
