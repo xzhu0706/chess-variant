@@ -33,7 +33,7 @@
  * https://github.com/jhlywa/chess.js/blob/master/LICENSE
  */
 
-var Chess = function(fen) {
+var Chess = function(fen, variant=0) {
 
   /* jshint indent: false */
 
@@ -55,6 +55,12 @@ var Chess = function(fen) {
 
   var POSSIBLE_RESULTS = ['1-0', '0-1', '1/2-1/2', '*'];
 
+  var STANDARD = 0;
+  var ANTICHESS = 1;
+  var ATOMIC = 2;
+  var RIFLE = 3;
+  var GRID = 4;
+  var POCKET = 5;
 
   var PAWN_OFFSETS = {
     b: [16, 32, 17, 15],
@@ -487,11 +493,10 @@ var Chess = function(fen) {
     var sq = SQUARES[square];
 
     /* don't let the user place more than one king */
-    /* commenting this out: the king is not a special piece in antichess */
-    // if (piece.type == KING &&
-    //     !(kings[piece.color] == EMPTY || kings[piece.color] == sq)) {
-    //   return false;
-    // }
+    if (piece.type == KING && !(variant == ANTICHESS) &&
+        !(kings[piece.color] == EMPTY || kings[piece.color] == sq)) {
+      return false;
+    }
 
     board[sq] = {type: piece.type, color: piece.color};
     if (piece.type === KING) {
@@ -540,12 +545,18 @@ var Chess = function(fen) {
 
   function generate_moves(options) {
     // add_move() appends a move to the list of available moves (if a pawn is moving to rank 1 or rank 8,
-    // then we might append multiple moves: all the possible promoting outcomes)
+    // then we might append multiple moves, i.e., all the possible promoting outcomes)
     function add_move(board, moves, from, to, flags) {
       /* if pawn promotion */
       if (board[from].type === PAWN &&
          (rank(to) === RANK_8 || rank(to) === RANK_1)) {
-          var pieces = [QUEEN, ROOK, BISHOP, KNIGHT, KING]; // promotion to king is allowed in antichess
+          var pieces = [QUEEN, ROOK, BISHOP, KNIGHT];
+          
+          // promotion to king is allowed in antichess
+          if (variant == ANTICHESS) {
+            pieces.push[KING];
+          }
+
           for (let i = 0, len = pieces.length; i < len; i++) {
             moves.push(build_move(board, from, to, flags, pieces[i]));
           }
@@ -561,15 +572,22 @@ var Chess = function(fen) {
     var second_rank = {b: RANK_7, w: RANK_2};
     var first_sq = SQUARES.a8;
     var last_sq = SQUARES.h1;
-    //var single_square = false; // not used since we've disabled castling
+    var single_square = false; // not used since we've disabled castling
 
     /* do we want legal moves? */
-    // var legal = (typeof options !== 'undefined' && 'legal' in options) ?
-    //             options.legal : true;
+    var legal = (typeof options !== 'undefined' && 'legal' in options) ?
+                options.legal : true;
 
     /* are we generating moves for a single square? */
+    /* in antichess and other variants with mandatory capture rules, we must initially
+    generate moves for all pieces to check whether the player can capture */
     if (typeof options !== 'undefined' && 'square' in options) {
-      if (!(options.square in SQUARES)) {
+      if (options.square in SQUARES) {
+        if (variant !== ANTICHESS) {
+          first_sq = last_sq = SQUARES[options.square];
+        }
+        single_square = true;
+      } else {
         /* invalid square */
         return [];
       }
@@ -613,8 +631,7 @@ var Chess = function(fen) {
               capturePossible = 1;
           }
         }
-      }
-      else {
+      } else {
         for (var j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
           var offset = PIECE_OFFSETS[piece.type][j];
           var square = i;
@@ -639,44 +656,89 @@ var Chess = function(fen) {
       }
     }
 
-    /* now that we've added moves on all the squares, if capturePossible is 1, we have to restrict
-       those moves to capturing moves */
 
-    /* are we generating moves for a single square? */
-    if (typeof options !== 'undefined' && 'square' in options) {
-      if (capturePossible) {
-        const legal_capturing_moves = moves.filter(move =>
-          move.from === SQUARES[options.square] && move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE));
-        return legal_capturing_moves;
+    if (variant === ANTICHESS) {
+      /* now that we've generated moves on all the squares, if capturePossible is 1, we have to restrict
+        the moves to capturing moves */
+      /* are we generating capturing moves for a single square? */
+      if (typeof options !== 'undefined' && 'square' in options) {
+        if (capturePossible) {
+          const legal_capturing_moves = moves.filter(move =>
+            move.from === SQUARES[options.square] && move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE));
+          return legal_capturing_moves;
+        }
+        else {
+          const legal_moves = moves.filter(move =>
+            move.from === SQUARES[options.square]);
+          return legal_moves;
+        }
       }
       else {
-        const legal_moves = moves.filter(move =>
-          move.from === SQUARES[options.square]);
-        return legal_moves;
-      }
-    }
-    else {
-      if (capturePossible) {
-        const legal_capturing_moves = moves.filter(move =>
-          move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE));
-        return legal_capturing_moves;
-      }
-      else {
-        return moves;
+        /* generate capturing moves for all squares */
+        if (capturePossible) {
+          const legal_capturing_moves = moves.filter(move =>
+            move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE));
+          return legal_capturing_moves;
+        }
+        else {
+          return moves;
+        }
       }
     }
 
-    /* filter out illegal moves */
-    // var legal_moves = [];
-    // for (var i = 0, len = moves.length; i < len; i++) {
-    //   make_move(moves[i]);
-    //   if (!king_attacked(us)) {
-    //     legal_moves.push(moves[i]);
-    //   }
-    //   undo_move();
-    // }
-    
-    // return legal_moves;
+    /* check for castling if: a) we're generating all moves, or b) we're doing
+     * single square move generation on the king's square
+     */
+    if ((!single_square || last_sq === kings[us]) && variant !== ANTICHESS) {
+      /* king-side castling */
+      if (castling[us] & BITS.KSIDE_CASTLE) {
+        var castling_from = kings[us];
+        var castling_to = castling_from + 2;
+
+        if (
+          board[castling_from + 1] == null &&
+          board[castling_to] == null &&
+          !attacked(them, kings[us]) &&
+          !attacked(them, castling_from + 1) &&
+          !attacked(them, castling_to)
+        ) {
+          add_move(board, moves, kings[us], castling_to, BITS.KSIDE_CASTLE);
+        }
+      }
+
+      /* queen-side castling */
+      if (castling[us] & BITS.QSIDE_CASTLE) {
+        var castling_from = kings[us];
+        var castling_to = castling_from - 2;
+
+        if (
+          board[castling_from - 1] == null &&
+          board[castling_from - 2] == null &&
+          board[castling_from - 3] == null &&
+          !attacked(them, kings[us]) &&
+          !attacked(them, castling_from - 1) &&
+          !attacked(them, castling_to)
+        ) {
+          add_move(board, moves, kings[us], castling_to, BITS.QSIDE_CASTLE);
+        }
+      }
+    }
+
+    if (!legal) {
+      /* return all pseudo-legal moves (this includes moves that allow the king to be captured) */
+      return moves;
+    } else {
+      /* filter out illegal moves */
+      var legal_moves = [];
+      for (let i = 0, len = moves.length; i < len; i++) {
+        make_move(moves[i]);
+        if (!king_attacked(us) || variant === ANTICHESS) {
+          legal_moves.push(moves[i]);
+        }
+        undo_move();
+      }
+      return legal_moves;
+    }
   }
 
   /* convert a move from 0x88 coordinates to Standard Algebraic Notation

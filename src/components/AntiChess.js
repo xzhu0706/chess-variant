@@ -59,26 +59,26 @@ function AntiChess() {
         Captures are mandatory whenever a capture is possible (if multiple captures are possible, the player can choose).
         In antichess the king is not a special piece in that it cannot be checked (or checkmated), castling is disallowed and pawns that reach the opponent's back rank can promote to a king.
         A player wins only when he or she runs out of legal moves.</p>
-        <Row>
+        <Row className="justify-content-md-center">
           <Col xs="auto" style={{marginBottom: "2rem"}}>
             <div>
-              {Antichess('', 'w', '', undefined, false, true)} 
+              {Antichess('', 'w', '', undefined, 1, false, true)} 
             </div>
             <div style={{bodyStyle}}>
             { /* <span style={{fontFamily: "serif", fontWeight: "bold"}}>1. ♘f3 d4</span> */ }
             </div>
           </Col>
-          <Col xs="4" style={{marginBottom: "2rem"}}>
+          <Col xs="auto" xl="4" style={{marginBottom: "2rem"}}>
             text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text 
           </Col>
         </Row>
-        <Row>
+        <Row className="justify-content-md-center">
           <Col xs="auto" style={{marginBottom: "2rem"}}>
             <div>
-              {Antichess('', 'w', '', '8/8/8/8/7r/8/P7/8 w - - 0 1', true, true)} 
+              {Antichess('', 'w', '', '8/8/8/8/7r/8/P7/8 w - - 0 1', 1, true, true)} 
             </div>
           </Col>
-          <Col xs="4" style={{marginBottom: "2rem"}}>
+          <Col xs="auto" xl="4" style={{marginBottom: "2rem"}}>
             text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text 
           </Col>
         </Row>
