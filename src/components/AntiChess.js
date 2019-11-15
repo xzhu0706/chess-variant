@@ -60,22 +60,27 @@ function AntiChess() {
         In antichess the king is not a special piece in that it cannot be checked (or checkmated), castling is disallowed and pawns that reach the opponent's back rank can promote to a king.
         A player wins only when he or she runs out of legal moves.</p>
         <Row>
-          <Col xs={8} xl={6} style={{marginBottom: "1rem"}}>
+          <Col xs="auto" style={{marginBottom: "2rem"}}>
             <div>
-              {Antichess('', 'w', '', undefined, 384, false)} 
+              {Antichess('', 'w', '', undefined, false, true)} 
             </div>
             <div style={{bodyStyle}}>
             { /* <span style={{fontFamily: "serif", fontWeight: "bold"}}>1. ♘f3 d4</span> */ }
             </div>
           </Col>
-          <Col xs={8} xl={6}>
-            <div>
-              {Antichess('', 'w', '', '8/8/8/8/7r/8/P7/8 w - - 0 1', 384, true)} 
-            </div>
+          <Col xs="4" style={{marginBottom: "2rem"}}>
+            text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text 
           </Col>
         </Row>
         <Row>
-          
+          <Col xs="auto" style={{marginBottom: "2rem"}}>
+            <div>
+              {Antichess('', 'w', '', '8/8/8/8/7r/8/P7/8 w - - 0 1', true, true)} 
+            </div>
+          </Col>
+          <Col xs="4" style={{marginBottom: "2rem"}}>
+            text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text 
+          </Col>
         </Row>
       </div>
 

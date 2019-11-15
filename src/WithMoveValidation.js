@@ -57,6 +57,12 @@ class HumanVsHuman extends Component {
     }
   }
 
+  // adjust board size according to window size
+  calcWidth = (dimensions) => {
+    let customWidth = Math.min(540/640 * dimensions.screenWidth, 540/640 * dimensions.screenHeight);
+    return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
+  }
+
   // highlight hint squares
   highlightSquare = (hintSquares) => {
     const highlightStyles = [...hintSquares].reduce(
@@ -158,13 +164,6 @@ class HumanVsHuman extends Component {
       squareStyles: { ...squareStyles, [square]: { backgroundColor: "#e86c65" } }
     }));
 
-  calcWidth = (dimensions) => {
-    if (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) {
-      return Math.min(560/640 * dimensions.screenWidth, 560/640 * dimensions.screenHeight);
-    }
-    return 560;
-  }
-th
   render() {
     console.log(this.state);
     const { fen, pgn, turn, gameResult, squareStyles } = this.state;
@@ -181,7 +180,7 @@ th
   }
 }
 
-export default function WithMoveValidation(gameToken='', turn='w', pgn='', start_fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', customWidth=540, showData=true) {
+export default function WithMoveValidation(gameToken='', turn='w', pgn='', start_fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', showData=true, smallBoard=false) {
   console.log('func reload', start_fen, pgn, gameToken, turn)
   return (
     <div>
@@ -195,8 +194,17 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
           turn,
           onSquareClick,
           onSquareRightClick,
-          calcWidth,
-        }) => (
+          calcWidth
+        }) => {
+          // redefine calcWidth() if smallBoard is true
+          if (smallBoard) {
+            calcWidth = (dimensions) => {
+              let customWidth = Math.min(384/460 * dimensions.screenWidth, 384/460 * dimensions.screenHeight);
+              return (dimensions.screenWidth < 460 || dimensions.screenHeight < 460) ? customWidth : 384;
+            }
+          }
+
+          return (
           <div className="row">
             {
               showData ? (
@@ -209,7 +217,6 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
             <div className="col-lg-7">
               <Chessboard
                 id="humanVsHuman"
-                width={customWidth}
                 position={fen}
                 boardStyle={{
                   borderRadius: "5px",
@@ -246,8 +253,8 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
                 draggable={false}
               />
             </div>
-          </div>
-        )}
+          </div>);
+        }}
       </HumanVsHuman>
     </div>
   );
