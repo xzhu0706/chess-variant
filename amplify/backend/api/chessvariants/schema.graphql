@@ -6,7 +6,7 @@ type User @model {
   rank: Int #not required for now
 }
 
-type Game @model {
+type Game @model @auth(rules: [{allow: public}]) {
   id: ID!
   gameRoomID: ID!
   creator: User @connection
@@ -15,7 +15,7 @@ type Game @model {
   variant: String!
 }
 
-type GameRoom @model {
+type GameRoom @model @auth(rules: [{allow: public}]){
   id: ID!
   opponent: User @connection
   creatorOrientation: String!

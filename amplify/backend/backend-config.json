@@ -14,9 +14,10 @@
 				"authConfig": {
 					"additionalAuthenticationProviders": [],
 					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authchessvariants34a8e197"
+						"authenticationType": "API_KEY",
+						"apiKeyConfig": {
+							"description": "apiKey",
+							"apiKeyExpirationDays": 7
 						}
 					}
 				}
