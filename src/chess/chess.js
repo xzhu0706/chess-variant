@@ -611,12 +611,18 @@ var Chess = function(fen, variant=0) {
         /* single square, non-capturing */
         var square = i + PAWN_OFFSETS[us][0];
         if (board[square] == null) {
+          // validate the move if we're playing grid chess
+          if (variant !== GRID || valid_2x2_grid_move(i, square)) {
             add_move(board, moves, i, square, BITS.NORMAL);
+          }
 
           /* double square, non-capturing */
           var square = i + PAWN_OFFSETS[us][1];
           if (second_rank[us] === rank(i) && board[square] == null) {
-            add_move(board, moves, i, square, BITS.BIG_PAWN);
+            // validate the move if we're playing grid chess
+            if (variant !== GRID || valid_2x2_grid_move(i, square)) {
+              add_move(board, moves, i, square, BITS.BIG_PAWN);
+            }
           }
         }
         
@@ -627,11 +633,17 @@ var Chess = function(fen, variant=0) {
 
           if (board[square] != null &&
               board[square].color === them) {
-              add_move(board, moves, i, square, BITS.CAPTURE);
-              capturePossible = 1;
+              // validate the move if we're playing grid chess
+              if (variant !== GRID || valid_2x2_grid_move(i, square)) {
+                add_move(board, moves, i, square, BITS.CAPTURE);
+                capturePossible = 1;
+              }
           } else if (square === ep_square) {
+            // validate the move if we're playing grid chess
+            if (variant !== GRID || valid_2x2_grid_move(i, square)) {
               add_move(board, moves, i, ep_square, BITS.EP_CAPTURE);
               capturePossible = 1;
+            }
           }
         }
       } else {
@@ -644,11 +656,15 @@ var Chess = function(fen, variant=0) {
             if (square & 0x88) break;
 
             if (board[square] == null) {
-              add_move(board, moves, i, square, BITS.NORMAL);
+              if (variant !== GRID || valid_2x2_grid_move(i, square)) {
+                add_move(board, moves, i, square, BITS.NORMAL);
+              }
             } else {
               if (board[square].color === us) break;
-              add_move(board, moves, i, square, BITS.CAPTURE);
-              capturePossible = 1;
+              if (variant !== GRID || valid_2x2_grid_move(i, square)) {
+                add_move(board, moves, i, square, BITS.CAPTURE);
+                capturePossible = 1;
+              }
               break;
             }
 
@@ -658,7 +674,6 @@ var Chess = function(fen, variant=0) {
         }
       }
     }
-
 
     if (variant === ANTI) {
       /* now that we've generated moves on all the squares, if capturePossible is 1, we have to restrict

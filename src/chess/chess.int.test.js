@@ -394,4 +394,53 @@ describe("Testing grid chess (move generation)", () => {
       expect.arrayContaining([expect.objectContaining(expected)])
     );
   });
+
+  // let gridGame5 = new chessjs.Chess("k7/8/8/8/8/8/1K6/8 w - - 0 1", 2);
+  // // +------------------------+
+  // // 8 | k  .  .  .  .  .  .  . |
+  // // 7 | .  .  .  .  .  .  .  . |
+  // // 6 | .  .  .  .  .  .  .  . |
+  // // 5 | .  .  .  .  .  .  .  . |
+  // // 4 | .  .  .  .  .  .  .  . |
+  // // 3 | .  .  .  .  .  .  .  . |
+  // // 2 | .  K  .  .  .  .  .  . |
+  // // 1 | .  .  .  .  .  .  .  . |
+  // //   +------------------------+
+  // //     a  b  c  d  e  f  g  h
+  // // (White's turn.)
+  // test("In grid chess, a king that is not on any side/corner will have 8-3=5 viable (out-of-grid) moves on an empty board", () => {
+  //   const moves = gridGame5.generate_moves();
+  //   const expected = [
+  //     { color: 'w', piece: 'k', from: 97, to: 80 },
+  //     { color: 'w', piece: 'k', from: 97, to: 81 }, 
+  //     { color: 'w', piece: 'k', from: 97, to: 82 },
+  //     { color: 'w', piece: 'k', from: 97, to: 98 }, 
+  //     { color: 'w', piece: 'k', from: 97, to: 114 }
+  //   ];
+  //   expect(moves).toEqual(
+  //     expect.arrayContaining([expect.objectContaining(expected)])
+  //   );
+  // });
+
+  // let gridGame6 = new chessjs.Chess("k7/8/8/8/8/8/1K6/8 w - - 0 1", 2);
+  // // +------------------------+
+  // // 8 | k  .  .  .  .  .  .  . |
+  // // 7 | .  .  .  .  .  .  .  . |
+  // // 6 | .  .  .  .  .  .  .  . |
+  // // 5 | .  .  .  .  .  .  .  . |
+  // // 4 | .  .  .  .  .  .  .  . |
+  // // 3 | .  .  .  .  .  .  .  . |
+  // // 2 | .  K  .  .  .  .  .  . |
+  // // 1 | .  .  .  .  .  .  .  . |
+  // //   +------------------------+
+  // //     a  b  c  d  e  f  g  h
+  // // (White's turn.)
+  // test("In grid chess, White can move the knight in any direction " +
+  // "(since the knight always moves out of its grid)", () => {
+  //   const moves = gridGame6.generate_moves();
+  //   const expected = { color: 'w', piece: 'p', from: 84, to: 68 };
+  //   expect(moves).not.toEqual(
+  //     expect.arrayContaining([expect.objectContaining(expected)])
+  //   );
+  // });
 });
