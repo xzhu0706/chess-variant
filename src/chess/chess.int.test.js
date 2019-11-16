@@ -1,4 +1,14 @@
+/* integration tests for chess.js */
+
 const chessjs = require("./chess.js");
+
+/* For each variant, this file tests the functions we modified in chess/chess.js, which are
+ * generate_moves() (generates a list of valid move objects)
+ * in_check() (returns true if the current player's king is in check)
+ * 
+ * 
+ * 
+ */
 
 let antichessGame = new chessjs.Chess("rnbqk1nr/ppppppbp/8/6N1/8/8/PPPPPPPP/RNBQKB1R w - - 1 3", 1);
 /*   
@@ -39,7 +49,7 @@ test("After 1. Nh3 g5 2. Nxg5, the only generated moves for White are " +
       { color: 'w', piece: 'n', from: 54, to: 23, captured: 'p' }
     ];
     expect(moves).toHaveLength(2);
-    expect(moves).toMatchObject(expected); // for each move object in the moves array, match the expected subset of properties
+    expect(moves).toMatchObject(expected); // expect the moves array to match the expected array
   });
 
 let antichessGame2 = new chessjs.Chess("rnbqkbnr/ppppp1pp/5p2/7Q/8/4P3/PPPP1PPP/RNB1KBNR b - - 1 2", 1);
@@ -144,3 +154,5 @@ test("In standard chess, White can castle", () => {
       expect.arrayContaining([expect.objectContaining(expected)])
     );
   });
+
+// let gridChessGame = new chessjs.Chess()
