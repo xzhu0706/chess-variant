@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-
+import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
@@ -9,7 +9,8 @@ import WithMoveValidation from '../WithMoveValidation';
 import ChatMessages from '../components/ChatMessages';
 import ChatInput from '../components/ChatInput';
 import './Game.css';
-import * as Constants from '../Constants/GameComponentConstants';
+import * as Games from '../Constants/GameComponentConstants';
+import * as Colors from '../Constants/Colors';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
 
@@ -29,7 +30,6 @@ class Game extends Component {
 
   componentDidMount(){
     let game = this.props.location.state.message
-    alert(JSON.stringify(game))
     if (localStorage.getItem(game.id)) {
       this.orientation = game.creatorOrientation
       this.opponent = game.opponent
@@ -41,32 +41,38 @@ class Game extends Component {
     this.gameId = game.id
     let variant = game.variant
     switch(variant){
-      case Constants.ANTICHESS:
+      case Games.ANTICHESS:
         //this.game = new Antichess() waiting for Antichess.js implementation
         //this.setState({fen: Constants.ANTICHESS_FEN})
         this.game = new Chess()
-        this.setState({fen: Constants.STANDARD_FEN})
+        this.setState({fen: Games.STANDARD_FEN})
         break
-      case Constants.STANDARD_CHESS:
+      case Games.STANDARD_CHESS:
         this.game = new Chess()
-        this.setState({fen: Constants.STANDARD_FEN})
+        this.setState({fen: Games.STANDARD_FEN})
         break;
       default:
         this.game = new Chess()
-        this.setState({fen: Constants.STANDARD_FEN})
+        this.setState({fen: Games.STANDARD_FEN})
     }
 
   }
 
   render(){
+    const boardStyle = {
+      marginLeft: '15%',
+      marginTop: '25%'
+    }
     //alert("Orientation: ", this.orientation)
     return (
-      <div>
+      <Box display='flex' justifyContent='center'>
         <Chessboard
           position = {this.state.fen}
+          lightSquareStyle = {{backgroundColor: Colors.GRAY}}
+          darkSquareStyle = {{backgroundColor: 'white'}}
           orientation = {this.orientation}
         />
-      </div>
+      </Box>
     )
   }
 }
