@@ -69,7 +69,7 @@ export const onCreateGameRoom = `subscription OnCreateGameRoom {
   }
 }
 `;
-export const onUpdateGameRoom = `subscription OnUpdateGameRoom {
+export const onUpdateGameRoom = `subscription OnUpdateGameRoom($gameRoomId: ID) {
   onUpdateGameRoom {
     id
     opponent {
