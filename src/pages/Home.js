@@ -46,7 +46,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <Lobby/>
+        <Lobby history={this.props.history}/>
 
         {/* <h1 className="text-center" style={{ fontFamily: 'AppleSDGothicNeo-Bold' }}>Popular Variants</h1>
         <Row>

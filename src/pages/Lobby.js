@@ -130,7 +130,10 @@ class Lobby extends Component {
       next: (gameData) => {
         let game = gameData.value.data.onDeleteGame
         let gameRoomID = game.gameRoomID
-        
+        let remainingGames = this.state.games.filter((gameData) => {
+          return gameData.gameRoomID !== gameRoomID
+        })
+        this.setState({games: remainingGames})
       },
     });
   }
@@ -167,7 +170,10 @@ class Lobby extends Component {
   }
 
   joinGame = (event, rowData) => {
-    alert(JSON.stringify(rowData))
+    let gameRoomID = rowData.gameRoomID
+    let gameInfo = this.gamesData[gameRoomID]
+    alert(JSON.stringify(gameInfo))
+    //this.props.history.push('/game', state: {message: })
   }
 
   render() {
