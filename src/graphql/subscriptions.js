@@ -4,8 +4,14 @@
 export const onCreateGame = `subscription OnCreateGame {
   onCreateGame {
     id
-    gameRoomID
     creator {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    opponent {
       id
       username
       points
@@ -15,14 +21,21 @@ export const onCreateGame = `subscription OnCreateGame {
     creatorOrientation
     time
     variant
+    fen
   }
 }
 `;
 export const onUpdateGame = `subscription OnUpdateGame {
   onUpdateGame {
     id
-    gameRoomID
     creator {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    opponent {
       id
       username
       points
@@ -32,13 +45,13 @@ export const onUpdateGame = `subscription OnUpdateGame {
     creatorOrientation
     time
     variant
+    fen
   }
 }
 `;
 export const onDeleteGame = `subscription OnDeleteGame {
   onDeleteGame {
     id
-    gameRoomID
     creator {
       id
       username
@@ -46,49 +59,6 @@ export const onDeleteGame = `subscription OnDeleteGame {
       skillLevel
       rank
     }
-    creatorOrientation
-    time
-    variant
-  }
-}
-`;
-export const onCreateGameRoom = `subscription OnCreateGameRoom {
-  onCreateGameRoom {
-    id
-    opponent {
-      id
-      username
-      points
-      skillLevel
-      rank
-    }
-    creatorOrientation
-    time
-    variant
-    fen
-  }
-}
-`;
-export const onUpdateGameRoom = `subscription OnUpdateGameRoom($gameRoomId: ID) {
-  onUpdateGameRoom {
-    id
-    opponent {
-      id
-      username
-      points
-      skillLevel
-      rank
-    }
-    creatorOrientation
-    time
-    variant
-    fen
-  }
-}
-`;
-export const onDeleteGameRoom = `subscription OnDeleteGameRoom {
-  onDeleteGameRoom {
-    id
     opponent {
       id
       username

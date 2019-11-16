@@ -8,16 +8,8 @@ type User  {
 
 type Game @model @auth(rules: [{allow: public}]) {
   id: ID!
-  gameRoomID: ID!
-  creator: User 
-  creatorOrientation: String!
-  time: String!
-  variant: String!
-}
-
-type GameRoom @model @auth(rules: [{allow: public}]){
-  id: ID!
-  opponent: User
+  creator: User
+  opponent: User 
   creatorOrientation: String!
   time: String!
   variant: String!

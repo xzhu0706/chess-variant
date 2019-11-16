@@ -67,7 +67,7 @@ const lobbyColumns = [
       color: '#333333',
     },
   },
-  {title: '', field: 'gameRoomId',  hidden: true},
+  {title: '', field: 'gameId',  hidden: true},
 ];
 
 const tableIcons = {
@@ -99,6 +99,7 @@ class Lobby extends Component {
       showDialog: false,
     };
     this.gamesData = {}
+    this.gameRoomStateUpdateSubscription = null
   }
 
   async componentDidMount() {
@@ -106,8 +107,8 @@ class Lobby extends Component {
     if (queryResult) {
       queryResult = queryResult.data.listGames.items
       const games = queryResult.map((game) => {
-        let gameRoomID = game.gameRoomID
-        this.gamesData[gameRoomID] = game
+        let gameId = game.id
+        this.gamesData[gameId] = game
         let row = this.constructRowFromGameData(game)
         return row
       });
@@ -118,8 +119,8 @@ class Lobby extends Component {
       next: (gameData) => {
         alert(JSON.stringify(gameData.value.data.onCreateGame))
         const game = gameData.value.data.onCreateGame
-        let gameRoomID = game.gameRoomID
-        this.gamesData[gameRoomID] = game
+        let gameId = game.id
+        this.gamesData[gameId] = game
         let row = this.constructRowFromGameData(game)
         const games = [row, ...this.state.games]
         this.setState({ games })
@@ -129,22 +130,28 @@ class Lobby extends Component {
     API.graphql(graphqlOperation(subscriptions.onDeleteGame),).subscribe({
       next: (gameData) => {
         let game = gameData.value.data.onDeleteGame
-        let gameRoomID = game.gameRoomID
+        let gameId = game.id
         let remainingGames = this.state.games.filter((gameData) => {
-          return gameData.gameRoomID !== gameRoomID
+          return gameData.gameId !== gameId
         })
         this.setState({games: remainingGames})
       },
     });
+
+    this.gameRoomUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame),).subscribe({
+      next: (gameData) => {
+        let game = gameData.value.data.onUpdateGame
+        if(localStorage.getItem(game.id)){
+          this.props.history.push({pathname: '/game', state: {message: game}})
+        }
+      },
+    });
+
   }
 
   createGame = async (event, gameInfo) => {
     this.setState({showDialog: false})
-    gameInfo['fen'] = 'init'
-    let gameRoom = await API.graphql(graphqlOperation(mutations.createGameRoom, { 'input': gameInfo }))
-    let gameRoomID = gameRoom.data.createGameRoom.id
-    delete gameInfo.fen
-    gameInfo['gameRoomID'] = gameRoomID
+    gameInfo['fen'] = "1"
     let userInfo = await Auth.currentUserInfo()
     if(userInfo) {
       let user = {}
@@ -152,7 +159,10 @@ class Lobby extends Component {
       user.username = userInfo.username
       gameInfo['creator'] = user
     }
+    alert(JSON.stringify(gameInfo))
     let newGame = await API.graphql(graphqlOperation(mutations.createGame, { input: gameInfo }))
+    let gameId = newGame.data.createGame.id
+    localStorage.setItem(gameId, 1)
   }
 
   constructRowFromGameData = (game) => {
@@ -161,19 +171,20 @@ class Lobby extends Component {
     const skillLevel = 'n/a'
     const timing = game.time;
     const variant = game.variant
-    const gameRoomID = game.gameRoomID
-    return {player, skillLevel, timing, variant, gameRoomID}
+    const gameId = game.id
+    return {player, skillLevel, timing, variant, gameId}
   }
 
   showDialog = () => {
     this.setState({showDialog: true})
   }
 
-  joinGame = (event, rowData) => {
-    let gameRoomID = rowData.gameRoomID
-    let gameInfo = this.gamesData[gameRoomID]
-    alert(JSON.stringify(gameInfo))
-    //this.props.history.push('/game', state: {message: })
+  joinGame = async (event, rowData) => {
+    let gameId = rowData.gameId
+    let gameInfo = this.gamesData[gameId]
+    gameInfo.fen = '#'
+    await API.graphql(graphqlOperation(mutations.updateGame, {input: gameInfo}))
+    this.props.history.push({pathname: '/game', state: {message: gameInfo}})
   }
 
   render() {

@@ -9,8 +9,71 @@ import WithMoveValidation from '../WithMoveValidation';
 import ChatMessages from '../components/ChatMessages';
 import ChatInput from '../components/ChatInput';
 import './Game.css';
+import * as Constants from '../Constants/GameComponentConstants';
+import Chessboard from 'chessboardjsx';
+import Chess from 'chess.js';
 
 class Game extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      fen: '',
+      time: '',
+    }
+    this.game = null
+    this.opponent = null
+    this.gameId = 0
+    this.orientation = ''
+    this.gameStateUpdateSubscription = null
+  }
+
+  componentDidMount(){
+    let game = this.props.location.state.message
+    alert(JSON.stringify(game))
+    if (localStorage.getItem(game.id)) {
+      this.orientation = game.creatorOrientation
+      this.opponent = game.opponent
+    }
+    else {
+      this.orientation = game.creatorOrientation === 'white'? 'black' : 'white'
+      this.opponent = game.creator
+    }
+    this.gameId = game.id
+    let variant = game.variant
+    switch(variant){
+      case Constants.ANTICHESS:
+        //this.game = new Antichess() waiting for Antichess.js implementation
+        //this.setState({fen: Constants.ANTICHESS_FEN})
+        this.game = new Chess()
+        this.setState({fen: Constants.STANDARD_FEN})
+        break
+      case Constants.STANDARD_CHESS:
+        this.game = new Chess()
+        this.setState({fen: Constants.STANDARD_FEN})
+        break;
+      default:
+        this.game = new Chess()
+        this.setState({fen: Constants.STANDARD_FEN})
+    }
+
+  }
+
+  render(){
+    //alert("Orientation: ", this.orientation)
+    return (
+      <div>
+        <Chessboard
+          position = {this.state.fen}
+          orientation = {this.orientation}
+        />
+      </div>
+    )
+  }
+}
+
+export default Game
+
+/*class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -121,7 +184,7 @@ class Game extends Component {
             <ChatInput
               onSendMessage={this.onSendMessage}
             />
-          </div> */}
+          </div> }
         </div>
       </div>
     );
@@ -145,3 +208,4 @@ const boardsContainer = {
   flexWrap: 'wrap',
   width: '100vw',
 };
+*/

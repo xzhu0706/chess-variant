@@ -4,7 +4,6 @@
 export const getGame = `query GetGame($id: ID!) {
   getGame(id: $id) {
     id
-    gameRoomID
     creator {
       id
       username
@@ -12,39 +11,6 @@ export const getGame = `query GetGame($id: ID!) {
       skillLevel
       rank
     }
-    creatorOrientation
-    time
-    variant
-  }
-}
-`;
-export const listGames = `query ListGames(
-  $filter: ModelGameFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listGames(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      gameRoomID
-      creator {
-        id
-        username
-        points
-        skillLevel
-        rank
-      }
-      creatorOrientation
-      time
-      variant
-    }
-    nextToken
-  }
-}
-`;
-export const getGameRoom = `query GetGameRoom($id: ID!) {
-  getGameRoom(id: $id) {
-    id
     opponent {
       id
       username
@@ -59,14 +25,21 @@ export const getGameRoom = `query GetGameRoom($id: ID!) {
   }
 }
 `;
-export const listGameRooms = `query ListGameRooms(
-  $filter: ModelGameRoomFilterInput
+export const listGames = `query ListGames(
+  $filter: ModelGameFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listGameRooms(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listGames(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      creator {
+        id
+        username
+        points
+        skillLevel
+        rank
+      }
       opponent {
         id
         username
