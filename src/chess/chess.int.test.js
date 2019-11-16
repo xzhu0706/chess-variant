@@ -10,7 +10,7 @@ const chessjs = require("./chess.js");
  * 
  */
 
-describe("make sure our modifications to chess.js did not mess up the implementation of regular chess", () => {
+describe("Make sure our modifications to chess.js did not mess up the implementation of regular chess", () => {
   let standardGame = new chessjs.Chess("r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4", 0);
   // +------------------------+
   // 8 | r  .  b  q  k  b  .  r |
@@ -24,18 +24,82 @@ describe("make sure our modifications to chess.js did not mess up the implementa
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   // White should be able to castle by moving e1-g1 (116-118)
-  test("In standard chess, White can castle", () => {
-      const moves = standardGame.generate_moves();
-      const expected = { color: 'w', piece: 'k', from: 116, to: 118, flags: 32 };
-      // the moves array must equal an array that contains a move with the expected move properties
-      expect(moves).toEqual(
-        expect.arrayContaining([expect.objectContaining(expected)])
-      );
-    });
+  test("In standard chess, castling is enabled", () => {
+    const moves = standardGame.generate_moves();
+    const expected = { color: 'w', piece: 'k', from: 116, to: 118, flags: 32 };
+    // the moves array must equal an array that contains a move with the expected move properties
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let standardGame2 = new chessjs.Chess("8/3K1P2/1k6/8/8/8/8/8 w - - 0 1", 0);
+  // +------------------------+
+  // 8 | .  .  .  .  .  .  .  . |
+  // 7 | .  .  .  K  .  P  .  . |
+  // 6 | .  k  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  .  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  test("In standard chess, promotions to queen, rook, bishop and knight are the only possible promotions", () => {
+    const moves = standardGame2.generate_moves();
+    let expected = { color: 'w', piece: 'p', from: 21, to: 5, promotion: 'r' };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+    expected = { color: 'w', piece: 'p', from: 21, to: 5, promotion: 'q' };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+    expected = { color: 'w', piece: 'p', from: 21, to: 5, promotion: 'b' };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+    expected = { color: 'w', piece: 'p', from: 21, to: 5, promotion: 'n' };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  test("In standard chess, promoting to a king or a pawn is impossible", () => {
+    const moves = standardGame2.generate_moves();
+    let expected = { color: 'w', piece: 'p', from: 21, to: 5, promotion: 'k' };
+    expect(moves).not.toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+    expected = { color: 'w', piece: 'p', from: 21, to: 5, promotion: 'p' };
+    expect(moves).not.toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let standardGame3 = new chessjs.Chess("rnbqkbnr/ppp1p1pp/8/3pPp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  .  p  .  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  p  P  p  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  .  P  P  P |
+  // 1 | R  N  B  Q  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  test("In standard chess, capturing en passant is possible", () => {
+    const moves = standardGame3.generate_moves();
+    const expected = { color: 'w', piece: 'p', from: 52, to: 37, captured: 'p' };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
 });
 
 describe("testing move generation for antichess", () => {
-  let antichessGame = new chessjs.Chess("rnbqk1nr/ppppppbp/8/6N1/8/8/PPPPPPPP/RNBQKB1R w - - 1 3", 1);
+  let antiGame = new chessjs.Chess("rnbqk1nr/ppppppbp/8/6N1/8/8/PPPPPPPP/RNBQKB1R w - - 1 3", 1);
   /*   
   *   +------------------------+    
   *   8 | r  n  b  q  k  .  n  r |
@@ -68,16 +132,17 @@ describe("testing move generation for antichess", () => {
   test("After 1. Nh3 g5 2. Nxg5, the only generated moves for White are " + 
     "Nxf7 (square 54 to square 21) and Nxh7 (square 54 to square 23). This is testing the " +
     "mandatory capture rule in antichess.", () => {
-      const moves = antichessGame.generate_moves(); // an array of move objects
+      const moves = antiGame.generate_moves(); // an array of move objects
       const expected = [
         { color: 'w', piece: 'n', from: 54, to: 21, captured: 'p' },
         { color: 'w', piece: 'n', from: 54, to: 23, captured: 'p' }
       ];
       expect(moves).toHaveLength(2);
       expect(moves).toMatchObject(expected); // expect the moves array to match the expected array
-    });
+    }
+  );
 
-  let antichessGame2 = new chessjs.Chess("rnbqkbnr/ppppp1pp/5p2/7Q/8/4P3/PPPP1PPP/RNB1KBNR b - - 1 2", 1);
+  let antiGame2 = new chessjs.Chess("rnbqkbnr/ppppp1pp/5p2/7Q/8/4P3/PPPP1PPP/RNB1KBNR b - - 1 2", 1);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  .  p  p |
@@ -90,10 +155,10 @@ describe("testing move generation for antichess", () => {
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   test("In Antichess, checking the king is not possible", () => {
-      expect(antichessGame2.in_check()).toBe(false);
+      expect(antiGame2.in_check()).toBe(false);
     });
 
-  let antichessGame3 = new chessjs.Chess("8/5k2/8/7Q/8/8/8/4K3 w - - 0 1", 1);
+  let antiGame3 = new chessjs.Chess("8/5k2/8/7Q/8/8/8/4K3 w - - 0 1", 1);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  k  .  . |
@@ -110,10 +175,10 @@ describe("testing move generation for antichess", () => {
     const expected = [
       { color: 'w', piece: 'q', from: 55, to: 21, captured: 'k' }
     ];
-    expect(antichessGame3.generate_moves()).toMatchObject(expected);
+    expect(antiGame3.generate_moves()).toMatchObject(expected);
   });
 
-  let antichessGame4 = new chessjs.Chess("rnbqkbnr/pppp3p/4ppp1/8/8/4PN2/PPPPBPPP/RNBQK2R w KQkq - 0 4", 1);
+  let antiGame4 = new chessjs.Chess("rnbqkbnr/pppp3p/4ppp1/8/8/4PN2/PPPPBPPP/RNBQK2R w KQkq - 0 4", 1);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  .  .  .  p |
@@ -127,7 +192,7 @@ describe("testing move generation for antichess", () => {
   //     a  b  c  d  e  f  g  h
   // White should not be able to castle by moving e1-g1 (116-118)
   test("In Antichess, castling is not possible", () => {
-    const moves = antichessGame4.generate_moves();
+    const moves = antiGame4.generate_moves();
     const expected = { color: 'w', piece: 'k', from: 116, to: 118, flags: 32 };
     // the moves array must not equal an array that contains a move object with the expected move properties
     expect(moves).not.toEqual(
@@ -135,7 +200,7 @@ describe("testing move generation for antichess", () => {
     );
   });
 
-  let antichessGame5 = new chessjs.Chess("8/3K2P1/8/8/8/8/8/3k4 w - - 0 1", 1);
+  let antiGame5 = new chessjs.Chess("8/3K2P1/8/8/8/8/8/3k4 w - - 0 1", 1);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  K  .  .  P  . |
@@ -150,7 +215,7 @@ describe("testing move generation for antichess", () => {
   // White should be able to promote to a king with the move g7-g8 (22-6)
 
   test("In Antichess, pawn promotion to a king is possible", () => {
-    const moves = antichessGame5.generate_moves();
+    const moves = antiGame5.generate_moves();
     const expected = { color: 'w', piece: 'p', from: 22, to: 6, promotion: 'k' };
     // the moves array must equal an array that contains a move object with the expected move properties
     expect(moves).toEqual(
@@ -159,4 +224,4 @@ describe("testing move generation for antichess", () => {
   });
 });
 
-// let gridChessGame = new chessjs.Chess()
+// let gridGame = new chessjs.Chess()
