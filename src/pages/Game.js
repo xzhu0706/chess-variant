@@ -20,12 +20,14 @@ class Game extends Component {
     this.state = {
       fen: '',
       time: '',
+      squareStyles: {},
     }
     this.game = null
     this.opponent = null
     this.gameId = 0
     this.orientation = ''
     this.gameStateUpdateSubscription = null
+    this.moveFrom = null
   }
 
   componentDidMount(){
@@ -55,7 +57,22 @@ class Game extends Component {
         this.game = new Chess()
         this.setState({fen: Games.STANDARD_FEN})
     }
+  }
 
+  onPieceClick = (piece) => {
+    
+  }
+
+  onSquareClick = (square) => {
+    let validMoves = this.game.moves({square: square})
+    let newSquareStyles = {}
+    for(let i in validMoves){
+      newSquareStyles[validMoves[i]] = { 
+        background: "radial-gradient(circle, #fffc00 36%, transparent 40%)",
+        borderRadius: "50%"}
+    }
+    alert(JSON.stringify(newSquareStyles))
+    this.setState({squareStyles: newSquareStyles})
   }
 
   render(){
@@ -71,6 +88,9 @@ class Game extends Component {
           lightSquareStyle = {{backgroundColor: Colors.GRAY}}
           darkSquareStyle = {{backgroundColor: 'white'}}
           orientation = {this.orientation}
+          squareStyles = {this.state.squareStyles}
+          onPieceClick = {this.onPieceClick}
+          onSquareClick = {this.onSquareClick}
         />
       </Box>
     )
