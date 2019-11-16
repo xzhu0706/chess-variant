@@ -11,6 +11,15 @@ const chessjs = require("./chess.js");
  */
 
 describe("Make sure our modifications to chess.js did not mess up the implementation of regular chess", () => {
+  //   a8:   0, b8:   1, c8:   2, d8:   3, e8:   4, f8:   5, g8:   6, h8:   7,
+  //   a7:  16, b7:  17, c7:  18, d7:  19, e7:  20, f7:  21, g7:  22, h7:  23,
+  //   a6:  32, b6:  33, c6:  34, d6:  35, e6:  36, f6:  37, g6:  38, h6:  39,
+  //   a5:  48, b5:  49, c5:  50, d5:  51, e5:  52, f5:  53, g5:  54, h5:  55,
+  //   a4:  64, b4:  65, c4:  66, d4:  67, e4:  68, f4:  69, g4:  70, h4:  71,
+  //   a3:  80, b3:  81, c3:  82, d3:  83, e3:  84, f3:  85, g3:  86, h3:  87,
+  //   a2:  96, b2:  97, c2:  98, d2:  99, e2: 100, f2: 101, g2: 102, h2: 103,
+  //   a1: 112, b1: 113, c1: 114, d1: 115, e1: 116, f1: 117, g1: 118, h1: 119
+
   let standardGame = new chessjs.Chess("r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4", 0);
   // +------------------------+
   // 8 | r  .  b  q  k  b  .  r |
@@ -98,7 +107,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
   });
 });
 
-describe("testing move generation for antichess", () => {
+describe("Testing antichess (move generation, winning conditions, etc)", () => {
   let antiGame = new chessjs.Chess("rnbqk1nr/ppppppbp/8/6N1/8/8/PPPPPPPP/RNBQKB1R w - - 1 3", 1);
   /*   
   *   +------------------------+    
@@ -272,4 +281,117 @@ describe("testing move generation for antichess", () => {
   });
 });
 
-// let gridGame = new chessjs.Chess()
+describe("Testing grid chess (move generation)", () => {
+  //   a8:   0, b8:   1, c8:   2, d8:   3, e8:   4, f8:   5, g8:   6, h8:   7,
+  //   a7:  16, b7:  17, c7:  18, d7:  19, e7:  20, f7:  21, g7:  22, h7:  23,
+  //   a6:  32, b6:  33, c6:  34, d6:  35, e6:  36, f6:  37, g6:  38, h6:  39,
+  //   a5:  48, b5:  49, c5:  50, d5:  51, e5:  52, f5:  53, g5:  54, h5:  55,
+  //   a4:  64, b4:  65, c4:  66, d4:  67, e4:  68, f4:  69, g4:  70, h4:  71,
+  //   a3:  80, b3:  81, c3:  82, d3:  83, e3:  84, f3:  85, g3:  86, h3:  87,
+  //   a2:  96, b2:  97, c2:  98, d2:  99, e2: 100, f2: 101, g2: 102, h2: 103,
+  //   a1: 112, b1: 113, c1: 114, d1: 115, e1: 116, f1: 117, g1: 118, h1: 119
+  let gridGame = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 2);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  N  B  Q  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In grid chess, in the starting position, a White pawn can move one square", () => {
+    const moves = gridGame.generate_moves();
+    const expected = { color: 'w', piece: 'p', from: 100, to: 84 };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+  test("In grid chess, in the starting position, a White pawn can move two squares", () => {
+    const moves = gridGame.generate_moves();
+    const expected = { color: 'w', piece: 'p', from: 100, to: 68 };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let gridGame2 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", 2);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  N  B  Q  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (Black's turn.)
+  test("In grid chess, in the starting position, a Black pawn can move one square", () => {
+    const moves = gridGame2.generate_moves();
+    const expected = { color: 'b', piece: 'p', from: 23, to: 39 };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+  test("In grid chess, in the starting position, a Black pawn can move two squares", () => {
+    const moves = gridGame2.generate_moves();
+    const expected = { color: 'b', piece: 'p', from: 23, to: 55 };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let gridGame3 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1", 2);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  .  .  .  K  .  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In grid chess, castling on the king's side is allowed.", () => {
+    const moves = gridGame3.generate_moves();
+    const expected = { color: 'w', piece: 'k', from: 116, to: 118 };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+  test("In grid chess, castling on the queen's side is allowed.", () => {
+    const moves = gridGame3.generate_moves();
+    const expected = { color: 'w', piece: 'k', from: 116, to: 114 };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let gridGame4 = new chessjs.Chess("rnbqkbnr/pppp1ppp/8/4p3/8/4P3/PPPP1PPP/RNBQKBNR w KQkq - 0 2", 2);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  .  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  p  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  P  .  .  . |
+  // 2 | P  P  P  P  .  P  P  P |
+  // 1 | R  N  B  Q  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In grid chess, after 1. e3, White cannot play e4 (because e4 is in the same 2x2 subgrid as e3).", () => {
+    const moves = gridGame4.generate_moves();
+    const expected = { color: 'w', piece: 'p', from: 84, to: 68 };
+    expect(moves).not.toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+});
