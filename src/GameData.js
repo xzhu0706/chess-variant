@@ -3,11 +3,11 @@ import React from 'react';
 function GameData(props) {
     const turn = props.turn === 'w' ? 'White' : 'Black';
     let state_msg = `${turn}'s turn`;
-    if (props.game_state === 'repetition') {
+    if (props.gameResult === 'repetition') {
         state_msg = 'Draw (three-fold repetition)';
     }
-    else if (props.game_state === 'stalemate') {
-        state_msg = `${props.turn === 'w' ? 'White' : 'Black'} wins`;
+    else if (props.gameResult === 'stalemate') {
+        state_msg = `${turn} wins`;
     }
     const mystyle = {
         fontSize: "2em"

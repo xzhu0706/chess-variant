@@ -1,4 +1,4 @@
-import React, {Component} from 'react'; 
+import React, { Component } from 'react'; 
 import MaterialTable from 'material-table';
 import Container from '@material-ui/core/Container';
 import { forwardRef } from 'react';
