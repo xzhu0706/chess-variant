@@ -1,20 +1,20 @@
 import React from 'react';
-import Antichess from '../WithMoveValidation'
+import GridChess from '../../WithMoveValidation'
 import { Row, Col } from 'react-bootstrap';
-import wb from '../pieces/standard/wb.svg';
-import wr from '../pieces/standard/wr.svg';
-import wn from '../pieces/standard/wn.svg';
-import wp from '../pieces/standard/wp.svg';
-import wk from '../pieces/standard/wk.svg';
-import wq from '../pieces/standard/wq.svg';
-import bb from '../pieces/standard/bb.svg';
-import br from '../pieces/standard/br.svg';
-import bn from '../pieces/standard/bn.svg';
-import bp from '../pieces/standard/bp.svg';
-import bk from '../pieces/standard/bk.svg';
-import bq from '../pieces/standard/bq.svg';
+import wb from '../../pieces/standard/wb.svg';
+import wr from '../../pieces/standard/wr.svg';
+import wn from '../../pieces/standard/wn.svg';
+import wp from '../../pieces/standard/wp.svg';
+import wk from '../../pieces/standard/wk.svg';
+import wq from '../../pieces/standard/wq.svg';
+import bb from '../../pieces/standard/bb.svg';
+import br from '../../pieces/standard/br.svg';
+import bn from '../../pieces/standard/bn.svg';
+import bp from '../../pieces/standard/bp.svg';
+import bk from '../../pieces/standard/bk.svg';
+import bq from '../../pieces/standard/bq.svg';
 
-function AntiChess() {
+function GridChessDocument() {
   const headingStyle = {
     fontFamily: "Helvetica, Arial, sans-serif",
     fontWeight: "bold",
@@ -28,7 +28,7 @@ function AntiChess() {
 
   return (
     <div>
-      <h1 className="text-center" style={headingStyle}>Antichess (Losing Chess)</h1>
+      <h1 className="text-center" style={headingStyle}>Grid Chess</h1>
       <div>
         <h2 style={headingStyle}>Pieces</h2>
         <table>
@@ -55,14 +55,11 @@ function AntiChess() {
 
       <div>
         <h2 style={headingStyle}>Rules</h2>
-        <p style={bodyStyle}>Antichess (also known as losing chess, giveaway chess and suicide chess) is a variant in which the goal is to lose all of one's pieces or otherwise be stalemated.
-        Captures are mandatory whenever a capture is possible (if multiple captures are possible, the player can choose).
-        In antichess the king is not a special piece in that it cannot be checked (or checkmated), castling is disallowed and pawns that reach the opponent's back rank can promote to a king.
-        A player wins only when he or she runs out of legal moves.</p>
+        <p style={bodyStyle}>In grid chess, </p>
         <Row className="justify-content-md-center">
           <Col xs="auto" style={{marginBottom: "2rem"}}>
             <div>
-              {Antichess('', 'w', '', undefined, 1, false, true)} 
+              {GridChess('', 'w', '', undefined, 2, false, true)} 
             </div>
             <div style={{bodyStyle}}>
             { /* <span style={{fontFamily: "serif", fontWeight: "bold"}}>1. ♘f3 d4</span> */ }
@@ -75,7 +72,7 @@ function AntiChess() {
         <Row className="justify-content-md-center">
           <Col xs="auto" style={{marginBottom: "2rem"}}>
             <div>
-              {Antichess('', 'w', '', '8/8/8/8/7r/8/P7/8 w - - 0 1', 1, true, true)} 
+              {GridChess('', 'w', '', '8/8/8/8/7r/8/P7/8 w - - 0 1', 2, false, true)} 
             </div>
           </Col>
           <Col xs="auto" xl="4" style={{marginBottom: "2rem"}}>
@@ -91,4 +88,4 @@ function AntiChess() {
   );
 }
 
-export default AntiChess;
+export default GridChessDocument;
