@@ -1,6 +1,6 @@
 const chessjs = require("./chess.js");
 
-var game = new chessjs.Chess("rnbqk1nr/ppppppbp/8/6N1/8/8/PPPPPPPP/RNBQKB1R w - - 1 3", 1); // replace this with mock?
+let game = new chessjs.Chess("rnbqk1nr/ppppppbp/8/6N1/8/8/PPPPPPPP/RNBQKB1R w - - 1 3", 1);
 /*   
  *   +------------------------+    
  *   8 | r  n  b  q  k  .  n  r |
@@ -30,46 +30,49 @@ var game = new chessjs.Chess("rnbqk1nr/ppppppbp/8/6N1/8/8/PPPPPPPP/RNBQKB1R w - 
  * 
  * g5-f7 would be 54-21 and g5-h7 would be 54-23 (and piece would be 'n' for both moves).
  */
-
-//console.log(game);
-
 test("After 1. Nh3 g5 2. Nxg5, the only generated moves for White are " + 
   "Nxf7 (square 54 to square 21) and Nxh7 (square 54 to square 23). This is testing the " +
-  "mandatory capture rule in antichess.",
-  () => {
-    const moves = game.generate_moves();
-    expect(moves.length).toBe(2);
-    expect(moves[0].from).toBe(54);
-    expect(moves[1].from).toBe(54);
-    expect(moves[0].to).toBe(21 || 23);
-    expect(moves[1].to).toBe(23 || 21);
+  "mandatory capture rule in antichess.", () => {
+    const moves = game.generate_moves(); // an array of move objects
+    const expected = [
+      { color: 'w', piece: 'n', from: 54, to: 21, captured: 'p' },
+      { color: 'w', piece: 'n', from: 54, to: 23, captured: 'p' }
+    ];
+    expect(moves).toHaveLength(2);
+    expect(moves).toMatchObject(expected); // for each move object in the moves array, match the expected subset of properties
   });
 
+let game2 = new chessjs.Chess("rnbqkbnr/ppppp1pp/5p2/7Q/8/4P3/PPPP1PPP/RNB1KBNR b - - 1 2", 1);
+// +------------------------+
+// 8 | r  n  b  q  k  b  n  r |
+// 7 | p  p  p  p  p  .  p  p |
+// 6 | .  .  .  .  .  p  .  . |
+// 5 | .  .  .  .  .  .  .  Q |
+// 4 | .  .  .  .  .  .  .  . |
+// 3 | .  .  .  .  P  .  .  . |
+// 2 | P  P  P  P  .  P  P  P |
+// 1 | R  N  B  .  K  B  N  R |
+//   +------------------------+
+//     a  b  c  d  e  f  g  h
+test("In Antichess, the current player does not have to move when his/her king is in check", () => {
+    expect(game2.in_check()).toBe(false);
+  });
 
-// let move = game.move({
-//     from: "e2",
-//     to: "e4",
-//     promotion: "q"
-//   });
-// if (move === null) console.log("error: e2-e4 should be legal in antichess");
-
-// move = game.move({
-//     from: "d7",
-//     to: "d5",
-//     promotion: "q"
-//   });
-// if (move === null) console.log("error: d7-d5 should be legal in antichess");
-
-// move = game.move({
-//     from: "e4",
-//     to: "e5",
-//     promotion: "q"
-//   });
-// if (move !== null) console.log("error: e4-e5 should be illegal in antichess");
-
-// move = game.move({
-//     from: "e4",
-//     to: "d5",
-//     promotion: "q"
-//   });
-// if (move === null) console.log("error: e4-d5 should be legal in antichess");
+let game3 = new chessjs.Chess("8/5k2/8/7Q/8/8/8/4K3 w - - 0 1", 1);
+// +------------------------+
+// 8 | .  .  .  .  .  .  .  . |
+// 7 | .  .  .  .  .  k  .  . |
+// 6 | .  .  .  .  .  .  .  . |
+// 5 | .  .  .  .  .  .  .  Q |
+// 4 | .  .  .  .  .  .  .  . |
+// 3 | .  .  .  .  .  .  .  . |
+// 2 | .  .  .  .  .  .  .  . |
+// 1 | .  .  .  .  K  .  .  . |
+//   +------------------------+
+//     a  b  c  d  e  f  g  h
+test("In Antichess, capturing the opponent's king is possible", () => {
+  const expected = [
+    { color: 'w', piece: 'q', from: 55, to: 21, captured: 'k' }
+  ];
+  expect(game3.generate_moves()).toMatchObject(expected);
+});

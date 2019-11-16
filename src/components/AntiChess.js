@@ -75,7 +75,7 @@ function AntiChess() {
         <Row className="justify-content-md-center">
           <Col xs="auto" style={{marginBottom: "2rem"}}>
             <div>
-              {Antichess('', 'w', '', '8/8/8/8/7r/8/P7/8 w - - 0 1', 1, true, true)} 
+              {Antichess('', 'w', '', '4k4/8/8/7Q/8/8/8/4K3 b - - 1 2', 1, true, true)} 
             </div>
           </Col>
           <Col xs="auto" xl="4" style={{marginBottom: "2rem"}}>
