@@ -213,7 +213,6 @@ describe("testing move generation for antichess", () => {
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   // White should be able to promote to a king with the move g7-g8 (22-6)
-
   test("In Antichess, pawn promotion to a king is possible", () => {
     const moves = antiGame5.generate_moves();
     const expected = { color: 'w', piece: 'p', from: 22, to: 6, promotion: 'k' };
@@ -221,6 +220,55 @@ describe("testing move generation for antichess", () => {
     expect(moves).toEqual(
       expect.arrayContaining([expect.objectContaining(expected)])
     );
+  });
+
+  let antiGame6 = new chessjs.Chess("8/8/8/8/8/8/8/r3K3 b - - 0 1", 1);
+  // +------------------------+
+  // 8 | .  .  .  .  .  .  .  . |
+  // 7 | .  .  .  .  .  .  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | r  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  test("In Antichess, the game is not over when the current player has a valid move " + 
+       "(and three-fold repetition didn't just occur)", () => {
+    expect(antiGame6.game_over()).toBe(false);
+  });
+
+  let antiGame7 = new chessjs.Chess("8/8/8/8/8/8/8/4r3 w - - 0 2", 1);
+  // +------------------------+
+  // 8 | .  .  .  .  .  .  .  . |
+  // 7 | .  .  .  .  .  .  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  r  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  test("In Antichess, the game is over when the current player has run out of pieces", () => {
+    expect(antiGame7.game_over()).toBe(true);
+  });
+
+  let antiGame8 = new chessjs.Chess("7n/5p2/5Pp1/6P1/8/8/8/8 b - - 0 1", 1);
+//   +------------------------+
+// 8 | .  .  .  .  .  .  .  n |
+// 7 | .  .  .  .  .  p  .  . |
+// 6 | .  .  .  .  .  P  p  . |
+// 5 | .  .  .  .  .  .  P  . |
+// 4 | .  .  .  .  .  .  .  . |
+// 3 | .  .  .  .  .  .  .  . |
+// 2 | .  .  .  .  .  .  .  . |
+// 1 | .  .  .  .  .  .  .  . |
+//   +------------------------+
+//     a  b  c  d  e  f  g  h
+  test("In Antichess, the game is over when the current player has pieces but has no legal moves", () => {
+    expect(antiGame8.game_over()).toBe(true);
   });
 });
 

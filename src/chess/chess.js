@@ -861,6 +861,7 @@ var Chess = function(fen, variant=0) {
   }
 
   function insufficient_material() {
+    if (variant === ANTI) return false;
     var pieces = {};
     var bishops = [];
     var num_pieces = 0;
