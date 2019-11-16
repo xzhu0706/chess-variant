@@ -557,8 +557,8 @@ var Chess = function(fen, variant=0) {
           var pieces = [QUEEN, ROOK, BISHOP, KNIGHT];
           
           // promotion to king is allowed in antichess
-          if (variant == ANTI) {
-            pieces.push[KING];
+          if (variant === ANTI) {
+            pieces.push(KING);
           }
 
           for (let i = 0, len = pieces.length; i < len; i++) {
@@ -576,7 +576,7 @@ var Chess = function(fen, variant=0) {
     var second_rank = {b: RANK_7, w: RANK_2};
     var first_sq = SQUARES.a8;
     var last_sq = SQUARES.h1;
-    var single_square = false; // not used since we've disabled castling
+    var single_square = false;
 
     /* do we want legal moves? */
     var legal = (typeof options !== 'undefined' && 'legal' in options) ?
@@ -664,6 +664,7 @@ var Chess = function(fen, variant=0) {
     if (variant === ANTI) {
       /* now that we've generated moves on all the squares, if capturePossible is 1, we have to restrict
         the moves to capturing moves */
+
       /* are we generating capturing moves for a single square? */
       if (typeof options !== 'undefined' && 'square' in options) {
         if (capturePossible) {
