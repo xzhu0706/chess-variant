@@ -56,16 +56,20 @@ var Chess = function(fen, variant=0) {
   var POSSIBLE_RESULTS = ['1-0', '0-1', '1/2-1/2', '*'];
 
   var STANDARD = 0;
-  var ANTICHESS = 1;
-  var ATOMIC = 2;
+  var ANTI = 1;
+  var GRID = 2;
   var RIFLE = 3;
-  var GRID = 4;
+  var ATOMIC = 4;
   var POCKET = 5;
 
   var PAWN_OFFSETS = {
     b: [16, 32, 17, 15],
     w: [-16, -32, -17, -15]
   };
+
+  // in_grid_move = (from, to) => {
+    
+  // }
 
   // original:
   // var PIECE_OFFSETS = {
@@ -493,7 +497,7 @@ var Chess = function(fen, variant=0) {
     var sq = SQUARES[square];
 
     /* don't let the user place more than one king */
-    if (piece.type == KING && !(variant == ANTICHESS) &&
+    if (piece.type == KING && !(variant == ANTI) &&
         !(kings[piece.color] == EMPTY || kings[piece.color] == sq)) {
       return false;
     }
@@ -553,7 +557,7 @@ var Chess = function(fen, variant=0) {
           var pieces = [QUEEN, ROOK, BISHOP, KNIGHT];
           
           // promotion to king is allowed in antichess
-          if (variant == ANTICHESS) {
+          if (variant == ANTI) {
             pieces.push[KING];
           }
 
@@ -583,7 +587,7 @@ var Chess = function(fen, variant=0) {
     generate moves for all pieces to check whether the player can capture */
     if (typeof options !== 'undefined' && 'square' in options) {
       if (options.square in SQUARES) {
-        if (variant !== ANTICHESS) {
+        if (variant !== ANTI) {
           first_sq = last_sq = SQUARES[options.square];
         }
         single_square = true;
@@ -657,7 +661,7 @@ var Chess = function(fen, variant=0) {
     }
 
 
-    if (variant === ANTICHESS) {
+    if (variant === ANTI) {
       /* now that we've generated moves on all the squares, if capturePossible is 1, we have to restrict
         the moves to capturing moves */
       /* are we generating capturing moves for a single square? */
@@ -689,7 +693,7 @@ var Chess = function(fen, variant=0) {
     /* check for castling if: a) we're generating all moves, or b) we're doing
      * single square move generation on the king's square
      */
-    if ((!single_square || last_sq === kings[us]) && variant !== ANTICHESS) {
+    if ((!single_square || last_sq === kings[us]) && variant !== ANTI) {
       /* king-side castling */
       if (castling[us] & BITS.KSIDE_CASTLE) {
         var castling_from = kings[us];
@@ -732,7 +736,7 @@ var Chess = function(fen, variant=0) {
       var legal_moves = [];
       for (let i = 0, len = moves.length; i < len; i++) {
         make_move(moves[i]);
-        if (!king_attacked(us) || variant === ANTICHESS) {
+        if (!king_attacked(us) || variant === ANTI) {
           legal_moves.push(moves[i]);
         }
         undo_move();
@@ -844,8 +848,8 @@ var Chess = function(fen, variant=0) {
   }
 
   function in_check() {
-    //return king_attacked(turn);
-    return false; // there is no check in the antichess variant
+    /* check is not possible in antichess */
+    return king_attacked(turn) && variant !== ANTI;
   }
 
   function in_checkmate() {
@@ -1388,9 +1392,9 @@ var Chess = function(fen, variant=0) {
 
     game_over: function() {
       return half_moves >= 100 ||
-             //in_checkmate() ||
+             in_checkmate() ||
              in_stalemate() ||
-             //insufficient_material() ||
+             insufficient_material() ||
              in_threefold_repetition();
     },
 
@@ -1685,6 +1689,8 @@ var Chess = function(fen, variant=0) {
 
       return pretty_move;
     },
+
+    generate_moves: generate_moves,
 
     undo: function() {
       var move = undo_move();

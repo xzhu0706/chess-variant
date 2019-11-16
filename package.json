@@ -28,7 +28,7 @@
     "lint:fix": "eslint ./src --fix",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "cp src/chess.js node_modules/chess.js"
+    "postinstall": "cp src/chess/chess.js node_modules/chess.js"
   },
   "eslintConfig": {
     "extends": "react-app"
