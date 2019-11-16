@@ -1,21 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import VariantNav from '../components/VariantNav';
 
-class VariantDocumentation extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    };
-  }
-
-  render() {
+function VariantDocumentation() {
     return (
       <div>
         <VariantNav />
       </div>
     );
-  }
 }
 
 export default VariantDocumentation;
