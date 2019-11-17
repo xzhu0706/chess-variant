@@ -511,10 +511,42 @@ describe("Testing grid chess (move generation)", () => {
     expect(gridGame10.in_stalemate()).toBe(true);
   });
 
-  // let gridGame11 = new chessjs.Chess(, 2);
-  // test("In grid chess, your king can be checkmated if the attacking piece is in a different " +
-  // "grid and your king has no legal moves", () => {
-  //   expect(gridGame11.in_checkmate()).toBe(true);
-  // });
+  let gridGame11 = new chessjs.Chess("8/8/2k5/8/8/3r4/K7/8 w - - 0 1", 2);
+  // +------------------------+
+  // 8 | .  .  .  .  .  .  .  . |
+  // 7 | .  .  .  .  .  .  .  . |
+  // 6 | .  .  k  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  r  .  .  .  . |
+  // 2 | K  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  .  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  // In this case the king can't move to an outside grid because it is cut off by the rook.
+  test("In grid chess, you are stalemated " +
+  "if your remaining pieces can't move out of their own grids", () => {
+    expect(gridGame11.in_stalemate()).toBe(true);
+  });
+
+  let gridGame12 = new chessjs.Chess("8/8/2k5/8/r7/3r4/K7/8 w - - 0 1", 2);
+  // +------------------------+
+  // 8 | .  .  .  .  .  .  .  . |
+  // 7 | .  .  .  .  .  .  .  . |
+  // 6 | .  .  k  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | r  .  .  .  .  .  .  . |
+  // 3 | .  .  .  r  .  .  .  . |
+  // 2 | K  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  .  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  // In this case the king can't move to an outside grid AND it is being attacked.
+  test("In grid chess, you are checkmated " +
+  "if your king is being attacked and can't move out of its own grid", () => {
+    expect(gridGame12.in_checkmate()).toBe(true);
+  });
 
 });
