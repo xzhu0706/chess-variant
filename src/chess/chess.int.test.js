@@ -549,4 +549,22 @@ describe("Testing grid chess (move generation)", () => {
     expect(gridGame12.in_checkmate()).toBe(true);
   });
 
+  let gridGame13 = new chessjs.Chess("2k5/8/8/8/8/8/8/1K6 w - - 0 1", 2);
+  // +------------------------+
+  // 8 | .  .  k  .  .  .  .  . |
+  // 7 | .  .  .  .  .  .  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  K  .  .  .  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  // 
+  test("In grid chess, insufficient material cannot occur, as it is always possible to win " + 
+  "(even if both players have nothing except their kings)", () => {
+    expect(gridGame13.insufficient_material()).toBe(false);
+  });
 });

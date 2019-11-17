@@ -24,7 +24,8 @@ function GridChessDocument() {
     fontFamily: "Lucida Bright, Lucidabright, Lucida Serif, Lucida," +
       "Bitstream Charter, Bitstream Vera Serif, DejaVu Serif, Century Schoolbook L," +
       "serif",
-    fontSize: "110%",
+    fontSize: "100%",
+    marginBottom: "2rem"
   };
 
   return (
@@ -60,26 +61,23 @@ function GridChessDocument() {
         It follows that the king is not placed in check by any piece that lies in the same grid.
         </p>
         <Row className="justify-content-md-center">
-          <Col xs="auto" style={{marginBottom: "2rem"}}>
+          <Col xs="auto" style={bodyStyle}>
             <div>
               {GridChess('', 'w', '', undefined, 2, false, true)} 
             </div>
-            <div style={{bodyStyle}}>
-            { /* <span style={{fontFamily: "serif", fontWeight: "bold"}}>1. ♘f3 d4</span> */ }
-            </div>
           </Col>
-          <Col xs="auto" xl="4" style={{marginBottom: "2rem"}}>
+          <Col xs="auto" xl="4" style={bodyStyle}>
             This is the starting position. <br/>
             Because White can only make out-of-grid moves, all the typical moves are legal at the start.
           </Col>
         </Row>
         <Row className="justify-content-md-center">
-          <Col xs="auto" style={{marginBottom: "2rem"}}>
+          <Col xs="auto" style={bodyStyle}>
             <div>
               {GridChess('', 'w', '', 'rnbqkbnr/ppp1pppp/8/4P3/3p4/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3', 2, false, true)} 
             </div>
           </Col>
-          <Col xs="auto" xl="4" style={{marginBottom: "2rem"}}>
+          <Col xs="auto" xl="4" style={bodyStyle}>
             After 
             <span style={{fontFamily: "serif", fontWeight: "bold"}}> 1. e4 d5 2. e5 d4</span>, 
             White is unable to play
@@ -93,17 +91,18 @@ function GridChessDocument() {
           </Col>
         </Row>
         <Row className="justify-content-md-center">
-          <Col xs="auto" style={{marginBottom: "2rem"}}>
+          <Col xs="auto" style={bodyStyle}>
             <div>
               {GridChess('', 'w', '', '2k5/8/8/8/2N5/8/1q6/1K6 w - - 0 1', 2, false, true)} 
             </div>
           </Col>
-          <Col xs="auto" xl="4" style={{marginBottom: "2rem"}}>
+          <Col xs="auto" xl="4" style={bodyStyle}>
             There are two things to observe in this position. <br/>
             First, White's king cannot move anywhere, not even to
             <span style={{fontFamily: "serif", fontWeight: "bold"}}> c2 </span>
             (one can't move into check). <br/>
             Second, White does not have to capture the queen with the knight because White's king is not even in check. <br/>
+            (An example sequence that leads to a victory: <span style={{fontFamily: "serif", fontWeight: "bold"}}>1. ♘d2 ♕xd2 2. ♔c1 ♕b4</span>).
           </Col>
         </Row>
       </div>

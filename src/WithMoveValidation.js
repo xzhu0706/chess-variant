@@ -90,11 +90,32 @@ class HumanVsHuman extends Component {
 
   updateGameResult() {
     if (this.game.game_over()) {
+      // game_over: function() {
+      //   return half_moves >= 100 ||
+      //          in_checkmate() ||
+      //          in_stalemate() ||
+      //          insufficient_material() ||
+      //          in_threefold_repetition();
+      // }  
+      let result = "fifty"; // fifty move rule
+      if (this.game.in_checkmate()) {
+        result = "checkmate";
+      }
+      else if (this.game.in_stalemate()) {
+        result = "stalemate";
+      }
+      else if (this.game.insufficient_material()) {
+        result = "insufficient";
+      }
+      else if (this.game.in_threefold_repetition()) {
+        result = "repetition";
+      }
       this.setState({
         gameOver: true,
-        gameResult: this.game.in_stalemate() ? "stalemate" : "repetition"
+        gameResult: result
       });
     }
+    /* (we will pass the value of this.state.gameResult to GameData) */
   }
 
   onSquareClick = (square) => {
