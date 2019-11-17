@@ -81,7 +81,7 @@ function GridChessDocument() {
             After 
             <span style={{fontFamily: "serif", fontWeight: "bold"}}> 1. e4 d5 2. e5 d4</span>, 
             White is unable to play
-            <span style={{fontFamily: "serif", fontWeight: "bold"}}> e6</span>, and on the next move Black is also unable to play 
+            <span style={{fontFamily: "serif", fontWeight: "bold"}}> e6</span>, and on the next move Black is similarly unable to play 
             <span style={{fontFamily: "serif", fontWeight: "bold"}}> d3</span>.
             <br/>
             The pawns are stuck until Black moves a piece to

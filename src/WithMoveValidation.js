@@ -9,6 +9,7 @@ import bn_test from "./bn.svg"; // testing the use of custom icons
 import { API, graphqlOperation } from 'aws-amplify';
 //import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
+import './variant-style.css';
 
 
 class HumanVsHuman extends Component {
@@ -227,7 +228,7 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
             }
           }
           return (
-          <div className="row">
+          <div className="d-flex p-1">
             {
               showData ? (
               <div className="col-lg-5">
@@ -236,7 +237,7 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
               ) :
               null
             }
-            <div className="col-lg-7">
+            <div id="board-div">
               <Chessboard
                 id="humanVsHuman"
                 position={fen}
