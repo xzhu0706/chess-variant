@@ -817,7 +817,7 @@ var Chess = function(fen, variant=0) {
     return move.replace(/=/,'').replace(/[+#]?[?!]*$/,'');
   }
 
-  /* whether the piece on `square` is attacked by ... */
+  /* whether the piece on `square` is attacked by a piece of the given `color`... */
   function attacked(color, square) {
     for (var i = SQUARES.a8; i <= SQUARES.h1; i++) {
       /* did we run off the end of the board */
@@ -825,6 +825,9 @@ var Chess = function(fen, variant=0) {
 
       /* if empty square or wrong color */
       if (board[i] == null || board[i].color !== color) continue;
+
+      /* if we're playing grid chess and it's not a valid, out-of-grid move, no attack can occur */
+      if (variant === GRID && !valid_2x2_grid_move(i, square)) continue;
 
       var piece = board[i];
       var difference = i - square;

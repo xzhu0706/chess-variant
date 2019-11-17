@@ -437,7 +437,63 @@ describe("Testing grid chess (move generation)", () => {
     expect(gridGame6.in_check()).toBe(false);
   });
 
-  let gridGame7 = new chessjs.Chess("k7/8/8/8/8/8/8/K7 w - - 0 1", 2);
+  let gridGame7 = new chessjs.Chess("8/8/8/8/8/8/Kk6/8 w - - 0 1", 2);
+  // +------------------------+
+  // 8 | .  .  .  .  .  .  .  . |
+  // 7 | .  .  .  .  .  .  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | K  k  .  .  .  .  .  . |
+  // 1 | .  .  .  .  .  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In grid chess, the king is not in check by an opponent king in the same grid", () => {
+    expect(gridGame7.in_check()).toBe(false);
+  });
+
+  let gridGame8 = new chessjs.Chess("8/8/8/8/8/2k5/K7/8 b - - 0 1", 2);
+  // +------------------------+
+  // 8 | .  .  .  .  .  .  .  . |
+  // 7 | .  .  .  .  .  .  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  k  .  .  .  .  . |
+  // 2 | K  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  .  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (Black's turn.)
+  test("In grid chess, you can move your king into the same grid as the opponent's king", () => {
+    const moves = gridGame8.generate_moves();
+    const expected = { color: 'b', piece: 'k', from: 82, to: 97 };
+    // the moves array must equal an array that contains a move object with the expected move properties
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let gridGame9 = new chessjs.Chess("k7/8/8/8/8/2n5/K7/8 w - - 0 1", 2);
+  // +------------------------+
+  // 8 | k  .  .  .  .  .  .  . |
+  // 7 | .  .  .  .  .  .  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  n  .  .  .  .  . |
+  // 2 | K  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  .  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In grid chess, a king on a2 is in check by an opponent knight on c3 (in a different grid)", () => {
+    expect(gridGame9.in_check()).toBe(true);
+  });
+
+  let gridGame10 = new chessjs.Chess("k7/8/8/8/8/8/8/K7 w - - 0 1", 2);
   // +------------------------+
   // 8 | k  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -452,7 +508,13 @@ describe("Testing grid chess (move generation)", () => {
   // (White's turn.)
   test("In grid chess, stalemate occurs when there are no legal out-of-grid moves " +
   "even if there are valid in-the-grid moves", () => {
-    expect(gridGame7.in_stalemate()).toBe(true);
+    expect(gridGame10.in_stalemate()).toBe(true);
   });
+
+  // let gridGame11 = new chessjs.Chess(, 2);
+  // test("In grid chess, your king can be checkmated if the attacking piece is in a different " +
+  // "grid and your king has no legal moves", () => {
+  //   expect(gridGame11.in_checkmate()).toBe(true);
+  // });
 
 });
