@@ -56,7 +56,9 @@ function GridChessDocument() {
 
       <div>
         <h2 style={headingStyle}>Rules</h2>
-        <p style={bodyStyle}>In grid chess, </p>
+        <p style={bodyStyle}>In grid chess, all standard chess rules apply, except that each move must cross one or more grid lines.<br/>
+        It follows that the king is not placed in check by any piece that lies in the same grid.
+        </p>
         <Row className="justify-content-md-center">
           <Col xs="auto" style={{marginBottom: "2rem"}}>
             <div>
@@ -67,17 +69,41 @@ function GridChessDocument() {
             </div>
           </Col>
           <Col xs="auto" xl="4" style={{marginBottom: "2rem"}}>
-            text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text 
+            This is the starting position. <br/>
+            Because White can only make out-of-grid moves, all the typical moves are legal at the start.
           </Col>
         </Row>
         <Row className="justify-content-md-center">
           <Col xs="auto" style={{marginBottom: "2rem"}}>
             <div>
-              {GridChess('', 'w', '', '8/8/8/8/7r/8/P7/8 w - - 0 1', 2, false, true)} 
+              {GridChess('', 'w', '', 'rnbqkbnr/ppp1pppp/8/4P3/3p4/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3', 2, false, true)} 
             </div>
           </Col>
           <Col xs="auto" xl="4" style={{marginBottom: "2rem"}}>
-            text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text 
+            After 
+            <span style={{fontFamily: "serif", fontWeight: "bold"}}> 1. e4 d5 2. e5 d4</span>, 
+            White is unable to play
+            <span style={{fontFamily: "serif", fontWeight: "bold"}}> e6</span>, and on the next move Black is also unable to play 
+            <span style={{fontFamily: "serif", fontWeight: "bold"}}> d3</span>.
+            <br/>
+            The pawns are stuck until Black moves a piece to
+            <span style={{fontFamily: "serif", fontWeight: "bold"}}> d6 </span>
+            or White moves a piece to
+            <span style={{fontFamily: "serif", fontWeight: "bold"}}> e3</span>.
+          </Col>
+        </Row>
+        <Row className="justify-content-md-center">
+          <Col xs="auto" style={{marginBottom: "2rem"}}>
+            <div>
+              {GridChess('', 'w', '', '2k5/8/8/8/2N5/8/1q6/1K6 w - - 0 1', 2, false, true)} 
+            </div>
+          </Col>
+          <Col xs="auto" xl="4" style={{marginBottom: "2rem"}}>
+            There are two things to observe in this position. <br/>
+            First, White's king cannot move anywhere, not even to
+            <span style={{fontFamily: "serif", fontWeight: "bold"}}> c2 </span>
+            (one can't move into check). <br/>
+            Second, White does not have to capture the queen with the knight because White's king is not even in check. <br/>
           </Col>
         </Row>
       </div>

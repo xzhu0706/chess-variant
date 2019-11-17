@@ -198,14 +198,13 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
           onSquareRightClick,
           calcWidth
         }) => {
-          // redefine calcWidth() if smallBoard is true
+          // redefine calcWidth() if smallBoard arg is true
           if (smallBoard) {
             calcWidth = (dimensions) => {
               let customWidth = Math.min(384/460 * dimensions.screenWidth, 384/460 * dimensions.screenHeight);
               return (dimensions.screenWidth < 460 || dimensions.screenHeight < 460) ? customWidth : 384;
             }
           }
-
           return (
           <div className="row">
             {
