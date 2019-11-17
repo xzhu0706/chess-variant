@@ -31,7 +31,7 @@
     "test:update": "react-scripts test --updateSnapshot --watchAll=false",
     "coveralls": "react-scripts test --coverage --watchAll=false && cat ./coverage/lcov.info | coveralls",
     "eject": "react-scripts eject",
-    "postinstall": "cp src/chess.js node_modules/chess.js"
+    "postinstall": "cp src/chess/chess.js node_modules/chess.js"
   },
   "jest": {
     "collectCoverageFrom": [

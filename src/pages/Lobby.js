@@ -134,7 +134,9 @@ class Lobby extends Component{
     }
 
     componentWillUnmount() {
-        this.subscription.unsubscribe();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     render(){
