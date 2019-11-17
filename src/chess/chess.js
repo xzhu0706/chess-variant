@@ -751,7 +751,7 @@ var Chess = function(fen, variant=0) {
       var legal_moves = [];
       for (let i = 0, len = moves.length; i < len; i++) {
         make_move(moves[i]);
-        if (!king_attacked(us) || variant === ANTI) {
+        if (!king_attacked(us)) {
           legal_moves.push(moves[i]);
         }
         undo_move();
@@ -817,6 +817,7 @@ var Chess = function(fen, variant=0) {
     return move.replace(/=/,'').replace(/[+#]?[?!]*$/,'');
   }
 
+  /* whether the piece on `square` is attacked by ... */
   function attacked(color, square) {
     for (var i = SQUARES.a8; i <= SQUARES.h1; i++) {
       /* did we run off the end of the board */

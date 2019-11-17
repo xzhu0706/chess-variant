@@ -1,6 +1,14 @@
 /* unit tests for chess.js */
-
 const chessjs = require("./chess.js");
+
+/* This file contains tests on the following units in chess.js:
+ * valid_2x2_grid_move() (checks whether two squares are in different grids, for grid chess)
+ * attacked() (checks whether a piece is under attack - important to distinguish attacks and non-attacks in grid chess)
+ * 
+ * 
+ * We do not test any of the original units in chess.js and assume that they are working as part of the chess.js library.
+ * We only wrote unit tests for functions that we wrote ourselves or we modified.
+ */
 
 var SQUARES = {
   a8:   0, b8:   1, c8:   2, d8:   3, e8:   4, f8:   5, g8:   6, h8:   7,

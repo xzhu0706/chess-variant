@@ -1,6 +1,7 @@
 import React from 'react';
 import GridChess from '../../WithMoveValidation'
 import { Row, Col } from 'react-bootstrap';
+// what should we do about all these imports? (for each and every doc page)?
 import wb from '../../pieces/standard/wb.svg';
 import wr from '../../pieces/standard/wr.svg';
 import wn from '../../pieces/standard/wn.svg';
