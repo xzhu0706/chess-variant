@@ -67,7 +67,9 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   onSendMessage = (message) => {

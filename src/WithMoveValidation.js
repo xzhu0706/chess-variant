@@ -9,12 +9,14 @@ import bn_test from "./bn.svg"; // testing the use of custom icons
 import { API, graphqlOperation } from 'aws-amplify';
 //import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
+import './variant-style.css';
 
 
 class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = {
+    variant: 0,
     fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     pgn: "",
     squareStyles: {}, // custom square styles
@@ -26,11 +28,12 @@ class HumanVsHuman extends Component {
 
   componentDidMount() {
     console.log('component reload', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn)
-    this.game = new Chess(this.props.fen || this.state.fen); 
+    this.game = new Chess(this.props.fen || this.state.fen, this.props.variant);
     // initialize the internal game
     // note that if this.props.fen is improperly formed,
     // chess.js will just initialize the game's fen to the default position
     this.setState({
+      variant: this.props.variant,
       fen: this.game.fen(),
       turn: this.game.turn(),
     });
@@ -88,11 +91,32 @@ class HumanVsHuman extends Component {
 
   updateGameResult() {
     if (this.game.game_over()) {
+      // game_over: function() {
+      //   return half_moves >= 100 ||
+      //          in_checkmate() ||
+      //          in_stalemate() ||
+      //          insufficient_material() ||
+      //          in_threefold_repetition();
+      // }  
+      let result = "fifty"; // fifty move rule
+      if (this.game.in_checkmate()) {
+        result = "checkmate";
+      }
+      else if (this.game.in_stalemate()) {
+        result = "stalemate";
+      }
+      else if (this.game.insufficient_material()) {
+        result = "insufficient";
+      }
+      else if (this.game.in_threefold_repetition()) {
+        result = "repetition";
+      }
       this.setState({
         gameOver: true,
-        gameResult: this.game.in_stalemate() ? "stalemate" : "repetition"
+        gameResult: result
       });
     }
+    /* (we will pass the value of this.state.gameResult to GameData) */
   }
 
   onSquareClick = (square) => {
@@ -180,11 +204,12 @@ class HumanVsHuman extends Component {
   }
 }
 
-export default function WithMoveValidation(gameToken='', turn='w', pgn='', start_fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', showData=true, smallBoard=false) {
+export default function WithMoveValidation(gameToken='', turn='w', pgn='', start_fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', variant=0, showData=true, smallBoard=false) {
   console.log('func reload', start_fen, pgn, gameToken, turn)
+  let boardId = variant === 2 && "grid-board"; // if variant isn't grid chess, boardId will be set to false
   return (
     <div>
-      <HumanVsHuman fen={start_fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'} pgn={pgn} turn={turn} gameToken={gameToken}>
+      <HumanVsHuman fen={start_fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'} variant={variant} pgn={pgn} turn={turn} gameToken={gameToken}>
         { /* HumanVsHuman calls the following function as this.props.children() in its render() method */ }
         {({
           squareStyles,
@@ -196,16 +221,15 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
           onSquareRightClick,
           calcWidth
         }) => {
-          // redefine calcWidth() if smallBoard is true
+          // redefine calcWidth() if smallBoard arg is true
           if (smallBoard) {
             calcWidth = (dimensions) => {
               let customWidth = Math.min(384/460 * dimensions.screenWidth, 384/460 * dimensions.screenHeight);
               return (dimensions.screenWidth < 460 || dimensions.screenHeight < 460) ? customWidth : 384;
             }
           }
-
           return (
-          <div className="row">
+          <div className="d-flex p-1">
             {
               showData ? (
               <div className="col-lg-5">
@@ -214,7 +238,7 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
               ) :
               null
             }
-            <div className="col-lg-7">
+            <div id={boardId}>
               <Chessboard
                 id="humanVsHuman"
                 position={fen}
