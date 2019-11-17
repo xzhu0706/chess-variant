@@ -26,13 +26,16 @@ class Game extends Component {
     this.opponent = null
     this.gameId = 0
     this.orientation = ''
-    this.gameStateUpdateSubscription = null
+    this.gameUpdateSubscription = null
     this.moveFrom = null
+    this.gameInfo = null
   }
 
   componentDidMount(){
     let game = this.props.location.state.message
-    if (localStorage.getItem(game.id)) {
+    alert(JSON.stringify(game))
+    this.gameInfo = game
+    if (game.createdIt === true) {
       this.orientation = game.creatorOrientation
       this.opponent = game.opponent
     }
@@ -57,22 +60,58 @@ class Game extends Component {
         this.game = new Chess()
         this.setState({fen: Games.STANDARD_FEN})
     }
+
+    this.gameUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame),).subscribe({
+      next: (gameData) => {
+        let gameState = gameData.value.data.onUpdateGame
+        alert("GAME UPDATE: " + gameState.id)
+        if(this.gameInfo.id === gameState.id){
+          this.setState({fen: gameState.fen})
+          this.game.load(gameState.fen)
+        }
+      },
+    });
+
   }
 
-  onPieceClick = (piece) => {
-    
-  }
-
-  onSquareClick = (square) => {
-    let validMoves = this.game.moves({square: square})
-    let newSquareStyles = {}
-    for(let i in validMoves){
-      newSquareStyles[validMoves[i]] = { 
-        background: "radial-gradient(circle, #fffc00 36%, transparent 40%)",
-        borderRadius: "50%"}
+  onSquareClick =  async (square) => {
+    if(this.game.turn() !== this.orientation[0]) return
+    let piece = this.game.get(square)
+    if(this.moveFrom !== null){
+      let move = this.game.move({from: this.moveFrom, to: square})
+      if(move !== null){
+        this.setState({fen: this.game.fen(), squareStyles: {}})
+        let gameInfo = this.gameInfo;
+        gameInfo.fen = this.game.fen()
+        delete gameInfo['__typename']
+        let creator = gameInfo['creator']
+        delete creator['__typename']
+        gameInfo['creator'] = creator
+        delete gameInfo['createdIt']
+        alert("AfTER DELETING TYPENAME: " + JSON.stringify(gameInfo))
+        await API.graphql(graphqlOperation(mutations.updateGame, {input: gameInfo}))
+        alert('UPDATED')
+        this.moveFrom = null
+        return
+      }        
     }
-    alert(JSON.stringify(newSquareStyles))
-    this.setState({squareStyles: newSquareStyles})
+    let newSquareStyles = {}
+    if (piece !== null && piece.color === this.orientation[0]) {
+      this.moveFrom = square
+      let validMoves = this.game.moves({ square: square })
+      newSquareStyles[square] = { backgroundColor: 'blue' }
+      for (let i in validMoves) {
+        let move = validMoves[i];
+        move = move.length < 3 ? move : move.substring(1)
+        newSquareStyles[move] = {
+          background: "radial-gradient(circle, #fffc00 26%, transparent 40%)",
+          borderRadius: "50%"
+        }
+      }
+    }
+    //alert(JSON.stringify(newSquareStyles))
+    this.setState({ squareStyles: newSquareStyles })
+    
   }
 
   render(){
@@ -80,7 +119,7 @@ class Game extends Component {
       marginLeft: '15%',
       marginTop: '25%'
     }
-    //alert("Orientation: ", this.orientation)
+    alert("FEN: " + this.state.fen)
     return (
       <Box display='flex' justifyContent='center'>
         <Chessboard
@@ -89,7 +128,6 @@ class Game extends Component {
           darkSquareStyle = {{backgroundColor: 'white'}}
           orientation = {this.orientation}
           squareStyles = {this.state.squareStyles}
-          onPieceClick = {this.onPieceClick}
           onSquareClick = {this.onSquareClick}
         />
       </Box>

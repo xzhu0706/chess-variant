@@ -100,6 +100,9 @@ class Lobby extends Component {
     };
     this.gamesData = {}
     this.gameRoomStateUpdateSubscription = null
+    this.gameCreationSubscription = null
+    this.gameDeletionSubscription = null
+    this.currentGame = null
   }
 
   async componentDidMount() {
@@ -115,7 +118,7 @@ class Lobby extends Component {
       this.setState({ games });
     }
 
-    API.graphql(graphqlOperation(subscriptions.onCreateGame),).subscribe({
+    this.gameCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateGame),).subscribe({
       next: (gameData) => {
         alert(JSON.stringify(gameData.value.data.onCreateGame))
         const game = gameData.value.data.onCreateGame
@@ -127,7 +130,7 @@ class Lobby extends Component {
       },
     });
 
-    API.graphql(graphqlOperation(subscriptions.onDeleteGame),).subscribe({
+    this.gameDeletionSubscription = API.graphql(graphqlOperation(subscriptions.onDeleteGame),).subscribe({
       next: (gameData) => {
         let game = gameData.value.data.onDeleteGame
         let gameId = game.id
@@ -141,12 +144,21 @@ class Lobby extends Component {
     this.gameRoomUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame),).subscribe({
       next: (gameData) => {
         let game = gameData.value.data.onUpdateGame
-        if(localStorage.getItem(game.id)){
+        alert('GAME UPDATE: ' + game.id)
+        let currentGame = localStorage.getItem('currentGame')
+        if(currentGame && currentGame === game.id){
+          game['createdIt'] = true
           this.props.history.push({pathname: '/game', state: {message: game}})
         }
       },
     });
 
+  }
+
+  componentWillUnmount(){
+    this.gameRoomUpdateSubscription.unsubscribe()
+    this.gameCreationSubscription.unsubscribe()
+    this.gameDeletionSubscription.unsubscribe()
   }
 
   createGame = async (event, gameInfo) => {
@@ -160,9 +172,12 @@ class Lobby extends Component {
       gameInfo['creator'] = user
     }
     alert(JSON.stringify(gameInfo))
+    let currentGame = localStorage.getItem('currentGame')
+    if(currentGame){
+      await API.graphql(graphqlOperation(mutations.deleteGame, { input: {id: currentGame }}))
+    }
     let newGame = await API.graphql(graphqlOperation(mutations.createGame, { input: gameInfo }))
-    let gameId = newGame.data.createGame.id
-    localStorage.setItem(gameId, 1)
+    localStorage.setItem('currentGame', newGame.data.createGame.id)
   }
 
   constructRowFromGameData = (game) => {
@@ -183,7 +198,13 @@ class Lobby extends Component {
     let gameId = rowData.gameId
     let gameInfo = this.gamesData[gameId]
     gameInfo.fen = '#'
+    alert(JSON.stringify(gameInfo))
+    delete gameInfo['__typename']
+    let creator = gameInfo['creator']
+    delete creator['__typename']
+    gameInfo['creator'] = creator
     await API.graphql(graphqlOperation(mutations.updateGame, {input: gameInfo}))
+    gameInfo['createdIt'] = false
     this.props.history.push({pathname: '/game', state: {message: gameInfo}})
   }
 

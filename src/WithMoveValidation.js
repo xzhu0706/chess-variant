@@ -9,8 +9,6 @@ import wn_test from './wn.svg'; // testing the use of custom icons
 import bn_test from './bn.svg'; // testing the use of custom icons
 import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
-
-
 class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
