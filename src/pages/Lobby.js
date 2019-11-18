@@ -185,6 +185,10 @@ class Lobby extends Component {
     this.setState({showDialog: true})
   }
 
+  closeDialog = () => {
+    this.setState({showDialog: false})
+  }
+
   constructRowFromGameData = (game) => {
     const creator = game.creator
     const player = creator ? creator.username : 'anonymous'
@@ -244,7 +248,7 @@ class Lobby extends Component {
 
     return (
       <Container maxWidth="sm" style={lobbyStyle}>
-        <CreateGameDialog showDialog = {this.state.showDialog} createGame = {this.createGame} />
+        <CreateGameDialog closeDialog = {this.closeDialog} showDialog = {this.state.showDialog} createGame = {this.createGame} />
         <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog}>
                 Create a game
         </Button>

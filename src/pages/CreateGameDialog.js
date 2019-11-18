@@ -5,42 +5,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Slider from '@material-ui/core/Slider';
-import { withStyles } from '@material-ui/core/styles';
-
-
-const PrettoSlider = withStyles({
-  root: {
-    color: '#52af77',
-    height: 8,
-  },
-  thumb: {
-    height: 24,
-    width: 24,
-    backgroundColor: '#fff',
-    border: '2px solid #333333',
-    marginTop: -8,
-    marginLeft: -12,
-    '&:focus,&:hover,&$active': {
-      boxShadow: 'inherit',
-    },
-  },
-  active: {},
-  valueLabel: {
-    left: 'calc(-50% + 4px)',
-  },
-  track: {
-    height: 8,
-    borderRadius: 4,
-  },
-  rail: {
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#333333',
-  },
-})(Slider);
 
 class CreateGameDialog extends Component {
   constructor(props) {
@@ -62,7 +26,7 @@ class CreateGameDialog extends Component {
 
     render() {
       return (
-        <Dialog open={this.props.showDialog} maxWidth="sm" fullWidth>
+        <Dialog open={this.props.showDialog} maxWidth="sm" fullWidth onClose={this.props.closeDialog}>
           <DialogTitle id="form-dialog-title">Create a game</DialogTitle>
           <DialogContent>
             <FormControl style={{ minWidth: 120 }}>
@@ -82,12 +46,15 @@ class CreateGameDialog extends Component {
               <input
                 onChange={this.setMinutesPerSide}
                 type="range"
+                defaultValue = {5}
+                min = {1}
+                max = {180}
                 className="custom-range"
                 id="customRange1"
               />
 
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' , marginTop: '10px'}}>
               <Button
                 style={{ marginRight: '20px', padding: '20px', color: 'black' }}
                 variant="contained"
