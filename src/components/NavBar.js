@@ -99,7 +99,7 @@ class NavBar extends Component {
               : (
                 <Nav className="ml-auto">
                   <Button
-                    style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: '35px' }}
+                    style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: 'auto' }}
                     variant="outlined"
                     startIcon={<AccountCircle />}
                     onClick={handleShowAuth}
