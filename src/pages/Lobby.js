@@ -23,6 +23,10 @@ import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 import Amplify, { Auth } from 'aws-amplify';
 import CreateGameDialog from './CreateGameDialog';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 
 const CURRENT_GAME = 'currentGame'
@@ -97,6 +101,7 @@ class Lobby extends Component {
     this.state = {
       games: [],
       showDialog: false,
+      showJoiningOwnGameDialog: false,
     };
     this.gamesData = {}
     this.gameUpdateSubscription = null
@@ -180,13 +185,20 @@ class Lobby extends Component {
     localStorage.setItem(CURRENT_GAME, newGame.data.createGame.id)
   }
 
-  
   showDialog = () => {
     this.setState({showDialog: true})
   }
 
   closeDialog = () => {
     this.setState({showDialog: false})
+  }
+
+  showJoiningOwnGameDialog = () => {
+    this.setState({showJoiningOwnGameDialog: true})
+  }
+
+  closeJoiningOwnGameDialog = () => {
+    this.setState({showJoiningOwnGameDialog: false})
   }
 
   constructRowFromGameData = (game) => {
@@ -201,6 +213,11 @@ class Lobby extends Component {
 
   joinGame = async (event, rowData) => {
     let gameId = rowData.gameId
+    let createdGame = localStorage.getItem(CURRENT_GAME)
+    if(createdGame !== null && createdGame === gameId){
+      this.showJoiningOwnGameDialog()
+      return
+    }
     let gameInfo = this.gamesData[gameId]
     gameInfo['available'] = false
     let userInfo = await Auth.currentUserInfo()
@@ -252,6 +269,17 @@ class Lobby extends Component {
         <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog}>
                 Create a game
         </Button>
+        <Dialog
+          open={this.state.showJoiningOwnGameDialog}
+          onClose={this.closeJoiningOwnGameDialog}
+        >
+          <DialogTitle id="alert-dialog-title">Sorry, you can't play against yourself!</DialogTitle>
+          <DialogActions>
+            <Button onClick={this.closeJoiningOwnGameDialog} color="primary">
+              Alright
+            </Button>
+          </DialogActions>
+        </Dialog>
         <div style={{ width: '100%' }}>
           <MaterialTable
             onRowClick = {(event, rowData) => this.joinGame(event, rowData)}

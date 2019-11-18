@@ -19,6 +19,7 @@ class Game extends Component {
       fen: '',
       time: '',
       squareStyles: {},
+      yourTurn: false,
     }
     this.game = null
     this.opponent = null // the opponent. null if user created or joined game anonymously
@@ -42,6 +43,7 @@ class Game extends Component {
       this.opponent = game.creator
     }
     let initialFen = ''
+    let yourTurn = this.orientation === 'white'? true : false
     this.gameId = game.id
     let variant = game.variant
     switch(variant){
@@ -59,13 +61,14 @@ class Game extends Component {
         this.game = new Chess()
         initialFen = Games.STANDARD_FEN
     }
-    this.setState({fen: initialFen})
+    this.setState({fen: initialFen, yourTurn})
     this.gameUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame),).subscribe({
       next: (gameData) => {
         let gameState = gameData.value.data.onUpdateGame
         if(this.gameInfo.id === gameState.id){
-          this.setState({fen: gameState.fen})
           this.game.load(gameState.fen)
+          let yourTurn = this.game.turn() === this.orientation[0]? true : false
+          this.setState({fen: gameState.fen, yourTurn})
         }
       },
     });
@@ -77,7 +80,7 @@ class Game extends Component {
     if(this.moveFrom !== null){
       let move = this.game.move({from: this.moveFrom, to: square})
       if(move !== null){
-        this.setState({fen: this.game.fen(), squareStyles: {}})
+        this.setState({fen: this.game.fen(), squareStyles: {}, yourTurn: false})
         let gameInfo = this.gameInfo;
         delete gameInfo['__typename']
         let creator = gameInfo['creator']
@@ -119,11 +122,11 @@ class Game extends Component {
       <Box display='flex' justifyContent='center'>
         <Box display='flex' flexDirection='column'>
           <Paper>
-            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', marginLeft: '5px'}} variant="h5" component="h3">
+            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h5" component="h3">
               You vs {this.opponent !== null? this.opponent.username : 'Anonymous'}.
             </Typography>
-            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', marginLeft: '5px'}}component="p">
-              {this.game !== null && this.game.turn() === this.orientation[0]? YOUR_TURN_MESSAGE : ''}
+            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}}component="p">
+              {this.state.yourTurn === true? YOUR_TURN_MESSAGE : ''}
             </Typography>
           </Paper>
           <Chessboard
