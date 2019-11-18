@@ -6,6 +6,9 @@ import Chessboard from 'chessboardjsx';
 import { API, graphqlOperation } from 'aws-amplify';
 //import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
+import GameData from './GameData.js';
+import wn_test from "./wn.svg"; // testing the use of custom icons
+import bn_test from "./bn.svg"
 import './variant-style.css';
 
 

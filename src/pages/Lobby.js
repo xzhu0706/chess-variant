@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import React, { Component, forwardRef } from 'react';
-=======
-import React, { Component } from 'react'; 
->>>>>>> upstream/master
 import MaterialTable from 'material-table';
 import Container from '@material-ui/core/Container';
 import { API, graphqlOperation } from 'aws-amplify';
@@ -28,14 +24,8 @@ import * as mutations from '../graphql/mutations';
 import Amplify, { Auth } from 'aws-amplify';
 import CreateGameDialog from './CreateGameDialog';
 
-<<<<<<< HEAD
 
 const CURRENT_GAME = 'currentGame'
-=======
-import CreateGameDialog from './CreateGameDialog';
-
-
->>>>>>> upstream/master
 const lobbyColumns = [
   {
     title: 'Player',
@@ -114,7 +104,6 @@ class Lobby extends Component {
     this.gameDeletionSubscription = null
   }
 
-<<<<<<< HEAD
   async componentDidMount() {
     let queryResult = await API.graphql(graphqlOperation(queries.listGames))
     if (queryResult) {
@@ -126,12 +115,6 @@ class Lobby extends Component {
         return row
       });
       this.setState({ games });
-=======
-    componentWillUnmount() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
->>>>>>> upstream/master
     }
 
     this.gameCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateGame),).subscribe({
@@ -167,7 +150,6 @@ class Lobby extends Component {
           delete this.gamesData[game.id]
           this.removeGameFromLobby(game.id)
         }
-<<<<<<< HEAD
       },
     });
 
@@ -227,45 +209,6 @@ class Lobby extends Component {
       opponent.id = userInfo.id
       opponent.username = userInfo.username
       gameInfo['opponent'] = opponent
-=======
-        return (
-            <Container maxWidth='sm' style={lobbyStyle}>
-                {/* <Button style={createGameButtonStyle} variant="contained" onClick={this.props.makeDialogVisible}>
-                    Create a game
-                </Button> */}
-                <CreateGameDialog 
-                    onClick={this.props.makeDialogVisible}
-                 />
-                <div style={{width: "100%"}}>
-                <MaterialTable
-                    icons = {tableIcons}
-                    columns={lobbyColumns}
-                    data={this.state.games}
-                    title='Lobby'
-                    maxWidth="md"
-                    options={{
-                        headerStyle: {
-                            backgroundColor: '#FFF',
-                            fontFamily: "AppleSDGothicNeo-SemiBold, verdana",
-                            fontSize: "18px",
-                            color: '#333333'
-                        },
-                        paging: false,
-                        searchFieldStyle:{
-                            fontSize: "14px",
-                            fontFamily: 'verdana'
-                        }
-                    }}
-                    localization = {{
-                        toolbar: {
-                            searchPlaceholder: "keywords"
-                        }
-                    }}
-                />
-                </div>
-            </Container>
-        )
->>>>>>> upstream/master
     }
     delete gameInfo['__typename']
     let creator = gameInfo['creator']
