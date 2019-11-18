@@ -54,11 +54,21 @@ const Chess = function (fen) {
 
   const POSSIBLE_RESULTS = ['1-0', '0-1', '1/2-1/2', '*'];
 
+  var STANDARD = 0;
+  var ANTI = 1;
+  var GRID = 2;
+  var RIFLE = 3;
+  var ATOMIC = 4;
+  var POCKET = 5;
 
   const PAWN_OFFSETS = {
     b: [16, 32, 17, 15],
     w: [-16, -32, -17, -15],
   };
+
+  // in_grid_move = (from, to) => {
+    
+  // }
 
   // original:
   // var PIECE_OFFSETS = {
@@ -544,11 +554,10 @@ const Chess = function (fen) {
     const sq = SQUARES[square];
 
     /* don't let the user place more than one king */
-    /* commenting this out: the king is not a special piece in antichess */
-    // if (piece.type == KING &&
-    //     !(kings[piece.color] == EMPTY || kings[piece.color] == sq)) {
-    //   return false;
-    // }
+    if (piece.type == KING && !(variant == ANTI) &&
+        !(kings[piece.color] == EMPTY || kings[piece.color] == sq)) {
+      return false;
+    }
 
     board[sq] = { type: piece.type, color: piece.color };
     if (piece.type === KING) {
@@ -597,7 +606,7 @@ const Chess = function (fen) {
 
   function generate_moves(options) {
     // add_move() appends a move to the list of available moves (if a pawn is moving to rank 1 or rank 8,
-    // then we might append multiple moves: all the possible promoting outcomes)
+    // then we might append multiple moves, i.e., all the possible promoting outcomes)
     function add_move(board, moves, from, to, flags) {
       /* if pawn promotion */
       if (board[from].type === PAWN
@@ -621,12 +630,19 @@ const Chess = function (fen) {
     // var single_square = false; // not used since we've disabled castling
 
     /* do we want legal moves? */
-    // var legal = (typeof options !== 'undefined' && 'legal' in options) ?
-    //             options.legal : true;
+    var legal = (typeof options !== 'undefined' && 'legal' in options) ?
+                options.legal : true;
 
     /* are we generating moves for a single square? */
     if (typeof options !== 'undefined' && 'square' in options) {
-      if (!(options.square in SQUARES)) {
+      if (options.square in SQUARES) {
+        /* if the variant is antichess or another variant with a mandatory capture rule,
+        we always generate moves for all squares initially */
+        if (variant !== ANTI) {
+          first_sq = last_sq = SQUARES[options.square];
+        }
+        single_square = true;
+      } else {
         /* invalid square */
         return [];
       }
@@ -649,10 +665,13 @@ const Chess = function (fen) {
         if (board[square] == null) {
           add_move(board, moves, i, square, BITS.NORMAL);
 
-          /* double square */
+          /* double square, non-capturing */
           var square = i + PAWN_OFFSETS[us][1];
           if (second_rank[us] === rank(i) && board[square] == null) {
-            add_move(board, moves, i, square, BITS.BIG_PAWN);
+            // validate the move if we're playing grid chess
+            if (variant !== GRID || valid_2x2_grid_move(i, square)) {
+              add_move(board, moves, i, square, BITS.BIG_PAWN);
+            }
           }
         }
 
@@ -680,11 +699,15 @@ const Chess = function (fen) {
             if (square & 0x88) break;
 
             if (board[square] == null) {
-              add_move(board, moves, i, square, BITS.NORMAL);
+              if (variant !== GRID || valid_2x2_grid_move(i, square)) {
+                add_move(board, moves, i, square, BITS.NORMAL);
+              }
             } else {
               if (board[square].color === us) break;
-              add_move(board, moves, i, square, BITS.CAPTURE);
-              capturePossible = 1;
+              if (variant !== GRID || valid_2x2_grid_move(i, square)) {
+                add_move(board, moves, i, square, BITS.CAPTURE);
+                capturePossible = 1;
+              }
               break;
             }
 
@@ -695,8 +718,9 @@ const Chess = function (fen) {
       }
     }
 
-    /* now that we've added moves on all the squares, if capturePossible is 1, we have to restrict
-       those moves to capturing moves */
+    if (variant === ANTI) {
+      /* now that we've generated moves on all the squares, if capturePossible is 1, we have to restrict
+        the moves to capturing moves */
 
     /* are we generating moves for a single square? */
     if (typeof options !== 'undefined' && 'square' in options) {
@@ -786,6 +810,7 @@ const Chess = function (fen) {
     return move.replace(/=/, '').replace(/[+#]?[?!]*$/, '');
   }
 
+  /* whether the piece on `square` is attacked by a piece of the given `color`... */
   function attacked(color, square) {
     for (let i = SQUARES.a8; i <= SQUARES.h1; i++) {
       /* did we run off the end of the board */
@@ -1727,8 +1752,22 @@ const Chess = function (fen) {
   };
 };
 
+let valid_2x2_grid_move = (from, to) => {
+  /* returns true if the `from` and `to` squares are in different 2x2 subgrids */
+  // a8:   0, b8:   1, c8:   2, d8:   3, e8:   4, f8:   5, g8:   6, h8:   7,
+  // a7:  16, b7:  17, c7:  18, d7:  19, e7:  20, f7:  21, g7:  22, h7:  23,
+  // a6:  32, b6:  33, c6:  34, d6:  35, e6:  36, f6:  37, g6:  38, h6:  39,
+  // a5:  48, b5:  49, c5:  50, d5:  51, e5:  52, f5:  53, g5:  54, h5:  55,
+  // a4:  64, b4:  65, c4:  66, d4:  67, e4:  68, f4:  69, g4:  70, h4:  71,
+  // a3:  80, b3:  81, c3:  82, d3:  83, e3:  84, f3:  85, g3:  86, h3:  87,
+  // a2:  96, b2:  97, c2:  98, d2:  99, e2: 100, f2: 101, g2: 102, h2: 103,
+  // a1: 112, b1: 113, c1: 114, d1: 115, e1: 116, f1: 117, g1: 118, h1: 119
+  return !((from >> 5 === to >> 5) && ((from & 15) >> 1 === (to & 15) >> 1));
+};
+
 /* export Chess object if using node or any other CommonJS compatible
  * environment */
 if (typeof exports !== 'undefined') exports.Chess = Chess;
+if (typeof exports !== 'undefined') exports.valid_2x2_grid_move = valid_2x2_grid_move;
 /* export Chess object for any RequireJS compatible environment */
 if (typeof define !== 'undefined') define(() => Chess);

@@ -3,11 +3,11 @@ import { Auth, API, graphqlOperation } from 'aws-amplify';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import * as queries from '../graphql/queries';
-import * as mutations from '../graphql/mutations';
+//import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
 import WithMoveValidation from '../WithMoveValidation';
-import ChatMessages from '../components/ChatMessages';
-import ChatInput from '../components/ChatInput';
+//import ChatMessages from '../components/ChatMessages';
+//import ChatInput from '../components/ChatInput';
 import './Game.css';
 import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
@@ -112,10 +112,22 @@ class Game extends Component {
     this.setState({ squareStyles: newSquareStyles })
   }
 
+<<<<<<< HEAD
   render(){
     const boardStyle = {
       marginLeft: '15%',
       marginTop: '25%'
+=======
+  componentWillUnmount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  onSendMessage = (message) => {
+    if (!message) {
+      return;
+>>>>>>> upstream/master
     }
     return (
       <Box display='flex' justifyContent='center'>
