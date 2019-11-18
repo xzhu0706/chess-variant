@@ -1,3 +1,5 @@
 export const CHARCOAL = '#333333'
 export const LIGHT_GRAY = '#D3D3D3'
-export const GRAY = '#BEBEBE'
+export const LIGHT_SQUARE = '#BEBEBE'
+export const DARK_SQUARE = '#F5F5F5'
+export const BOARD_HIGHLIGHT_COLOR = '#556B2F'

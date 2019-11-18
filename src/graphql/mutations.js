@@ -22,6 +22,7 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
     time
     variant
     fen
+    available
   }
 }
 `;
@@ -46,6 +47,7 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
     time
     variant
     fen
+    available
   }
 }
 `;
@@ -70,6 +72,7 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
     time
     variant
     fen
+    available
   }
 }
 `;

@@ -22,6 +22,7 @@ export const onCreateGame = `subscription OnCreateGame {
     time
     variant
     fen
+    available
   }
 }
 `;
@@ -46,6 +47,7 @@ export const onUpdateGame = `subscription OnUpdateGame {
     time
     variant
     fen
+    available
   }
 }
 `;
@@ -70,6 +72,7 @@ export const onDeleteGame = `subscription OnDeleteGame {
     time
     variant
     fen
+    available
   }
 }
 `;
