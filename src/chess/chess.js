@@ -819,7 +819,7 @@ var Chess = function(fen, variant=0) {
 
   /* whether the piece on `square` is attacked by a piece of the given `color`... */
   function attacked(color, square) {
-    for (var i = SQUARES.a8; i <= SQUARES.h1; i++) {
+    for (let i = SQUARES.a8; i <= SQUARES.h1; i++) {
       /* did we run off the end of the board */
       if (i & 0x88) { i += 7; continue; }
 
@@ -829,9 +829,9 @@ var Chess = function(fen, variant=0) {
       /* if we're playing grid chess and it's not a valid, out-of-grid move, no attack can occur */
       if (variant === GRID && !valid_2x2_grid_move(i, square)) continue;
 
-      var piece = board[i];
-      var difference = i - square;
-      var index = difference + 119;
+      const piece = board[i];
+      const difference = i - square;
+      const index = difference + 119;
 
       if (ATTACKS[index] & (1 << SHIFTS[piece.type])) {
         if (piece.type === PAWN) {
@@ -846,10 +846,10 @@ var Chess = function(fen, variant=0) {
         /* if the piece is a knight or a king */
         if (piece.type === 'n' || piece.type === 'k') return true;
 
-        var offset = RAYS[index];
-        var j = i + offset;
+        const offset = RAYS[index];
+        let j = i + offset;
 
-        var blocked = false;
+        let blocked = false;
         while (j !== square) {
           if (board[j] != null) { blocked = true; break; }
           j += offset;
@@ -877,6 +877,27 @@ var Chess = function(fen, variant=0) {
 
   function in_stalemate() {
     return !in_check() && generate_moves().length === 0;
+  }
+
+  /* for extinction chess */
+  function extinguished(color) {
+    let pieces = { q: 0, k: 0, n: 0, b: 0, r: 0, p: 0 };
+
+    for (let i = SQUARES.a8; i <= SQUARES.h1; i++) {
+      if (i & 0x88) { i += 7; continue; }
+
+      if (board[i] == null || board[i].color !== color) continue;
+
+      pieces[board[i].type]++;
+    }
+
+    for (let i = 0; i < pieces.length; i++) {
+      if (pieces[i] === 0) {
+        return true;
+      }
+    }
+    console.log(pieces);
+    return false;
   }
 
   function insufficient_material() {
@@ -970,8 +991,8 @@ var Chess = function(fen, variant=0) {
   }
 
   function make_move(move) {
-    var us = turn;
-    var them = swap_color(us);
+    const us = turn;
+    const them = swap_color(us);
     push(move);
 
     board[move.to] = board[move.from];
@@ -1715,6 +1736,7 @@ var Chess = function(fen, variant=0) {
     attacked: attacked,
     king_attacked: king_attacked,
     generate_moves: generate_moves,
+    extinguished: extinguished,
 
     undo: function() {
       var move = undo_move();
