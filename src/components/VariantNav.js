@@ -5,6 +5,7 @@ import {
 } from 'react-bootstrap';
 import AntiChess from './variants/AntiChess';
 import GridChess from './variants/GridChess';
+import ExtinctionChess from './variants/ExtinctionChess';
 
 function VariantNav() {
   return (
@@ -15,16 +16,20 @@ function VariantNav() {
             <Nav.Item>
               <Nav.Link eventKey="link-1">Antichess</Nav.Link>
               <Nav.Link eventKey="link-2">Grid chess</Nav.Link>
+              <Nav.Link eventKey="link-3">Extinction chess</Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>
         <Col sm={9}>
           <Tab.Content>
-          <Tab.Pane eventKey="link-1">
+            <Tab.Pane eventKey="link-1">
               <AntiChess />
             </Tab.Pane>
             <Tab.Pane eventKey="link-2">
               <GridChess />
+            </Tab.Pane>
+            <Tab.Pane eventKey="link-3">
+              <ExtinctionChess />
             </Tab.Pane>
           </Tab.Content>
         </Col>

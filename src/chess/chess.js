@@ -49,10 +49,6 @@ var Chess = function(fen, variant=0) {
   const QUEEN = 'q';
   const KING = 'k';
 
-  // for extinction chess, to remember which pieces each player had at the start.
-  // called when starting FEN is loaded.
-  // let STARTING_PIECES = { };
-
   const SYMBOLS = 'pnbrqkPNBRQK'; // all possible pieces in a FEN string
 
   const DEFAULT_POSITION = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
@@ -62,7 +58,7 @@ var Chess = function(fen, variant=0) {
   const STANDARD = 0;
   const ANTI = 1;
   const GRID = 2;
-  const EXTINCT = 3;
+  const EXTINCTION = 3;
   const RIFLE = 4;
   const ATOMIC = 5;
   const POCKET = 6;
@@ -593,7 +589,7 @@ var Chess = function(fen, variant=0) {
         /* single square, non-capturing */
         var square = i + PAWN_OFFSETS[us][0];
         if (board[square] == null) {
-          // validate the move if we're playing grid chess
+          // validate the move in a special way if we're playing grid chess
           if (variant !== GRID || valid_2x2_grid_move(i, square)) {
             add_move(board, moves, i, square, BITS.NORMAL);
           }
@@ -601,7 +597,7 @@ var Chess = function(fen, variant=0) {
           /* double square, non-capturing */
           var square = i + PAWN_OFFSETS[us][1];
           if (second_rank[us] === rank(i) && board[square] == null) {
-            // validate the move if we're playing grid chess
+            // validate the move in a special way if we're playing grid chess
             if (variant !== GRID || valid_2x2_grid_move(i, square)) {
               add_move(board, moves, i, square, BITS.BIG_PAWN);
             }
@@ -615,13 +611,13 @@ var Chess = function(fen, variant=0) {
 
           if (board[square] != null &&
               board[square].color === them) {
-              // validate the move if we're playing grid chess
+              // validate the move in a special way if we're playing grid chess
               if (variant !== GRID || valid_2x2_grid_move(i, square)) {
                 add_move(board, moves, i, square, BITS.CAPTURE);
                 capturePossible = 1;
               }
           } else if (square === ep_square) {
-            // validate the move if we're playing grid chess
+            // validate the move in a special way if we're playing grid chess
             if (variant !== GRID || valid_2x2_grid_move(i, square)) {
               add_move(board, moves, i, ep_square, BITS.EP_CAPTURE);
               capturePossible = 1;
@@ -850,7 +846,7 @@ var Chess = function(fen, variant=0) {
 
   function in_check() {
     /* check is not possible in antichess */
-    return king_attacked(turn) && variant !== ANTI;
+    return king_attacked(turn) && variant !== ANTI && variant !== EXTINCTION;
   }
 
   function in_checkmate() {
@@ -865,6 +861,9 @@ var Chess = function(fen, variant=0) {
   a piece they had at the start of the game */
   function extinguished() {
     let piece_populations = STARTING_PIECES[turn];
+    for (count in piece_populations) {
+      piece_populations[count] = 0;
+    }
 
     for (let i = SQUARES.a8; i <= SQUARES.h1; i++) {
       if (i & 0x88) { i += 7; continue; }
@@ -884,7 +883,7 @@ var Chess = function(fen, variant=0) {
   }
 
   function insufficient_material() {
-    if (variant === ANTI || variant === GRID) return false;
+    if (variant === ANTI || variant === GRID || variant === EXTINCTION) return false;
     var pieces = {};
     var bishops = [];
     var num_pieces = 0;
@@ -1420,7 +1419,7 @@ var Chess = function(fen, variant=0) {
              in_stalemate() ||
              insufficient_material() ||
              in_threefold_repetition() ||
-             (variant === EXTINCT && extinguished());
+             (variant === EXTINCTION && extinguished());
     },
 
     validate_fen: function(fen) {
