@@ -107,7 +107,7 @@ function ExtinctionChessDocument() {
         <Row className="justify-content-md-center">
           <Col xs="auto" style={bodyStyle}>
             <div>
-              {ExtinctionChess('', 'w', '', '4k3/8/8/2q5/8/3N4/8/4K3 w - - 0 1', 3, true, true)} 
+              {ExtinctionChess('', 'w', '', '3k4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3, true, true)} 
             </div>
           </Col>
           <Col xs="auto" xl="4" style={bodyStyle}>

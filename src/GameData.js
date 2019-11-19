@@ -6,6 +6,9 @@ function GameData(props) {
     if (props.gameResult === 'checkmate') {
         game_state = `${turn} wins (checkmate)`;
     }
+    else if (props.gameResult === 'extinction') {
+        game_state = `${turn} wins (extinction)`;
+    }
     else if (props.gameResult === 'repetition') {
         game_state = 'Draw (three-fold repetition)';
     }
@@ -17,9 +20,6 @@ function GameData(props) {
     }
     else if (props.gameResult === 'fifty') {
         game_state = `Draw (fifty-move rule)`;
-    }
-    else if (props.gameResult === 'extinction') {
-        game_state = `${turn} wins (extinction)`;
     }
     const mystyle = {
         fontSize: "2em"

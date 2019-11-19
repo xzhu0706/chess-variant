@@ -591,7 +591,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   // (White's turn.)
-  test("In extinction chess, the game is not over if White has no kings at the start of the game", () => {
+  test("In extinction chess, the game is not necessarily over if White has no kings at the start of the game", () => {
     expect(extinctionGame.game_over()).toEqual(false);
   });
 
@@ -608,7 +608,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   // (White's turn.)
-  test("In extinction chess, the game is not over if White has no queens at the start of the game", () => {
+  test("In extinction chess, the game is not necessarily over if White has no queens at the start of the game", () => {
     expect(extinctionGame2.game_over()).toEqual(false);
   });
 
@@ -625,7 +625,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   // (White's turn.)
-  test("In extinction chess, the game is not over if White has no bishops at the start of the game", () => {
+  test("In extinction chess, the game is not necessarily over if White has no bishops at the start of the game", () => {
     expect(extinctionGame3.game_over()).toEqual(false);
   });
 
@@ -642,7 +642,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   // (White's turn.)
-  test("In extinction chess, the game is not over if White has no knights at the start of the game", () => {
+  test("In extinction chess, the game is not necessarily over if White has no knights at the start of the game", () => {
     expect(extinctionGame4.game_over()).toEqual(false);
   });
 
@@ -659,9 +659,241 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   // (White's turn.)
-  test("In extinction chess, the game is not over if White has no rooks at the start of the game", () => {
+  test("In extinction chess, the game is not necessarily over if White has no rooks at the start of the game", () => {
     expect(extinctionGame5.game_over()).toEqual(false);
   });
 
+  let extinctionGame6 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/8/RNBQKBNR w KQkq - 0 1", 3);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | R  N  B  Q  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In extinction chess, the game is not necessarily over if White has no pawns at the start of the game", () => {
+    expect(extinctionGame6.game_over()).toEqual(false);
+  });
+
+  let extinctionGame7 = new chessjs.Chess('3qk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  .  q  k  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame7.move('Nxd8');
+  test("In extinction chess, the game is over when White takes Black's remaining queen", () => {
+    expect(extinctionGame7.game_over()).toEqual(true);
+  });
+
+  let extinctionGame8 = new chessjs.Chess('3rk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  .  r  k  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame8.move('Nxd8');
+  test("In extinction chess, the game is over when White takes Black's remaining rook", () => {
+    expect(extinctionGame8.game_over()).toEqual(true);
+  });
+
+  let extinctionGame9 = new chessjs.Chess('3bk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  .  b  k  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame9.move('Nxd8');
+  test("In extinction chess, the game is over when White takes Black's remaining bishop", () => {
+    expect(extinctionGame9.game_over()).toEqual(true);
+  });
+
+  let extinctionGame10 = new chessjs.Chess('3nk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  .  q  k  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame10.move('Nxd8');
+  test("In extinction chess, the game is over when White takes Black's remaining knight", () => {
+    expect(extinctionGame10.game_over()).toEqual(true);
+  });
+
+  let extinctionGame11 = new chessjs.Chess('4k3/5N2/3p4/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  .  .  k  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  p  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame11.move('Nxd6');
+  test("In extinction chess, the game is over when White takes Black's remaining pawn", () => {
+    expect(extinctionGame11.game_over()).toEqual(true);
+  });
+
+  let extinctionGame12 = new chessjs.Chess('3k4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  .  k  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame12.move('Nxd8');
+  test("In extinction chess, the game is over when White takes Black's remaining king", () => {
+    expect(extinctionGame12.game_over()).toEqual(true);
+  });
+
+  let extinctionGame13 = new chessjs.Chess('2kk4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  k  k  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame13.move('Nxd8');
+  test("In extinction chess, the game is not over when White takes one of Black's two kings", () => {
+    expect(extinctionGame13.game_over()).toEqual(false);
+  });
+
+  let extinctionGame14 = new chessjs.Chess('2nn4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  n  n  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame14.move('Nxd8');
+  test("In extinction chess, the game is not over when White takes one of Black's two knights", () => {
+    expect(extinctionGame14.game_over()).toEqual(false);
+  });
+
+  let extinctionGame15 = new chessjs.Chess('2bb4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  b  b  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame15.move('Nxd8');
+  test("In extinction chess, the game is not over when White takes one of Black's two bishops", () => {
+    expect(extinctionGame15.game_over()).toEqual(false);
+  });
+
+  let extinctionGame16 = new chessjs.Chess('2rr4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  r  r  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame16.move('Nxd8');
+  test("In extinction chess, the game is not over when White takes one of Black's two rooks", () => {
+    expect(extinctionGame16.game_over()).toEqual(false);
+  });
+
+  let extinctionGame17 = new chessjs.Chess('2qq4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  q  q  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame17.move('Nxd8');
+  test("In extinction chess, the game is not over when White takes one of Black's two queens", () => {
+    expect(extinctionGame17.game_over()).toEqual(false);
+  });
+
+  let extinctionGame18 = new chessjs.Chess('2pp4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  p  p  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame18.move('Nxd8');
+  test("In extinction chess, the game is not over when White takes one of Black's two queens", () => {
+    expect(extinctionGame18.game_over()).toEqual(false);
+  });
 
 });

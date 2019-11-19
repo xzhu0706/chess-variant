@@ -207,7 +207,7 @@ describe("attacked() unit testing", () => {
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
-  test("In antichess chess, a king is under attack if there is an adjacent opponent queen", () => {
+  test("In antichess, a king is under attack if there is an adjacent opponent queen", () => {
     expect(antiGame.attacked('w', 113)).toBe(true); // fix this so it mocks the call to valid_2x2_grid_move()
   });
 
@@ -227,5 +227,4 @@ describe("attacked() unit testing", () => {
   test("In antichess, a king is under attack if there is an opponent queen on the same diagonal", () => {
     expect(antiGame2.attacked('b', 113)).toBe(true); // fix this so it mocks the call to valid_2x2_grid_move()
   });
-
 });

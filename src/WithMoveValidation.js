@@ -93,6 +93,9 @@ class HumanVsHuman extends Component {
       if (this.game.in_checkmate()) {
         result = "checkmate";
       }
+      else if (this.state.variant === 3 && this.game.extinguished()) {
+        result = 'extinction';
+      }
       else if (this.game.in_stalemate()) {
         result = "stalemate";
       }
@@ -101,9 +104,6 @@ class HumanVsHuman extends Component {
       }
       else if (this.game.in_threefold_repetition()) {
         result = "repetition";
-      }
-      else if (this.state.variant === 3 && this.game.extinguished()) {
-        result = 'extinction';
       }
       this.setState({
         gameOver: true,
