@@ -186,7 +186,7 @@ class Lobby extends Component{
         return (
             <Container maxWidth='sm' style={lobbyStyle}>
                 <CreateGameDialog 
-                    onClick={this.props.makeDialogVisible}
+                    onSubmit={this.props.makeDialogVisible}
                  />
                 <div style={{width: "100%"}}>
                 <LobbyTable games={this.state.games} />
