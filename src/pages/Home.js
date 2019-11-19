@@ -54,9 +54,6 @@ class Home extends Component {
   render() {
     return (
       <div>
-        {/* <CreateGameDialog 
-          showDialog={this.state.showDialog}
-        /> */}
         <Lobby 
           games={games} 
           makeDialogVisible={this.makeDialogVisible} 

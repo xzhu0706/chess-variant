@@ -11,16 +11,13 @@ const PGN = '[SetUp "1"] [FEN "rnbqkbnr/ppppp1pp/5p2/8/8/5P2/PPPPP1PP/RNBQKBNR w
 test('render fen & pgn', () => {
     const {getByText} = render(
         <GameData 
-            // turn={checkmate_props.turn}
             fen={FEN}
             pgn={PGN}
-            // gameResult={checkmate_props.gameResult}
         />,
     )
 
     expect(getByText('FEN:',{exact: false})).toHaveTextContent(FEN)
     expect(getByText('PGN:',{exact: false})).toHaveTextContent(PGN)
-    // expect(getByText('STATE:',{exact: false})).toHaveTextContent('STATE: White wins')
 })
 
 test('render checkmate', () => {
