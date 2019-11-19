@@ -102,13 +102,24 @@ function GridChessDocument() {
             <span style={{fontFamily: "serif", fontWeight: "bold"}}> c2 </span>
             (one can't move into check). <br/>
             Second, White does not have to capture the queen with the knight because White's king is not even in check. <br/>
-            (An example sequence that leads to a victory: <span style={{fontFamily: "serif", fontWeight: "bold"}}>1. ♘d2 ♕xd2 2. ♔c1 ♕b4</span>).
+          </Col>
+        </Row>
+        <Row className="justify-content-md-center">
+          <Col xs="auto" style={bodyStyle}>
+            <div>
+              {GridChess('', 'w', '', '4k3/1n6/8/R7/6B1/8/8/4K3 w - - 0 1', 2, false, true)} 
+            </div>
+          </Col>
+          <Col xs="auto" xl="4" style={bodyStyle}>
+            Checkmate in one: <span style={{fontFamily: "serif", fontWeight: "bold"}}>1. ♖a8#</span>.<br/>
+            Checkmate occurs in the typical way: a player's king is attacked but can't move and also the player can't block the attack.
           </Col>
         </Row>
       </div>
 
       <div>
         <h2 style={headingStyle}>Strategies</h2>
+
       </div>
     </div>
   );
