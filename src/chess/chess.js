@@ -706,23 +706,25 @@ var Chess = function(fen, variant=0) {
      */
     if ((!single_square || last_sq === kings[us]) && variant !== ANTI) {
       /* king-side castling */
-      if (castling[us] & BITS.KSIDE_CASTLE) {
+      if ((castling[us] & BITS.KSIDE_CASTLE) && (kings[us] !== EMPTY)) {
         var castling_from = kings[us];
         var castling_to = castling_from + 2;
 
+        // check that interceding squares are not being attacked, unless variant is extinction chess
+        // (in which one may always ignore check)
         if (
           board[castling_from + 1] == null &&
           board[castling_to] == null &&
-          !attacked(them, kings[us]) &&
+          (variant === EXTINCTION || !attacked(them, kings[us]) &&
           !attacked(them, castling_from + 1) &&
-          !attacked(them, castling_to)
+          !attacked(them, castling_to))
         ) {
           add_move(board, moves, kings[us], castling_to, BITS.KSIDE_CASTLE);
         }
       }
 
       /* queen-side castling */
-      if (castling[us] & BITS.QSIDE_CASTLE) {
+      if ((castling[us] & BITS.QSIDE_CASTLE) && kings[us] !== EMPTY) {
         var castling_from = kings[us];
         var castling_to = castling_from - 2;
 
@@ -730,9 +732,9 @@ var Chess = function(fen, variant=0) {
           board[castling_from - 1] == null &&
           board[castling_from - 2] == null &&
           board[castling_from - 3] == null &&
-          !attacked(them, kings[us]) &&
+          (variant === EXTINCTION || !attacked(them, kings[us]) &&
           !attacked(them, castling_from - 1) &&
-          !attacked(them, castling_to)
+          !attacked(them, castling_to))
         ) {
           add_move(board, moves, kings[us], castling_to, BITS.QSIDE_CASTLE);
         }

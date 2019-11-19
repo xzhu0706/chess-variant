@@ -928,7 +928,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
   // (White's turn.)
   // Normally White cannot castle kingside if e1, f1, or g1 are being attacked by an enemy piece.
   
-  test("In extinction chess, the king can still castle if the interceding squares are being attacked", () => {
+  test("In extinction chess, the king can castle kingside if the interceding squares are being attacked", () => {
     const moves = extinctionGame20.generate_moves();
     const expected = { color: 'w', piece: 'k', from: 116, to: 118, flags: 32 };
     expect(moves).toEqual(
@@ -936,7 +936,29 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     );
   });
 
-  let extinctionGame21 = new chessjs.Chess("2k5/8/6N1/8/8/8/8/1K6 w - - 0 1", 3);
+  let extinctionGame21 = new chessjs.Chess('rnbqkbnr/pppppppp/8/8/5bbb/8/PP4PP/R3KBNR w KQkq - 0 1', 3);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  b  b  b |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  .  .  .  .  P  P |
+  // 1 | R  .  .  .  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  // Normally White cannot castle queenside if e1, d1 or c1 are being attacked by an enemy piece.
+  test("In extinction chess, the king can castle queenside if the interceding squares are being attacked", () => {
+    const moves = extinctionGame21.generate_moves();
+    const expected = { color: 'w', piece: 'k', from: 116, to: 114, flags: 64 };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let extinctionGame22 = new chessjs.Chess("2k5/8/6N1/8/8/8/8/1K6 w - - 0 1", 3);
   // +------------------------+
   // 8 | .  .  k  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -950,7 +972,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
   //     a  b  c  d  e  f  g  h
   // (White's turn.)
   test("In extinction chess, draw by insufficient material cannot occur", () => {
-    expect(extinctionGame21.insufficient_material()).toBe(false);
+    expect(extinctionGame22.insufficient_material()).toBe(false);
   });
 
 });
