@@ -1,4 +1,4 @@
-import React, { Component } from 'react'; 
+import React, { Component } from 'react';
 import MaterialTable from 'material-table';
 import Container from '@material-ui/core/Container';
 import { forwardRef } from 'react';
@@ -25,33 +25,41 @@ import Button from '@material-ui/core/Button';
 
 import CreateGameDialog from './CreateGameDialog';
 
-
+// Style
 const lobbyColumns = [
-    {title: 'Player', field: 'player', cellStyle: {
-        backgroundColor: '#FFF',
-        fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
-        fontSize: "16px",
-        color: '#333333'
-    }},
-    {title: 'Skill Level', field: 'skillLevel', cellStyle: {
-        backgroundColor: '#FFF',
-        fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
-        fontSize: "16px",
-        color: '#333333'
-    }},
-    {title: 'Time', field: 'timing', cellStyle: {
-        backgroundColor: '#FFF',
-        fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
-        fontSize: "16px",
-        color: '#333333'
-    }},
-    {title: 'Variant', field: 'variant', cellStyle: {
-        backgroundColor: '#FFF',
-        fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
-        fontSize: "16px",
-        color: '#333333'
-    }},
-    {title: '', field: 'join'}
+    {
+        title: 'Player', field: 'player', cellStyle: {
+            backgroundColor: '#FFF',
+            fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+            fontSize: "16px",
+            color: '#333333'
+        }
+    },
+    {
+        title: 'Skill Level', field: 'skillLevel', cellStyle: {
+            backgroundColor: '#FFF',
+            fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+            fontSize: "16px",
+            color: '#333333'
+        }
+    },
+    {
+        title: 'Time', field: 'timing', cellStyle: {
+            backgroundColor: '#FFF',
+            fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+            fontSize: "16px",
+            color: '#333333'
+        }
+    },
+    {
+        title: 'Variant', field: 'variant', cellStyle: {
+            backgroundColor: '#FFF',
+            fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+            fontSize: "16px",
+            color: '#333333'
+        }
+    },
+    { title: '', field: 'join' }
 ]
 
 const tableIcons = {
@@ -72,8 +80,25 @@ const tableIcons = {
     SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
     ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-  };
+};
 
+const lobbyStyle = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    padding: "70px 0",
+    textAlign: "center"
+
+}
+const createGameButtonStyle = {
+    width: "30%",
+    padding: "10px",
+    marginBottom: "10px",
+    backgroundColor: '#333333',
+    color: '#FFF',
+    fontFamily: "AppleSDGothicNeo-Bold"
+}
+// Functions
 const JoinButton = (props) => (
     <Link to={`/game/${props.gameid}`}>
         <Button variant='contained' color='primary'>
@@ -84,60 +109,97 @@ const JoinButton = (props) => (
 
 const LobbyTable = (props) => (
     <MaterialTable
-                    icons = {tableIcons}
-                    columns={lobbyColumns}
-                    data={props.games}
-                    title='Lobby'
-                    maxWidth="md"
-                    options={{
-                        headerStyle: {
-                            backgroundColor: '#FFF',
-                            fontFamily: "AppleSDGothicNeo-SemiBold, verdana",
-                            fontSize: "18px",
-                            color: '#333333'
-                        },
-                        paging: false,
-                        searchFieldStyle:{
-                            fontSize: "14px",
-                            fontFamily: 'verdana'
-                        }
-                    }}
-                    localization = {{
-                        toolbar: {
-                            searchPlaceholder: "keywords"
-                        }
-                    }}
-                />
+        icons={tableIcons}
+        columns={lobbyColumns}
+        data={props.games}
+        title='Lobby'
+        maxWidth="md"
+        options={{
+            headerStyle: {
+                backgroundColor: '#FFF',
+                fontFamily: "AppleSDGothicNeo-SemiBold, verdana",
+                fontSize: "18px",
+                color: '#333333'
+            },
+            paging: false,
+            searchFieldStyle: {
+                fontSize: "14px",
+                fontFamily: 'verdana'
+            }
+        }}
+        localization={{
+            toolbar: {
+                searchPlaceholder: "keywords"
+            }
+        }}
+    />
 )
 
-class Lobby extends Component{
-    constructor(props){
+const getLobby = (data) => {
+    const tableData = [];
+    data.forEach((game) => {
+        const linkToBtn = (<JoinButton gameid={game.id} />)
+        const row = {
+            player: game.creator,
+            skillLevel: 'Beginner',
+            timing: 'unlimited',
+            variant: game.variant,
+            join: linkToBtn
+        }
+        tableData.push(row)
+    })
+    return tableData
+    //     this.setState({games: tableData})
+    //     console.log('lobby',tableData, this.state.games)
+}
+
+const getTableData = (game, games_list) => {
+    const linkToBtn = (<JoinButton gameid={game.id} />)
+    const row = {
+        player: game.creator,
+        skillLevel: 'Beginner',
+        timing: 'unlimited',
+        variant: game.variant,
+        join: linkToBtn
+    }
+    const tableData = games_list.slice();
+    tableData.push(row);
+    return tableData
+}
+
+// React
+export default class Lobby extends Component {
+    constructor(props) {
         super(props)
         this.state = {
             games: []
         }
     }
 
-    getLobby(data) {
-        const tableData = [];
-        data.forEach((game) => {
-            const linkToBtn = (<JoinButton gameid={game.id} />)
-            const row = {
-                player: game.creator,
-                skillLevel: 'Beginner',
-                timing: 'unlimited',
-                variant: game.variant,
-                join: linkToBtn
-            }
-            tableData.push(row)
-        })
-        this.setState({games: tableData})
-        console.log('lobby',tableData, this.state.games)
-    }
+    // getLobby(data) {
+    //     const tableData = [];
+    //     data.forEach((game) => {
+    //         const linkToBtn = (<JoinButton gameid={game.id} />)
+    //         const row = {
+    //             player: game.creator,
+    //             skillLevel: 'Beginner',
+    //             timing: 'unlimited',
+    //             variant: game.variant,
+    //             join: linkToBtn
+    //         }
+    //         tableData.push(row)
+    //     })
+    //     this.setState({games: tableData})
+    //     console.log('lobby',tableData, this.state.games)
+    // }
 
-    async componentDidMount(){
+
+    async componentDidMount() {
         const games = await API.graphql(graphqlOperation(queries.listGames))
-        this.getLobby(games.data.listGames.items)
+
+        // this.getLobby(games.data.listGames.items)
+        this.setState({ games: getLobby(games.data.listGames.items) })
+
 
         this.subscription = API.graphql(
             graphqlOperation(subscriptions.onCreateGame)
@@ -145,19 +207,23 @@ class Lobby extends Component{
             next: gameData => {
                 const game = gameData.value.data.onCreateGame
                 console.log('lobby subscription', gameData, game)
-                const linkToBtn = (<JoinButton gameid={game.id} />)
-                const row = {
-                    player: game.creator,
-                    skillLevel: 'Beginner',
-                    timing: 'unlimited',
-                    variant: game.variant,
-                    join: linkToBtn
-                }
-                const tableData = this.state.games.slice();
-                tableData.push(row);
-                this.setState({games: tableData});
+
+                const tableData = getTableData(game, this.state.games)
+
+                // const linkToBtn = (<JoinButton gameid={game.id} />)
+                // const row = {
+                //     player: game.creator,
+                //     skillLevel: 'Beginner',
+                //     timing: 'unlimited',
+                //     variant: game.variant,
+                //     join: linkToBtn
+                // }
+                // const tableData = this.state.games.slice();
+                // tableData.push(row);
+
+                this.setState({ games: tableData });
             }
-          })
+        })
     }
 
     componentWillUnmount() {
@@ -166,34 +232,18 @@ class Lobby extends Component{
         }
     }
 
-    render(){
-        const lobbyStyle = {
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-end",
-            padding: "70px 0",
-            textAlign: "center"
-
-        }
-        const createGameButtonStyle = {
-            width: "30%",
-            padding: "10px", 
-            marginBottom: "10px",
-            backgroundColor: '#333333',
-            color: '#FFF',
-            fontFamily: "AppleSDGothicNeo-Bold"
-        }
+    render() {
         return (
             <Container maxWidth='sm' style={lobbyStyle}>
-                <CreateGameDialog 
+                <CreateGameDialog
                     onSubmit={this.props.makeDialogVisible}
-                 />
-                <div style={{width: "100%"}}>
-                <LobbyTable games={this.state.games} />
+                />
+                <div style={{ width: "100%" }}>
+                    <LobbyTable games={this.state.games} />
                 </div>
             </Container>
         )
     }
 }
 
-export default Lobby
+export { JoinButton, LobbyTable, getLobby }

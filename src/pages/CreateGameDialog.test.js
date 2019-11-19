@@ -1,11 +1,11 @@
 import React from 'react'
 import {render, cleanup, fireEvent} from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import CreateGameDialog from './CreateGameDialog'
+const CreateGameDialog = require('./CreateGameDialog')
 
 afterEach(cleanup)
 
-test('desc', () =>{
+test('submit create a game dialog form', () =>{
     const handleSubmit = jest.fn()
 
     const {getByLabelText,getByText} = render(
