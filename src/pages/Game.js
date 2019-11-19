@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import * as mutations from '../graphql/mutations';
+import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
 import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
@@ -30,8 +31,12 @@ class Game extends Component {
     this.gameInfo = null
   }
 
-  componentDidMount(){
+  async componentDidMount() {
     let game = this.props.location.state.message
+    // const { match } = this.props;
+    // const gameToken = match.params.token;
+    // const retrieveGame = await API.graphql(graphqlOperation(queries.getGame, { id: gameToken }));
+    // const game = retrieveGame.data.getGame;
     this.gameInfo = game
     let currentGame = localStorage.getItem('currentGame')
     if (currentGame && currentGame === game.id) {
@@ -48,11 +53,11 @@ class Game extends Component {
     let variant = game.variant
     switch(variant){
       case Games.ANTICHESS:
-        //this.game = new Antichess() waiting for Antichess.js implementation
-        //this.setState({fen: Constants.ANTICHESS_FEN})
-        this.game = new Chess()
+        this.game = new Chess(Games.STANDARD_FEN, 1)
         initialFen = Games.STANDARD_FEN
         break
+      case Games.GRID_CHESS:
+        this.game = new Chess(Games.STANDARD_FEN, 2)
       case Games.STANDARD_CHESS:
         this.game = new Chess()
         initialFen = Games.STANDARD_FEN
@@ -74,7 +79,7 @@ class Game extends Component {
     });
   }
 
-  onSquareClick =  async (square) => {
+  onSquareClick = async (square) => {
     if(this.game.turn() !== this.orientation[0]) return
     let piece = this.game.get(square)
     if(this.moveFrom !== null){
@@ -100,15 +105,14 @@ class Game extends Component {
     let newSquareStyles = {}
     if (piece !== null && piece.color === this.orientation[0]) {
       this.moveFrom = square
-      let validMoves = this.game.moves({ square: square , verbose: true})
+      let validMoves = this.game.moves({ square: square, verbose: true })
       newSquareStyles[square] = { backgroundColor: Colors.BOARD_HIGHLIGHT_COLOR }
-      for (let i in validMoves) {
-        let move = validMoves[i].to;
-        newSquareStyles[move] = {
+      validMoves.forEach(move => {
+        newSquareStyles[move.to] = {
           background: `radial-gradient(circle, ${Colors.BOARD_HIGHLIGHT_COLOR} 26%, transparent 30%)`,
           borderRadius: "50%"
         }
-      }
+      })
     }
     this.setState({ squareStyles: newSquareStyles })
   }
@@ -118,6 +122,8 @@ class Game extends Component {
       marginLeft: '15%',
       marginTop: '25%'
     }
+    const boardId = this.gameInfo && this.gameInfo.variant === Games.GRID_CHESS && "grid-board"; // if variant isn't grid chess, boardId will be set to false
+    console.log('board id', boardId, this.gameInfo)
     return (
       <Box display='flex' justifyContent='center'>
         <Box display='flex' flexDirection='column'>
@@ -129,14 +135,16 @@ class Game extends Component {
               {this.state.yourTurn === true? YOUR_TURN_MESSAGE : ''}
             </Typography>
           </Paper>
-          <Chessboard
-            position={this.state.fen}
-            lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
-            darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
-            orientation={this.orientation}
-            squareStyles={this.state.squareStyles}
-            onSquareClick={this.onSquareClick}
-          />
+          <div id={boardId}>
+            <Chessboard
+              position={this.state.fen}
+              lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
+              darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
+              orientation={this.orientation}
+              squareStyles={this.state.squareStyles}
+              onSquareClick={this.onSquareClick}
+            />
+          </div>
         </Box>
       </Box>
     )

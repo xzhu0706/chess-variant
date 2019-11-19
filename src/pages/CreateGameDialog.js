@@ -34,8 +34,9 @@ class CreateGameDialog extends Component {
                 value={this.state.variant}
                 onChange={this.setVariant}
               >
-                <option value="Standard">Standard</option>
-                <option value="Antichess">Antichess</option>
+                <option value="standard">Standard</option>
+                <option value="antichess">Antichess</option>
+                <option value="grid">Grid chess</option>
               </select>
 
             </FormControl>
