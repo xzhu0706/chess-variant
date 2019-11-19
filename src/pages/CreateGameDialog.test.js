@@ -10,10 +10,11 @@ test('desc', () =>{
 
     const {getByLabelText,getByText} = render(
         <CreateGameDialog
-
+          onSubmit={handleSubmit}
         />,
     )
-
+    
+    // Open dialog box
     fireEvent(
         getByText('Create A Game'),
         new MouseEvent('click', {
@@ -21,7 +22,16 @@ test('desc', () =>{
           cancelable: true,}
         )
       )
+    
+    // Select Variant
+    getByLabelText('Variant').value = 1
 
-    // getByLabelText('select-variant')
-    getByText('Submit')
+    // click submit
+    getByText('Submit').click()
+
+    expect(handleSubmit).toHaveBeenCalledTimes(1)
+    expect(handleSubmit).toHaveBeenCalledWith({
+      variant: 1,
+    })
+
 })

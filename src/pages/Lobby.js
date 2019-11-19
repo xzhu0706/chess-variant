@@ -122,11 +122,6 @@ class Lobby extends Component{
         const tableData = [];
         data.forEach((game) => {
             const linkToBtn = (<JoinButton gameid={game.id} />)
-            // (<Link to={`/game/${game.id}`}>
-            //     <Button variant='contained' color='primary'>
-            //         JOIN
-            //     </Button>
-            // </Link>)
             const row = {
                 player: game.creator,
                 skillLevel: 'Beginner',
@@ -151,12 +146,6 @@ class Lobby extends Component{
                 const game = gameData.value.data.onCreateGame
                 console.log('lobby subscription', gameData, game)
                 const linkToBtn = (<JoinButton gameid={game.id} />)
-                
-                // (<Link to={`/game/${game.id}`}>
-                //     <Button variant='contained' color='primary'>
-                //         JOIN
-                //     </Button>
-                // </Link>)
                 const row = {
                     player: game.creator,
                     skillLevel: 'Beginner',
@@ -200,31 +189,6 @@ class Lobby extends Component{
                     onClick={this.props.makeDialogVisible}
                  />
                 <div style={{width: "100%"}}>
-                {/* <MaterialTable
-                    icons = {tableIcons}
-                    columns={lobbyColumns}
-                    data={this.state.games}
-                    title='Lobby'
-                    maxWidth="md"
-                    options={{
-                        headerStyle: {
-                            backgroundColor: '#FFF',
-                            fontFamily: "AppleSDGothicNeo-SemiBold, verdana",
-                            fontSize: "18px",
-                            color: '#333333'
-                        },
-                        paging: false,
-                        searchFieldStyle:{
-                            fontSize: "14px",
-                            fontFamily: 'verdana'
-                        }
-                    }}
-                    localization = {{
-                        toolbar: {
-                            searchPlaceholder: "keywords"
-                        }
-                    }}
-                /> */}
                 <LobbyTable games={this.state.games} />
                 </div>
             </Container>
