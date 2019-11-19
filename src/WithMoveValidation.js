@@ -30,8 +30,6 @@ class HumanVsHuman extends Component {
     console.log('component reload', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn)
     this.game = new Chess(this.props.fen || this.state.fen, this.props.variant);
     // initialize the internal game
-    // note that if this.props.fen is improperly formed,
-    // chess.js will just initialize the game's fen to the default position
     this.setState({
       variant: this.props.variant,
       fen: this.game.fen(),
@@ -91,13 +89,6 @@ class HumanVsHuman extends Component {
 
   updateGameResult() {
     if (this.game.game_over()) {
-      // game_over: function() {
-      //   return half_moves >= 100 ||
-      //          in_checkmate() ||
-      //          in_stalemate() ||
-      //          insufficient_material() ||
-      //          in_threefold_repetition();
-      // }  
       let result = "fifty"; // fifty move rule
       if (this.game.in_checkmate()) {
         result = "checkmate";
@@ -110,6 +101,9 @@ class HumanVsHuman extends Component {
       }
       else if (this.game.in_threefold_repetition()) {
         result = "repetition";
+      }
+      else if (this.state.variant === 3 && this.game.extinguished()) {
+        result = 'extinction';
       }
       this.setState({
         gameOver: true,

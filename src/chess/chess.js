@@ -303,6 +303,7 @@ var Chess = function(fen, variant=0) {
        9: '1st field (piece positions) is invalid [invalid piece].',
       10: '1st field (piece positions) is invalid [row too large].',
       11: 'Illegal en-passant square',
+      12: 'Wrong number of kings'
     };
 
     /* 1st criterion: 6 space-seperated fields? */
@@ -365,6 +366,23 @@ var Chess = function(fen, variant=0) {
       }
       if (sum_fields !== 8) {
         return {valid: false, error_number: 10, error: errors[10]};
+      }
+    }
+
+    if (variant !== ANTI && variant !== EXTINCTION) {
+      /* verify that there is exactly one king per side */
+      let king_count = { 'w': 0, 'b': 0 };
+      for (const ch in tokens[0]) {
+        if (tokens[0][ch] === '/') continue;
+        if (tokens[0][ch] === 'K') {
+          king_count['w']++;
+        }
+        else if (tokens[0][ch] === 'k') {
+          king_count['b']++;
+        }
+      }
+      if (king_count['w'] !== 1 || king_count['b'] !== 1) {
+        return { valid: false, error_number: 12, error: errors[12] };
       }
     }
 
@@ -474,7 +492,7 @@ var Chess = function(fen, variant=0) {
     var sq = SQUARES[square];
 
     /* don't let the user place more than one king */
-    if (piece.type == KING && (variant !== ANTI) &&
+    if (piece.type == KING && (variant !== ANTI) && (variant !== EXTINCTION) &&
         !(kings[piece.color] == EMPTY || kings[piece.color] == sq)) {
       return false;
     }
@@ -721,7 +739,7 @@ var Chess = function(fen, variant=0) {
       }
     }
 
-    if (!legal) {
+    if (!legal || variant === EXTINCTION) {
       /* return all pseudo-legal moves (this includes moves that allow the king to be captured) */
       return moves;
     } else {
@@ -845,7 +863,7 @@ var Chess = function(fen, variant=0) {
   }
 
   function in_check() {
-    /* check is not possible in antichess */
+    /* check is not possible in antichess and extinction chess */
     return king_attacked(turn) && variant !== ANTI && variant !== EXTINCTION;
   }
 
@@ -861,7 +879,7 @@ var Chess = function(fen, variant=0) {
   a piece they had at the start of the game */
   function extinguished() {
     let piece_populations = STARTING_PIECES[turn];
-    for (count in piece_populations) {
+    for (const count in piece_populations) {
       piece_populations[count] = 0;
     }
 
@@ -873,7 +891,7 @@ var Chess = function(fen, variant=0) {
       piece_populations[board[i].type]++;
     }
 
-    for (let count in piece_populations) {
+    for (const count in piece_populations) {
       if (!piece_populations[count]) {
         return true;
       }
