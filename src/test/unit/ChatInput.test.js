@@ -5,7 +5,7 @@ import ChatInput from '../../components/ChatInput';
 
 afterEach(cleanup);
 
-test('render messages successfully', () => {
+test('send message button is working', () => {
   const onSendMessage = jest.fn();
   const { getByTestId } = render(
     <ChatInput
