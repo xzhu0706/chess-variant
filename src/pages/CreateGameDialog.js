@@ -45,17 +45,16 @@ function CreateGameDialog(props) {
                 <DialogTitle id="form-dialog-title">Create a Game</DialogTitle>
                 <DialogContent>
                     <FormControl style={{minWidth: 120}}>
-                        <InputLabel id="demo-simple-select-label">Variant</InputLabel>
+                        <InputLabel htmlFor="select-variant">Variant</InputLabel>
                         <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
+                            id="select-variant"
                             value={variant}
                             onChange={handleChange}
                         >
-                            <MenuItem value={10}>Antichess</MenuItem>
-                            <MenuItem value={20}>Crazyhouse</MenuItem>
-                            <MenuItem value={30}>King of the hill</MenuItem>
-                            <MenuItem value={30}>Horde</MenuItem>
+                            <MenuItem value={1}>Antichess</MenuItem>
+                            <MenuItem value={2}>Crazyhouse</MenuItem>
+                            <MenuItem value={3}>King of the hill</MenuItem>
+                            <MenuItem value={4}>Horde</MenuItem>
                         </Select>
                         
                     </FormControl>
@@ -66,7 +65,7 @@ function CreateGameDialog(props) {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={props.onClick} color="primary">
+                    <Button onClick={props.onSubmit} color="primary">
                         Submit
                     </Button>
                 </DialogActions>

@@ -74,6 +74,41 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
   };
 
+const JoinButton = (props) => (
+    <Link to={`/game/${props.gameid}`}>
+        <Button variant='contained' color='primary'>
+            JOIN
+        </Button>
+    </Link>
+)
+
+const LobbyTable = (props) => (
+    <MaterialTable
+                    icons = {tableIcons}
+                    columns={lobbyColumns}
+                    data={props.games}
+                    title='Lobby'
+                    maxWidth="md"
+                    options={{
+                        headerStyle: {
+                            backgroundColor: '#FFF',
+                            fontFamily: "AppleSDGothicNeo-SemiBold, verdana",
+                            fontSize: "18px",
+                            color: '#333333'
+                        },
+                        paging: false,
+                        searchFieldStyle:{
+                            fontSize: "14px",
+                            fontFamily: 'verdana'
+                        }
+                    }}
+                    localization = {{
+                        toolbar: {
+                            searchPlaceholder: "keywords"
+                        }
+                    }}
+                />
+)
 
 class Lobby extends Component{
     constructor(props){
@@ -86,11 +121,7 @@ class Lobby extends Component{
     getLobby(data) {
         const tableData = [];
         data.forEach((game) => {
-            const linkToBtn = (<Link to={`/game/${game.id}`}>
-                <Button variant='contained' color='primary'>
-                    JOIN
-                </Button>
-            </Link>)
+            const linkToBtn = (<JoinButton gameid={game.id} />)
             const row = {
                 player: game.creator,
                 skillLevel: 'Beginner',
@@ -114,11 +145,7 @@ class Lobby extends Component{
             next: gameData => {
                 const game = gameData.value.data.onCreateGame
                 console.log('lobby subscription', gameData, game)
-                const linkToBtn = (<Link to={`/game/${game.id}`}>
-                    <Button variant='contained' color='primary'>
-                        JOIN
-                    </Button>
-                </Link>)
+                const linkToBtn = (<JoinButton gameid={game.id} />)
                 const row = {
                     player: game.creator,
                     skillLevel: 'Beginner',
@@ -158,38 +185,11 @@ class Lobby extends Component{
         }
         return (
             <Container maxWidth='sm' style={lobbyStyle}>
-                {/* <Button style={createGameButtonStyle} variant="contained" onClick={this.props.makeDialogVisible}>
-                    Create a game
-                </Button> */}
                 <CreateGameDialog 
-                    onClick={this.props.makeDialogVisible}
+                    onSubmit={this.props.makeDialogVisible}
                  />
                 <div style={{width: "100%"}}>
-                <MaterialTable
-                    icons = {tableIcons}
-                    columns={lobbyColumns}
-                    data={this.state.games}
-                    title='Lobby'
-                    maxWidth="md"
-                    options={{
-                        headerStyle: {
-                            backgroundColor: '#FFF',
-                            fontFamily: "AppleSDGothicNeo-SemiBold, verdana",
-                            fontSize: "18px",
-                            color: '#333333'
-                        },
-                        paging: false,
-                        searchFieldStyle:{
-                            fontSize: "14px",
-                            fontFamily: 'verdana'
-                        }
-                    }}
-                    localization = {{
-                        toolbar: {
-                            searchPlaceholder: "keywords"
-                        }
-                    }}
-                />
+                <LobbyTable games={this.state.games} />
                 </div>
             </Container>
         )
