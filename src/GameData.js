@@ -1,13 +1,12 @@
 import React from 'react';
 
 function GameData(props) {
-    const turn = props.turn === 'w' ? 'White' : 'Black';
-    let game_state = `${turn}'s turn`;
+    let game_state = `${props.turn === 'w' ? 'White' : 'Black'}'s turn`;
     if (props.gameResult === 'checkmate') {
-        game_state = `${turn} wins (checkmate)`;
+        game_state = `${props.turn === 'w' ? 'Black' : 'White'} wins (checkmate)`;
     }
     else if (props.gameResult === 'extinction') {
-        game_state = `${turn} wins (extinction)`;
+        game_state = `${props.turn === 'w' ? 'Black' : 'White'} wins (extinction)`;
     }
     else if (props.gameResult === 'repetition') {
         game_state = 'Draw (three-fold repetition)';
