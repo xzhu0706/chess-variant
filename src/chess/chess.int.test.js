@@ -43,7 +43,28 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
     );
   });
 
-  let standardGame2 = new chessjs.Chess("8/3K1P2/1k6/8/8/8/8/8 w - - 0 1", 0);
+  let standardGame2 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/2b5/8/PPPP4/RNBQK2R w KQkq - 0 1", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  b  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  .  .  .  . |
+  // 1 | R  N  B  Q  K  .  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // White shouldn't be able to castle here because the opponent has a bishop guarding f1.
+  test("In standard chess, castling is not possible if an interceding square is under attack", () => {
+    const moves = standardGame2.generate_moves();
+    const expected = { color: 'w', piece: 'k', from: 116, to: 118, flags: 32 };
+    expect(moves).not.toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let standardGame3 = new chessjs.Chess("8/3K1P2/1k6/8/8/8/8/8 w - - 0 1", 0);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  K  .  P  .  . |
@@ -55,8 +76,8 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
   // 1 | .  .  .  .  .  .  .  . |
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
-  test("In standard chess, promotions to queen, rook, bishop and knight are the only possible promotions", () => {
-    const moves = standardGame2.generate_moves();
+  test("In standard chess, promoting to queen, rook, bishop or knight is possible", () => {
+    const moves = standardGame3.generate_moves();
     let expected = { color: 'w', piece: 'p', from: 21, to: 5, promotion: 'r' };
     expect(moves).toEqual(
       expect.arrayContaining([expect.objectContaining(expected)])
@@ -76,7 +97,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
   });
 
   test("In standard chess, promoting to a king or a pawn is impossible", () => {
-    const moves = standardGame2.generate_moves();
+    const moves = standardGame3.generate_moves();
     let expected = { color: 'w', piece: 'p', from: 21, to: 5, promotion: 'k' };
     expect(moves).not.toEqual(
       expect.arrayContaining([expect.objectContaining(expected)])
@@ -87,7 +108,55 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
     );
   });
 
-  let standardGame3 = new chessjs.Chess("rnbqkbnr/ppp1p1pp/8/3pPp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3", 0);
+  let standardGame4 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/7b/8/PPPP4/RNBQK2R w KQkq - 0 1", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  b |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  .  .  .  . |
+  // 1 | R  N  B  Q  K  .  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // White shouldn't be able to castle here because the opponent has a bishop guarding f1.
+  test("In standard chess, castling is not possible if the king is under attack", () => {
+    const moves = standardGame4.generate_moves();
+    const expected = { color: 'w', piece: 'k', from: 116, to: 118, flags: 32 };
+    expect(moves).not.toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let standardGame5 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/7b/8/PPPP4/RNBQK2R w KQkq - 0 1", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  b |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  .  .  .  . |
+  // 1 | R  N  B  Q  K  .  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // White's only moves should be Ke2, Kf1 and Rxh4.
+  console.log(standardGame5.ascii());
+  test("In standard chess, when the king is under attack, the player's only valid moves " + 
+  "are those that would stop the attack", () => {
+    const moves = standardGame5.generate_moves(); // an array of move objects
+    const expected = [
+      { color: 'w', piece: 'k', from: 116, to: 100 },
+      { color: 'w', piece: 'k', from: 116, to: 117 },
+      { color: 'w', piece: 'r', from: 119, to: 71, captured: 'b' }
+    ];
+    // we want the moves array to have the moves in the expected array and no other moves
+    // note that with toMatchObject(), some fields in the move objects may be omitted (e.g., `captured`)
+    expect(moves).toMatchObject(expected);
+  });
+
+  let standardGame6 = new chessjs.Chess("rnbqkbnr/ppp1p1pp/8/3pPp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3", 0);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  .  p  .  p  p |
@@ -100,7 +169,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   test("In standard chess, capturing en passant is possible", () => {
-    const moves = standardGame3.generate_moves();
+    const moves = standardGame6.generate_moves();
     const expected = { color: 'w', piece: 'p', from: 52, to: 37, captured: 'p' };
     expect(moves).toEqual(
       expect.arrayContaining([expect.objectContaining(expected)])
@@ -147,7 +216,8 @@ describe("Testing antichess (move generation, winning conditions, etc)", () => {
         { color: 'w', piece: 'n', from: 54, to: 21, captured: 'p' },
         { color: 'w', piece: 'n', from: 54, to: 23, captured: 'p' }
       ];
-      expect(moves).toHaveLength(2);
+      // we want the moves array to have the moves in the expected array and no other moves
+      // note that with toMatchObject(), some fields in the move objects may be omitted (e.g., `captured`)
       expect(moves).toMatchObject(expected); // expect the moves array to match the expected array
     }
   );
