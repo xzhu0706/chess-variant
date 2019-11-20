@@ -149,7 +149,7 @@ class Lobby extends Component {
         let game = gameData.value.data.onUpdateGame
         let currentGame = localStorage.getItem(CURRENT_GAME)
         if(currentGame && currentGame === game.id){
-          this.props.history.push({pathname: '/game', state: {message: game}})
+          this.props.history.push({pathname: `/game/${game.id}`, state: {message: game}})
         }
         else if(this.gamesData.hasOwnProperty(game.id)){
           delete this.gamesData[game.id]
@@ -235,7 +235,7 @@ class Lobby extends Component {
     gameInfo['creator'] = creator
     gameInfo['opponent'] = opponent
     await API.graphql(graphqlOperation(mutations.updateGame, {input: gameInfo}))
-    this.props.history.push({pathname: '/game', state: {message: gameInfo}})
+    this.props.history.push({pathname: `/game/${gameInfo.id}`, state: {message: gameInfo}})
   }
 
   removeGameFromLobby = (gameId) => {

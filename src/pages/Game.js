@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import * as mutations from '../graphql/mutations';
+import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
 import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
@@ -11,6 +12,7 @@ import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
 
 const YOUR_TURN_MESSAGE = `It's your turn!`
+const GAME_ID = 'gameId'
 
 class Game extends Component {
   constructor(props){
@@ -30,22 +32,24 @@ class Game extends Component {
     this.gameInfo = null
   }
 
-  componentDidMount(){
-    let game = this.props.location.state.message
-    this.gameInfo = game
+ async componentDidMount(){
+    let gameId = this.props.match.params.id
+    let queryResult =  await API.graphql(graphqlOperation(queries.getGame, { id: gameId }))
+    this.gameInfo = queryResult.data.getGame
+    alert(JSON.stringify(this.gameInfo))
     let currentGame = localStorage.getItem('currentGame')
-    if (currentGame && currentGame === game.id) {
-      this.orientation = game.creatorOrientation
-      this.opponent = game.opponent
+    if (currentGame && currentGame === this.gameInfo.id) {
+      this.orientation = this.gameInfo.creatorOrientation
+      this.opponent = this.gameInfo.opponent
     }
     else {
-      this.orientation = game.creatorOrientation === 'white'? 'black' : 'white'
-      this.opponent = game.creator
+      this.orientation = this.gameInfo.creatorOrientation === 'white'? 'black' : 'white'
+      this.opponent = this.gameInfo.creator
     }
     let initialFen = ''
     let yourTurn = this.orientation === 'white'? true : false
-    this.gameId = game.id
-    let variant = game.variant
+    this.gameId = this.gameInfo.id
+    let variant = this.gameInfo.variant
     switch(variant){
       case Games.ANTICHESS:
         //this.game = new Antichess() waiting for Antichess.js implementation
@@ -61,6 +65,10 @@ class Game extends Component {
         this.game = new Chess()
         initialFen = Games.STANDARD_FEN
     }
+    if(this.gameInfo.fen !== 'init') {
+      initialFen = this.gameInfo.fen
+      this.game.load(initialFen)
+    }
     this.setState({fen: initialFen, yourTurn})
     this.gameUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame),).subscribe({
       next: (gameData) => {
@@ -69,9 +77,14 @@ class Game extends Component {
           this.game.load(gameState.fen)
           let yourTurn = this.game.turn() === this.orientation[0]? true : false
           this.setState({fen: gameState.fen, yourTurn})
+          localStorage.setItem(GAME_ID, this.game.fen)
         }
       },
     });
+  }
+
+  componentWillUnmount(){
+
   }
 
   onSquareClick =  async (square) => {
