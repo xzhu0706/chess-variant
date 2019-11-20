@@ -25,6 +25,7 @@ class ChatInput extends Component {
     return (
       <form onSubmit={e => this.onSubmit(e)} data-testid="chat-input">
         <TextField
+          data-testid="chat-input-field"
           placeholder='Chat with your opponent'
           margin='normal'
           variant='outlined'
