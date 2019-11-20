@@ -37,7 +37,6 @@ class Game extends Component {
     let gameId = this.props.match.params.id
     let queryResult =  await API.graphql(graphqlOperation(queries.getGame, { id: gameId }))
     this.gameInfo = queryResult.data.getGame
-    alert(JSON.stringify(this.gameInfo))
     let currentGame = localStorage.getItem('currentGame')
     if (currentGame && currentGame === this.gameInfo.id) {
       this.orientation = this.gameInfo.creatorOrientation
@@ -53,8 +52,6 @@ class Game extends Component {
     let variant = this.gameInfo.variant
     switch(variant){
       case Games.ANTICHESS:
-        //this.game = new Antichess() waiting for Antichess.js implementation
-        //this.setState({fen: Constants.ANTICHESS_FEN})
         this.game = new Chess(Games.STANDARD_FEN, 1)
         initialFen = Games.STANDARD_FEN
         break
@@ -123,7 +120,7 @@ class Game extends Component {
       for (let i in validMoves) {
         let move = validMoves[i].to;
         newSquareStyles[move] = {
-          background: `radial-gradient(circle, ${Colors.BOARD_HIGHLIGHT_COLOR} 26%, transparent 30%)`,
+          background: `radial-gradient(circle, ${Colors.BOARD_HIGHLIGHT_COLOR} 18%, transparent 15%)`,
           borderRadius: "50%"
         }
       }
@@ -139,9 +136,12 @@ class Game extends Component {
     return (
       <Box display='flex' justifyContent='center'>
         <Box display='flex' flexDirection='column'>
-          <Paper>
-            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h5" component="h3">
+          <Paper style={{border: '1px solid ##D3D3D3', marginBottom: '2px'}}>
+            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h5" component="h5">
               You vs {this.opponent !== null? this.opponent.username : 'Anonymous'}.
+            </Typography>
+            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h6" component="h6">
+              Variant: {this.gameInfo !== null? this.gameInfo.variant : ''}.
             </Typography>
             <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}}component="p">
               {this.state.yourTurn === true? YOUR_TURN_MESSAGE : ''}
