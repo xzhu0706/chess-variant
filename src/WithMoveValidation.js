@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Chess from  "chess.js";
-import Chessboard from "chessboardjsx";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Chess from 'chess.js';
+import Chessboard from 'chessboardjsx';
 // import rough from "roughjs"; // can give the squares a rough appearance
-import GameData from './GameData.js';
-import wn_test from "./wn.svg"; // testing the use of custom icons
-import bn_test from "./bn.svg"; // testing the use of custom icons
 import { API, graphqlOperation } from 'aws-amplify';
 //import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
+import GameData from './GameData.js';
+import wn_test from "./wn.svg"; // testing the use of custom icons
+import bn_test from "./bn.svg"
 import './variant-style.css';
 
 
@@ -22,16 +22,14 @@ class HumanVsHuman extends Component {
     squareStyles: {}, // custom square styles
     pieceSquare: "", // piece on the most recently selected square
     gameOver: false,
-    gameResult: "", // checkmate, stalemate, insufficient material, ...
-    turn: ""
+    gameResult: '', // checkmate, stalemate, insufficient material, ...
+    turn: '',
   };
 
   componentDidMount() {
     console.log('component reload', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn)
     this.game = new Chess(this.props.fen || this.state.fen, this.props.variant);
     // initialize the internal game
-    // note that if this.props.fen is improperly formed,
-    // chess.js will just initialize the game's fen to the default position
     this.setState({
       variant: this.props.variant,
       fen: this.game.fen(),
@@ -41,7 +39,7 @@ class HumanVsHuman extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('getting props', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn, this.game.fen())
+    console.log('getting props', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn, this.game.fen());
     if (nextProps.fen !== this.props.fen) {
       this.setState({
         fen: nextProps.fen,
@@ -50,13 +48,13 @@ class HumanVsHuman extends Component {
     }
     if (nextProps.pgn !== this.props.pgn) {
       this.setState({
-        pgn: nextProps.pgn
-      })
+        pgn: nextProps.pgn,
+      });
     }
-    if (nextProps.turn !== this.props.turn)  {
+    if (nextProps.turn !== this.props.turn) {
       this.setState({
-        turn: nextProps.turn
-      })
+        turn: nextProps.turn,
+      });
     }
   }
 
@@ -69,38 +67,32 @@ class HumanVsHuman extends Component {
   // highlight hint squares
   highlightSquare = (hintSquares) => {
     const highlightStyles = [...hintSquares].reduce(
-      (a, c) => {
-        return {
-          ...a,
-          ...{
-            [c]: {
-              background:
-                "radial-gradient(circle, rgba(255, 120, 12, 67%), 50%, transparent 10%)",
-              borderRadius: "50%",
-            }
-          }
-        };
-      },
-      {}
+      (a, c) => ({
+        ...a,
+        ...{
+          [c]: {
+            background:
+                'radial-gradient(circle, rgba(255, 120, 12, 67%), 50%, transparent 10%)',
+            borderRadius: '50%',
+          },
+        },
+      }),
+      {},
     );
     // show hints
-    this.setState(({squareStyles}) => ({
-      squareStyles: { ...squareStyles, ...highlightStyles }
+    this.setState(({ squareStyles }) => ({
+      squareStyles: { ...squareStyles, ...highlightStyles },
     }));
   };
 
   updateGameResult() {
     if (this.game.game_over()) {
-      // game_over: function() {
-      //   return half_moves >= 100 ||
-      //          in_checkmate() ||
-      //          in_stalemate() ||
-      //          insufficient_material() ||
-      //          in_threefold_repetition();
-      // }  
       let result = "fifty"; // fifty move rule
       if (this.game.in_checkmate()) {
         result = "checkmate";
+      }
+      else if (this.state.variant === 3 && this.game.extinguished()) {
+        result = 'extinction';
       }
       else if (this.game.in_stalemate()) {
         result = "stalemate";
@@ -124,14 +116,14 @@ class HumanVsHuman extends Component {
 
     // highlight the square you just clicked
     this.setState(() => ({
-      squareStyles: { [square]: { backgroundColor: "#38f" } },
-      pieceSquare: square
+      squareStyles: { [square]: { backgroundColor: '#38f' } },
+      pieceSquare: square,
     }));
     // get list of possible moves for the piece on this square
     // (returns empty array if there are no possible moves or there is no piece)
-    let moves = this.game.moves({
-      square: square,
-      verbose: true
+    const moves = this.game.moves({
+      square,
+      verbose: true,
     });
 
     // highlight the destination square of every possible move, moves[i].to
@@ -139,13 +131,13 @@ class HumanVsHuman extends Component {
     this.highlightSquare(hintSquares);
 
     // process the case where the user has registered a move by clicking
-    let move = this.game.move({
+    const move = this.game.move({
       from: this.state.pieceSquare,
       to: square,
-      promotion: "q" // always promote to a queen for example simplicity
+      promotion: 'q', // always promote to a queen for example simplicity
       // fix this so the user can choose what to promote to
     });
-    
+
     // illegal move
     if (move === null) return;
 
@@ -153,8 +145,8 @@ class HumanVsHuman extends Component {
     this.setState({
       fen: this.game.fen(),
       pgn: this.game.pgn(),
-      pieceSquare: "",
-      turn: this.game.turn()
+      pieceSquare: '',
+      turn: this.game.turn(),
     });
 
     // end the game if necessary
@@ -162,7 +154,7 @@ class HumanVsHuman extends Component {
 
     // call API
     if (this.props.gameToken) {
-      console.log('update db')
+      console.log('update db');
       this.updateDatabase();
     }
   };
@@ -175,18 +167,17 @@ class HumanVsHuman extends Component {
       pgn: this.game.pgn(),
       turn: this.game.turn(),
       // game result?
-    }
-    const updateGame = await API.graphql(graphqlOperation(mutations.updateGame, {input: data}));
-    console.log('update db', updateGame)
+    };
+    const updateGame = await API.graphql(graphqlOperation(mutations.updateGame, { input: data }));
+    console.log('update db', updateGame);
   }
 
   // When right clicking, we preserve the old squareStyles (we merely append the new style).
   // This will allow the user to have multiple squares be highlighted simultaneously,
   // for whatever reason (annotation?)
-  onSquareRightClick = square =>
-    this.setState(({ squareStyles }) => ({
-      squareStyles: { ...squareStyles, [square]: { backgroundColor: "#e86c65" } }
-    }));
+  onSquareRightClick = (square) => this.setState(({ squareStyles }) => ({
+    squareStyles: { ...squareStyles, [square]: { backgroundColor: '#e86c65' } },
+  }));
 
   render() {
     console.log(this.state);
@@ -243,33 +234,33 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
                 id="humanVsHuman"
                 position={fen}
                 boardStyle={{
-                  borderRadius: "5px",
-                  boxShadow: `0 2px 3px rgba(0, 0, 0, 0.5)`
+                  borderRadius: '5px',
+                  boxShadow: '0 2px 3px rgba(0, 0, 0, 0.5)',
                 }}
                 pieces={{
                   wN: ({ squareWidth }) => (
                     <img
                       style={{
                         width: squareWidth,
-                        height: squareWidth
+                        height: squareWidth,
                       }}
                       src={wn_test}
-                      alt={"wn_test"}
+                      alt="wn_test"
                     />
                   ),
                   bN: ({ squareWidth }) => (
                     <img
                       style={{
                         width: squareWidth,
-                        height: squareWidth
+                        height: squareWidth,
                       }}
                       src={bn_test}
-                      alt={"bn_test"}
+                      alt="bn_test"
                     />
-                  )
+                  ),
                 }}
-                lightSquareStyle={{ backgroundColor: "#ffffff" }}
-                darkSquareStyle={{ backgroundColor: "#65cae8" }}      
+                lightSquareStyle={{ backgroundColor: '#ffffff' }}
+                darkSquareStyle={{ backgroundColor: '#65cae8' }}
                 squareStyles={squareStyles}
                 onSquareClick={onSquareClick}
                 onSquareRightClick={onSquareRightClick}

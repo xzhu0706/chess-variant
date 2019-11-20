@@ -4,48 +4,75 @@
 export const onCreateGame = `subscription OnCreateGame {
   onCreateGame {
     id
-    creator
+    creator {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    opponent {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
     variant
-    started
-    white
-    black
-    history
     fen
-    pgn
-    turn
-    result
+    available
   }
 }
 `;
 export const onUpdateGame = `subscription OnUpdateGame {
   onUpdateGame {
     id
-    creator
+    creator {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    opponent {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
     variant
-    started
-    white
-    black
-    history
     fen
-    pgn
-    turn
-    result
+    available
   }
 }
 `;
 export const onDeleteGame = `subscription OnDeleteGame {
   onDeleteGame {
     id
-    creator
+    creator {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    opponent {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
     variant
-    started
-    white
-    black
-    history
     fen
-    pgn
-    turn
-    result
+    available
   }
 }
 `;

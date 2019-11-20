@@ -23,8 +23,8 @@
 					"defaultAuthentication": {
 						"authenticationType": "API_KEY",
 						"apiKeyConfig": {
-							"description": "",
-							"apiKeyExpirationDays": 7
+							"description": "chessvariantApiKey",
+							"apiKeyExpirationDays": "100"
 						}
 					}
 				}

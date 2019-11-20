@@ -1,7 +1,7 @@
 import React from 'react'
 import {render, cleanup} from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import GameData from './GameData.js'
+import GameData from '../../GameData.js'
 
 afterEach(cleanup)
 
@@ -20,14 +20,24 @@ test('render fen & pgn', () => {
     expect(getByText('PGN:',{exact: false})).toHaveTextContent(PGN)
 })
 
-test('render checkmate', () => {
+test('render victory by checkmate', () => {
     const {getByText} = render(
         <GameData
-            turn={'w'}
+            turn={'b'}
             gameResult={'checkmate'}
         />,
     )
-    expect(getByText('STATE:',{exact: false})).toHaveTextContent('STATE: White wins')
+    expect(getByText('STATE:',{exact: false})).toHaveTextContent('STATE: White wins (checkmate)')
+})
+
+test('render victory by extinction', () => {
+    const {getByText} = render(
+        <GameData
+            turn={'b'}
+            gameResult={'extinction'}
+        />,
+    )
+    expect(getByText('STATE:',{exact: false})).toHaveTextContent('STATE: White wins (extinction)')
 })
 
 test('render repitition', () => {
