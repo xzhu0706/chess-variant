@@ -1,35 +1,33 @@
 import React from 'react'
 import {render, cleanup, fireEvent} from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import CreateGameDialog from '../../pages/CreateGameDialog'
+// const CreateGameDialog = require('../../pages/CreateGameDialog.js')
+import CreateGameDialog from '../../pages/CreateGameDialog.js'
 
 afterEach(cleanup)
 
 test('submit create a game dialog form', () =>{
     const handleSubmit = jest.fn()
+    const handleClose = jest.fn()
+    const handleShow = jest.fn()
 
-    const {getByLabelText,getByText} = render(
+    const {getByLabelText,getByText,getByDisplayValue} = render(
         <CreateGameDialog
-          onSubmit={handleSubmit}
+          createGame={handleSubmit}
+          closeDialog={handleClose}
+          showDialog={handleShow}
         />,
     )
     
-    // Open dialog box
-    fireEvent(
-        getByText('Create A Game'),
-        new MouseEvent('click', {
-          bubbles: true,
-          cancelable: true,}
-        )
-      )
-    
     // Select Variant
-    getByLabelText('Variant').value = 1
-
+    // getByTestId('select-variant').value = "Standard"
+    getByDisplayValue('Standard')
+    getByLabelText("Minutes per side: 5")
     // click submit
-    getByText('Submit').click()
+    getByText('BLACK').click()
+    getByText('WHITE').click()
 
-    expect(handleSubmit).toHaveBeenCalledTimes(1)
+    // expect(handleSubmit).toHaveBeenCalledTimes(2)
     // expect(handleSubmit).toHaveBeenCalledWith({
     //   variant: 1,
     // })
