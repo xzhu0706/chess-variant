@@ -92,13 +92,14 @@ class NavBar extends Component {
                     </Nav.Item>
                   </Link>
                   <Nav.Item>
-                    <Button onClick={handleSignOut}>Sign Out</Button>
+                    <Button onClick={handleSignOut} data-testid="logout-button">Sign Out</Button>
                   </Nav.Item>
                 </Nav>
               )
               : (
                 <Nav className="ml-auto">
                   <Button
+                    data-testid="login-button"
                     style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: '35px' }}
                     variant="outlined"
                     startIcon={<AccountCircle />}
