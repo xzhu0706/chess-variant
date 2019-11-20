@@ -86,18 +86,17 @@ function GridChessDocument() {
           <Col xs="auto" xl="4" style={bodyStyle}>
             After
             <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 1. e4 d5 2. e5 d4</span>
-,
-            White is unable to play
+            , White is unable to play
             <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> e6</span>
-, and on the next move Black is similarly unable to play
+            , and on the next move Black is similarly unable to play
             <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> d3</span>
-.
+            .
             <br />
             The pawns are stuck until Black moves a piece to
             <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> d6 </span>
             or White moves a piece to
             <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> e3</span>
-.
+            .
           </Col>
         </Row>
         <Row className="justify-content-md-center">
@@ -107,41 +106,31 @@ function GridChessDocument() {
             </div>
           </Col>
           <Col xs="auto" xl="4" style={bodyStyle}>
-<<<<<<< HEAD
             There are two things to observe in this position.
-            {' '}
             <br />
             First, White&apos;s king cannot move anywhere, not even to
             <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> c2 </span>
             (one can&apos;t move into check).
-            {' '}
             <br />
             Second, White does not have to capture the queen with the knight because White&apos;s
             king is not even in check.
-            {' '}
             <br />
-            (An example sequence that leads to a victory:
-            {' '}
-            <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}>1. ♘d2 ♕xd2 2. ♔c1 ♕b4</span>
-).
-=======
-            There are two things to observe in this position. <br/>
-            First, White's king cannot move anywhere, not even to
-            <span style={{fontFamily: "serif", fontWeight: "bold"}}> c2 </span>
-            (one can't move into check). <br/>
-            Second, White does not have to capture the queen with the knight because White's king is not even in check. <br/>
           </Col>
         </Row>
         <Row className="justify-content-md-center">
           <Col xs="auto" style={bodyStyle}>
             <div>
-              {GridChess('', 'w', '', '4k3/1n6/8/R7/6B1/8/8/4K3 w - - 0 1', 2, false, true)} 
+              {GridChess('', 'w', '', '4k3/1n6/8/R7/6B1/8/8/4K3 w - - 0 1', 2, false, true)}
             </div>
           </Col>
           <Col xs="auto" xl="4" style={bodyStyle}>
-            Checkmate in one: <span style={{fontFamily: "serif", fontWeight: "bold"}}>1. ♖a8#</span>.<br/>
-            Checkmate occurs in the typical way: a player's king is attacked but can't move and also the player can't block the attack.
->>>>>>> 6127b88dd062bbb4a82b4a787b13f7c3bbe24704
+            Checkmate in one:
+            {' '}
+            <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}>1. ♖a8#</span>
+.
+            <br />
+            Checkmate occurs in the typical way: a player&apos;s king is attacked but
+            can&apos;t move and also the player can&apos;t block the attack.
           </Col>
         </Row>
       </div>
