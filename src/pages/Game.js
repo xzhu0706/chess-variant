@@ -59,6 +59,11 @@ class Game extends Component {
         this.game = new Chess(Games.STANDARD_FEN, 2)
         initialFen = Games.STANDARD_FEN
         this.boardId = 'grid-board'
+        break
+      case Games.EXTINCTION_CHESS:
+        this.game = new Chess(Games.STANDARD_FEN, 3)
+        initialFen = Games.STANDARD_FEN
+        break
       case Games.STANDARD_CHESS:
         this.game = new Chess()
         initialFen = Games.STANDARD_FEN

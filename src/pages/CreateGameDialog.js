@@ -37,6 +37,7 @@ class CreateGameDialog extends Component {
                 <option value="Standard">Standard</option>
                 <option value="Antichess">Antichess</option>
                 <option value="Gridchess">Grid chess</option>
+                <option value="Extinction">Extinction chess</option>
               </select>
             </FormControl>
             <div style={{ width: '100%', marginTop: '15px' }}>
