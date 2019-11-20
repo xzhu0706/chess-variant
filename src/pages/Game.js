@@ -10,6 +10,7 @@ import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
+import '../variant-style.css';
 
 const YOUR_TURN_MESSAGE = `It's your turn!`
 
@@ -29,28 +30,26 @@ class Game extends Component {
     this.gameUpdateSubscription = null
     this.moveFrom = null
     this.gameInfo = null
+    this.boardId = ''
   }
 
-  async componentDidMount() {
-    let game = this.props.location.state.message
-    // const { match } = this.props;
-    // const gameToken = match.params.token;
-    // const retrieveGame = await API.graphql(graphqlOperation(queries.getGame, { id: gameToken }));
-    // const game = retrieveGame.data.getGame;
-    this.gameInfo = game
+ async componentDidMount(){
+    let gameId = this.props.match.params.id
+    let queryResult =  await API.graphql(graphqlOperation(queries.getGame, { id: gameId }))
+    this.gameInfo = queryResult.data.getGame
     let currentGame = localStorage.getItem('currentGame')
-    if (currentGame && currentGame === game.id) {
-      this.orientation = game.creatorOrientation
-      this.opponent = game.opponent
+    if (currentGame && currentGame === this.gameInfo.id) {
+      this.orientation = this.gameInfo.creatorOrientation
+      this.opponent = this.gameInfo.opponent
     }
     else {
-      this.orientation = game.creatorOrientation === 'white'? 'black' : 'white'
-      this.opponent = game.creator
+      this.orientation = this.gameInfo.creatorOrientation === 'white'? 'black' : 'white'
+      this.opponent = this.gameInfo.creator
     }
     let initialFen = ''
     let yourTurn = this.orientation === 'white'? true : false
-    this.gameId = game.id
-    let variant = game.variant
+    this.gameId = this.gameInfo.id
+    let variant = this.gameInfo.variant
     switch(variant){
       case Games.ANTICHESS:
         this.game = new Chess(Games.STANDARD_FEN, 1)
@@ -58,6 +57,8 @@ class Game extends Component {
         break
       case Games.GRID_CHESS:
         this.game = new Chess(Games.STANDARD_FEN, 2)
+        initialFen = Games.STANDARD_FEN
+        this.boardId = 'grid-board'
       case Games.STANDARD_CHESS:
         this.game = new Chess()
         initialFen = Games.STANDARD_FEN
@@ -65,6 +66,11 @@ class Game extends Component {
       default:
         this.game = new Chess()
         initialFen = Games.STANDARD_FEN
+    }
+    if(this.gameInfo.fen !== 'init') {
+      initialFen = this.gameInfo.fen
+      this.game.load(initialFen)
+      yourTurn = this.game.turn() === this.orientation[0]? true : false
     }
     this.setState({fen: initialFen, yourTurn})
     this.gameUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame),).subscribe({
@@ -109,7 +115,7 @@ class Game extends Component {
       newSquareStyles[square] = { backgroundColor: Colors.BOARD_HIGHLIGHT_COLOR }
       validMoves.forEach(move => {
         newSquareStyles[move.to] = {
-          background: `radial-gradient(circle, ${Colors.BOARD_HIGHLIGHT_COLOR} 26%, transparent 30%)`,
+          background: `radial-gradient(circle, ${Colors.BOARD_HIGHLIGHT_COLOR} 18%, transparent 15%)`,
           borderRadius: "50%"
         }
       })
@@ -122,20 +128,21 @@ class Game extends Component {
       marginLeft: '15%',
       marginTop: '25%'
     }
-    const boardId = this.gameInfo && this.gameInfo.variant === Games.GRID_CHESS && "grid-board"; // if variant isn't grid chess, boardId will be set to false
-    console.log('board id', boardId, this.gameInfo)
     return (
       <Box display='flex' justifyContent='center'>
         <Box display='flex' flexDirection='column'>
-          <Paper>
-            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h5" component="h3">
-              You vs {this.opponent !== null? this.opponent.username : 'Anonymous'}.
+          <Paper style={{border: '1px solid #D3D3D3', marginBottom: '2px'}}>
+            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h5" component="h5">
+              You vs {this.opponent !== null? this.opponent.username : 'Anonymous'}
             </Typography>
-            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}}component="p">
+            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h6" component="h6">
+              Variant: {this.gameInfo !== null? this.gameInfo.variant : ''}
+            </Typography>
+            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px'}}component="p">
               {this.state.yourTurn === true? YOUR_TURN_MESSAGE : ''}
             </Typography>
           </Paper>
-          <div id={boardId}>
+          <div id={this.boardId}>
             <Chessboard
               position={this.state.fen}
               lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}

@@ -21,7 +21,7 @@ class App extends Component {
         <NavBar />
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/game" component={Game} />
+          <Route path="/game/:id" component={Game} />
           <Route path="/variants" component={VariantDocumentation} />
           <Route path="/account" component={Account} />
         </Switch>

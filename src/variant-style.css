@@ -20,7 +20,7 @@
   left: 0;
   opacity: 0.75;
   z-index: 0;
-  pointer-events: none; /* this div overlay can't be clicked (so that the board can) */
+  pointer-events: none; /* this board overlay can't be clicked (so that the board can) */
 }
 
 #grid-board {

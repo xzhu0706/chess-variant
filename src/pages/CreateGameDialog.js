@@ -34,11 +34,10 @@ class CreateGameDialog extends Component {
                 value={this.state.variant}
                 onChange={this.setVariant}
               >
-                <option value="standard">Standard</option>
-                <option value="antichess">Antichess</option>
-                <option value="grid">Grid chess</option>
+                <option value="Standard">Standard</option>
+                <option value="Antichess">Antichess</option>
+                <option value="Gridchess">Grid chess</option>
               </select>
-
             </FormControl>
             <div style={{ width: '100%', marginTop: '15px' }}>
               <InputLabel id="demo-simple-select-label">
@@ -53,7 +52,6 @@ class CreateGameDialog extends Component {
                 className="custom-range"
                 id="customRange1"
               />
-
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' , marginTop: '10px'}}>
               <Button
