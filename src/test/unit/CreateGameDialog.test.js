@@ -19,15 +19,13 @@ test('submit create a game dialog form', () =>{
         />,
     )
     
-    // Select Variant
-    // getByTestId('select-variant').value = "Standard"
-    getByDisplayValue('Standard')
-    getByLabelText("Minutes per side: 5")
+    getByDisplayValue('Standard').value="Standard"
+    getByLabelText("Minutes per side: 5").value=5
     // click submit
     getByText('BLACK').click()
     getByText('WHITE').click()
 
-    // expect(handleSubmit).toHaveBeenCalledTimes(2)
+    expect(handleSubmit).toHaveBeenCalledTimes(2)
     // expect(handleSubmit).toHaveBeenCalledWith({
     //   variant: 1,
     // })
