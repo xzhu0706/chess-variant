@@ -1,7 +1,7 @@
 import React from 'react';
-import GridChess from '../../WithMoveValidation'
+import ExtinctionChess from '../../WithMoveValidation'
 import { Row, Col } from 'react-bootstrap';
-// what should we do about all these imports? (for each and every doc page)?
+// what should we do about all these imports? 
 import wb from '../../pieces/standard/wb.svg';
 import wr from '../../pieces/standard/wr.svg';
 import wn from '../../pieces/standard/wn.svg';
@@ -15,7 +15,7 @@ import bp from '../../pieces/standard/bp.svg';
 import bk from '../../pieces/standard/bk.svg';
 import bq from '../../pieces/standard/bq.svg';
 
-function GridChessDocument() {
+function ExtinctionChessDocument() {
   const headingStyle = {
     fontFamily: "Helvetica, Arial, sans-serif",
     fontWeight: "bold",
@@ -30,7 +30,7 @@ function GridChessDocument() {
 
   return (
     <div>
-      <h1 className="text-center" style={headingStyle}>Grid Chess</h1>
+      <h1 className="text-center" style={headingStyle}>Extinction Chess</h1>
       <div>
         <h2 style={headingStyle}>Pieces</h2>
         <table>
@@ -57,66 +57,50 @@ function GridChessDocument() {
 
       <div>
         <h2 style={headingStyle}>Rules</h2>
-        <p style={bodyStyle}>In grid chess, all standard chess rules apply, except that each move must cross one or more grid lines.<br/>
-        It follows that the king is not placed in check by any piece that lies in the same grid.
+        <p style={bodyStyle}>In extinction chess, all standard chess rules apply, except that a player loses only when he/she loses every member of one of the piece types that were present in the starting position, i.e., when one of those pieces goes extinct.
         </p>
         <Row className="justify-content-md-center">
           <Col xs="auto" style={bodyStyle}>
             <div>
-              {GridChess('', 'w', '', undefined, 2, false, true)} 
+              {ExtinctionChess('', 'w', '', undefined, 3, false, true)} 
             </div>
           </Col>
           <Col xs="auto" xl="4" style={bodyStyle}>
-            This is the starting position. <br/>
-            Because White can only make out-of-grid moves, all the typical moves are legal at the start.
+            This is the default starting position. The pieces in the starting position determine the piece types that can "go extinct". <br/>
+            Thus, from the default starting position, a player wins if he/she eliminates all of the other player's pawns, knights, bishops, rooks, queens or kings.<br/>
           </Col>
         </Row>
         <Row className="justify-content-md-center">
           <Col xs="auto" style={bodyStyle}>
             <div>
-              {GridChess('', 'w', '', 'rnbqkbnr/ppp1pppp/8/4P3/3p4/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3', 2, false, true)} 
+              {ExtinctionChess('', 'w', '', 'rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1', 3, false, true)} 
             </div>
           </Col>
           <Col xs="auto" xl="4" style={bodyStyle}>
-            After 
-            <span style={{fontFamily: "serif", fontWeight: "bold"}}> 1. e4 d5 2. e5 d4</span>, 
-            White is unable to play
-            <span style={{fontFamily: "serif", fontWeight: "bold"}}> e6</span>, and on the next move Black is similarly unable to play 
-            <span style={{fontFamily: "serif", fontWeight: "bold"}}> d3</span>.
-            <br/>
-            The pawns are stuck until Black moves a piece to
-            <span style={{fontFamily: "serif", fontWeight: "bold"}}> d6 </span>
-            or White moves a piece to
-            <span style={{fontFamily: "serif", fontWeight: "bold"}}> e3</span>.
+            A king has no special purpose in extinction chess (and check/checkmate is disabled). Thus, a game can be played with no kings on either side, which is not the case in standard chess!
           </Col>
         </Row>
         <Row className="justify-content-md-center">
           <Col xs="auto" style={bodyStyle}>
             <div>
-              {GridChess('', 'w', '', '2k5/8/8/8/2N5/8/1q6/1K6 w - - 0 1', 2, false, true)} 
+              {ExtinctionChess('', 'w', '', 'rnbqkbnr/pppppppp/8/8/bbbbbbbb/8/8/R3K2R w KQkq - 0 1', 3, false, true)} 
             </div>
           </Col>
           <Col xs="auto" xl="4" style={bodyStyle}>
-            There are two things to observe in this position. <br/>
-            First, White's king cannot move anywhere, not even to
-            <span style={{fontFamily: "serif", fontWeight: "bold"}}> c2 </span>
-            (one can't move into check). <br/>
-            Second, White does not have to capture the queen with the knight because White's king is not even in check. <br/>
+            Because the king is not a special piece, the king can ignore attacks/checks and moreover can castle even when the interceding squares are under attack.<br/>
           </Col>
         </Row>
         <Row className="justify-content-md-center">
           <Col xs="auto" style={bodyStyle}>
             <div>
-              {GridChess('', 'w', '', '4k3/1n6/8/R7/6B1/8/8/4K3 w - - 0 1', 2, false, true)} 
+              {ExtinctionChess('', 'w', '', '8/8/3q1p2/2r5/4N3/2b3k1/3n1n2/8 w KQkq - 0 1', 3, false, true)} 
             </div>
           </Col>
           <Col xs="auto" xl="4" style={bodyStyle}>
-            Checkmate in one: <span style={{fontFamily: "serif", fontWeight: "bold"}}>1. ♖a8#</span>.<br/>
-            Checkmate occurs in the typical way: a player's king is attacked but can't move and also the player can't block the attack.
+          Here is an example of an ending scenario. White wins in one move if he/she captures any of Black's pieces except for the knight, because of the fact Black has two knights.
           </Col>
         </Row>
       </div>
-
       <div>
         <h2 style={headingStyle}>Strategies</h2>
 
@@ -125,4 +109,4 @@ function GridChessDocument() {
   );
 }
 
-export default GridChessDocument;
+export default ExtinctionChessDocument;
