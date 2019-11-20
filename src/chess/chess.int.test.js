@@ -175,6 +175,42 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
       expect.arrayContaining([expect.objectContaining(expected)])
     );
   });
+
+  let standardGame7 = new chessjs.Chess("rnbqkbnr/ppppp2p/5p2/6pQ/8/4P3/PPPP1PPP/RNB1KBNR b KQkq - 1 3", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  .  .  p |
+  // 6 | .  .  .  .  .  p  .  . |
+  // 5 | .  .  .  .  .  .  p  Q |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  P  .  .  . |
+  // 2 | P  P  P  P  .  P  P  P |
+  // 1 | R  N  B  .  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // Black's turn, Black's king is under attack, Black has no valid moves => in_checkmate() is true
+  test("In standard chess,the current player is checkmated if his/her king is under attack " +
+  "and he/she has no valid moves", () => {
+    expect(standardGame7.in_checkmate()).toEqual(true);
+  });
+
+  let standardGame8 = new chessjs.Chess("k7/P2N4/BP6/8/8/4P3/PPPP1PPP/R1B1KBNR b KQ - 0 1", 0);
+  // +------------------------+
+  // 8 | k  .  .  .  .  .  .  . |
+  // 7 | P  .  .  N  .  .  .  . |
+  // 6 | B  P  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  P  .  .  . |
+  // 2 | P  P  P  P  .  P  P  P |
+  // 1 | R  .  B  .  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // Black's turn, Black's king isn't under attack, Black has no valid moves => in_stalemate() is true
+  test("In standard chess,the current player is stalemated if his/her king is NOT under attack " +
+  "and he/she has no valid moves", () => {
+    expect(standardGame8.in_stalemate()).toEqual(true);
+  });
 });
 
 describe("Testing antichess (move generation, winning conditions, etc)", () => {
