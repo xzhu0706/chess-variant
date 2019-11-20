@@ -10,9 +10,9 @@ import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
+import '../variant-style.css';
 
 const YOUR_TURN_MESSAGE = `It's your turn!`
-const GAME_ID = 'gameId'
 
 class Game extends Component {
   constructor(props){
@@ -30,6 +30,7 @@ class Game extends Component {
     this.gameUpdateSubscription = null
     this.moveFrom = null
     this.gameInfo = null
+    this.boardId = ''
   }
 
  async componentDidMount(){
@@ -54,9 +55,13 @@ class Game extends Component {
       case Games.ANTICHESS:
         //this.game = new Antichess() waiting for Antichess.js implementation
         //this.setState({fen: Constants.ANTICHESS_FEN})
-        this.game = new Chess()
+        this.game = new Chess(Games.STANDARD_FEN, 1)
         initialFen = Games.STANDARD_FEN
         break
+      case Games.GRID_CHESS:
+        this.game = new Chess(Games.STANDARD_FEN, 2)
+        initialFen = Games.STANDARD_FEN
+        this.boardId = 'grid-board'
       case Games.STANDARD_CHESS:
         this.game = new Chess()
         initialFen = Games.STANDARD_FEN
@@ -68,6 +73,7 @@ class Game extends Component {
     if(this.gameInfo.fen !== 'init') {
       initialFen = this.gameInfo.fen
       this.game.load(initialFen)
+      yourTurn = this.game.turn() === this.orientation[0]? true : false
     }
     this.setState({fen: initialFen, yourTurn})
     this.gameUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame),).subscribe({
@@ -77,7 +83,6 @@ class Game extends Component {
           this.game.load(gameState.fen)
           let yourTurn = this.game.turn() === this.orientation[0]? true : false
           this.setState({fen: gameState.fen, yourTurn})
-          localStorage.setItem(GAME_ID, this.game.fen)
         }
       },
     });
@@ -142,14 +147,16 @@ class Game extends Component {
               {this.state.yourTurn === true? YOUR_TURN_MESSAGE : ''}
             </Typography>
           </Paper>
-          <Chessboard
-            position={this.state.fen}
-            lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
-            darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
-            orientation={this.orientation}
-            squareStyles={this.state.squareStyles}
-            onSquareClick={this.onSquareClick}
-          />
+          <div id={this.boardId}>
+            <Chessboard
+              position={this.state.fen}
+              lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
+              darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
+              orientation={this.orientation}
+              squareStyles={this.state.squareStyles}
+              onSquareClick={this.onSquareClick}
+            />
+          </div>
         </Box>
       </Box>
     )

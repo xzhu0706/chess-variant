@@ -168,6 +168,7 @@ class Lobby extends Component {
 
   createGame = async (event, gameInfo) => {
     this.setState({showDialog: false})
+    alert(gameInfo.variant)
     gameInfo['fen'] = "init"
     gameInfo['available'] = true
     let userInfo = await Auth.currentUserInfo()

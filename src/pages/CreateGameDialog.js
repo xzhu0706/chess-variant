@@ -36,6 +36,8 @@ class CreateGameDialog extends Component {
               >
                 <option value="Standard">Standard</option>
                 <option value="Antichess">Antichess</option>
+                <option value="Gridchess">Gridchess</option>
+
               </select>
 
             </FormControl>
