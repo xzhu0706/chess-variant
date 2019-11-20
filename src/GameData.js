@@ -27,7 +27,7 @@ function GameData(props) {
         <div>
             <div>FEN: {props.fen}</div>
             <div>PGN: {props.pgn}</div>
-            <div style={mystyle}>{game_state}</div>
+            <div style={mystyle}>STATE: {game_state}</div>
         </div>
     );
 }
