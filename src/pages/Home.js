@@ -19,6 +19,20 @@ class Home extends Component {
     return (
       <div>
         <Lobby history={this.props.history}/>
+        <Lobby 
+          games={games} 
+          makeDialogVisible={this.makeDialogVisible} 
+        />
+
+        <h1 className="text-center" style={{ fontFamily: 'AppleSDGothicNeo-Bold' }}>Popular Variants</h1>
+        <Row>
+          <Col className="text-center">
+            <PopularVariants name="Antichess" src={AntiChess} description="Win by losing all your pieces or being stalemated" />
+          </Col>
+          <Col className="text-center">
+            <PopularVariants name="" description="" src={variant2} />
+          </Col>
+        </Row>
       </div>
     );
   }

@@ -39,7 +39,6 @@ class CreateGameDialog extends Component {
                 <option value="Gridchess">Gridchess</option>
 
               </select>
-
             </FormControl>
             <div style={{ width: '100%', marginTop: '15px' }}>
               <InputLabel id="demo-simple-select-label">
@@ -54,7 +53,6 @@ class CreateGameDialog extends Component {
                 className="custom-range"
                 id="customRange1"
               />
-
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' , marginTop: '10px'}}>
               <Button
