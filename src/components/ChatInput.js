@@ -23,16 +23,17 @@ class ChatInput extends Component {
 
   render() {
     return (
-      <form onSubmit={(e) => this.onSubmit(e)}>
+      <form onSubmit={e => this.onSubmit(e)} data-testid="chat-input">
         <TextField
-          placeholder="Chat with your opponent"
-          margin="normal"
-          variant="outlined"
-          onChange={(e) => this.onChange(e)}
+          data-testid="chat-input-field"
+          placeholder='Chat with your opponent'
+          margin='normal'
+          variant='outlined'
+          onChange={e => this.onChange(e)}
           value={this.state.text}
           fullWidth
         />
-        <Button type="submit">Send</Button>
+        <Button type='submit' data-testid="chat-input-submit-btn">Send</Button>
       </form>
     );
   }
