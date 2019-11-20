@@ -136,14 +136,14 @@ class Game extends Component {
     return (
       <Box display='flex' justifyContent='center'>
         <Box display='flex' flexDirection='column'>
-          <Paper style={{border: '1px solid ##D3D3D3', marginBottom: '2px'}}>
+          <Paper style={{border: '1px solid #D3D3D3', marginBottom: '2px'}}>
             <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h5" component="h5">
               You vs {this.opponent !== null? this.opponent.username : 'Anonymous'}.
             </Typography>
             <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h6" component="h6">
               Variant: {this.gameInfo !== null? this.gameInfo.variant : ''}.
             </Typography>
-            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}}component="p">
+            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px'}}component="p">
               {this.state.yourTurn === true? YOUR_TURN_MESSAGE : ''}
             </Typography>
           </Paper>
