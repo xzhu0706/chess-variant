@@ -4,19 +4,19 @@ import TextField from '@material-ui/core/TextField';
 
 class ChatInput extends Component {
   state = {
-    text: ''
+    text: '',
   }
 
   onChange(e) {
 	  this.setState({
-      text: e.target.value
+      text: e.target.value,
     });
   }
 
   onSubmit(e) {
     e.preventDefault();
     this.setState({
-      text: ''
+      text: '',
     });
     this.props.onSendMessage(this.state.text);
   }

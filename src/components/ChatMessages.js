@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class ChatMessages extends Component {
 
@@ -20,11 +20,11 @@ class ChatMessages extends Component {
 	}
 
 	scrollToBottom = () => {
-		this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+	  this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
 	}
 
-	componentDidUpdate () {
-		this.scrollToBottom();
+	componentDidUpdate() {
+	  this.scrollToBottom();
 	}
 
 	render() {

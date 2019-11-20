@@ -1,20 +1,13 @@
 {
 	"auth": {
-		"chessvariant878b0ed7": {
+		"chessvariants34a8e197": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": []
 		}
 	},
-	"function": {},
-	"hosting": {
-		"S3AndCloudFront": {
-			"service": "S3AndCloudFront",
-			"providerPlugin": "awscloudformation"
-		}
-	},
 	"api": {
-		"chessvariant": {
+		"chessvariants": {
 			"service": "AppSync",
 			"providerPlugin": "awscloudformation",
 			"output": {
@@ -23,7 +16,7 @@
 					"defaultAuthentication": {
 						"authenticationType": "API_KEY",
 						"apiKeyConfig": {
-							"description": "",
+							"description": "apiKey",
 							"apiKeyExpirationDays": 7
 						}
 					}

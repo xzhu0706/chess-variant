@@ -1,0 +1,19 @@
+type User  {
+  id: ID!
+  username: String!
+  points: Int #not required for now
+  skillLevel: String #not required for now
+  rank: Int #not required for now
+}
+
+type Game @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  creator: User
+  opponent: User 
+  creatorOrientation: String!
+  time: String!
+  variant: String!
+  fen: String!
+  available: Boolean!
+}
+

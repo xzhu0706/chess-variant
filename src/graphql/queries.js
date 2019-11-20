@@ -4,16 +4,25 @@
 export const getGame = `query GetGame($id: ID!) {
   getGame(id: $id) {
     id
-    creator
+    creator {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    opponent {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
     variant
-    started
-    white
-    black
-    history
     fen
-    pgn
-    turn
-    result
+    available
   }
 }
 `;
@@ -25,16 +34,25 @@ export const listGames = `query ListGames(
   listGames(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      creator
+      creator {
+        id
+        username
+        points
+        skillLevel
+        rank
+      }
+      opponent {
+        id
+        username
+        points
+        skillLevel
+        rank
+      }
+      creatorOrientation
+      time
       variant
-      started
-      white
-      black
-      history
       fen
-      pgn
-      turn
-      result
+      available
     }
     nextToken
   }
