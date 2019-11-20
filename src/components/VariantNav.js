@@ -24,12 +24,9 @@ function VariantNav() {
         </Col>
         <Col sm={9}>
           <Tab.Content>
-<<<<<<< HEAD
             <Tab.Pane eventKey="home">
               <HomeVariant />
             </Tab.Pane>
-=======
->>>>>>> 6127b88dd062bbb4a82b4a787b13f7c3bbe24704
             <Tab.Pane eventKey="link-1">
               <AntiChess />
             </Tab.Pane>
