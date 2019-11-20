@@ -4,48 +4,75 @@
 export const createGame = `mutation CreateGame($input: CreateGameInput!) {
   createGame(input: $input) {
     id
-    creator
+    creator {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    opponent {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
     variant
-    started
-    white
-    black
-    history
     fen
-    pgn
-    turn
-    result
+    available
   }
 }
 `;
 export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
   updateGame(input: $input) {
     id
-    creator
+    creator {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    opponent {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
     variant
-    started
-    white
-    black
-    history
     fen
-    pgn
-    turn
-    result
+    available
   }
 }
 `;
 export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
   deleteGame(input: $input) {
     id
-    creator
+    creator {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    opponent {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    creatorOrientation
+    time
     variant
-    started
-    white
-    black
-    history
     fen
-    pgn
-    turn
-    result
+    available
   }
 }
 `;

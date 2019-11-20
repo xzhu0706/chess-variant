@@ -1,149 +1,161 @@
 import React, { Component } from 'react';
-import { Auth } from 'aws-amplify';
-import { API, graphqlOperation } from 'aws-amplify';
+import {API, graphqlOperation } from 'aws-amplify';
+import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
-//import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
-import PropTypes from 'prop-types';
-import WithMoveValidation from '../WithMoveValidation';
-//import ChatMessages from '../components/ChatMessages';
-//import ChatInput from '../components/ChatInput';
-import './Game.css';
+import * as Games from '../Constants/GameComponentConstants';
+import * as Colors from '../Constants/Colors';
+import Chessboard from 'chessboardjsx';
+import Chess from 'chess.js';
+import '../variant-style.css';
+
+const YOUR_TURN_MESSAGE = `It's your turn!`
 
 class Game extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props){
+    super(props)
     this.state = {
-      messages: [
-        // {
-        //   // text: 'This is a test message!',
-        //   // member: {
-        //   //   username: 'bluemoon'
-        //   // }
-        // }
-      ],
-      currentUser: {
-        username: 'Anonymous',
-      },
-      gameToken: '',
-      gameState: {},
-    };
+      fen: '',
+      time: '',
+      squareStyles: {},
+      yourTurn: false,
+    }
+    this.game = null
+    this.opponent = null // the opponent. null if user created or joined game anonymously
+    this.gameId = null
+    this.orientation = ''
+    this.gameUpdateSubscription = null
+    this.moveFrom = null
+    this.gameInfo = null
+    this.boardId = ''
   }
 
-  async componentDidMount() {
-    const { match } = this.props;
-    const gameToken = match.params.token;
-    const user = await Auth.currentUserInfo();
-    const username = user ? user.username : 'Anonymous';
-    this.setState({
-      currentUser: {
-        username: username,
+ async componentDidMount(){
+    let gameId = this.props.match.params.id
+    let queryResult =  await API.graphql(graphqlOperation(queries.getGame, { id: gameId }))
+    this.gameInfo = queryResult.data.getGame
+    let currentGame = localStorage.getItem('currentGame')
+    if (currentGame && currentGame === this.gameInfo.id) {
+      this.orientation = this.gameInfo.creatorOrientation
+      this.opponent = this.gameInfo.opponent
+    }
+    else {
+      this.orientation = this.gameInfo.creatorOrientation === 'white'? 'black' : 'white'
+      this.opponent = this.gameInfo.creator
+    }
+    let initialFen = ''
+    let yourTurn = this.orientation === 'white'? true : false
+    this.gameId = this.gameInfo.id
+    let variant = this.gameInfo.variant
+    switch(variant){
+      case Games.ANTICHESS:
+        this.game = new Chess(Games.STANDARD_FEN, 1)
+        initialFen = Games.STANDARD_FEN
+        break
+      case Games.GRID_CHESS:
+        this.game = new Chess(Games.STANDARD_FEN, 2)
+        initialFen = Games.STANDARD_FEN
+        this.boardId = 'grid-board'
+      case Games.STANDARD_CHESS:
+        this.game = new Chess()
+        initialFen = Games.STANDARD_FEN
+        break;
+      default:
+        this.game = new Chess()
+        initialFen = Games.STANDARD_FEN
+    }
+    if(this.gameInfo.fen !== 'init') {
+      initialFen = this.gameInfo.fen
+      this.game.load(initialFen)
+      yourTurn = this.game.turn() === this.orientation[0]? true : false
+    }
+    this.setState({fen: initialFen, yourTurn})
+    this.gameUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame),).subscribe({
+      next: (gameData) => {
+        let gameState = gameData.value.data.onUpdateGame
+        if(this.gameInfo.id === gameState.id){
+          this.game.load(gameState.fen)
+          let yourTurn = this.game.turn() === this.orientation[0]? true : false
+          this.setState({fen: gameState.fen, yourTurn})
+        }
       },
-      gameToken: gameToken,
     });
+  }
 
-    this.subscription = API.graphql(
-      graphqlOperation(subscriptions.onUpdateGame)
-    ).subscribe({
-      next: gameData => {
-        const gameState = gameData.value.data.onUpdateGame
-        console.log('game data subscription', gameData, gameState)
-        if (gameState.id === this.state.gameToken) {
-          this.setState({
-            gameState
-          })
+  onSquareClick = async (square) => {
+    if(this.game.turn() !== this.orientation[0]) return
+    let piece = this.game.get(square)
+    if(this.moveFrom !== null){
+      let move = this.game.move({from: this.moveFrom, to: square})
+      if(move !== null){
+        this.setState({fen: this.game.fen(), squareStyles: {}, yourTurn: false})
+        let gameInfo = this.gameInfo;
+        delete gameInfo['__typename']
+        let creator = gameInfo['creator']
+        if(creator !== null)
+          delete creator['__typename']
+        let opponent = gameInfo['opponent']
+        if(opponent !== null)
+          delete opponent['__typename']
+        gameInfo['opponent'] = opponent
+        gameInfo['creator'] = creator
+        gameInfo.fen = this.game.fen()
+        API.graphql(graphqlOperation(mutations.updateGame, {input: gameInfo}))
+        this.moveFrom = null
+        return
+      }        
+    }
+    let newSquareStyles = {}
+    if (piece !== null && piece.color === this.orientation[0]) {
+      this.moveFrom = square
+      let validMoves = this.game.moves({ square: square, verbose: true })
+      newSquareStyles[square] = { backgroundColor: Colors.BOARD_HIGHLIGHT_COLOR }
+      validMoves.forEach(move => {
+        newSquareStyles[move.to] = {
+          background: `radial-gradient(circle, ${Colors.BOARD_HIGHLIGHT_COLOR} 18%, transparent 15%)`,
+          borderRadius: "50%"
         }
-      }
-    })
-
-    try {
-      const retrieveGame = await API.graphql(graphqlOperation(queries.getGame, { id: gameToken }));
-      const gameState = retrieveGame.data.getGame;
-      this.setState({ gameState })
-      console.log(this.state.gameState, gameToken)
-    } catch (err) {
-      console.log(err)
+      })
     }
+    this.setState({ squareStyles: newSquareStyles })
   }
 
-  componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+  render(){
+    const boardStyle = {
+      marginLeft: '15%',
+      marginTop: '25%'
     }
-  }
-
-  onSendMessage = (message) => {
-    if (!message) {
-      return;
-    }
-    const messages = this.state.messages;
-    messages.push({
-      text: message,
-      member: this.state.currentUser
-    })
-    this.setState({messages: messages})
-
-    setTimeout(this.onReceiveMessage, 1000) // need to be removed later
-    // TODO: call api
-  }
-
-  onReceiveMessage = (message, opponent) => {
-    // TODO
-    // below is fake static data, need to get data from socket
-    const messages = this.state.messages;
-    messages.push({
-      text: 'hello world',
-      member: {username: 'alan turing'}
-    })
-    this.setState({messages: messages})
-  }
-
-  render() {
-    const { gameToken, gameState } = this.state;
-    console.log(gameState)
     return (
-      <div id="game-container">
-
-        <div className="row" style={{minHeight: '50px'}}>
-        {
-          
-        }
-        </div>
-
-        <div className="row">
-          <div style={boardsContainer} className="col-xl-8">
-            { WithMoveValidation(gameToken, gameState.turn, gameState.pgn, gameState.fen) }
+      <Box display='flex' justifyContent='center'>
+        <Box display='flex' flexDirection='column'>
+          <Paper style={{border: '1px solid #D3D3D3', marginBottom: '2px'}}>
+            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h5" component="h5">
+              You vs {this.opponent !== null? this.opponent.username : 'Anonymous'}
+            </Typography>
+            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h6" component="h6">
+              Variant: {this.gameInfo !== null? this.gameInfo.variant : ''}
+            </Typography>
+            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px'}}component="p">
+              {this.state.yourTurn === true? YOUR_TURN_MESSAGE : ''}
+            </Typography>
+          </Paper>
+          <div id={this.boardId}>
+            <Chessboard
+              position={this.state.fen}
+              lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
+              darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
+              orientation={this.orientation}
+              squareStyles={this.state.squareStyles}
+              onSquareClick={this.onSquareClick}
+            />
           </div>
-
-          {/* <div className="col-xl-4 chat-box">
-            <ChatMessages
-              messages={this.state.messages}
-              currentMember={this.state.currentUser}
-            />
-            <ChatInput
-              onSendMessage={this.onSendMessage}
-            />
-          </div> */}
-        </div>
-      </div>
+        </Box>
+      </Box>
     )
   }
 }
 
-Game.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      token: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
-};
-
-export default Game;
-
-const boardsContainer = {
-  display: "flex",
-  justifyContent: "space-around",
-  alignItems: "center",
-  flexWrap: "wrap",
-  width: "100vw",
-};
+export default Game

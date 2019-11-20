@@ -6,6 +6,7 @@ import {
 import HomeVariant from './HomeVariant';
 import AntiChess from './variants/AntiChess';
 import GridChess from './variants/GridChess';
+import ExtinctionChess from './variants/ExtinctionChess';
 
 function VariantNav() {
   return (
@@ -17,19 +18,26 @@ function VariantNav() {
               <Nav.Link eventKey="home">Home</Nav.Link>
               <Nav.Link eventKey="link-1">Antichess</Nav.Link>
               <Nav.Link eventKey="link-2">Grid chess</Nav.Link>
+              <Nav.Link eventKey="link-3">Extinction chess</Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>
         <Col sm={9}>
           <Tab.Content>
+<<<<<<< HEAD
             <Tab.Pane eventKey="home">
               <HomeVariant />
             </Tab.Pane>
+=======
+>>>>>>> 6127b88dd062bbb4a82b4a787b13f7c3bbe24704
             <Tab.Pane eventKey="link-1">
               <AntiChess />
             </Tab.Pane>
             <Tab.Pane eventKey="link-2">
               <GridChess />
+            </Tab.Pane>
+            <Tab.Pane eventKey="link-3">
+              <ExtinctionChess />
             </Tab.Pane>
           </Tab.Content>
         </Col>
