@@ -41,21 +41,19 @@ function AntiChessDocument() {
 
   return (
     <VariantDocument title="Antichess" piecesTable={piecesTable}>
-      <p>
-        In antichess, there are three rules that break from the standard chess rules: <br/>
-        <ol>
-          <li>
-            The first player to run out of legal moves (typically by losing all his/her
-            pieces) wins.
-          </li>
-          <li>
-            Check and checkmate and castling are not allowed, and pawn promotion to a king is allowed (the king is a mundane piece).
-          </li>
-          <li>
-            Capture is mandatory.
-          </li>
-        </ol>
-      </p>
+      In antichess, there are three rules that break from the standard chess rules: <br/>
+      <ol>
+        <li>
+          The first player to run out of legal moves (typically by losing all his/her
+          pieces) wins.
+        </li>
+        <li>
+          Check and checkmate and castling are not allowed, and pawn promotion to a king is allowed (the king is a mundane piece).
+        </li>
+        <li>
+          Capture is mandatory.
+        </li>
+      </ol>
       <ContentBox
         board={Antichess('', 'w', '', undefined, 1, false, true)}
       >

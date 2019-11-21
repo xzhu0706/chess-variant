@@ -41,8 +41,8 @@ function ExtinctionChessDocument() {
 
   return (
     <VariantDocument title="Extinction chess" piecesTable={piecesTable}>
-      <p>In extinction chess, all standard chess rules apply, except that a player loses only when he/she loses every member of one of the piece types that were present in the starting position, i.e., when one of those pieces goes extinct.
-      </p>
+      In extinction chess, all standard chess rules apply, except that a player loses only when he/she loses every member of one of the piece types that were present in the starting position, i.e., when one of those pieces goes extinct.
+      
       <ContentBox
         board={ExtinctionChess('', 'w', '', undefined, 3, false, true)}
       >

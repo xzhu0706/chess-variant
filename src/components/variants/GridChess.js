@@ -41,10 +41,8 @@ function GridChessDocument() {
 
   return (
     <VariantDocument title="Grid chess" piecesTable={piecesTable}>
-      <p>
-        In grid chess, all standard chess rules apply, except that each move must cross one or more
-        grid lines. It follows that the king will not be under attack by any opposing piece that is currently in the same grid.
-      </p>
+      In grid chess, all standard chess rules apply, except that each move must cross one or more
+      grid lines. It follows that the king will not be under attack by any opposing piece that is currently in the same grid.
 
       <ContentBox
         board={GridChess('', 'w', '', undefined, 2, false, true)}
