@@ -2,6 +2,7 @@ import React from 'react';
 import ExtinctionChess from '../../WithMoveValidation'
 import { Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
+import ContentBox from '../ContentBox'
 // what should we do about all these imports? 
 import wb from '../../pieces/standard/wb.svg';
 import wr from '../../pieces/standard/wr.svg';
@@ -17,19 +18,6 @@ import bk from '../../pieces/standard/bk.svg';
 import bq from '../../pieces/standard/bq.svg';
 
 function ExtinctionChessDocument() {
-  const Container = styled.div`
-    background-color: #fcf9f7;
-    border: 0.2px solid black;
-    width: 92%;
-    padding: 2%;
-    margin: 1px;
-
-    @media (max-width: 500px) {
-      float: none;
-      margin: 10px auto;
-    }
-  `;
-
   const headingStyle = {
     fontFamily: "Helvetica, Arial, sans-serif",
     fontWeight: "bold",
@@ -40,7 +28,7 @@ function ExtinctionChessDocument() {
       "Bitstream Charter, Bitstream Vera Serif, DejaVu Serif, Century Schoolbook L," +
       "serif",
     fontSize: "100%",
-    marginBottom: "2rem"
+    marginBottom: "1rem"
   };
 
   return (
@@ -74,49 +62,35 @@ function ExtinctionChessDocument() {
         <h2 style={headingStyle}>Rules</h2>
         <p style={bodyStyle}>In extinction chess, all standard chess rules apply, except that a player loses only when he/she loses every member of one of the piece types that were present in the starting position, i.e., when one of those pieces goes extinct.
         </p>
-        <Container>
-          <Row className="justify-content-md-center">
-            <Col xs="auto" style={bodyStyle}>
-              <div>
-                {ExtinctionChess('', 'w', '', undefined, 3, false, true)} 
-              </div>
-            </Col>
-            <Col xs="auto" xl="6" style={bodyStyle}>
-              This is the default starting position. The pieces in the starting position determine the piece types that can "go extinct". <br/>
-              Thus, from the default starting position, a player wins if he/she eliminates all of the other player's pawns, knights, bishops, rooks, queens or kings.<br/>
-            </Col>
-          </Row>
-        </Container>
-        <Row className="justify-content-md-center">
-          <Col xs="auto" style={bodyStyle}>
-            <div>
-              {ExtinctionChess('', 'w', '', 'rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1', 3, false, true)} 
-            </div>
-          </Col>
-          <Col xs="auto" xl="4" style={bodyStyle}>
-            A king has no special purpose in extinction chess (and check/checkmate is disabled). Thus, a game can be played with no kings on either side, which is not the case in standard chess!
-          </Col>
-        </Row>
-        <Row className="justify-content-md-center">
-          <Col xs="auto" style={bodyStyle}>
-            <div>
-              {ExtinctionChess('', 'w', '', 'rnbqkbnr/pppppppp/8/8/bbbbbbbb/8/8/R3K2R w KQkq - 0 1', 3, false, true)} 
-            </div>
-          </Col>
-          <Col xs="auto" xl="4" style={bodyStyle}>
-            Because the king is not a special piece, the king can ignore attacks/checks and moreover can castle even when the interceding squares are under attack.<br/>
-          </Col>
-        </Row>
-        <Row className="justify-content-md-center">
-          <Col xs="auto" style={bodyStyle}>
-            <div>
-              {ExtinctionChess('', 'w', '', '8/8/3q1p2/2r5/4N3/2b3k1/3n1n2/8 w KQkq - 0 1', 3, false, true)} 
-            </div>
-          </Col>
-          <Col xs="auto" xl="4" style={bodyStyle}>
+        <ContentBox
+          board={ExtinctionChess('', 'w', '', undefined, 3, false, true)}
+          style={bodyStyle}
+        >
+          This is the default starting position. The pieces in the starting position determine the piece types that can "go extinct".
+          Thus, a player wins if he/she eliminates all of the other player's pawns, knights, bishops, rooks, queens or kings.<br/>
+        </ContentBox>
+
+        <ContentBox
+          board={ExtinctionChess('', 'w', '', 'rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1', 3, false, true)}
+          style={bodyStyle}
+        >
+          A king has no special purpose in extinction chess (and check/checkmate is disabled).
+          Thus, a game can be played with no kings on either side, which is not the case in standard chess!
+        </ContentBox>
+
+        <ContentBox
+          board={ExtinctionChess('', 'w', '', 'rnbqkbnr/pppppppp/8/8/bbbbbbbb/8/8/R3K2R w KQkq - 0 1', 3, false, true)} 
+          style={bodyStyle}
+        >
+          Because the king is not a special piece, the king can ignore attacks/checks and moreover can castle even when the interceding squares are under attack.
+        </ContentBox>
+
+        <ContentBox
+          board={ExtinctionChess('', 'w', '', '8/8/3q1p2/2r5/4N3/2b3k1/3n1n2/8 w KQkq - 0 1', 3, false, true)}  
+          style={bodyStyle}
+        >
           Here is an example of an ending scenario. White wins in one move if he/she captures any of Black's pieces except for the knight, because of the fact Black has two knights.
-          </Col>
-        </Row>
+        </ContentBox>
       </div>
       <div>
         <h2 style={headingStyle}>Strategies</h2>
