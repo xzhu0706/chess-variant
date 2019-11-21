@@ -1,18 +1,51 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
-import Amplify, { Auth } from 'aws-amplify';
+import { Navbar } from 'react-bootstrap';
 import ResponsiveMenu from 'react-responsive-navbar';
 import styled from 'styled-components'; // https://www.styled-components.com/
-import { FaBeer } from 'react-icons/fa';
-import { Authenticator, Greetings } from 'aws-amplify-react';
+import { FaBars, FaTimes } from 'react-icons/fa';
 import Button from '@material-ui/core/Button';
 import Image from 'react-bootstrap/Image';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Dialog from '@material-ui/core/Dialog';
+import Amplify, { Auth } from 'aws-amplify';
+import { Authenticator, Greetings } from 'aws-amplify-react';
+
 import awsconfig from '../aws-exports';
 
 Amplify.configure(awsconfig);
+
+const Menu = styled.div`
+  border: 2px solid black;
+  margin: 1em 2em;
+
+  ul {
+    padding: 0;
+  }
+
+  li { 
+    display: inline;
+    list-style-type: none;
+    margin-left: 25px;
+  }
+
+  a {
+    font-size: 18px;
+    color: Black;
+
+    &:hover {
+      color: DodgerBlue;
+    }
+  }
+
+  @media (max-width: 820px) {
+    padding: 10px 10px;
+    li {
+      display: block;
+      margin-left: 0;
+    }
+  }
+`;
 
 class NavBar extends Component {
   constructor(props) {
@@ -74,37 +107,51 @@ class NavBar extends Component {
     return (
       <div>
         <ResponsiveMenu
-          menuOpenButton={<FaBeer size={30} color="YellowGreen" />}
-          menuCloseButton={<FaBeer size={30} color="YellowGreen" />}
-          changeMenuOn="640px"
+          menuOpenButton={<FaBars size={40} color="YellowGreen" />}
+          menuCloseButton={<FaTimes size={40} color="YellowGreen" />}
+          changeMenuOn="820px"
           menu={
-            <Navbar style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: 'black' }} bg="black" variant="light">
+            <Menu>
               <Navbar.Brand style={{ fontFamily: 'chalkduster' }}>
-                <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
-                <Link to="/" style={{ color: '#333333', fontSize: '28px', marginLeft: '5px' }}>Chess Variants</Link>
+                <Image src={require('../pieces/standard/wr.svg')} alt="Chess Piece" style={imgStyle} fluid />
+                <Link to="/" style={{ color: '#333333', fontSize: '28px' }}>Chess Variants</Link>
               </Navbar.Brand>
-              <Nav className="ml-auto">
-                <Link to="/variants"><Nav.Item className="nav-link">Explore Variants</Nav.Item></Link>
-                <Link to=""><Nav.Item className="nav-link">Learn</Nav.Item></Link>
-                <Link to=""><Nav.Item className="nav-link">Leaderboard</Nav.Item></Link>
-                
+              <ul>
+                <li>
+                  <a href="/">Home</a>
+                </li>
+                <li>
+                  <a href="/variants">Browse Variants</a>
+                </li>
+                <li>
+                  <a href="/">Leaderboard</a>
+                </li>
+                <li>
+                  <a href="/">Analysis Board</a>
+                </li>
+
                 {username
                   ? (
-                    <Nav className="ml-auto">
-                      <Link to="/account">
-                        <Nav.Item className="nav-link">
+                    <span>
+                    <li>
+                      <a href="/account">
                           Hello
                           {' '}
                           {username}
-                        </Nav.Item>
-                      </Link>
-                      <Nav.Item>
-                        <Button onClick={handleSignOut} data-testid="logout-button">Sign Out</Button>
-                      </Nav.Item>
-                    </Nav>
+                      </a>
+                    </li>
+                    <li>
+                      <Button
+                        onClick={handleSignOut}
+                        data-testid="logout-button"
+                      >
+                        Sign Out
+                      </Button>
+                    </li>
+                    </span>
                   )
                   : (
-                    <Nav className="ml-auto">
+                    <li>
                       <Button
                         data-testid="login-button"
                         style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: '35px' }}
@@ -114,10 +161,10 @@ class NavBar extends Component {
                       >
                         SIGN IN
                       </Button>
-                    </Nav>
+                    </li>
                   )}
-              </Nav>
-            </Navbar>
+              </ul>
+            </Menu>
           }
         />
 

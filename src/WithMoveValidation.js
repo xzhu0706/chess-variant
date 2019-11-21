@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
-// import rough from "roughjs"; // can give the squares a rough appearance
 import { API, graphqlOperation } from 'aws-amplify';
 //import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
@@ -180,7 +179,6 @@ class HumanVsHuman extends Component {
   }));
 
   render() {
-    console.log(this.state);
     const { fen, pgn, turn, gameResult, squareStyles } = this.state;
     return this.props.children({
       squareStyles,

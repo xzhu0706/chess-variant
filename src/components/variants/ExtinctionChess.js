@@ -1,6 +1,7 @@
 import React from 'react';
 import ExtinctionChess from '../../WithMoveValidation'
 import { Row, Col } from 'react-bootstrap';
+import styled from 'styled-components';
 // what should we do about all these imports? 
 import wb from '../../pieces/standard/wb.svg';
 import wr from '../../pieces/standard/wr.svg';
@@ -16,10 +17,24 @@ import bk from '../../pieces/standard/bk.svg';
 import bq from '../../pieces/standard/bq.svg';
 
 function ExtinctionChessDocument() {
+  const Container = styled.div`
+    background-color: #fcf9f7;
+    border: 0.2px solid black;
+    width: 92%;
+    padding: 2%;
+    margin: 1px;
+
+    @media (max-width: 500px) {
+      float: none;
+      margin: 10px auto;
+    }
+  `;
+
   const headingStyle = {
     fontFamily: "Helvetica, Arial, sans-serif",
     fontWeight: "bold",
   };
+
   const bodyStyle = {
     fontFamily: "Lucida Bright, Lucidabright, Lucida Serif, Lucida," +
       "Bitstream Charter, Bitstream Vera Serif, DejaVu Serif, Century Schoolbook L," +
@@ -59,17 +74,19 @@ function ExtinctionChessDocument() {
         <h2 style={headingStyle}>Rules</h2>
         <p style={bodyStyle}>In extinction chess, all standard chess rules apply, except that a player loses only when he/she loses every member of one of the piece types that were present in the starting position, i.e., when one of those pieces goes extinct.
         </p>
-        <Row className="justify-content-md-center">
-          <Col xs="auto" style={bodyStyle}>
-            <div>
-              {ExtinctionChess('', 'w', '', undefined, 3, false, true)} 
-            </div>
-          </Col>
-          <Col xs="auto" xl="4" style={bodyStyle}>
-            This is the default starting position. The pieces in the starting position determine the piece types that can "go extinct". <br/>
-            Thus, from the default starting position, a player wins if he/she eliminates all of the other player's pawns, knights, bishops, rooks, queens or kings.<br/>
-          </Col>
-        </Row>
+        <Container>
+          <Row className="justify-content-md-center">
+            <Col xs="auto" style={bodyStyle}>
+              <div>
+                {ExtinctionChess('', 'w', '', undefined, 3, false, true)} 
+              </div>
+            </Col>
+            <Col xs="auto" xl="6" style={bodyStyle}>
+              This is the default starting position. The pieces in the starting position determine the piece types that can "go extinct". <br/>
+              Thus, from the default starting position, a player wins if he/she eliminates all of the other player's pawns, knights, bishops, rooks, queens or kings.<br/>
+            </Col>
+          </Row>
+        </Container>
         <Row className="justify-content-md-center">
           <Col xs="auto" style={bodyStyle}>
             <div>
