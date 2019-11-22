@@ -55,13 +55,9 @@ var Chess = function(fen, variant=0) {
 
   const POSSIBLE_RESULTS = ['1-0', '0-1', '1/2-1/2', '*'];
 
-  const STANDARD = 0;
   const ANTI = 1;
   const GRID = 2;
   const EXTINCTION = 3;
-  const RIFLE = 4;
-  const ATOMIC = 5;
-  const POCKET = 6;
 
   const PAWN_OFFSETS = {
     b: [16, 32, 17, 15],

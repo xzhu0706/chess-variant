@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
-// import rough from "roughjs"; // can give the squares a rough appearance
 import { API, graphqlOperation } from 'aws-amplify';
 //import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
@@ -180,7 +179,6 @@ class HumanVsHuman extends Component {
   }));
 
   render() {
-    console.log(this.state);
     const { fen, pgn, turn, gameResult, squareStyles } = this.state;
     return this.props.children({
       squareStyles,
@@ -197,7 +195,7 @@ class HumanVsHuman extends Component {
 
 export default function WithMoveValidation(gameToken='', turn='w', pgn='', start_fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', variant=0, showData=true, smallBoard=false) {
   console.log('func reload', start_fen, pgn, gameToken, turn)
-  let boardId = variant === 2 && "grid-board"; // if variant isn't grid chess, boardId will be set to false
+  let boardId = variant === 2 ? "grid-board" : "false"; // if variant isn't grid chess, boardId will be set to false
   return (
     <div>
       <HumanVsHuman fen={start_fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'} variant={variant} pgn={pgn} turn={turn} gameToken={gameToken}>
