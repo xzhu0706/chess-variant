@@ -6,7 +6,7 @@ import PopularVariants from '../../components/PopularVariants';
 test('renders without crashing', () => {
   render(
     <Router>
-      <PopularVariants />
+      <PopularVariants src="test" name="test" description="test" />
     </Router>,
   );
 });
