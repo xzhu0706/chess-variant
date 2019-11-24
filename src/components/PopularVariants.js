@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'react-bootstrap/Image';
 import { Link } from 'react-router-dom';
-
+import PropTypes from 'prop-types';
 
 function PopularVariant({ src, name, description }) {
   return (
@@ -16,3 +16,9 @@ function PopularVariant({ src, name, description }) {
 }
 
 export default PopularVariant;
+
+PopularVariant.propTypes = {
+  src: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+};
