@@ -15,7 +15,10 @@ function HomeVariant() {
     <div>
       <h1 className="text-center" style={headingStyle}>Chess Variants</h1>
       <br />
-      <p style={bodyStyle}>Chess variants provides a new way of playing chess. Learn new variants and strategies and think outside of the box</p>
+      <p style={bodyStyle}>
+        Chess variants provides a new way of playing chess. Learn new variants and
+        strategies and think outside of the box
+      </p>
     </div>
   );
 }
