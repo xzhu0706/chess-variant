@@ -7,6 +7,7 @@ class AnalysisBoard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      editMode: true,
       sparePiece: '',
     };
     this.handlePieceChange = this.handlePieceChange.bind(this);
@@ -24,10 +25,13 @@ class AnalysisBoard extends React.Component {
     const piece = this.state.sparePiece.toLowerCase(); 
     const color = this.state.sparePiece === this.state.sparePiece.toLowerCase() ? 'b' : 'w';
     const pieceObj = { piece, color };
+
     return (
       <div style={{textAlign: 'center'}}>
         <div style={{display: 'inline-block'}}>
-          <Board editMode={true} />
+          {/* render the board in edit or non-edit mode with knowledge of the currently selected spare piece  */}
+          {Board(undefined, 0, true, false, this.state.editMode, this.state.sparePiece)}
+          {/* render the spare pieces module that will update this.state when a spare piece is selected */}
           <SparePieces handleChange={this.handlePieceChange} />
         </div>
       </div>

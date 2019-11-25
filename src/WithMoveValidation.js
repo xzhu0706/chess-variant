@@ -14,50 +14,24 @@ class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = {
-    variant: 0,
-    fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-    pgn: "",
+    fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+    pgn: '',
     squareStyles: {}, // custom square styles
-    pieceSquare: "", // piece on the most recently selected square
+    pieceSquare: '', // piece on the most recently selected square
     turn: '',
     gameOver: false,
     gameResult: '', // checkmate, stalemate, insufficient material, ...
-    editMode: false,
-    sparePiece: '',
   };
 
   componentDidMount() {
-    console.log('component reload', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn)
     this.game = new Chess(this.props.fen || this.state.fen, this.props.variant);
     // initialize the internal game
     this.setState({
-      variant: this.props.variant,
       fen: this.game.fen(),
       turn: this.game.turn(),
-      editMode: this.props.editMode || false,
     });
     this.updateGameResult(); // in case the FEN string gives an ending position
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   console.log('getting props', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn, this.game.fen());
-  //   if (nextProps.fen !== this.props.fen) {
-  //     this.setState({
-  //       fen: nextProps.fen,
-  //     })
-  //     this.game = new Chess(nextProps.fen);
-  //   }
-  //   if (nextProps.pgn !== this.props.pgn) {
-  //     this.setState({
-  //       pgn: nextProps.pgn,
-  //     });
-  //   }
-  //   if (nextProps.turn !== this.props.turn) {
-  //     this.setState({
-  //       turn: nextProps.turn,
-  //     });
-  //   }
-  // }
 
   // adjust board size according to window size
   calcWidth = (dimensions) => {
@@ -155,19 +129,6 @@ class HumanVsHuman extends Component {
     this.updateGameResult();
   };
 
-  // updateDatabase = async () => {
-  //   // TODO
-  //   const data = {
-  //     id: this.props.gameToken,
-  //     fen: this.game.fen(),
-  //     pgn: this.game.pgn(),
-  //     turn: this.game.turn(),
-  //     // game result?
-  //   };
-  //   const updateGame = await API.graphql(graphqlOperation(mutations.updateGame, { input: data }));
-  //   console.log('update db', updateGame);
-  // }
-
   // When right clicking, we preserve the old squareStyles (we merely append the new style).
   // This will allow the user to have multiple squares be highlighted simultaneously,
   // for whatever reason (annotation?)
@@ -181,8 +142,8 @@ class HumanVsHuman extends Component {
       squareStyles,
       fen,
       pgn,
-      gameResult,
       turn,
+      gameResult,
       onSquareClick: this.onSquareClick,
       onSquareRightClick: this.onSquareRightClick,
       calcWidth: this.calcWidth,
@@ -190,12 +151,11 @@ class HumanVsHuman extends Component {
   }
 }
 
-export default function WithMoveValidation(gameToken='', turn='w', pgn='', start_fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', variant=0, showData=true, smallBoard=false) {
-  console.log('func reload', start_fen, pgn, gameToken, turn)
+export default function WithMoveValidation(start_fen, variant=0, showData=true, smallBoard=false, editMode=false, sparePiece) {
   let boardId = variant === 2 ? "grid-board" : "false"; // if variant isn't grid chess, boardId will be set to false
   return (
     <div>
-      <HumanVsHuman fen={start_fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'} variant={variant} pgn={pgn} turn={turn} gameToken={gameToken}>
+      <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece}>
         { /* HumanVsHuman calls the following function as this.props.children() in its render() method */ }
         {({
           squareStyles,

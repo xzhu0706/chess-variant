@@ -47,14 +47,14 @@ function GridChessDocument() {
       </p>
       
       <ContentBox
-        board={GridChess('', 'w', '', undefined, 2, false, true)}
+        board={GridChess(undefined, 2, false, true)}
       >
         This is the starting position in grid chess.
         All the standard moves are legal at the start because they all cross one grid line.
       </ContentBox>
 
       <ContentBox
-        board={GridChess('', 'w', '', 'rnbqkbnr/ppp1pppp/8/4P3/3p4/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3', 2, false, true)}
+        board={GridChess('rnbqkbnr/ppp1pppp/8/4P3/3p4/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3', 2, false, true)}
       >
         After
         <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 1. e4 d5 2. e5 d4</span>
@@ -69,7 +69,7 @@ function GridChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={GridChess('', 'w', '', '2k5/8/8/8/2N5/8/1q6/1K6 w - - 0 1', 2, false, true)}
+        board={GridChess('2k5/8/8/8/2N5/8/1q6/1K6 w - - 0 1', 2, false, true)}
       >
         There are two things to observe in this position.
         <br />
@@ -83,7 +83,7 @@ function GridChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={GridChess('', 'w', '', '4k3/8/8/R7/6B1/8/8/4K3 w - - 0 1', 2, false, true)}
+        board={GridChess('4k3/8/8/R7/6B1/8/8/4K3 w - - 0 1', 2, false, true)}
       >
         Here is a checkmate-in-one scenario.
         <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 1. ♖a8#</span>.
