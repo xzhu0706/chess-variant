@@ -1,6 +1,35 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const updateGameState = `mutation UpdateGameState($input: UpdateGameStateInput!) {
+  updateGameState(input: $input) {
+    id
+    players {
+      items {
+        id
+      }
+      nextToken
+    }
+    creator {
+      id
+      username
+    }
+    opponent {
+      id
+      username
+    }
+    creatorOrientation
+    time
+    variant
+    fen
+    available
+    history
+    result
+    winner
+    createdAt
+  }
+}
+`;
 export const createUser = `mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
     id
@@ -79,6 +108,7 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
       history
       result
       winner
+      createdAt
     }
     player {
       id
@@ -119,6 +149,7 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
       history
       result
       winner
+      createdAt
     }
     player {
       id
@@ -159,6 +190,7 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
       history
       result
       winner
+      createdAt
     }
     player {
       id
@@ -200,6 +232,7 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
     history
     result
     winner
+    createdAt
   }
 }
 `;
@@ -228,6 +261,7 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
     history
     result
     winner
+    createdAt
   }
 }
 `;
@@ -256,6 +290,7 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
     history
     result
     winner
+    createdAt
   }
 }
 `;

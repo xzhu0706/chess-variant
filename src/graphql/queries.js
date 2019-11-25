@@ -66,6 +66,7 @@ export const getGame = `query GetGame($id: ID!) {
     history
     result
     winner
+    createdAt
   }
 }
 `;
@@ -96,6 +97,7 @@ export const listGames = `query ListGames(
       history
       result
       winner
+      createdAt
     }
     nextToken
   }

@@ -1,6 +1,122 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateGame = `subscription OnCreateGame {
+  onCreateGame {
+    id
+    players {
+      items {
+        id
+      }
+      nextToken
+    }
+    creator {
+      id
+      username
+    }
+    opponent {
+      id
+      username
+    }
+    creatorOrientation
+    time
+    variant
+    fen
+    available
+    history
+    result
+    winner
+    createdAt
+  }
+}
+`;
+export const onUpdateGame = `subscription OnUpdateGame {
+  onUpdateGame {
+    id
+    players {
+      items {
+        id
+      }
+      nextToken
+    }
+    creator {
+      id
+      username
+    }
+    opponent {
+      id
+      username
+    }
+    creatorOrientation
+    time
+    variant
+    fen
+    available
+    history
+    result
+    winner
+    createdAt
+  }
+}
+`;
+export const onDeleteGame = `subscription OnDeleteGame {
+  onDeleteGame {
+    id
+    players {
+      items {
+        id
+      }
+      nextToken
+    }
+    creator {
+      id
+      username
+    }
+    opponent {
+      id
+      username
+    }
+    creatorOrientation
+    time
+    variant
+    fen
+    available
+    history
+    result
+    winner
+    createdAt
+  }
+}
+`;
+export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
+  onUpdateGameState(id: $id) {
+    id
+    players {
+      items {
+        id
+      }
+      nextToken
+    }
+    creator {
+      id
+      username
+    }
+    opponent {
+      id
+      username
+    }
+    creatorOrientation
+    time
+    variant
+    fen
+    available
+    history
+    result
+    winner
+    createdAt
+  }
+}
+`;
 export const onCreateUser = `subscription OnCreateUser {
   onCreateUser {
     id
@@ -79,6 +195,7 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
       history
       result
       winner
+      createdAt
     }
     player {
       id
@@ -119,6 +236,7 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
       history
       result
       winner
+      createdAt
     }
     player {
       id
@@ -159,6 +277,7 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
       history
       result
       winner
+      createdAt
     }
     player {
       id
@@ -172,90 +291,6 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
       skillLevel
       rank
     }
-  }
-}
-`;
-export const onCreateGame = `subscription OnCreateGame {
-  onCreateGame {
-    id
-    players {
-      items {
-        id
-      }
-      nextToken
-    }
-    creator {
-      id
-      username
-    }
-    opponent {
-      id
-      username
-    }
-    creatorOrientation
-    time
-    variant
-    fen
-    available
-    history
-    result
-    winner
-  }
-}
-`;
-export const onUpdateGame = `subscription OnUpdateGame {
-  onUpdateGame {
-    id
-    players {
-      items {
-        id
-      }
-      nextToken
-    }
-    creator {
-      id
-      username
-    }
-    opponent {
-      id
-      username
-    }
-    creatorOrientation
-    time
-    variant
-    fen
-    available
-    history
-    result
-    winner
-  }
-}
-`;
-export const onDeleteGame = `subscription OnDeleteGame {
-  onDeleteGame {
-    id
-    players {
-      items {
-        id
-      }
-      nextToken
-    }
-    creator {
-      id
-      username
-    }
-    opponent {
-      id
-      username
-    }
-    creatorOrientation
-    time
-    variant
-    fen
-    available
-    history
-    result
-    winner
   }
 }
 `;

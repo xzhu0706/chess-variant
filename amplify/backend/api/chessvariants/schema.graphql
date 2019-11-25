@@ -15,7 +15,7 @@ type PlayerGameMapping @model(queries: null) {
   player: User! @connection(name: "userPlayer")
 }
 
-type Game @model @auth(rules: [{allow: public}]) @key(fields: ["id", "createdAt"]){
+type Game @model(subscriptions: null) @auth(rules: [{allow: public}]) {
   id: ID!
   players: [PlayerGameMapping] @connection(name: "playerGame") # for registered users only
   creator: PlayerInfo!
@@ -28,10 +28,34 @@ type Game @model @auth(rules: [{allow: public}]) @key(fields: ["id", "createdAt"
   history: [String]
   result: String
   winner: String
-  createdAt: String!
+  createdAt: String
 }
 
 type PlayerInfo {
   id: ID!
   username: String!
+}
+
+input UpdateGameStateInput {
+	id: ID!
+	time: String
+	fen: String
+	history: [String]
+	result: String
+	winner: String
+}
+
+type Mutation {
+  updateGameState(input: UpdateGameStateInput!): Game
+}
+
+type Subscription {
+  onCreateGame: Game
+		@aws_subscribe(mutations: ["createGame"])
+	onUpdateGame: Game
+		@aws_subscribe(mutations: ["updateGame"])
+	onDeleteGame: Game
+		@aws_subscribe(mutations: ["deleteGame"])
+	onUpdateGameState(id: ID!): Game
+		@aws_subscribe(mutations: ["updateGameState"])
 }
