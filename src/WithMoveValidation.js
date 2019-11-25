@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
-import { API, graphqlOperation } from 'aws-amplify';
+// import { API, graphqlOperation } from 'aws-amplify';
 //import * as queries from './graphql/queries';
-import * as mutations from './graphql/mutations';
+// import * as mutations from './graphql/mutations';
 import GameData from './GameData.js';
 import wn_test from "./wn.svg"; // testing the use of custom icons
 import bn_test from "./bn.svg"
@@ -19,10 +19,11 @@ class HumanVsHuman extends Component {
     pgn: "",
     squareStyles: {}, // custom square styles
     pieceSquare: "", // piece on the most recently selected square
+    turn: '',
     gameOver: false,
     gameResult: '', // checkmate, stalemate, insufficient material, ...
-    turn: '',
-    spares: false,
+    editMode: false,
+    sparePiece: '',
   };
 
   componentDidMount() {
@@ -33,6 +34,7 @@ class HumanVsHuman extends Component {
       variant: this.props.variant,
       fen: this.game.fen(),
       turn: this.game.turn(),
+      editMode: this.props.editMode || false,
     });
     this.updateGameResult(); // in case the FEN string gives an ending position
   }
@@ -174,7 +176,7 @@ class HumanVsHuman extends Component {
   }));
 
   render() {
-    const { fen, pgn, turn, gameResult, squareStyles, spares } = this.state;
+    const { fen, pgn, turn, gameResult, squareStyles } = this.state;
     return this.props.children({
       squareStyles,
       fen,
@@ -184,7 +186,6 @@ class HumanVsHuman extends Component {
       onSquareClick: this.onSquareClick,
       onSquareRightClick: this.onSquareRightClick,
       calcWidth: this.calcWidth,
-      spares
     });
   }
 }
@@ -204,8 +205,7 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
           turn,
           onSquareClick,
           onSquareRightClick,
-          calcWidth,
-          spares
+          calcWidth
         }) => {
           // redefine calcWidth() if smallBoard arg is true
           if (smallBoard) {
@@ -261,8 +261,6 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
                   onSquareRightClick={onSquareRightClick}
                   calcWidth={calcWidth}
                   draggable={true}
-                  sparePieces={spares} // if spares is true, spare pieces can be dragged onto board
-                  dropOffBoard = { spares ? 'trash' : 'snapback' } // if spares is true, dragging a piece out of the board will delete it
                 />
               </div>
               { gameData }

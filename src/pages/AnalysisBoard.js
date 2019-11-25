@@ -1,49 +1,38 @@
 import React from 'react';
 import Board from '../WithMoveValidation';
+import SparePieces from '../components/customization/SparePieces.js';
 import './AnalysisBoard.css';
 
-function AnalysisBoard() {
-  return (
-    <div style={{textAlign: 'center'}}>
-      <div style={{display: 'inline-block'}}>
-        <Board />
-        <form>
-          <div className="piece-selector">
-            Select a piece to add to the board:
-            <div>
-              <input id="white-pawn" type="radio" name="piece" value="P" />
-              <label className="piece-card white-pawn" htmlFor="white-pawn"></label>
-              <input id="white-bishop" type="radio" name="piece" value="B" />
-              <label className="piece-card white-bishop" htmlFor="white-bishop"></label>
-              <input id="white-knight" type="radio" name="piece" value="N" />
-              <label className="piece-card white-knight" htmlFor="white-knight"></label>
-              <input id="white-rook" type="radio" name="piece" value="R" />
-              <label className="piece-card white-rook" htmlFor="white-rook"></label>
-              <input id="white-queen" type="radio" name="piece" value="Q" />
-              <label className="piece-card white-queen" htmlFor="white-queen"></label>
-              <input id="white-king" type="radio" name="piece" value="K" />
-              <label className="piece-card white-king" htmlFor="white-king"></label>
-            </div>
+class AnalysisBoard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sparePiece: '',
+    };
+    this.handlePieceChange = this.handlePieceChange.bind(this);
+  }
 
-            <div>
-              <input id="black-pawn" type="radio" name="piece" value="p" />
-              <label className="piece-card black-pawn" htmlFor="black-pawn"></label>
-              <input id="black-bishop" type="radio" name="piece" value="b" />
-              <label className="piece-card black-bishop" htmlFor="black-bishop"></label>
-              <input id="black-knight" type="radio" name="piece" value="n" />
-              <label className="piece-card black-knight" htmlFor="black-knight"></label>
-              <input id="black-rook" type="radio" name="piece" value="r" />
-              <label className="piece-card black-rook" htmlFor="black-rook"></label>
-              <input id="black-queen" type="radio" name="piece" value="q" />
-              <label className="piece-card black-queen" htmlFor="black-queen"></label>
-              <input id="black-king" type="radio" name="piece" value="k" />
-              <label className="piece-card black-king" htmlFor="black-king"></label>
-            </div>
-          </div>
-        </form>
+  handlePieceChange(event) {
+    this.setState({
+      sparePiece: event.target.value
+    });
+  };
+
+  render() {
+    // 'k' will be the White king, i.e., the piece object is { piece: 'k' , color: 'w' }
+    // 'K' will be the Black king, i.e., the piece object is { piece: 'k' , color: 'b' }
+    const piece = this.state.sparePiece.toLowerCase(); 
+    const color = this.state.sparePiece === this.state.sparePiece.toLowerCase() ? 'b' : 'w';
+    const pieceObj = { piece, color };
+    return (
+      <div style={{textAlign: 'center'}}>
+        <div style={{display: 'inline-block'}}>
+          <Board editMode={true} />
+          <SparePieces handleChange={this.handlePieceChange} />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default AnalysisBoard;
