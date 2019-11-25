@@ -15,5 +15,6 @@ type Game @model @auth(rules: [{allow: public}]) {
   variant: String!
   fen: String!
   available: Boolean!
+  ended: Boolean!
 }
 

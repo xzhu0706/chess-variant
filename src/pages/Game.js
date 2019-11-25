@@ -22,6 +22,7 @@ class Game extends Component {
       time: '',
       squareStyles: {},
       yourTurn: false,
+      showResignationDialog: false
     }
     this.game = null
     this.opponent = null // the opponent. null if user created or joined game anonymously
@@ -86,7 +87,14 @@ class Game extends Component {
   }
 
   componentWillUnmount(){
-
+    alert("Component unmounted")
+    if(!this.game.game_over()){
+      //Display warning that the game is over yet!
+    }
+    let gameInfo = this.gameInfo
+    this.removeTypenameFieldsFromGameObject(gameInfo)
+    gameInfo.ended = true
+    API.graphql(graphqlOperation(mutations.updateGame, {input: gameInfo}))
   }
 
   onSquareClick =  async (square) => {
@@ -96,16 +104,8 @@ class Game extends Component {
       let move = this.game.move({from: this.moveFrom, to: square})
       if(move !== null){
         this.setState({fen: this.game.fen(), squareStyles: {}, yourTurn: false})
-        let gameInfo = this.gameInfo;
-        delete gameInfo['__typename']
-        let creator = gameInfo['creator']
-        if(creator !== null)
-          delete creator['__typename']
-        let opponent = gameInfo['opponent']
-        if(opponent !== null)
-          delete opponent['__typename']
-        gameInfo['opponent'] = opponent
-        gameInfo['creator'] = creator
+        let gameInfo = this.gameInfo
+        this.removeTypenameFieldsFromGameObject(gameInfo)
         gameInfo.fen = this.game.fen()
         API.graphql(graphqlOperation(mutations.updateGame, {input: gameInfo}))
         this.moveFrom = null
@@ -126,6 +126,18 @@ class Game extends Component {
       }
     }
     this.setState({ squareStyles: newSquareStyles })
+  }
+
+  removeTypenameFieldsFromGameObject = (gameInfo) => {
+    delete gameInfo['__typename']
+    let creator = gameInfo['creator']
+    if (creator !== null)
+      delete creator['__typename']
+    let opponent = gameInfo['opponent']
+    if (opponent !== null)
+      delete opponent['__typename']
+    gameInfo['opponent'] = opponent
+    gameInfo['creator'] = creator
   }
 
   render(){

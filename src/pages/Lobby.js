@@ -161,8 +161,10 @@ class Lobby extends Component {
   }
 
   componentWillUnmount(){
-    this.gameUpdateSubscription.unsubscribe()
-    this.gameCreationSubscription.unsubscribe()
+    if(this.gameUpdateSubscription !== null)
+      this.gameUpdateSubscription.unsubscribe()
+    if(this.gameCreationSubscription !== null)
+      this.gameCreationSubscription.unsubscribe()
     //this.gameDeletionSubscription.unsubscribe()
   }
 
