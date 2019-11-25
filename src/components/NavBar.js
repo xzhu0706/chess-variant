@@ -1,15 +1,51 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
-import Amplify, { Auth } from 'aws-amplify';
-import { Authenticator, Greetings } from 'aws-amplify-react';
+import { Navbar } from 'react-bootstrap';
+import ResponsiveMenu from 'react-responsive-navbar';
+import styled from 'styled-components'; // https://www.styled-components.com/
+import { FaBars, FaTimes } from 'react-icons/fa';
 import Button from '@material-ui/core/Button';
 import Image from 'react-bootstrap/Image';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Dialog from '@material-ui/core/Dialog';
+import Amplify, { Auth } from 'aws-amplify';
+import { Authenticator, Greetings } from 'aws-amplify-react';
+
 import awsconfig from '../aws-exports';
 
 Amplify.configure(awsconfig);
+
+const Menu = styled.div`
+  border: 2px solid black;
+  margin: 1em 2em;
+
+  ul {
+    padding: 0;
+  }
+
+  li { 
+    display: inline;
+    list-style-type: none;
+    margin-left: 25px;
+  }
+
+  a {
+    font-size: 18px;
+    color: Black;
+
+    &:hover {
+      color: DodgerBlue;
+    }
+  }
+
+  @media (max-width: 820px) {
+    padding: 10px 10px;
+    li {
+      display: block;
+      margin-left: 0;
+    }
+  }
+`;
 
 class NavBar extends Component {
   constructor(props) {
@@ -70,47 +106,67 @@ class NavBar extends Component {
     } = this;
     return (
       <div>
-        <Navbar style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: 'black' }} bg="black" variant="light">
-          <Navbar.Brand style={{ fontFamily: 'chalkduster' }}>
-            <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Glinski_Chess_Setup.png" alt="Chess Piece" style={imgStyle} fluid />
-            <Link to="/" style={{ color: '#333333', fontSize: '28px', marginLeft: '5px' }}>Chess Variants</Link>
-          </Navbar.Brand>
-          <Nav className="ml-auto">
-            <Link to="/variants"><Nav.Item className="nav-link">Explore Variants</Nav.Item></Link>
-            <Link to=""><Nav.Item className="nav-link">Learn</Nav.Item></Link>
-            <Link to=""><Nav.Item className="nav-link">Leaderboard</Nav.Item></Link>
-            <Link to=""><Nav.Item className="nav-link">Community</Nav.Item></Link>
+        <ResponsiveMenu
+          menuOpenButton={<FaBars size={40} color="YellowGreen" />}
+          menuCloseButton={<FaTimes size={40} color="YellowGreen" />}
+          changeMenuOn="820px"
+          menu={
+            <Menu>
+              <Navbar.Brand style={{ fontFamily: 'chalkduster' }}>
+                <Image src={require('../pieces/standard/wr.svg')} alt="Chess Piece" style={imgStyle} fluid />
+                <Link to="/" style={{ color: '#333333', fontSize: '28px' }}>Chess Variants</Link>
+              </Navbar.Brand>
+              <ul>
+                <li>
+                  <a href="/">Home</a>
+                </li>
+                <li>
+                  <a href="/variants">Browse Variants</a>
+                </li>
+                <li>
+                  <a href="/">Leaderboard</a>
+                </li>
+                <li>
+                  <a href="/">Analysis Board</a>
+                </li>
 
-            {username
-              ? (
-                <Nav className="ml-auto">
-                  <Link to="/account">
-                    <Nav.Item className="nav-link">
-                      Hello
-                      {' '}
-                      {username}
-                    </Nav.Item>
-                  </Link>
-                  <Nav.Item>
-                    <Button onClick={handleSignOut} data-testid="logout-button">Sign Out</Button>
-                  </Nav.Item>
-                </Nav>
-              )
-              : (
-                <Nav className="ml-auto">
-                  <Button
-                    data-testid="login-button"
-                    style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: '35px' }}
-                    variant="outlined"
-                    startIcon={<AccountCircle />}
-                    onClick={handleShowAuth}
-                  >
-                    SIGN IN
-                  </Button>
-                </Nav>
-              )}
-          </Nav>
-        </Navbar>
+                {username
+                  ? (
+                    <span>
+                    <li>
+                      <a href="/account">
+                          Hello
+                          {' '}
+                          {username}
+                      </a>
+                    </li>
+                    <li>
+                      <Button
+                        onClick={handleSignOut}
+                        data-testid="logout-button"
+                      >
+                        Sign Out
+                      </Button>
+                    </li>
+                    </span>
+                  )
+                  : (
+                    <li>
+                      <Button
+                        data-testid="login-button"
+                        style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: '35px' }}
+                        variant="outlined"
+                        startIcon={<AccountCircle />}
+                        onClick={handleShowAuth}
+                      >
+                        SIGN IN
+                      </Button>
+                    </li>
+                  )}
+              </ul>
+            </Menu>
+          }
+        />
 
         <Dialog onClose={handleCloseAuth} aria-labelledby="simple-dialog-title" open={showAuth}>
           <Authenticator

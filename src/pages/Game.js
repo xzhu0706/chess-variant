@@ -122,10 +122,10 @@ class Game extends Component {
   }
 
   render(){
-    const boardStyle = {
-      marginLeft: '15%',
-      marginTop: '25%'
-    }
+    // const boardStyle = {
+    //   marginLeft: '15%',
+    //   marginTop: '25%'
+    // }
     return (
       <Box display='flex' justifyContent='center'>
         <Box display='flex' flexDirection='column'>

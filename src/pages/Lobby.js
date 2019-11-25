@@ -21,7 +21,7 @@ import Button from '@material-ui/core/Button';
 import * as subscriptions from '../graphql/subscriptions';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
-import Amplify, { Auth } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import CreateGameDialog from './CreateGameDialog';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';

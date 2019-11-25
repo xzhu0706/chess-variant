@@ -142,7 +142,6 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   // White's only moves should be Ke2, Kf1 and Rxh4.
-  console.log(standardGame5.ascii());
   test("In standard chess, when the king is under attack, the player's only valid moves " + 
   "are those that would stop the attack", () => {
     const moves = standardGame5.generate_moves(); // an array of move objects
