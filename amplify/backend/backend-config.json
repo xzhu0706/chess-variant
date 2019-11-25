@@ -14,7 +14,7 @@
 		}
 	},
 	"api": {
-		"chessvariant": {
+		"chessvariants": {
 			"service": "AppSync",
 			"providerPlugin": "awscloudformation",
 			"output": {
@@ -23,7 +23,7 @@
 					"defaultAuthentication": {
 						"authenticationType": "API_KEY",
 						"apiKeyConfig": {
-							"description": "chessvariantApiKey",
+							"description": "chessVariantApiKey",
 							"apiKeyExpirationDays": "100"
 						}
 					}

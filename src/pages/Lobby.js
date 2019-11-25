@@ -26,6 +26,7 @@ import CreateGameDialog from './CreateGameDialog';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import * as customQueries from '../customGraphql/queries';
 
 
 
@@ -103,33 +104,38 @@ class Lobby extends Component {
       showDialog: false,
       showJoiningOwnGameDialog: false,
     };
-    this.gamesData = {}
-    this.gameUpdateSubscription = null
-    this.gameCreationSubscription = null
-    this.gameDeletionSubscription = null
+    this.gamesData = {};
+    this.gameUpdateSubscription = null;
+    this.gameCreationSubscription = null;
+    this.gameDeletionSubscription = null;
   }
 
   async componentDidMount() {
-    let queryResult = await API.graphql(graphqlOperation(queries.listGames))
+    const limit = 100; // temporary solution
+    const filter = {
+      available: { eq: true },
+    };
+    let queryResult = await API.graphql(graphqlOperation(customQueries.listGames, { limit, filter }));
     if (queryResult) {
-      queryResult = queryResult.data.listGames.items
-      const games = queryResult.filter((game) => game.available).map((game) => {
-        let gameId = game.id
-        this.gamesData[gameId] = game
-        let row = this.constructRowFromGameData(game)
-        return row
+      console.log(queryResult)
+      queryResult = queryResult.data.listGames.items;
+      const games = queryResult.map((game) => {
+        const gameId = game.id;
+        this.gamesData[gameId] = game;
+        const row = this.constructRowFromGameData(game);
+        return row;
       });
       this.setState({ games });
     }
 
-    this.gameCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateGame),).subscribe({
+    this.gameCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateGame)).subscribe({
       next: (gameData) => {
-        const game = gameData.value.data.onCreateGame
-        let gameId = game.id
-        this.gamesData[gameId] = game
-        let row = this.constructRowFromGameData(game)
-        const games = [row, ...this.state.games]
-        this.setState({ games })
+        const game = gameData.value.data.onCreateGame;
+        const gameId = game.id;
+        this.gamesData[gameId] = game;
+        const row = this.constructRowFromGameData(game);
+        const games = [row, ...this.state.games];
+        this.setState({ games });
       },
     });
 
@@ -144,8 +150,9 @@ class Lobby extends Component {
       },
     });*/
 
-    this.gameUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame),).subscribe({
+    this.gameUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame)).subscribe({
       next: (gameData) => {
+        console.log('joined game', gameData.value.data);
         let game = gameData.value.data.onUpdateGame
         let currentGame = localStorage.getItem(CURRENT_GAME)
         if(currentGame && currentGame === game.id){
@@ -157,38 +164,66 @@ class Lobby extends Component {
         }
       },
     });
-
+    console.log('join game subscription', this.gameUpdateSubscription, this.gameCreationSubscription);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     if (this.gameUpdateSubscription) {
       this.gameUpdateSubscription.unsubscribe();
     }
     if (this.gameCreationSubscription) {
-      this.gameCreationSubscription.unsubscribe()
+      this.gameCreationSubscription.unsubscribe();
     }
     if (this.gameDeletionSubscription) {
-      this.gameDeletionSubscription.unsubscribe()
+      this.gameDeletionSubscription.unsubscribe();
     }
   }
 
   createGame = async (event, gameInfo) => {
-    this.setState({showDialog: false})
-    gameInfo['fen'] = "init"
-    gameInfo['available'] = true
-    let userInfo = await Auth.currentUserInfo()
-    if(userInfo) {
-      let user = {}
-      user.id = userInfo.id
-      user.username = userInfo.username
-      gameInfo['creator'] = user
+    let userInfo;
+    this.setState({ showDialog: false });
+    const newGame = { ...gameInfo };
+    console.log('new', newGame);
+    newGame.fen = 'init';
+    newGame.available = true;
+    await this.getUserInfo().then((user) => {
+      console.log(typeof (user), user);
+      if (typeof (user) === 'object') {
+        userInfo = { ...user };
+        newGame.creator = {
+          id: userInfo.attributes.sub,
+          username: userInfo.username,
+        };
+      } else {
+        newGame.creator = {
+          id: user,
+          username: 'anonymous',
+        };
+      }
+    });
+    // const currentGame = localStorage.getItem(CURRENT_GAME);
+    // if (currentGame) {
+    //    API.graphql(graphqlOperation(mutations.deleteGame, { input: {id: currentGame }}))
+    // }
+    const createNewGame = await API.graphql(graphqlOperation(mutations.createGame, { input: newGame }));
+    const newGameData = createNewGame.data.createGame;
+    localStorage.setItem(CURRENT_GAME, newGameData.id);
+    if (userInfo) {
+      // if user is logged in, create playerGameMapping
+      const playerGameMappingInput = {
+        playerGameMappingGameId: newGameData.id,
+        playerGameMappingPlayerId: userInfo.attributes.sub,
+      };
+      const newPlayerGameMapping = await API.graphql(
+        graphqlOperation(mutations.createPlayerGameMapping, { input: playerGameMappingInput }),
+      );
+      // testing output
+      const queryResult2 = await API.graphql(
+        graphqlOperation(customQueries.getUserWithPastGames, { id: userInfo.attributes.sub }),
+      );
+      const queryResult3 = await API.graphql(graphqlOperation(customQueries.getGame, { id: newGameData.id }));
+      console.log('after creat game', newPlayerGameMapping, queryResult2, queryResult3);
     }
-    let currentGame = localStorage.getItem(CURRENT_GAME)
-    if(currentGame){
-       API.graphql(graphqlOperation(mutations.deleteGame, { input: {id: currentGame }}))
-    }
-    let newGame = await API.graphql(graphqlOperation(mutations.createGame, { input: gameInfo }))
-    localStorage.setItem(CURRENT_GAME, newGame.data.createGame.id)
   }
 
   showDialog = () => {
@@ -208,40 +243,73 @@ class Lobby extends Component {
   }
 
   constructRowFromGameData = (game) => {
-    const creator = game.creator
-    const player = creator ? creator.username : 'anonymous'
-    const skillLevel = 'n/a'
+    const { creator, variant } = game;
+    const player = creator.username;
+    const skillLevel = game.skillLevel || 'n/a';
     const timing = game.time;
-    const variant = game.variant
-    const gameId = game.id
-    return {player, skillLevel, timing, variant, gameId}
+    const gameId = game.id;
+    return {
+      creator, player, skillLevel, timing, variant, gameId,
+    };
   }
 
   joinGame = async (event, rowData) => {
-    let gameId = rowData.gameId
-    let createdGame = localStorage.getItem(CURRENT_GAME)
-    if(createdGame !== null && createdGame === gameId){
-      this.showJoiningOwnGameDialog()
-      return
+    let userInfo;
+    const joinGameInput = {};
+    const { gameId } = rowData;
+    await this.getUserInfo().then((user) => {
+      console.log(typeof (user), user);
+      if (typeof (user) === 'object') {
+        userInfo = { ...user };
+        joinGameInput.opponent = {
+          id: userInfo.attributes.sub,
+          username: userInfo.username,
+        };
+      } else {
+        joinGameInput.opponent = {
+          id: user,
+          username: 'anonymous',
+        };
+      }
+    });
+    if (joinGameInput.opponent.id === rowData.creator.id) {
+      this.showJoiningOwnGameDialog();
+      return;
     }
-    let gameInfo = this.gamesData[gameId]
-    gameInfo['available'] = false
-    let userInfo = await Auth.currentUserInfo()
-    if(userInfo) {
-      let opponent = {}
-      opponent.id = userInfo.id
-      opponent.username = userInfo.username
-      gameInfo['opponent'] = opponent
+    joinGameInput.available = false;
+    joinGameInput.id = gameId;
+    console.log('join game input', joinGameInput)
+    const joinGame = await API.graphql(graphqlOperation(mutations.updateGame, { input: joinGameInput }));
+    const joinedGameData = joinGame.data.updateGame;
+    console.log('updated join game', joinedGameData);
+    if (userInfo) {
+      // if user is logged in, create playerGameMapping
+      try {
+        const playerGameMappingInput = {
+          playerGameMappingGameId: joinedGameData.id,
+          playerGameMappingPlayerId: userInfo.attributes.sub,
+        };
+        const newPlayerGameMapping = await API.graphql(
+          graphqlOperation(mutations.createPlayerGameMapping, { input: playerGameMappingInput }),
+        );
+        console.log('joined mapping', newPlayerGameMapping);
+      } catch (e) {
+        console.log(e);
+      }
     }
-    delete gameInfo['__typename']
-    let creator = gameInfo['creator']
-    if(creator) delete creator['__typename']
-    let opponent = gameInfo['opponent']
-    if(opponent) delete opponent['__typename']
-    gameInfo['creator'] = creator
-    gameInfo['opponent'] = opponent
-    await API.graphql(graphqlOperation(mutations.updateGame, {input: gameInfo}))
-    this.props.history.push({pathname: `/game/${gameInfo.id}`, state: {message: gameInfo}})
+    this.props.history.push({ pathname: `/game/${gameId}` });
+  }
+
+  getUserInfo = async () => {
+    let userInfo;
+    await Auth.currentAuthenticatedUser().then((user) => {
+      userInfo = { ...user };
+    }).catch(async (e) => {
+      await Auth.currentCredentials().then((credential) => {
+        userInfo = credential.identityId.split(':')[1];
+      });
+    });
+    return userInfo;
   }
 
   removeGameFromLobby = (gameId) => {
@@ -301,7 +369,7 @@ class Lobby extends Component {
                 fontSize: '18px',
                 color: '#333333',
               },
-              paging: false,
+              paging: true,
               searchFieldStyle: {
                 fontSize: '14px',
                 fontFamily: 'verdana',

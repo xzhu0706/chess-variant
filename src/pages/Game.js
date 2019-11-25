@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { API, graphqlOperation } from 'aws-amplify';
+import {API, graphqlOperation, Auth } from 'aws-amplify';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -38,14 +38,18 @@ class Game extends Component {
     const gameId = this.props.match.params.id;
     const queryResult = await API.graphql(graphqlOperation(queries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame;
-    const currentGame = localStorage.getItem('currentGame');
-    if (currentGame && currentGame === this.gameInfo.id) {
+    // let currentGame = localStorage.getItem('currentGame');
+    // if (currentGame && currentGame === this.gameId) {
+    const user = await this.getUserInfo();
+    const userId = typeof (user) === 'object' ? user.attributes.sub : user;
+    if (this.gameInfo.creator.id === userId) {
       this.orientation = this.gameInfo.creatorOrientation;
       this.opponent = this.gameInfo.opponent;
-    } else {
+    } else if (this.gameInfo.opponent.id === userId) {
       this.orientation = this.gameInfo.creatorOrientation === 'white' ? 'black' : 'white';
       this.opponent = this.gameInfo.creator;
     }
+    console.log(this.orientation, userId, this.gameInfo.opponent.id, this.gameInfo.creator.id);
     let initialFen = '';
     let yourTurn = this.orientation === 'white';
     this.gameId = this.gameInfo.id;
@@ -78,9 +82,11 @@ class Game extends Component {
       yourTurn = this.game.turn() === this.orientation[0];
     }
     this.setState({ fen: initialFen, yourTurn });
-    this.gameUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame)).subscribe({
+    this.gameUpdateSubscription = API.graphql(graphqlOperation(
+      subscriptions.onUpdateGameState, { id: gameId },
+    )).subscribe({
       next: (gameData) => {
-        const gameState = gameData.value.data.onUpdateGame;
+        const gameState = gameData.value.data.onUpdateGameState;
         if (this.gameInfo.id === gameState.id) {
           this.game.load(gameState.fen);
           const yourTurn = this.game.turn() === this.orientation[0];
@@ -90,6 +96,18 @@ class Game extends Component {
     });
   }
 
+  getUserInfo = async () => {
+    let userInfo;
+    await Auth.currentAuthenticatedUser().then((user) => {
+      userInfo = { ...user };
+    }).catch(async (e) => {
+      await Auth.currentCredentials().then((credential) => {
+        userInfo = credential.identityId.split(':')[1];
+      });
+    });
+    return userInfo;
+  }
+
   onSquareClick = async (square) => {
     if (this.game.turn() !== this.orientation[0]) return;
     const piece = this.game.get(square);
@@ -97,16 +115,11 @@ class Game extends Component {
       const move = this.game.move({ from: this.moveFrom, to: square });
       if (move !== null) {
         this.setState({ fen: this.game.fen(), squareStyles: {}, yourTurn: false });
-        const { gameInfo } = this;
-        delete gameInfo.__typename;
-        const { creator } = gameInfo;
-        if (creator !== null) { delete creator.__typename; }
-        const { opponent } = gameInfo;
-        if (opponent !== null) { delete opponent.__typename; }
-        gameInfo.opponent = opponent;
-        gameInfo.creator = creator;
-        gameInfo.fen = this.game.fen();
-        API.graphql(graphqlOperation(mutations.updateGame, { input: gameInfo }));
+        const updateGameData = {};
+        updateGameData.id = this.gameId;
+        updateGameData.fen = this.game.fen();
+        const updated = await API.graphql(graphqlOperation(mutations.updateGameState, { input: updateGameData }));
+        console.log(updated);
         this.moveFrom = null;
         return;
       }
