@@ -34,8 +34,8 @@ class Game extends Component {
   }
 
  async componentDidMount(){
-    let gameId = this.props.match.params.id
-    let queryResult =  await API.graphql(graphqlOperation(queries.getGame, { id: gameId }))
+    let gameId = this.props.match.params.id;
+    let queryResult =  await API.graphql(graphqlOperation(queries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame
     let currentGame = localStorage.getItem('currentGame')
     if (currentGame && currentGame === this.gameInfo.id) {
@@ -78,7 +78,7 @@ class Game extends Component {
       yourTurn = this.game.turn() === this.orientation[0]? true : false
     }
     this.setState({fen: initialFen, yourTurn})
-    this.gameUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame),).subscribe({
+    this.gameUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame, {id: gameId})).subscribe({
       next: (gameData) => {
         let gameState = gameData.value.data.onUpdateGame
         if(this.gameInfo.id === gameState.id){
@@ -91,41 +91,34 @@ class Game extends Component {
   }
 
   onSquareClick = async (square) => {
-    if(this.game.turn() !== this.orientation[0]) return
-    let piece = this.game.get(square)
-    if(this.moveFrom !== null){
-      let move = this.game.move({from: this.moveFrom, to: square})
-      if(move !== null){
-        this.setState({fen: this.game.fen(), squareStyles: {}, yourTurn: false})
-        let gameInfo = this.gameInfo;
-        delete gameInfo['__typename']
-        let creator = gameInfo['creator']
-        if(creator !== null)
-          delete creator['__typename']
-        let opponent = gameInfo['opponent']
-        if(opponent !== null)
-          delete opponent['__typename']
-        gameInfo['opponent'] = opponent
-        gameInfo['creator'] = creator
-        gameInfo.fen = this.game.fen()
-        API.graphql(graphqlOperation(mutations.updateGame, {input: gameInfo}))
-        this.moveFrom = null
-        return
-      }        
+    if (this.game.turn() !== this.orientation[0]) return;
+    const piece = this.game.get(square);
+    if (this.moveFrom !== null) {
+      const move = this.game.move({ from: this.moveFrom, to: square });
+      if (move !== null) {
+        this.setState({ fen: this.game.fen(), squareStyles: {}, yourTurn: false });
+        const updateGameData = {};
+        updateGameData.id = this.gameId;
+        updateGameData.fen = this.game.fen();
+        const updated = await API.graphql(graphqlOperation(mutations.updateGame, { input: updateGameData }));
+        console.log(updated);
+        this.moveFrom = null;
+        return;
+      }
     }
-    let newSquareStyles = {}
+    const newSquareStyles = {};
     if (piece !== null && piece.color === this.orientation[0]) {
-      this.moveFrom = square
-      let validMoves = this.game.moves({ square: square, verbose: true })
-      newSquareStyles[square] = { backgroundColor: Colors.BOARD_HIGHLIGHT_COLOR }
-      validMoves.forEach(move => {
+      this.moveFrom = square;
+      const validMoves = this.game.moves({ square, verbose: true });
+      newSquareStyles[square] = { backgroundColor: Colors.BOARD_HIGHLIGHT_COLOR };
+      validMoves.forEach((move) => {
         newSquareStyles[move.to] = {
           background: `radial-gradient(circle, ${Colors.BOARD_HIGHLIGHT_COLOR} 18%, transparent 15%)`,
-          borderRadius: "50%"
-        }
-      })
+          borderRadius: '50%',
+        };
+      });
     }
-    this.setState({ squareStyles: newSquareStyles })
+    this.setState({ squareStyles: newSquareStyles });
   }
 
   render(){
