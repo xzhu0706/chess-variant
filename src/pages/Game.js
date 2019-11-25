@@ -60,6 +60,11 @@ class Game extends Component {
         this.game = new Chess(Games.STANDARD_FEN, 2)
         initialFen = Games.STANDARD_FEN
         this.boardId = 'grid-board'
+        break
+      case Games.EXTINCTION_CHESS:
+        this.game = new Chess(Games.STANDARD_FEN, 3)
+        initialFen = Games.STANDARD_FEN
+        break
       case Games.STANDARD_CHESS:
         this.game = new Chess()
         initialFen = Games.STANDARD_FEN
@@ -115,15 +120,14 @@ class Game extends Component {
     let newSquareStyles = {}
     if (piece !== null && piece.color === this.orientation[0]) {
       this.moveFrom = square
-      let validMoves = this.game.moves({ square: square , verbose: true})
+      let validMoves = this.game.moves({ square: square, verbose: true })
       newSquareStyles[square] = { backgroundColor: Colors.BOARD_HIGHLIGHT_COLOR }
-      for (let i in validMoves) {
-        let move = validMoves[i].to;
-        newSquareStyles[move] = {
+      validMoves.forEach(move => {
+        newSquareStyles[move.to] = {
           background: `radial-gradient(circle, ${Colors.BOARD_HIGHLIGHT_COLOR} 18%, transparent 15%)`,
           borderRadius: "50%"
         }
-      }
+      })
     }
     this.setState({ squareStyles: newSquareStyles })
   }
@@ -141,19 +145,19 @@ class Game extends Component {
   }
 
   render(){
-    const boardStyle = {
-      marginLeft: '15%',
-      marginTop: '25%'
-    }
+    // const boardStyle = {
+    //   marginLeft: '15%',
+    //   marginTop: '25%'
+    // }
     return (
       <Box display='flex' justifyContent='center'>
         <Box display='flex' flexDirection='column'>
           <Paper style={{border: '1px solid #D3D3D3', marginBottom: '2px'}}>
             <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h5" component="h5">
-              You vs {this.opponent !== null? this.opponent.username : 'Anonymous'}.
+              You vs {this.opponent !== null? this.opponent.username : 'Anonymous'}
             </Typography>
             <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h6" component="h6">
-              Variant: {this.gameInfo !== null? this.gameInfo.variant : ''}.
+              Variant: {this.gameInfo !== null? this.gameInfo.variant : ''}
             </Typography>
             <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px'}}component="p">
               {this.state.yourTurn === true? YOUR_TURN_MESSAGE : ''}

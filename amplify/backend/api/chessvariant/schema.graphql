@@ -17,4 +17,3 @@ type Game @model @auth(rules: [{allow: public}]) {
   available: Boolean!
   ended: Boolean!
 }
-

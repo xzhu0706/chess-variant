@@ -37,50 +37,34 @@ var Chess = function(fen, variant=0) {
 
   /* jshint indent: false */
 
-  var BLACK = 'b';
-  var WHITE = 'w';
+  const BLACK = 'b';
+  const WHITE = 'w';
 
-  var EMPTY = -1;
+  const EMPTY = -1;
 
-  var PAWN = 'p';
-  var KNIGHT = 'n';
-  var BISHOP = 'b';
-  var ROOK = 'r';
-  var QUEEN = 'q';
-  var KING = 'k';
+  const PAWN = 'p';
+  const KNIGHT = 'n';
+  const BISHOP = 'b';
+  const ROOK = 'r';
+  const QUEEN = 'q';
+  const KING = 'k';
 
-  var SYMBOLS = 'pnbrqkPNBRQK';
+  const SYMBOLS = 'pnbrqkPNBRQK'; // all possible pieces in a FEN string
 
-  var DEFAULT_POSITION = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+  const DEFAULT_POSITION = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
-  var POSSIBLE_RESULTS = ['1-0', '0-1', '1/2-1/2', '*'];
+  const POSSIBLE_RESULTS = ['1-0', '0-1', '1/2-1/2', '*'];
 
-  var STANDARD = 0;
-  var ANTI = 1;
-  var GRID = 2;
-  var RIFLE = 3;
-  var ATOMIC = 4;
-  var POCKET = 5;
+  const ANTI = 1;
+  const GRID = 2;
+  const EXTINCTION = 3;
 
-  var PAWN_OFFSETS = {
+  const PAWN_OFFSETS = {
     b: [16, 32, 17, 15],
     w: [-16, -32, -17, -15]
   };
 
-  // in_grid_move = (from, to) => {
-    
-  // }
-
-  // original:
-  // var PIECE_OFFSETS = {
-  //   n: [-18, -33, -31, -14,  18, 33, 31,  14],
-  //   b: [-17, -15,  17,  15],
-  //   r: [-16,   1,  16,  -1],
-  //   q: [-17, -16, -15,   1,  17, 16, 15,  -1],
-  //   k: [-17, -16, -15,   1,  17, 16, 15,  -1]
-  // };
-
-  var PIECE_OFFSETS = {
+  const PIECE_OFFSETS = {
     n: [-18, -33, -31, -14,  18, 33, 31,  14],
     b: [-17, -15,  17,  15],
     r: [-16,   1,  16,  -1],
@@ -88,32 +72,12 @@ var Chess = function(fen, variant=0) {
     k: [-17, -16, -15,   1,  17, 16, 15,  -1]
   };
 
-  // original:
-  // var ATTACKS = [
-  //   20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20, 0,
-  //    0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
-  //    0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
-  //    0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
-  //    0, 0, 0, 0,20, 0, 0, 24,  0, 0,20, 0, 0, 0, 0, 0,
-  //    0, 0, 0, 0, 0,20, 2, 24,  2,20, 0, 0, 0, 0, 0, 0,
-  //    0, 0, 0, 0, 0, 2,53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
-  //   24,24,24,24,24,24,56,  0, 56,24,24,24,24,24,24, 0,
-  //    0, 0, 0, 0, 0, 2,53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
-  //    0, 0, 0, 0, 0,20, 2, 24,  2,20, 0, 0, 0, 0, 0, 0,
-  //    0, 0, 0, 0,20, 0, 0, 24,  0, 0,20, 0, 0, 0, 0, 0,
-  //    0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
-  //    0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
-  //    0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
-  //   20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20
-  // ];
-  
-
   // the ATTACKS array is a bit-mask of attacks based on a 6-bit string of the form kqrbnp.
   // For example:
   // kqrbnp = 010100 = 20 (only the queen and bishop can attack the center piece)
   // kqrbnp = 000010 =  2 (only the knight can attack the center piece)
   // kqrbnp = 011000 = 24 (only the queen and rook can attack the center piece)
-  var ATTACKS = [
+  const ATTACKS = [
     20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20, 0,
      0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
      0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
@@ -132,7 +96,7 @@ var Chess = function(fen, variant=0) {
   ];
 
   // how to shift the board in order to make a move (?)
-  var RAYS = [
+  const RAYS = [
      17,  0,  0,  0,  0,  0,  0, 16,  0,  0,  0,  0,  0,  0, 15, 0,
       0, 17,  0,  0,  0,  0,  0, 16,  0,  0,  0,  0,  0, 15,  0, 0,
       0,  0, 17,  0,  0,  0,  0, 16,  0,  0,  0,  0, 15,  0,  0, 0,
@@ -150,19 +114,19 @@ var Chess = function(fen, variant=0) {
     -15,  0,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,  0,-17
   ];
 
-  var SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5 };
+  const SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5 };
 
-  var FLAGS = {
+  const FLAGS = {
     NORMAL: 'n',
     CAPTURE: 'c',
-    BIG_PAWN: 'b', // 
-    EP_CAPTURE: 'e', // en passant
+    BIG_PAWN: 'b',
+    EP_CAPTURE: 'e',
     PROMOTION: 'p',
-    KSIDE_CASTLE: 'k', // 
-    QSIDE_CASTLE: 'q' // 
+    KSIDE_CASTLE: 'k',
+    QSIDE_CASTLE: 'q' 
   };
 
-  var BITS = {
+  const BITS = {
     NORMAL: 1,
     CAPTURE: 2,
     BIG_PAWN: 4,
@@ -172,16 +136,16 @@ var Chess = function(fen, variant=0) {
     QSIDE_CASTLE: 64
   };
 
-  var RANK_1 = 7;
-  var RANK_2 = 6;
-  var RANK_3 = 5;
-  var RANK_4 = 4;
-  var RANK_5 = 3;
-  var RANK_6 = 2;
-  var RANK_7 = 1;
-  var RANK_8 = 0;
+  const RANK_1 = 7;
+  const RANK_2 = 6;
+  const RANK_3 = 5;
+  const RANK_4 = 4;
+  const RANK_5 = 3;
+  const RANK_6 = 2;
+  const RANK_7 = 1;
+  const RANK_8 = 0;
 
-  var SQUARES = {
+  const SQUARES = {
     a8:   0, b8:   1, c8:   2, d8:   3, e8:   4, f8:   5, g8:   6, h8:   7,
     a7:  16, b7:  17, c7:  18, d7:  19, e7:  20, f7:  21, g7:  22, h7:  23,
     a6:  32, b6:  33, c6:  34, d6:  35, e6:  36, f6:  37, g6:  38, h6:  39,
@@ -196,12 +160,14 @@ var Chess = function(fen, variant=0) {
   // the second row starts with 0x10 = 0001 0000 and ends with 0x17 = 0001 0111 and so on,
   // until 0111 0111 = 119.
 
-  var ROOKS = {
+  const ROOKS = {
     w: [{square: SQUARES.a1, flag: BITS.QSIDE_CASTLE},
         {square: SQUARES.h1, flag: BITS.KSIDE_CASTLE}],
     b: [{square: SQUARES.a8, flag: BITS.QSIDE_CASTLE},
         {square: SQUARES.h8, flag: BITS.KSIDE_CASTLE}]
   };
+ 
+  let STARTING_PIECES = { 'w': { }, 'b': { } }; // for extinction chess
 
   var board = new Array(128);
   var kings = {w: EMPTY, b: EMPTY};
@@ -240,24 +206,22 @@ var Chess = function(fen, variant=0) {
   }
 
   function load(fen) {
-    var tokens = fen.split(/\s+/);
+    const tokens = fen.split(/\s+/);
     /*
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     becomes
-    tokens[0] = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR' // the board position
-    tokens[1] = 'w'    // it's white's turn
-    tokens[2] = 'KQkq' // K = white can castle kingside
-    tokens[3] = '-'    // en passant target square: if a pawn has just moved 2 squares,
-                       // this is the square behind the pawn (e.g. "e3")
-    tokens[4] = '0'    // number of half-moves in the game since the last capture or pawn advance
-                       // (if this number reaches 50, a draw can be claimed).
-    tokens[5] = '1'    // number of full-moves; this is the number that we're at in the PGN
-                       // (e.g. "1. e4 e5 2. Nf3")
+    tokens[0] = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR' (the board position)
+    tokens[1] = 'w'    (it's white's turn)
+    tokens[2] = 'KQkq' ('K' means white can castle kingside)
+    tokens[3] = '-'    (en passant target square: if a pawn has just moved 2 squares,
+                        this is the square behind the pawn)
+    tokens[4] = '0'    (number of half-moves in the game since the last capture or pawn advance)
+    tokens[5] = '1'    (number of full-moves)
     In chess, one "full" move is really 2 moves. If White plays e4 and then Black plays e5,
     that counts as one move.
     */
-    var position = tokens[0];
-    var square = 0;
+    const position = tokens[0];
+    let square = 0;
 
     if (!validate_fen(fen).valid) {
       return false;
@@ -265,18 +229,28 @@ var Chess = function(fen, variant=0) {
 
     clear();
 
+    // save white's and black's pieces at the start of the game
+    for (let i = 0; i < position.length; i++) {
+      if (is_digit(position[i]) || position[i] === '/') continue;
+
+      if (position[i] < 'a') {
+        STARTING_PIECES['w'][position[i].toLowerCase()] = 0;
+      } else {
+        STARTING_PIECES['b'][position[i]] = 0;
+      }
+    }
+
     // e.g., position = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
-    for (var i = 0; i < position.length; i++) {
-      var piece = position.charAt(i);
+    for (let i = 0; i < position.length; i++) {
+      const piece = position.charAt(i);
 
       if (piece === '/') {
         square += 8;
       } else if (is_digit(piece)) {
         square += parseInt(piece, 10);
       } else {
-        var color = (piece < 'a') ? WHITE : BLACK; // if it's a capital letter then it's a white piece
-        // convert the square to algebra form (e.g., 0 -> "a8"), and put the piece object, which has
-        // a type and a color, on the board
+        const color = (piece < 'a') ? WHITE : BLACK; // if it's a capital letter then it's a white piece
+        // put the piece, which has a piece.type and a piece.color, on the board
         put({type: piece.toLowerCase(), color: color}, algebraic(square));
         square++;
       }
@@ -325,6 +299,7 @@ var Chess = function(fen, variant=0) {
        9: '1st field (piece positions) is invalid [invalid piece].',
       10: '1st field (piece positions) is invalid [row too large].',
       11: 'Illegal en-passant square',
+      12: 'Wrong number of kings'
     };
 
     /* 1st criterion: 6 space-seperated fields? */
@@ -387,6 +362,23 @@ var Chess = function(fen, variant=0) {
       }
       if (sum_fields !== 8) {
         return {valid: false, error_number: 10, error: errors[10]};
+      }
+    }
+
+    if (variant !== ANTI && variant !== EXTINCTION) {
+      /* verify that there is exactly one king per side */
+      let king_count = { 'w': 0, 'b': 0 };
+      for (const ch in tokens[0]) {
+        if (tokens[0][ch] === '/') continue;
+        if (tokens[0][ch] === 'K') {
+          king_count['w']++;
+        }
+        else if (tokens[0][ch] === 'k') {
+          king_count['b']++;
+        }
+      }
+      if (king_count['w'] !== 1 || king_count['b'] !== 1) {
+        return { valid: false, error_number: 12, error: errors[12] };
       }
     }
 
@@ -496,7 +488,7 @@ var Chess = function(fen, variant=0) {
     var sq = SQUARES[square];
 
     /* don't let the user place more than one king */
-    if (piece.type == KING && !(variant == ANTI) &&
+    if (piece.type == KING && (variant !== ANTI) && (variant !== EXTINCTION) &&
         !(kings[piece.color] == EMPTY || kings[piece.color] == sq)) {
       return false;
     }
@@ -611,7 +603,7 @@ var Chess = function(fen, variant=0) {
         /* single square, non-capturing */
         var square = i + PAWN_OFFSETS[us][0];
         if (board[square] == null) {
-          // validate the move if we're playing grid chess
+          // validate the move in a special way if we're playing grid chess
           if (variant !== GRID || valid_2x2_grid_move(i, square)) {
             add_move(board, moves, i, square, BITS.NORMAL);
           }
@@ -619,7 +611,7 @@ var Chess = function(fen, variant=0) {
           /* double square, non-capturing */
           var square = i + PAWN_OFFSETS[us][1];
           if (second_rank[us] === rank(i) && board[square] == null) {
-            // validate the move if we're playing grid chess
+            // validate the move in a special way if we're playing grid chess
             if (variant !== GRID || valid_2x2_grid_move(i, square)) {
               add_move(board, moves, i, square, BITS.BIG_PAWN);
             }
@@ -633,13 +625,13 @@ var Chess = function(fen, variant=0) {
 
           if (board[square] != null &&
               board[square].color === them) {
-              // validate the move if we're playing grid chess
+              // validate the move in a special way if we're playing grid chess
               if (variant !== GRID || valid_2x2_grid_move(i, square)) {
                 add_move(board, moves, i, square, BITS.CAPTURE);
                 capturePossible = 1;
               }
           } else if (square === ep_square) {
-            // validate the move if we're playing grid chess
+            // validate the move in a special way if we're playing grid chess
             if (variant !== GRID || valid_2x2_grid_move(i, square)) {
               add_move(board, moves, i, ep_square, BITS.EP_CAPTURE);
               capturePossible = 1;
@@ -710,23 +702,25 @@ var Chess = function(fen, variant=0) {
      */
     if ((!single_square || last_sq === kings[us]) && variant !== ANTI) {
       /* king-side castling */
-      if (castling[us] & BITS.KSIDE_CASTLE) {
+      if ((castling[us] & BITS.KSIDE_CASTLE) && (kings[us] !== EMPTY)) {
         var castling_from = kings[us];
         var castling_to = castling_from + 2;
 
+        // check that interceding squares are not being attacked, unless variant is extinction chess
+        // (in which one may always ignore check)
         if (
           board[castling_from + 1] == null &&
           board[castling_to] == null &&
-          !attacked(them, kings[us]) &&
+          (variant === EXTINCTION || !attacked(them, kings[us]) &&
           !attacked(them, castling_from + 1) &&
-          !attacked(them, castling_to)
+          !attacked(them, castling_to))
         ) {
           add_move(board, moves, kings[us], castling_to, BITS.KSIDE_CASTLE);
         }
       }
 
       /* queen-side castling */
-      if (castling[us] & BITS.QSIDE_CASTLE) {
+      if ((castling[us] & BITS.QSIDE_CASTLE) && kings[us] !== EMPTY) {
         var castling_from = kings[us];
         var castling_to = castling_from - 2;
 
@@ -734,16 +728,16 @@ var Chess = function(fen, variant=0) {
           board[castling_from - 1] == null &&
           board[castling_from - 2] == null &&
           board[castling_from - 3] == null &&
-          !attacked(them, kings[us]) &&
+          (variant === EXTINCTION || !attacked(them, kings[us]) &&
           !attacked(them, castling_from - 1) &&
-          !attacked(them, castling_to)
+          !attacked(them, castling_to))
         ) {
           add_move(board, moves, kings[us], castling_to, BITS.QSIDE_CASTLE);
         }
       }
     }
 
-    if (!legal) {
+    if (!legal || variant === EXTINCTION) {
       /* return all pseudo-legal moves (this includes moves that allow the king to be captured) */
       return moves;
     } else {
@@ -819,7 +813,7 @@ var Chess = function(fen, variant=0) {
 
   /* whether the piece on `square` is attacked by a piece of the given `color`... */
   function attacked(color, square) {
-    for (var i = SQUARES.a8; i <= SQUARES.h1; i++) {
+    for (let i = SQUARES.a8; i <= SQUARES.h1; i++) {
       /* did we run off the end of the board */
       if (i & 0x88) { i += 7; continue; }
 
@@ -829,9 +823,9 @@ var Chess = function(fen, variant=0) {
       /* if we're playing grid chess and it's not a valid, out-of-grid move, no attack can occur */
       if (variant === GRID && !valid_2x2_grid_move(i, square)) continue;
 
-      var piece = board[i];
-      var difference = i - square;
-      var index = difference + 119;
+      const piece = board[i];
+      const difference = i - square;
+      const index = difference + 119;
 
       if (ATTACKS[index] & (1 << SHIFTS[piece.type])) {
         if (piece.type === PAWN) {
@@ -846,10 +840,10 @@ var Chess = function(fen, variant=0) {
         /* if the piece is a knight or a king */
         if (piece.type === 'n' || piece.type === 'k') return true;
 
-        var offset = RAYS[index];
-        var j = i + offset;
+        const offset = RAYS[index];
+        let j = i + offset;
 
-        var blocked = false;
+        let blocked = false;
         while (j !== square) {
           if (board[j] != null) { blocked = true; break; }
           j += offset;
@@ -867,8 +861,8 @@ var Chess = function(fen, variant=0) {
   }
 
   function in_check() {
-    /* check is not possible in antichess */
-    return king_attacked(turn) && variant !== ANTI;
+    /* check is not possible in antichess and extinction chess */
+    return king_attacked(turn) && variant !== ANTI && variant !== EXTINCTION;
   }
 
   function in_checkmate() {
@@ -879,8 +873,33 @@ var Chess = function(fen, variant=0) {
     return !in_check() && generate_moves().length === 0;
   }
 
+  /* for extinction chess: returns true if the current player is missing
+  a piece they had at the start of the game */
+  function extinguished() {
+    let piece_populations = STARTING_PIECES[turn];
+    for (const count in piece_populations) {
+      piece_populations[count] = 0;
+    }
+
+    for (let i = SQUARES.a8; i <= SQUARES.h1; i++) {
+      if (i & 0x88) { i += 7; continue; }
+
+      if (board[i] == null || board[i].color !== turn) continue;
+
+      piece_populations[board[i].type]++;
+    }
+
+    for (const count in piece_populations) {
+      if (!piece_populations[count]) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   function insufficient_material() {
-    if (variant === ANTI || variant === GRID) return false;
+    if (variant === ANTI || variant === GRID || variant === EXTINCTION) return false;
     var pieces = {};
     var bishops = [];
     var num_pieces = 0;
@@ -970,8 +989,8 @@ var Chess = function(fen, variant=0) {
   }
 
   function make_move(move) {
-    var us = turn;
-    var them = swap_color(us);
+    const us = turn;
+    const them = swap_color(us);
     push(move);
 
     board[move.to] = board[move.from];
@@ -1415,7 +1434,8 @@ var Chess = function(fen, variant=0) {
              in_checkmate() ||
              in_stalemate() ||
              insufficient_material() ||
-             in_threefold_repetition();
+             in_threefold_repetition() ||
+             (variant === EXTINCTION && extinguished());
     },
 
     validate_fen: function(fen) {
@@ -1715,6 +1735,7 @@ var Chess = function(fen, variant=0) {
     attacked: attacked,
     king_attacked: king_attacked,
     generate_moves: generate_moves,
+    extinguished: extinguished,
 
     undo: function() {
       var move = undo_move();

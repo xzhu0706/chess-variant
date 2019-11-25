@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Amplify, { Auth } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import {
   Container, Row, Col, Image, ListGroup, ListGroupItem, Table,
 } from 'react-bootstrap';

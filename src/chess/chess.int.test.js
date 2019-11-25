@@ -3,10 +3,11 @@
 const chessjs = require("./chess.js");
 
 /* For each variant, this file tests the functions we modified in chess/chess.js, which are
- * generate_moves() (generates a list of valid move objects)
- * in_check() (returns true if the current player's king is in check)
- * 
- * 
+ * generate_moves()         (generates a list of valid moves in the current game position)
+ * in_check()               (returns true iff the current player's king is in check - should be disabled in antichess)
+ * in_checkmate()           (returns true iff the current player's king is in checkmate - should be impossible in antichess)
+ * in_stalemate()           (returns true iff the current player has no legal moves)
+ * insufficient_material()  (returns true iff neither player can win with the pieces he/she has - should be disabled in grid chess)
  * 
  */
 
@@ -42,7 +43,28 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
     );
   });
 
-  let standardGame2 = new chessjs.Chess("8/3K1P2/1k6/8/8/8/8/8 w - - 0 1", 0);
+  let standardGame2 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/2b5/8/PPPP4/RNBQK2R w KQkq - 0 1", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  b  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  .  .  .  . |
+  // 1 | R  N  B  Q  K  .  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // White shouldn't be able to castle here because the opponent has a bishop guarding f1.
+  test("In standard chess, castling is not possible if an interceding square is under attack", () => {
+    const moves = standardGame2.generate_moves();
+    const expected = { color: 'w', piece: 'k', from: 116, to: 118, flags: 32 };
+    expect(moves).not.toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let standardGame3 = new chessjs.Chess("8/3K1P2/1k6/8/8/8/8/8 w - - 0 1", 0);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  K  .  P  .  . |
@@ -54,8 +76,8 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
   // 1 | .  .  .  .  .  .  .  . |
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
-  test("In standard chess, promotions to queen, rook, bishop and knight are the only possible promotions", () => {
-    const moves = standardGame2.generate_moves();
+  test("In standard chess, promoting to queen, rook, bishop or knight is possible", () => {
+    const moves = standardGame3.generate_moves();
     let expected = { color: 'w', piece: 'p', from: 21, to: 5, promotion: 'r' };
     expect(moves).toEqual(
       expect.arrayContaining([expect.objectContaining(expected)])
@@ -75,7 +97,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
   });
 
   test("In standard chess, promoting to a king or a pawn is impossible", () => {
-    const moves = standardGame2.generate_moves();
+    const moves = standardGame3.generate_moves();
     let expected = { color: 'w', piece: 'p', from: 21, to: 5, promotion: 'k' };
     expect(moves).not.toEqual(
       expect.arrayContaining([expect.objectContaining(expected)])
@@ -86,7 +108,54 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
     );
   });
 
-  let standardGame3 = new chessjs.Chess("rnbqkbnr/ppp1p1pp/8/3pPp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3", 0);
+  let standardGame4 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/7b/8/PPPP4/RNBQK2R w KQkq - 0 1", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  b |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  .  .  .  . |
+  // 1 | R  N  B  Q  K  .  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // White shouldn't be able to castle here because the opponent has a bishop guarding f1.
+  test("In standard chess, castling is not possible if the king is under attack", () => {
+    const moves = standardGame4.generate_moves();
+    const expected = { color: 'w', piece: 'k', from: 116, to: 118, flags: 32 };
+    expect(moves).not.toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let standardGame5 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/7b/8/PPPP4/RNBQK2R w KQkq - 0 1", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  b |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  .  .  .  . |
+  // 1 | R  N  B  Q  K  .  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // White's only moves should be Ke2, Kf1 and Rxh4.
+  test("In standard chess, when the king is under attack, the player's only valid moves " + 
+  "are those that would stop the attack", () => {
+    const moves = standardGame5.generate_moves(); // an array of move objects
+    const expected = [
+      { color: 'w', piece: 'k', from: 116, to: 100 },
+      { color: 'w', piece: 'k', from: 116, to: 117 },
+      { color: 'w', piece: 'r', from: 119, to: 71, captured: 'b' }
+    ];
+    // we want the moves array to have the moves in the expected array and no other moves
+    // note that with toMatchObject(), some fields in the move objects may be omitted (e.g., `captured`)
+    expect(moves).toMatchObject(expected);
+  });
+
+  let standardGame6 = new chessjs.Chess("rnbqkbnr/ppp1p1pp/8/3pPp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3", 0);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  .  p  .  p  p |
@@ -99,11 +168,47 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   test("In standard chess, capturing en passant is possible", () => {
-    const moves = standardGame3.generate_moves();
+    const moves = standardGame6.generate_moves();
     const expected = { color: 'w', piece: 'p', from: 52, to: 37, captured: 'p' };
     expect(moves).toEqual(
       expect.arrayContaining([expect.objectContaining(expected)])
     );
+  });
+
+  let standardGame7 = new chessjs.Chess("rnbqkbnr/ppppp2p/5p2/6pQ/8/4P3/PPPP1PPP/RNB1KBNR b KQkq - 1 3", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  .  .  p |
+  // 6 | .  .  .  .  .  p  .  . |
+  // 5 | .  .  .  .  .  .  p  Q |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  P  .  .  . |
+  // 2 | P  P  P  P  .  P  P  P |
+  // 1 | R  N  B  .  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // Black's turn, Black's king is under attack, Black has no valid moves => in_checkmate() is true
+  test("In standard chess,the current player is checkmated if his/her king is under attack " +
+  "and he/she has no valid moves", () => {
+    expect(standardGame7.in_checkmate()).toEqual(true);
+  });
+
+  let standardGame8 = new chessjs.Chess("k7/P2N4/BP6/8/8/4P3/PPPP1PPP/R1B1KBNR b KQ - 0 1", 0);
+  // +------------------------+
+  // 8 | k  .  .  .  .  .  .  . |
+  // 7 | P  .  .  N  .  .  .  . |
+  // 6 | B  P  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  P  .  .  . |
+  // 2 | P  P  P  P  .  P  P  P |
+  // 1 | R  .  B  .  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // Black's turn, Black's king isn't under attack, Black has no valid moves => in_stalemate() is true
+  test("In standard chess,the current player is stalemated if his/her king is NOT under attack " +
+  "and he/she has no valid moves", () => {
+    expect(standardGame8.in_stalemate()).toEqual(true);
   });
 });
 
@@ -146,7 +251,8 @@ describe("Testing antichess (move generation, winning conditions, etc)", () => {
         { color: 'w', piece: 'n', from: 54, to: 21, captured: 'p' },
         { color: 'w', piece: 'n', from: 54, to: 23, captured: 'p' }
       ];
-      expect(moves).toHaveLength(2);
+      // we want the moves array to have the moves in the expected array and no other moves
+      // note that with toMatchObject(), some fields in the move objects may be omitted (e.g., `captured`)
       expect(moves).toMatchObject(expected); // expect the moves array to match the expected array
     }
   );
@@ -281,7 +387,7 @@ describe("Testing antichess (move generation, winning conditions, etc)", () => {
   });
 });
 
-describe("Testing grid chess (move generation)", () => {
+describe("Testing grid chess (move generation, checking and game-over conditions)", () => {
   //   a8:   0, b8:   1, c8:   2, d8:   3, e8:   4, f8:   5, g8:   6, h8:   7,
   //   a7:  16, b7:  17, c7:  18, d7:  19, e7:  20, f7:  21, g7:  22, h7:  23,
   //   a6:  32, b6:  33, c6:  34, d6:  35, e6:  36, f6:  37, g6:  38, h6:  39,
@@ -549,11 +655,11 @@ describe("Testing grid chess (move generation)", () => {
     expect(gridGame12.in_checkmate()).toBe(true);
   });
 
-  let gridGame13 = new chessjs.Chess("2k5/8/8/8/8/8/8/1K6 w - - 0 1", 2);
+  let gridGame13 = new chessjs.Chess("2k5/8/6N1/8/8/8/8/1K6 w - - 0 1", 2);
   // +------------------------+
   // 8 | .  .  k  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
+  // 6 | .  .  .  .  .  .  N  . |
   // 5 | .  .  .  .  .  .  .  . |
   // 4 | .  .  .  .  .  .  .  . |
   // 3 | .  .  .  .  .  .  .  . |
@@ -563,8 +669,415 @@ describe("Testing grid chess (move generation)", () => {
   //     a  b  c  d  e  f  g  h
   // (White's turn.)
   // 
-  test("In grid chess, insufficient material cannot occur, as it is always possible to win " + 
-  "(even if both players have nothing except their kings)", () => {
+  test("In grid chess, draw by insufficient material cannot occur", () => {
     expect(gridGame13.insufficient_material()).toBe(false);
   });
+});
+
+describe("Testing extinction chess (winning conditions, etc.)", () => {
+  //   a8:   0, b8:   1, c8:   2, d8:   3, e8:   4, f8:   5, g8:   6, h8:   7,
+  //   a7:  16, b7:  17, c7:  18, d7:  19, e7:  20, f7:  21, g7:  22, h7:  23,
+  //   a6:  32, b6:  33, c6:  34, d6:  35, e6:  36, f6:  37, g6:  38, h6:  39,
+  //   a5:  48, b5:  49, c5:  50, d5:  51, e5:  52, f5:  53, g5:  54, h5:  55,
+  //   a4:  64, b4:  65, c4:  66, d4:  67, e4:  68, f4:  69, g4:  70, h4:  71,
+  //   a3:  80, b3:  81, c3:  82, d3:  83, e3:  84, f3:  85, g3:  86, h3:  87,
+  //   a2:  96, b2:  97, c2:  98, d2:  99, e2: 100, f2: 101, g2: 102, h2: 103,
+  //   a1: 112, b1: 113, c1: 114, d1: 115, e1: 116, f1: 117, g1: 118, h1: 119
+  let extinctionGame = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1", 3);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  N  B  Q  .  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In extinction chess, the game is not necessarily over if White has no kings at the start of the game", () => {
+    expect(extinctionGame.game_over()).toEqual(false);
+  });
+
+  let extinctionGame2 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNB1KBNR w KQkq - 0 1", 3);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  N  B  .  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In extinction chess, the game is not necessarily over if White has no queens at the start of the game", () => {
+    expect(extinctionGame2.game_over()).toEqual(false);
+  });
+
+  let extinctionGame3 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RN1QK1NR w KQkq - 0 1", 3);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  N  .  Q  K  .  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In extinction chess, the game is not necessarily over if White has no bishops at the start of the game", () => {
+    expect(extinctionGame3.game_over()).toEqual(false);
+  });
+
+  let extinctionGame4 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R1BQKB1R w KQkq - 0 1", 3);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  .  B  Q  K  B  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In extinction chess, the game is not necessarily over if White has no knights at the start of the game", () => {
+    expect(extinctionGame4.game_over()).toEqual(false);
+  });
+
+  let extinctionGame5 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1 w KQkq - 0 1", 3);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | .  N  B  Q  K  B  N  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In extinction chess, the game is not necessarily over if White has no rooks at the start of the game", () => {
+    expect(extinctionGame5.game_over()).toEqual(false);
+  });
+
+  let extinctionGame6 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/8/RNBQKBNR w KQkq - 0 1", 3);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | R  N  B  Q  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In extinction chess, the game is not necessarily over if White has no pawns at the start of the game", () => {
+    expect(extinctionGame6.game_over()).toEqual(false);
+  });
+
+  let extinctionGame7 = new chessjs.Chess('3qk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  .  q  k  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame7.move('Nxd8');
+  test("In extinction chess, the game is over when White takes Black's remaining queen", () => {
+    expect(extinctionGame7.game_over()).toEqual(true);
+  });
+
+  let extinctionGame8 = new chessjs.Chess('3rk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  .  r  k  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame8.move('Nxd8');
+  test("In extinction chess, the game is over when White takes Black's remaining rook", () => {
+    expect(extinctionGame8.game_over()).toEqual(true);
+  });
+
+  let extinctionGame9 = new chessjs.Chess('3bk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  .  b  k  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame9.move('Nxd8');
+  test("In extinction chess, the game is over when White takes Black's remaining bishop", () => {
+    expect(extinctionGame9.game_over()).toEqual(true);
+  });
+
+  let extinctionGame10 = new chessjs.Chess('3nk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  .  q  k  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame10.move('Nxd8');
+  test("In extinction chess, the game is over when White takes Black's remaining knight", () => {
+    expect(extinctionGame10.game_over()).toEqual(true);
+  });
+
+  let extinctionGame11 = new chessjs.Chess('4k3/5N2/3p4/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  .  .  k  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  p  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame11.move('Nxd6');
+  test("In extinction chess, the game is over when White takes Black's remaining pawn", () => {
+    expect(extinctionGame11.game_over()).toEqual(true);
+  });
+
+  let extinctionGame12 = new chessjs.Chess('3k4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  .  k  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame12.move('Nxd8');
+  test("In extinction chess, the game is over when White takes Black's remaining king", () => {
+    expect(extinctionGame12.game_over()).toEqual(true);
+  });
+
+  let extinctionGame13 = new chessjs.Chess('2kk4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  k  k  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame13.move('Nxd8');
+  test("In extinction chess, the game is not over when White takes one of Black's two kings", () => {
+    expect(extinctionGame13.game_over()).toEqual(false);
+  });
+
+  let extinctionGame14 = new chessjs.Chess('2nn4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  n  n  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame14.move('Nxd8');
+  test("In extinction chess, the game is not over when White takes one of Black's two knights", () => {
+    expect(extinctionGame14.game_over()).toEqual(false);
+  });
+
+  let extinctionGame15 = new chessjs.Chess('2bb4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  b  b  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame15.move('Nxd8');
+  test("In extinction chess, the game is not over when White takes one of Black's two bishops", () => {
+    expect(extinctionGame15.game_over()).toEqual(false);
+  });
+
+  let extinctionGame16 = new chessjs.Chess('2rr4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  r  r  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame16.move('Nxd8');
+  test("In extinction chess, the game is not over when White takes one of Black's two rooks", () => {
+    expect(extinctionGame16.game_over()).toEqual(false);
+  });
+
+  let extinctionGame17 = new chessjs.Chess('2qq4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  q  q  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame17.move('Nxd8');
+  test("In extinction chess, the game is not over when White takes one of Black's two queens", () => {
+    expect(extinctionGame17.game_over()).toEqual(false);
+  });
+
+  let extinctionGame18 = new chessjs.Chess('2pp4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  // +------------------------+
+  // 8 | .  .  p  p  .  .  .  . |
+  // 7 | .  .  .  .  .  N  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  .  .  .  K  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  extinctionGame18.move('Nxd8');
+  test("In extinction chess, the game is not over when White takes one of Black's two queens", () => {
+    expect(extinctionGame18.game_over()).toEqual(false);
+  });
+
+  let extinctionGame19 = new chessjs.Chess('rnbqkbnr/ppppp1pp/5p2/7Q/8/4P3/PPPP1PPP/RNB1KBNR b KQkq - 0 1', 3);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  .  p  p |
+  // 6 | .  .  .  .  .  p  .  . |
+  // 5 | .  .  .  .  .  .  .  Q |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  P  .  .  . |
+  // 2 | P  P  P  P  .  P  P  P |
+  // 1 | R  N  B  .  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (Black's turn.)
+  test("In extinction chess, the king cannot be placed in check", () => {
+    expect(extinctionGame19.in_check()).toEqual(false);
+  });
+
+  let extinctionGame20 = new chessjs.Chess('rnbqkbnr/pppppppp/8/8/8/2bbb3/8/RNBQK2R w KQkq - 0 1', 3);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  b  b  b  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | R  N  B  Q  K  .  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  // Normally White cannot castle kingside if e1, f1, or g1 are being attacked by an enemy piece.
+  
+  test("In extinction chess, the king can castle kingside if the interceding squares are being attacked", () => {
+    const moves = extinctionGame20.generate_moves();
+    const expected = { color: 'w', piece: 'k', from: 116, to: 118, flags: 32 };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let extinctionGame21 = new chessjs.Chess('rnbqkbnr/pppppppp/8/8/5bbb/8/PP4PP/R3KBNR w KQkq - 0 1', 3);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  b  b  b |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  .  .  .  .  P  P |
+  // 1 | R  .  .  .  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  // Normally White cannot castle queenside if e1, d1 or c1 are being attacked by an enemy piece.
+  test("In extinction chess, the king can castle queenside if the interceding squares are being attacked", () => {
+    const moves = extinctionGame21.generate_moves();
+    const expected = { color: 'w', piece: 'k', from: 116, to: 114, flags: 64 };
+    expect(moves).toEqual(
+      expect.arrayContaining([expect.objectContaining(expected)])
+    );
+  });
+
+  let extinctionGame22 = new chessjs.Chess("2k5/8/6N1/8/8/8/8/1K6 w - - 0 1", 3);
+  // +------------------------+
+  // 8 | .  .  k  .  .  .  .  . |
+  // 7 | .  .  .  .  .  .  .  . |
+  // 6 | .  .  .  .  .  .  N  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | .  .  .  .  .  .  .  . |
+  // 1 | .  K  .  .  .  .  .  . |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  // (White's turn.)
+  test("In extinction chess, draw by insufficient material cannot occur", () => {
+    expect(extinctionGame22.insufficient_material()).toBe(false);
+  });
+
 });

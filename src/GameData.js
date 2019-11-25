@@ -1,22 +1,24 @@
 import React from 'react';
 
 function GameData(props) {
-    const turn = props.turn === 'w' ? 'White' : 'Black';
-    let state_msg = `${turn}'s turn`;
+    let game_state = `${props.turn === 'w' ? 'White' : 'Black'}'s turn`;
     if (props.gameResult === 'checkmate') {
-        state_msg = `${turn} wins`;
+        game_state = `${props.turn === 'w' ? 'Black' : 'White'} wins (checkmate)`;
+    }
+    else if (props.gameResult === 'extinction') {
+        game_state = `${props.turn === 'w' ? 'Black' : 'White'} wins (extinction)`;
     }
     else if (props.gameResult === 'repetition') {
-        state_msg = 'Draw (three-fold repetition)';
+        game_state = 'Draw (three-fold repetition)';
     }
     else if (props.gameResult === 'stalemate') {
-        state_msg = `Draw (stalemate)`;
+        game_state = `Draw (stalemate)`;
     }
     else if (props.gameResult === 'insufficient') {
-        state_msg = `Draw (insufficient material)`;
+        game_state = `Draw (insufficient material)`;
     }
     else if (props.gameResult === 'fifty') {
-        state_msg = `Draw (fifty-move rule)`;
+        game_state = `Draw (fifty-move rule)`;
     }
     const mystyle = {
         fontSize: "2em"
@@ -25,7 +27,7 @@ function GameData(props) {
         <div>
             <div>FEN: {props.fen}</div>
             <div>PGN: {props.pgn}</div>
-            <div style={mystyle}>{state_msg}</div>
+            <div style={mystyle}>STATE: {game_state}</div>
         </div>
     );
 }

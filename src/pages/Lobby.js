@@ -21,7 +21,7 @@ import Button from '@material-ui/core/Button';
 import * as subscriptions from '../graphql/subscriptions';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
-import Amplify, { Auth } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import CreateGameDialog from './CreateGameDialog';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -161,11 +161,15 @@ class Lobby extends Component {
   }
 
   componentWillUnmount(){
-    if(this.gameUpdateSubscription !== null)
-      this.gameUpdateSubscription.unsubscribe()
-    if(this.gameCreationSubscription !== null)
+    if (this.gameUpdateSubscription) {
+      this.gameUpdateSubscription.unsubscribe();
+    }
+    if (this.gameCreationSubscription) {
       this.gameCreationSubscription.unsubscribe()
-    //this.gameDeletionSubscription.unsubscribe()
+    }
+    if (this.gameDeletionSubscription) {
+      this.gameDeletionSubscription.unsubscribe()
+    }
   }
 
   createGame = async (event, gameInfo) => {
