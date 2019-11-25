@@ -187,7 +187,8 @@ class Lobby extends Component {
     newGame.fen = 'init';
     newGame.available = true;
     await this.getUserInfo().then((user) => {
-      if (typeof (user) === Object) {
+      console.log(typeof (user), user);
+      if (typeof (user) === 'object') {
         userInfo = { ...user };
         newGame.creator = {
           id: userInfo.attributes.sub,
@@ -257,7 +258,7 @@ class Lobby extends Component {
     const joinGameInput = {};
     const { gameId } = rowData;
     await this.getUserInfo().then((user) => {
-      console.log(typeof (user))
+      console.log(typeof (user), user);
       if (typeof (user) === 'object') {
         userInfo = { ...user };
         joinGameInput.opponent = {
