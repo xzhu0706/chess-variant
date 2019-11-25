@@ -5,40 +5,44 @@
 }
 
 .white-king {
-    background-image:url(../pieces/standard/wk.svg);
+    background-image:url(../icons/pieces/standard/wk.svg);
 }
 .white-queen {
-    background-image:url(../pieces/standard/wq.svg);
+    background-image:url(../icons/pieces/standard/wq.svg);
 }
 .white-rook {
-    background-image:url(../pieces/standard/wr.svg);
+    background-image:url(../icons/pieces/standard/wr.svg);
 }
 .white-knight {
-    background-image:url(../pieces/standard/wn.svg);
+    background-image:url(../icons/pieces/standard/wn.svg);
 }
 .white-bishop {
-    background-image:url(../pieces/standard/wb.svg);
+    background-image:url(../icons/pieces/standard/wb.svg);
 }
 .white-pawn {
-    background-image:url(../pieces/standard/wp.svg);
+    background-image:url(../icons/pieces/standard/wp.svg);
 }
 .black-king {
-    background-image:url(../pieces/standard/bk.svg);
+    background-image:url(../icons/pieces/standard/bk.svg);
 }
 .black-queen {
-    background-image:url(../pieces/standard/bq.svg);
+    background-image:url(../icons/pieces/standard/bq.svg);
 }
 .black-rook {
-    background-image:url(../pieces/standard/br.svg);
+    background-image:url(../icons/pieces/standard/br.svg);
 }
 .black-knight {
-    background-image:url(../pieces/standard/bn.svg);
+    background-image:url(../icons/pieces/standard/bn.svg);
 }
 .black-bishop {
-    background-image:url(../pieces/standard/bb.svg);
+    background-image:url(../icons/pieces/standard/bb.svg);
 }
 .black-pawn {
-    background-image:url(../pieces/standard/bp.svg);
+    background-image:url(../icons/pieces/standard/bp.svg);
+}
+
+.trash {
+    background-image:url(../icons/trash.svg);
 }
 
 .piece-selector input:checked +.piece-card {

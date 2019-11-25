@@ -4,7 +4,11 @@ function SparePieces(props) {
   return (
     <form onChange={props.handleChange}>
       <div className="piece-selector">
-        Select a piece to add to the board:
+        Select a piece to add to the board or select the trash can to delete from the board:
+        <div>
+          <input id="trash" type="radio" name="piece" value="trash" />
+          <label className="piece-card trash" htmlFor="trash"></label>
+        </div>
         <div>
           <input id="white-pawn" type="radio" name="piece" value="P" />
           <label className="piece-card white-pawn" htmlFor="white-pawn"></label>

@@ -2,18 +2,18 @@ import React from 'react';
 import Antichess from '../../WithMoveValidation';
 import ContentBox from './ContentBox';
 import VariantDocument from './Variant';
-import wb from '../../pieces/standard/wb.svg';
-import wr from '../../pieces/standard/wr.svg';
-import wn from '../../pieces/standard/wn.svg';
-import wp from '../../pieces/standard/wp.svg';
-import wk from '../../pieces/standard/wk.svg';
-import wq from '../../pieces/standard/wq.svg';
-import bb from '../../pieces/standard/bb.svg';
-import br from '../../pieces/standard/br.svg';
-import bn from '../../pieces/standard/bn.svg';
-import bp from '../../pieces/standard/bp.svg';
-import bk from '../../pieces/standard/bk.svg';
-import bq from '../../pieces/standard/bq.svg';
+import wb from '../../icons/pieces/standard/wb.svg';
+import wr from '../../icons/pieces/standard/wr.svg';
+import wn from '../../icons/pieces/standard/wn.svg';
+import wp from '../../icons/pieces/standard/wp.svg';
+import wk from '../../icons/pieces/standard/wk.svg';
+import wq from '../../icons/pieces/standard/wq.svg';
+import bb from '../../icons/pieces/standard/bb.svg';
+import br from '../../icons/pieces/standard/br.svg';
+import bn from '../../icons/pieces/standard/bn.svg';
+import bp from '../../icons/pieces/standard/bp.svg';
+import bk from '../../icons/pieces/standard/bk.svg';
+import bq from '../../icons/pieces/standard/bq.svg';
 
 function AntiChessDocument() {
   const piecesTable = (

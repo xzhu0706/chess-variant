@@ -22,10 +22,6 @@ class AnalysisBoard extends React.Component {
   render() {
     // 'k' will be the White king, i.e., the piece object is { piece: 'k' , color: 'w' }
     // 'K' will be the Black king, i.e., the piece object is { piece: 'k' , color: 'b' }
-    const piece = this.state.sparePiece.toLowerCase(); 
-    const color = this.state.sparePiece === this.state.sparePiece.toLowerCase() ? 'b' : 'w';
-    const pieceObj = { piece, color };
-
     return (
       <div style={{textAlign: 'center'}}>
         <div style={{display: 'inline-block'}}>

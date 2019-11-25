@@ -6,8 +6,9 @@ import Chessboard from 'chessboardjsx';
 //import * as queries from './graphql/queries';
 // import * as mutations from './graphql/mutations';
 import GameData from './GameData.js';
-import wn_test from "./wn.svg"; // testing the use of custom icons
-import bn_test from "./bn.svg"
+import wn_test from "./icons/wn.svg"; // testing the use of custom icons
+import bn_test from "./icons/bn.svg"
+import trash from "./icons/trash.svg"
 import './variant-style.css';
 
 class HumanVsHuman extends Component {
@@ -87,46 +88,70 @@ class HumanVsHuman extends Component {
   }
 
   onSquareClick = (square) => {
-    if (this.state.gameOver) return;
+    if (!this.props.editMode) {
+    // disable user input if game is over and we are not in edit mode
+      if (this.state.gameOver) return;
 
-    // highlight the square you just clicked
-    this.setState(() => ({
-      squareStyles: { [square]: { backgroundColor: '#38f' } },
-      pieceSquare: square,
-    }));
+      // highlight the square you just clicked
+      this.setState(() => ({
+        squareStyles: { [square]: { backgroundColor: '#38f' } },
+        pieceSquare: square,
+      }));
 
-    // get list of possible moves for the piece on this square
-    // (returns empty array if there are no possible moves or there is no piece)
-    const moves = this.game.moves({
-      square,
-      verbose: true,
-    });
+      // get list of possible moves for the piece on this square
+      // (returns empty array if there are no possible moves or there is no piece)
+      const moves = this.game.moves({
+        square,
+        verbose: true,
+      });
 
-    // highlight the destination square of every possible move, moves[i].to
-    const hintSquares = moves.map(move => move.to);
-    this.highlightSquare(hintSquares);
+      // highlight the destination square of every possible move, moves[i].to
+      const hintSquares = moves.map(move => move.to);
+      this.highlightSquare(hintSquares);
 
-    // process the case where the user has registered a move by clicking
-    const move = this.game.move({
-      from: this.state.pieceSquare,
-      to: square,
-      promotion: 'q', // always promote to a queen for example simplicity
-      // fix this so the user can choose what to promote to
-    });
+      // process the case where the user has registered a move by clicking
+      const move = this.game.move({
+        from: this.state.pieceSquare,
+        to: square,
+        promotion: 'q', // always promote to a queen for example simplicity
+        // fix this so the user can choose what to promote to
+      });
 
-    // illegal move
-    if (move === null) return;
+      // illegal move
+      if (move === null) return;
 
-    // legal move, so update the game state
-    this.setState({
-      fen: this.game.fen(),
-      pgn: this.game.pgn(),
-      pieceSquare: '',
-      turn: this.game.turn(),
-    });
+      // legal move, so update the game state
+      this.setState({
+        fen: this.game.fen(),
+        pgn: this.game.pgn(),
+        pieceSquare: '',
+        turn: this.game.turn(),
+      });
 
-    // end the game if necessary
-    this.updateGameResult();
+      // end the game if necessary
+      this.updateGameResult();
+    }
+    else {
+      if (this.props.sparePiece) {
+        // if the selected square is not empty
+        if (this.game.get(square)) {
+          if (this.props.sparePiece === 'trash') { // if trash icon is selected, delete piece on selected square
+            this.game.remove(square);
+            this.setState({
+              fen: this.game.fen()
+            });
+          }
+        }
+        else { // place the selected spare piece on the selected square if the selected square is empty
+          const type = this.props.sparePiece.toLowerCase(); 
+          const color = this.props.sparePiece === this.props.sparePiece.toLowerCase() ? 'b' : 'w';
+          this.game.put({ type: type, color: color }, square);
+          this.setState({
+            fen: this.game.fen()
+          });
+        }
+      }
+    }
   };
 
   // When right clicking, we preserve the old squareStyles (we merely append the new style).
