@@ -8,36 +8,36 @@ function AnalysisBoard() {
       <div style={{display: 'inline-block'}}>
         <Board />
         <form>
-          <div class="piece-selector">
+          <div className="piece-selector">
             Select a piece to add to the board:
             <div>
               <input id="white-pawn" type="radio" name="piece" value="P" />
-              <label class="piece-card white-pawn" for="white-pawn"></label>
+              <label className="piece-card white-pawn" htmlFor="white-pawn"></label>
               <input id="white-bishop" type="radio" name="piece" value="B" />
-              <label class="piece-card white-bishop" for="white-bishop"></label>
+              <label className="piece-card white-bishop" htmlFor="white-bishop"></label>
               <input id="white-knight" type="radio" name="piece" value="N" />
-              <label class="piece-card white-knight" for="white-knight"></label>
+              <label className="piece-card white-knight" htmlFor="white-knight"></label>
               <input id="white-rook" type="radio" name="piece" value="R" />
-              <label class="piece-card white-rook" for="white-rook"></label>
+              <label className="piece-card white-rook" htmlFor="white-rook"></label>
               <input id="white-queen" type="radio" name="piece" value="Q" />
-              <label class="piece-card white-queen" for="white-queen"></label>
+              <label className="piece-card white-queen" htmlFor="white-queen"></label>
               <input id="white-king" type="radio" name="piece" value="K" />
-              <label class="piece-card white-king" for="white-king"></label>
+              <label className="piece-card white-king" htmlFor="white-king"></label>
             </div>
 
             <div>
               <input id="black-pawn" type="radio" name="piece" value="p" />
-              <label class="piece-card black-pawn" for="black-pawn"></label>
+              <label className="piece-card black-pawn" htmlFor="black-pawn"></label>
               <input id="black-bishop" type="radio" name="piece" value="b" />
-              <label class="piece-card black-bishop" for="black-bishop"></label>
+              <label className="piece-card black-bishop" htmlFor="black-bishop"></label>
               <input id="black-knight" type="radio" name="piece" value="n" />
-              <label class="piece-card black-knight" for="black-knight"></label>
+              <label className="piece-card black-knight" htmlFor="black-knight"></label>
               <input id="black-rook" type="radio" name="piece" value="r" />
-              <label class="piece-card black-rook" for="black-rook"></label>
+              <label className="piece-card black-rook" htmlFor="black-rook"></label>
               <input id="black-queen" type="radio" name="piece" value="q" />
-              <label class="piece-card black-queen" for="black-queen"></label>
+              <label className="piece-card black-queen" htmlFor="black-queen"></label>
               <input id="black-king" type="radio" name="piece" value="k" />
-              <label class="piece-card black-king" for="black-king"></label>
+              <label className="piece-card black-king" htmlFor="black-king"></label>
             </div>
           </div>
         </form>
