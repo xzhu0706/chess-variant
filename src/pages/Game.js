@@ -40,7 +40,7 @@ class Game extends Component {
     // let currentGame = localStorage.getItem('currentGame');
     // if (currentGame && currentGame === this.gameId) {
     const user = await this.getUserInfo();
-    const userId = typeof (user) === Object ? user.attributes.sub : user;
+    const userId = typeof (user) === 'object' ? user.attributes.sub : user;
     if (this.gameInfo.creator.id === userId) {
       this.orientation = this.gameInfo.creatorOrientation;
       this.opponent = this.gameInfo.opponent;

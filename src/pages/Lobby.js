@@ -117,6 +117,7 @@ class Lobby extends Component {
     };
     let queryResult = await API.graphql(graphqlOperation(customQueries.listGames, { limit, filter }));
     if (queryResult) {
+      console.log(queryResult)
       queryResult = queryResult.data.listGames.items;
       const games = queryResult.map((game) => {
         const gameId = game.id;
@@ -182,23 +183,22 @@ class Lobby extends Component {
     let userInfo;
     this.setState({ showDialog: false });
     const newGame = { ...gameInfo };
+    console.log('new', newGame);
     newGame.fen = 'init';
     newGame.available = true;
-    await Auth.currentAuthenticatedUser().then((user) => {
-      console.log(userInfo);
-      userInfo = { ...user };
-      newGame.creator = {
-        id: userInfo.attributes.sub,
-        username: userInfo.username,
-      };
-    }).catch(async (e) => {
-      await Auth.currentCredentials().then((credential) => {
-        console.log(credential, credential.identityId);
+    await this.getUserInfo().then((user) => {
+      if (typeof (user) === Object) {
+        userInfo = { ...user };
         newGame.creator = {
-          id: credential.identityId.split(':')[1],
+          id: userInfo.attributes.sub,
+          username: userInfo.username,
+        };
+      } else {
+        newGame.creator = {
+          id: user,
           username: 'anonymous',
         };
-      });
+      }
     });
     // const currentGame = localStorage.getItem(CURRENT_GAME);
     // if (currentGame) {
@@ -256,41 +256,59 @@ class Lobby extends Component {
     let userInfo;
     const joinGameInput = {};
     const { gameId } = rowData;
-    const credential = await Auth.currentCredentials();
-    console.log(credential.identityId.split(':')[1]);
-    if (credential.identityId.split(':')[1] === rowData.creator.id) {
+    await this.getUserInfo().then((user) => {
+      console.log(typeof (user))
+      if (typeof (user) === 'object') {
+        userInfo = { ...user };
+        joinGameInput.opponent = {
+          id: userInfo.attributes.sub,
+          username: userInfo.username,
+        };
+      } else {
+        joinGameInput.opponent = {
+          id: user,
+          username: 'anonymous',
+        };
+      }
+    });
+    if (joinGameInput.opponent.id === rowData.creator.id) {
       this.showJoiningOwnGameDialog();
       return;
     }
     joinGameInput.available = false;
     joinGameInput.id = gameId;
-    await Auth.currentAuthenticatedUser().then((user) => {
-      userInfo = { ...user };
-      joinGameInput.opponent = {
-        id: userInfo.attributes.sub,
-        username: userInfo.username,
-      };
-    }).catch((e) => {
-      joinGameInput.opponent = {
-        id: credential.identityId.split(':')[1],
-        username: 'anonymous',
-      };
-    });
+    console.log('join game input', joinGameInput)
     const joinGame = await API.graphql(graphqlOperation(mutations.updateGame, { input: joinGameInput }));
     const joinedGameData = joinGame.data.updateGame;
     console.log('updated join game', joinedGameData);
     if (userInfo) {
       // if user is logged in, create playerGameMapping
-      const playerGameMappingInput = {
-        playerGameMappingGameId: joinedGameData.id,
-        playerGameMappingPlayerId: userInfo.attributes.sub,
-      };
-      const newPlayerGameMapping = await API.graphql(
-        graphqlOperation(mutations.createPlayerGameMapping, { input: playerGameMappingInput }),
-      );
-      console.log('joined mapping', newPlayerGameMapping);
+      try {
+        const playerGameMappingInput = {
+          playerGameMappingGameId: joinedGameData.id,
+          playerGameMappingPlayerId: userInfo.attributes.sub,
+        };
+        const newPlayerGameMapping = await API.graphql(
+          graphqlOperation(mutations.createPlayerGameMapping, { input: playerGameMappingInput }),
+        );
+        console.log('joined mapping', newPlayerGameMapping);
+      } catch (e) {
+        console.log(e);
+      }
     }
     this.props.history.push({ pathname: `/game/${gameId}` });
+  }
+
+  getUserInfo = async () => {
+    let userInfo;
+    await Auth.currentAuthenticatedUser().then((user) => {
+      userInfo = { ...user };
+    }).catch(async (e) => {
+      await Auth.currentCredentials().then((credential) => {
+        userInfo = credential.identityId.split(':')[1];
+      });
+    });
+    return userInfo;
   }
 
   removeGameFromLobby = (gameId) => {
