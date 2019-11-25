@@ -120,27 +120,27 @@ class NavBar extends Component {
               </Navbar.Brand>
               <ul>
                 <li>
-                  <a href="/">Home</a>
+                  <Link to="/">Home</Link>
                 </li>
                 <li>
-                  <a href="/variants">Browse Variants</a>
+                  <Link to="/variants">Browse Variants</Link>
                 </li>
                 <li>
-                  <a href="/">Leaderboard</a>
+                  <Link to="/">Leaderboard</Link>
                 </li>
                 <li>
-                  <a href="/">Analysis Board</a>
+                  <Link to="/">Analysis Board</Link>
                 </li>
 
                 {username
                   ? (
                     <span>
                       <li>
-                        <a href="/account">
+                        <Link to="/account">
                           Hello
                           {' '}
                           {username}
-                        </a>
+                        </Link>
                       </li>
                       <li>
                         <Button
