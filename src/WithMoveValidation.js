@@ -10,7 +10,6 @@ import wn_test from "./wn.svg"; // testing the use of custom icons
 import bn_test from "./bn.svg"
 import './variant-style.css';
 
-
 class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
@@ -23,6 +22,7 @@ class HumanVsHuman extends Component {
     gameOver: false,
     gameResult: '', // checkmate, stalemate, insufficient material, ...
     turn: '',
+    spares: false,
   };
 
   componentDidMount() {
@@ -37,25 +37,25 @@ class HumanVsHuman extends Component {
     this.updateGameResult(); // in case the FEN string gives an ending position
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log('getting props', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn, this.game.fen());
-    if (nextProps.fen !== this.props.fen) {
-      this.setState({
-        fen: nextProps.fen,
-      })
-      this.game = new Chess(nextProps.fen);
-    }
-    if (nextProps.pgn !== this.props.pgn) {
-      this.setState({
-        pgn: nextProps.pgn,
-      });
-    }
-    if (nextProps.turn !== this.props.turn) {
-      this.setState({
-        turn: nextProps.turn,
-      });
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   console.log('getting props', this.props.fen, this.props.pgn, this.props.gameToken, this.props.turn, this.game.fen());
+  //   if (nextProps.fen !== this.props.fen) {
+  //     this.setState({
+  //       fen: nextProps.fen,
+  //     })
+  //     this.game = new Chess(nextProps.fen);
+  //   }
+  //   if (nextProps.pgn !== this.props.pgn) {
+  //     this.setState({
+  //       pgn: nextProps.pgn,
+  //     });
+  //   }
+  //   if (nextProps.turn !== this.props.turn) {
+  //     this.setState({
+  //       turn: nextProps.turn,
+  //     });
+  //   }
+  // }
 
   // adjust board size according to window size
   calcWidth = (dimensions) => {
@@ -118,6 +118,7 @@ class HumanVsHuman extends Component {
       squareStyles: { [square]: { backgroundColor: '#38f' } },
       pieceSquare: square,
     }));
+
     // get list of possible moves for the piece on this square
     // (returns empty array if there are no possible moves or there is no piece)
     const moves = this.game.moves({
@@ -150,26 +151,20 @@ class HumanVsHuman extends Component {
 
     // end the game if necessary
     this.updateGameResult();
-
-    // call API
-    if (this.props.gameToken) {
-      console.log('update db');
-      this.updateDatabase();
-    }
   };
 
-  updateDatabase = async () => {
-    // TODO
-    const data = {
-      id: this.props.gameToken,
-      fen: this.game.fen(),
-      pgn: this.game.pgn(),
-      turn: this.game.turn(),
-      // game result?
-    };
-    const updateGame = await API.graphql(graphqlOperation(mutations.updateGame, { input: data }));
-    console.log('update db', updateGame);
-  }
+  // updateDatabase = async () => {
+  //   // TODO
+  //   const data = {
+  //     id: this.props.gameToken,
+  //     fen: this.game.fen(),
+  //     pgn: this.game.pgn(),
+  //     turn: this.game.turn(),
+  //     // game result?
+  //   };
+  //   const updateGame = await API.graphql(graphqlOperation(mutations.updateGame, { input: data }));
+  //   console.log('update db', updateGame);
+  // }
 
   // When right clicking, we preserve the old squareStyles (we merely append the new style).
   // This will allow the user to have multiple squares be highlighted simultaneously,
@@ -179,7 +174,7 @@ class HumanVsHuman extends Component {
   }));
 
   render() {
-    const { fen, pgn, turn, gameResult, squareStyles } = this.state;
+    const { fen, pgn, turn, gameResult, squareStyles, spares } = this.state;
     return this.props.children({
       squareStyles,
       fen,
@@ -188,7 +183,8 @@ class HumanVsHuman extends Component {
       turn,
       onSquareClick: this.onSquareClick,
       onSquareRightClick: this.onSquareRightClick,
-      calcWidth: this.calcWidth
+      calcWidth: this.calcWidth,
+      spares
     });
   }
 }
@@ -208,7 +204,8 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
           turn,
           onSquareClick,
           onSquareRightClick,
-          calcWidth
+          calcWidth,
+          spares
         }) => {
           // redefine calcWidth() if smallBoard arg is true
           if (smallBoard) {
@@ -217,56 +214,60 @@ export default function WithMoveValidation(gameToken='', turn='w', pgn='', start
               return (dimensions.screenWidth < 460 || dimensions.screenHeight < 460) ? customWidth : 384;
             }
           }
-          return (
-          <div className="d-flex p-1">
-            {
-              showData ? (
-              <div className="col-lg-5">
-                <GameData fen={fen} pgn={pgn} turn={turn} gameResult={gameResult} />
+
+          const gameData =
+            showData ? (
+              <div className="p-1">
+                <GameData pgn={pgn} turn={turn} gameResult={gameResult} />
               </div>
-              ) :
-              null
-            }
-            <div id={boardId}>
-              <Chessboard
-                id="humanVsHuman"
-                position={fen}
-                boardStyle={{
-                  borderRadius: '5px',
-                  boxShadow: '0 2px 3px rgba(0, 0, 0, 0.5)',
-                }}
-                pieces={{
-                  wN: ({ squareWidth }) => (
-                    <img
-                      style={{
-                        width: squareWidth,
-                        height: squareWidth,
-                      }}
-                      src={wn_test}
-                      alt="wn_test"
-                    />
-                  ),
-                  bN: ({ squareWidth }) => (
-                    <img
-                      style={{
-                        width: squareWidth,
-                        height: squareWidth,
-                      }}
-                      src={bn_test}
-                      alt="bn_test"
-                    />
-                  ),
-                }}
-                lightSquareStyle={{ backgroundColor: '#ffffff' }}
-                darkSquareStyle={{ backgroundColor: '#65cae8' }}
-                squareStyles={squareStyles}
-                onSquareClick={onSquareClick}
-                onSquareRightClick={onSquareRightClick}
-                calcWidth={calcWidth}
-                draggable={false}
-              />
+            ) :
+            null;
+
+          return (
+            <div className="d-flex flex-column">
+              <div id={boardId}>
+                <Chessboard
+                  position={fen}
+                  boardStyle={{
+                      borderRadius: '5px',
+                      boxShadow: '0 2px 3px rgba(0, 0, 0, 0.5)',
+                  }}
+                  pieces={{
+                      wN: ({ squareWidth }) => (
+                        <img
+                          style={{
+                            width: squareWidth,
+                            height: squareWidth,
+                          }}
+                          src={wn_test}
+                          alt="wn_test"
+                        />
+                      ),
+                      bN: ({ squareWidth }) => (
+                        <img
+                          style={{
+                            width: squareWidth,
+                            height: squareWidth,
+                          }}
+                          src={bn_test}
+                          alt="bn_test"
+                        />
+                      ),
+                  }}
+                  lightSquareStyle={{ backgroundColor: '#ffffff' }}
+                  darkSquareStyle={{ backgroundColor: '#65cae8' }}
+                  squareStyles={squareStyles}
+                  onSquareClick={onSquareClick}
+                  onSquareRightClick={onSquareRightClick}
+                  calcWidth={calcWidth}
+                  draggable={true}
+                  sparePieces={spares} // if spares is true, spare pieces can be dragged onto board
+                  dropOffBoard = { spares ? 'trash' : 'snapback' } // if spares is true, dragging a piece out of the board will delete it
+                />
+              </div>
+              { gameData }
             </div>
-          </div>);
+          );
         }}
       </HumanVsHuman>
     </div>

@@ -9,6 +9,9 @@ import GridChess from './variants/GridChess';
 import ExtinctionChess from './variants/ExtinctionChess';
 
 function VariantNav() {
+  // return (
+  //   <HomeVariant />
+  // );
   return (
     <Tab.Container id="Variant-Doc" defaultActiveKey="home">
       <Row>

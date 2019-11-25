@@ -41,7 +41,7 @@ function AntiChessDocument() {
 
   return (
     <VariantDocument title="Antichess" piecesTable={piecesTable}>
-      In antichess, there are three rules that break from the standard chess rules: <br/>
+      In antichess, there are three rules that break from the standard chess rules:
       <ol>
         <li>
           The first player to run out of legal moves (typically by losing all his/her
