@@ -1,18 +1,37 @@
-type User  {
+type User @model {
   id: ID!
   username: String!
-  points: Int #not required for now
-  skillLevel: String #not required for now
-  rank: Int #not required for now
+  email: String!
+  phoneNumber: String!
+  pastGames: [PlayerGameMapping] @connection(name: "userPlayer")
+  points: Int
+  skillLevel: String
+  rank: Int
 }
 
-type Game @model @auth(rules: [{allow: public}]) {
+type PlayerGameMapping @model(queries: null) {
   id: ID!
-  creator: User
-  opponent: User 
+  game: Game! @connection(name: "playerGame")
+  player: User! @connection(name: "userPlayer")
+}
+
+type Game @model @auth(rules: [{allow: public}]) @key(fields: ["id", "createdAt"]){
+  id: ID!
+  players: [PlayerGameMapping] @connection(name: "playerGame") # for registered users only
+  creator: PlayerInfo!
+  opponent: PlayerInfo
   creatorOrientation: String!
   time: String!
   variant: String!
   fen: String!
   available: Boolean!
+  history: [String]
+  result: String
+  winner: String
+  createdAt: String!
+}
+
+type PlayerInfo {
+  id: ID!
+  username: String!
 }
