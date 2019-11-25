@@ -3,34 +3,35 @@ import {API, graphqlOperation, Auth } from 'aws-amplify';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Chessboard from 'chessboardjsx';
+import Chess from 'chess.js';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
 import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
-import Chessboard from 'chessboardjsx';
-import Chess from 'chess.js';
 import '../variant-style.css';
+import Clock from '../components/Clock';
 
-const YOUR_TURN_MESSAGE = `It's your turn!`
+const YOUR_TURN_MESSAGE = 'It\'s your turn!';
 
 class Game extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       fen: '',
       time: '',
       squareStyles: {},
       yourTurn: false,
-    }
-    this.game = null
-    this.opponent = null // the opponent. null if user created or joined game anonymously
-    this.gameId = null
-    this.orientation = ''
-    this.gameUpdateSubscription = null
-    this.moveFrom = null
-    this.gameInfo = null
-    this.boardId = ''
+    };
+    this.game = null;
+    this.opponent = null; // the opponent. null if user created or joined game anonymously
+    this.gameId = null;
+    this.orientation = '';
+    this.gameUpdateSubscription = null;
+    this.moveFrom = null;
+    this.gameInfo = null;
+    this.boardId = '';
   }
 
   async componentDidMount() {
@@ -54,26 +55,26 @@ class Game extends Component {
     this.gameId = this.gameInfo.id;
     const { variant } = this.gameInfo;
     switch (variant) {
-      case Games.ANTICHESS:
-        this.game = new Chess(Games.STANDARD_FEN, 1);
-        initialFen = Games.STANDARD_FEN;
-        break
-      case Games.GRID_CHESS:
-        this.game = new Chess(Games.STANDARD_FEN, 2);
-        initialFen = Games.STANDARD_FEN;
-        this.boardId = 'grid-board'
-        break
-      case Games.EXTINCTION_CHESS:
-        this.game = new Chess(Games.STANDARD_FEN, 3);
-        initialFen = Games.STANDARD_FEN;
-        break
-      case Games.STANDARD_CHESS:
-        this.game = new Chess();
-        initialFen = Games.STANDARD_FEN;
-        break;
-      default:
-        this.game = new Chess();
-        initialFen = Games.STANDARD_FEN;
+    case Games.ANTICHESS:
+      this.game = new Chess(Games.STANDARD_FEN, 1);
+      initialFen = Games.STANDARD_FEN;
+      break;
+    case Games.GRID_CHESS:
+      this.game = new Chess(Games.STANDARD_FEN, 2);
+      initialFen = Games.STANDARD_FEN;
+      this.boardId = 'grid-board';
+      break;
+    case Games.EXTINCTION_CHESS:
+      this.game = new Chess(Games.STANDARD_FEN, 3);
+      initialFen = Games.STANDARD_FEN;
+      break;
+    case Games.STANDARD_CHESS:
+      this.game = new Chess();
+      initialFen = Games.STANDARD_FEN;
+      break;
+    default:
+      this.game = new Chess();
+      initialFen = Games.STANDARD_FEN;
     }
     if (this.gameInfo.fen !== 'init') {
       initialFen = this.gameInfo.fen;
@@ -138,23 +139,27 @@ class Game extends Component {
     this.setState({ squareStyles: newSquareStyles });
   }
 
-  render(){
+  render() {
     // const boardStyle = {
     //   marginLeft: '15%',
     //   marginTop: '25%'
     // }
     return (
-      <Box display='flex' justifyContent='center'>
-        <Box display='flex' flexDirection='column'>
-          <Paper style={{border: '1px solid #D3D3D3', marginBottom: '2px'}}>
-            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h5" component="h5">
-              You vs {this.opponent !== null? this.opponent.username : 'Anonymous'}
+      <Box display="flex" justifyContent="center">
+        <Box display="flex" flexDirection="column">
+          <Paper style={{ border: '1px solid #D3D3D3', marginBottom: '2px' }}>
+            <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h5" component="h5">
+              You vs
+              {' '}
+              {this.opponent !== null ? this.opponent.username : 'Anonymous'}
             </Typography>
-            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h6" component="h6">
-              Variant: {this.gameInfo !== null? this.gameInfo.variant : ''}
+            <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h6" component="h6">
+              Variant:
+              {' '}
+              {this.gameInfo !== null ? this.gameInfo.variant : ''}
             </Typography>
-            <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px'}}component="p">
-              {this.state.yourTurn === true? YOUR_TURN_MESSAGE : ''}
+            <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px' }} component="p">
+              {this.state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
             </Typography>
           </Paper>
           <div id={this.boardId}>
@@ -167,10 +172,11 @@ class Game extends Component {
               onSquareClick={this.onSquareClick}
             />
           </div>
+          <Clock />
         </Box>
       </Box>
-    )
+    );
   }
 }
 
-export default Game
+export default Game;
