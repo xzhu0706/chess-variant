@@ -1,0 +1,59 @@
+.piece-selector input {
+    margin: 0;
+    padding: 0;
+    appearance: none;
+}
+
+.white-king {
+    background-image:url(../pieces/standard/wk.svg);
+}
+.white-queen {
+    background-image:url(../pieces/standard/wq.svg);
+}
+.white-rook {
+    background-image:url(../pieces/standard/wr.svg);
+}
+.white-knight {
+    background-image:url(../pieces/standard/wn.svg);
+}
+.white-bishop {
+    background-image:url(../pieces/standard/wb.svg);
+}
+.white-pawn {
+    background-image:url(../pieces/standard/wp.svg);
+}
+.black-king {
+    background-image:url(../pieces/standard/bk.svg);
+}
+.black-queen {
+    background-image:url(../pieces/standard/bq.svg);
+}
+.black-rook {
+    background-image:url(../pieces/standard/br.svg);
+}
+.black-knight {
+    background-image:url(../pieces/standard/bn.svg);
+}
+.black-bishop {
+    background-image:url(../pieces/standard/bb.svg);
+}
+.black-pawn {
+    background-image:url(../pieces/standard/bp.svg);
+}
+
+.piece-selector input:checked +.piece-card {
+    filter: none;
+}
+
+.piece-card {
+    cursor: pointer;
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 62px;
+    height: 62px;
+    filter: opacity(.4);
+}
+.piece-card:hover {
+    filter: opacity(.85);
+}
