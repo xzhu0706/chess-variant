@@ -16,7 +16,7 @@ class GameResignationDialog extends Component {
                 <DialogTitle id="responsive-dialog-title">{"Do you really want to quit?"}</DialogTitle>
                 <DialogActions>
                     <Button autoFocus onClick={this.props.leaveGame} color="primary">Yes</Button>
-                    <Button onClick={this.props.hideGameDialog} color="primary" autoFocus>No</Button>
+                    <Button onClick={this.props.hide} color="primary" autoFocus>No</Button>
                 </DialogActions>
             </Dialog>
         )

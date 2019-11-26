@@ -25,6 +25,7 @@ type Game @model(subscriptions: null) @auth(rules: [{allow: public}]) {
   variant: String!
   fen: String!
   available: Boolean!
+  ended: Boolean!
   history: [String]
   result: String
   winner: String

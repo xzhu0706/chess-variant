@@ -188,6 +188,7 @@ class Lobby extends Component {
     console.log('new', newGame);
     newGame.fen = 'init';
     newGame.available = true;
+    newGame.ended = false
     await this.getUserInfo().then((user) => {
       console.log(typeof (user), user);
       if (typeof (user) === 'object') {

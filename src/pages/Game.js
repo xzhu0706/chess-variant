@@ -26,6 +26,8 @@ class Game extends Component {
       time: '',
       squareStyles: {},
       yourTurn: false,
+      showGameResignationDialog: false,
+      gameResult: '', 
       history: [],
     };
     this.game = null;
@@ -99,15 +101,35 @@ class Game extends Component {
         const gameState = gameData.value.data.onUpdateGameState;
         if (this.gameInfo.id === gameState.id) {
           this.game.load(gameState.fen);
-          const yourTurn = this.game.turn() === this.orientation[0];
-          this.setState({
-            fen: gameState.fen,
-            yourTurn,
-            history: gameState.history,
-          });
+          let yourTurn = this.game.turn() === this.orientation[0];
+          let gameResult
+          if(gameState.ended === true){
+            if(this.game.game_over()){
+              //checkmate or stalemate
+              if(this.game.in_checkmate) {
+                let winner = this.game.turn() === 'w'? "Black" : "White"
+                gameResult = `CHECKMATE: ${winner} WINS!`
+              }
+              // else the game ended in stalemate.
+              else gameResult = 'STALEMATE: TIE GAME!'
+            }
+            else{
+              //Player on the other end left the game.
+              alert('The other player has left the game')
+            }
+            youTurn = false
+          }
+          this.setState({fen: gameState.fen, yourTurn, gameResult, history: gameState.history, game});
+
         }
       },
     });
+  }
+
+  componentWillUnmount(){
+    if(this.game.is_over() === false){
+      this.setState({showGameResignationDialog: true})
+    }
   }
 
   getUserInfo = async () => {
@@ -131,11 +153,21 @@ class Game extends Component {
         const updateGameData = {};
         updateGameData.id = this.gameId;
         updateGameData.fen = this.game.fen();
+        let gameResult = ''
+        if(this.game.game_over()){
+          if(this.game.in_checkmate){
+            let winner = this.orientation
+            gameResult = `CHECKMATE: ${winner} WINS!`
+          }
+          else gameResult = 'STALEMATE: TIE GAME!'
+          updateGameData.ended = true
+        }
         updateGameData.history = [...this.state.history, move.san];
         this.setState({
           fen: this.game.fen(),
           squareStyles: {},
           yourTurn: false,
+          gameResult,
           history: [...this.state.history, move.san],
         });
         const updated = await API.graphql(graphqlOperation(
@@ -171,6 +203,17 @@ class Game extends Component {
     this.game.move();
   }
 
+  hideGameResignationDialog = () => {
+    this.setState({showGameResignationDialog: false})
+  }
+
+  leaveGame = () => {
+    let newGameState = {}
+    newGameState.id = this.gameId
+    newGameState.ended = true;
+    API.graphql(graphqlOperation(mutations.updateGameState, { input: newGameState},))
+  }
+
   render() {
     const { state } = this;
     return (
@@ -194,7 +237,13 @@ class Game extends Component {
               <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px' }} component="p">
                 {state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
               </Typography>
+
             </Paper>
+            <GameResignationDialog
+              open = {this.state.showGameResignationDialog}
+              hide = {this.hideGameResignationDialog}
+              leaveGame = {this.leaveGame} 
+            />
             <div id={this.boardId}>
               <Chessboard
                 position={state.fen}
