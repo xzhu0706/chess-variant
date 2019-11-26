@@ -50,9 +50,14 @@ var Chess = function(fen, variant=0) {
   const KING = 'k';
 
   // custom pieces
-  const KNIGHT_180 = 'm';
+  const MANN = 'm';
+  const FERZ = 'f';
+  const NIGHTRIDER = 'd';
+  const CENTAUR = 'c';
+  const EMPRESS = 'e';
+  const PRINCESS = 's';
 
-  const SYMBOLS = 'pnbrqkPNBRQK' + 'mM'; // all possible pieces in a FEN string
+  const SYMBOLS = 'pnbrqkPNBRQK' + 'mfdcesMFDCES'; // all possible pieces in a FEN string
 
   const DEFAULT_POSITION = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 

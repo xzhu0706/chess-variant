@@ -41,10 +41,28 @@ function SparePieces(props) {
           <label className="piece-card black-king" htmlFor="black-king"></label>
         </div>
         <div>
-          <input id="white-knight-180" type="radio" name="piece" value="M" />
-          <label className="piece-card white-knight-180" htmlFor="white-knight-180"></label>
-          <input id="black-knight-180" type="radio" name="piece" value="m" />
-          <label className="piece-card black-knight-180" htmlFor="black-knight-180"></label>
+          <input id="white-empress" type="radio" name="piece" value="E" />
+          <label className="piece-card white-empress" htmlFor="white-empress"></label>
+          <input id="white-princess" type="radio" name="piece" value="S" />
+          <label className="piece-card white-princess" htmlFor="white-princess"></label>
+          <input id="white-mann" type="radio" name="piece" value="M" />
+          <label className="piece-card white-mann" htmlFor="white-mann"></label>
+          <input id="white-ferz" type="radio" name="piece" value="F" />
+          <label className="piece-card white-ferz" htmlFor="white-ferz"></label>
+          <input id="white-nightrider" type="radio" name="piece" value="D" />
+          <label className="piece-card white-nightrider" htmlFor="white-nightrider"></label>
+        </div>
+        <div>
+          <input id="black-empress" type="radio" name="piece" value="e" />
+          <label className="piece-card black-empress" htmlFor="black-empress"></label>
+          <input id="black-princess" type="radio" name="piece" value="s" />
+          <label className="piece-card black-princess" htmlFor="black-princess"></label>
+          <input id="black-mann" type="radio" name="piece" value="m" />
+          <label className="piece-card black-mann" htmlFor="black-mann"></label>
+          <input id="black-ferz" type="radio" name="piece" value="f" />
+          <label className="piece-card black-ferz" htmlFor="black-ferz"></label>
+          <input id="black-nightrider" type="radio" name="piece" value="d" />
+          <label className="piece-card black-nightrider" htmlFor="black-nightrider"></label>
         </div>
       </div>
     </form>

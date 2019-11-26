@@ -56,7 +56,7 @@ function ExtinctionChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={ExtinctionChess('rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1', 3, true, true)}
+        board={ExtinctionChess('rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1', 3, false, true)}
       >
       A king has no special purpose in extinction chess (and check/checkmate is disabled).
       Thus, a game can be played with no kings on either side, which is not the case in
@@ -64,14 +64,14 @@ function ExtinctionChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={ExtinctionChess('rnbqkbnr/pppppppp/8/8/bbbbbbbb/8/8/R3K2R w KQkq - 0 1', 3, true, true)} 
+        board={ExtinctionChess('rnbqkbnr/pppppppp/8/8/bbbbbbbb/8/8/R3K2R w KQkq - 0 1', 3, false, true)} 
       >
       Because the king is not a special piece, the king can ignore attacks/checks and moreover
       can castle even when the interceding squares are under attack.
       </ContentBox>
 
       <ContentBox
-        board={ExtinctionChess('8/8/3q1p2/2r5/4N3/2b3k1/3n1n2/8 w KQkq - 0 1', 3, true, true)}  
+        board={ExtinctionChess('8/8/3q1p2/2r5/4N3/2b3k1/3n1n2/8 w KQkq - 0 1', 3, false, true)}  
       >
       Here is an example of an ending scenario. White wins in one move if he/she captures any of Black's pieces except for the knight because Black has two knights.
       </ContentBox>

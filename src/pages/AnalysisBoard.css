@@ -49,12 +49,41 @@
     background-image:url(../icons/trash.svg);
 }
 
-.white-knight-180 {
+.white-nightrider {
     background-image:url(../icons/pieces/fairy/wn_180.svg);
 }
-.black-knight-180 {
+.black-nightrider {
     background-image:url(../icons/pieces/fairy/bn_180.svg);
 }
+
+.white-ferz {
+    background-image:url(../icons/pieces/fairy/wb_180.svg);
+}
+.black-ferz {
+    background-image:url(../icons/pieces/fairy/bb_180.svg);
+}
+
+.white-mann {
+    background-image:url(../icons/pieces/fairy/wk_180.svg);
+}
+.black-mann {
+    background-image:url(../icons/pieces/fairy/bk_180.svg);
+}
+
+.white-empress {
+    background-image:url(../icons/pieces/fairy/we.svg);
+}
+.black-empress {
+    background-image:url(../icons/pieces/fairy/be.svg);
+}
+
+.white-princess {
+    background-image:url(../icons/pieces/fairy/ws.svg);
+}
+.black-princess {
+    background-image:url(../icons/pieces/fairy/bs.svg);
+}
+
 
 
 .piece-selector input:checked +.piece-card {

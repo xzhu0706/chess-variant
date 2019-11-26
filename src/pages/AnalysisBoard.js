@@ -24,7 +24,7 @@ class AnalysisBoard extends React.Component {
       <div style={{textAlign: 'center'}}>
         <div style={{display: 'inline-block'}}>
           {/* render the board in edit or non-edit mode with knowledge of the currently selected spare piece  */}
-          {Board('rnbqkbnr/pppppppp/8/4m3/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, this.state.editMode, this.state.sparePiece)}
+          {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, this.state.editMode, this.state.sparePiece)}
         </div>
         <div>
             {/* render the spare pieces module that will update this.state when a spare piece is selected */}

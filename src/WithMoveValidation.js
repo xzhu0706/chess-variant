@@ -3,8 +3,18 @@ import PropTypes from 'prop-types';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
 import GameData from './GameData.js';
-import wn_test from "./icons/wn.svg"; // testing the use of custom icons
-import bn_test from "./icons/bn.svg";
+import wm from "./icons/pieces/fairy/wk_180.svg"; // "mann" (upside-down king)
+import bm from "./icons/pieces/fairy/bk_180.svg";
+import wf from "./icons/pieces/fairy/wb_180.svg"; // "ferz" (upside-down bishop)
+import bf from "./icons/pieces/fairy/bb_180.svg";
+import wd from "./icons/pieces/fairy/wn_180.svg"; // "night rider" (upside-down knight)
+import bd from "./icons/pieces/fairy/bn_180.svg";
+import we from "./icons/pieces/fairy/we.svg"; // "empress" (knight/rook combo)
+import be from "./icons/pieces/fairy/be.svg"; // "empress"
+import ws from "./icons/pieces/fairy/ws.svg"; // "princess" (knight/bishop combo)
+import bs from "./icons/pieces/fairy/bs.svg"; // "princess"
+
+
 import './variant-style.css';
 
 class HumanVsHuman extends Component {
@@ -163,7 +173,9 @@ class HumanVsHuman extends Component {
       }
       else {
         // do nothing if the person clicked on the same square twice
-        if (this.state.fromSquare === square) return;
+        if (this.state.fromSquare === square) {
+          return;
+        }
 
         // highlight clicked square, and update the from square
         this.setState({
@@ -246,6 +258,136 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
             ) :
             null;
 
+          let customPieces = {
+            wM: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={wm}
+                alt="white mann"
+              />
+            ),
+            bM: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={bm}
+                alt="black mann"
+              />
+            ),
+
+            wD: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={wd}
+                alt="white night rider"
+              />
+            ),
+            bD: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={bd}
+                alt="black night rider"
+              />
+            ),
+            wF: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={wf}
+                alt="white ferz"
+              />
+            ),
+            bF: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={bf}
+                alt="black ferz"
+              />
+            ),
+            wE: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={we}
+                alt="white empress"
+              />
+            ),
+            bE: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={be}
+                alt="black empress"
+              />
+            ),
+            wS: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={ws}
+                alt="white princess"
+              />
+            ),
+            bS: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={bs}
+                alt="black princess"
+              />
+            ),
+          }
+
+          // for antichess, replace king with flipped king
+          if (variant === 1) {
+            customPieces = {...customPieces, ...{
+              wK: ({ squareWidth }) => (
+                <img
+                  style={{
+                    width: squareWidth,
+                    height: squareWidth,
+                  }}
+                  src={wm}
+                  alt="white mann"
+                />
+              ),
+              bK: ({ squareWidth }) => (
+                <img
+                  style={{
+                    width: squareWidth,
+                    height: squareWidth,
+                  }}
+                  src={bm}
+                  alt="black mann"
+                />
+              ),
+            }}
+          }
+
           return (
             <div className="d-flex flex-column">
               <div id={boardId}>
@@ -255,28 +397,7 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                       borderRadius: '5px',
                       boxShadow: '0 2px 3px rgba(0, 0, 0, 0.5)',
                   }}
-                  pieces={{
-                      wN: ({ squareWidth }) => (
-                        <img
-                          style={{
-                            width: squareWidth,
-                            height: squareWidth,
-                          }}
-                          src={wn_test}
-                          alt="wn_test"
-                        />
-                      ),
-                      bN: ({ squareWidth }) => (
-                        <img
-                          style={{
-                            width: squareWidth,
-                            height: squareWidth,
-                          }}
-                          src={bn_test}
-                          alt="bn_test"
-                        />
-                      ),
-                  }}
+                  pieces={customPieces}
                   lightSquareStyle={{ backgroundColor: '#ffffff' }}
                   darkSquareStyle={{ backgroundColor: '#65cae8' }}
                   squareStyles={squareStyles}
