@@ -49,7 +49,11 @@ var Chess = function(fen, variant=0) {
   const QUEEN = 'q';
   const KING = 'k';
 
-  const SYMBOLS = 'pnbrqkPNBRQK'; // all possible pieces in a FEN string
+  // custom pieces
+  const PAWN_180 = 'q';
+  const KNIGHT_180 = 'm';
+
+  const SYMBOLS = 'pnbrqkPNBRQK' + 'qm'; // all possible pieces in a FEN string
 
   const DEFAULT_POSITION = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 

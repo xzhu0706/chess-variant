@@ -113,7 +113,7 @@ class NavBar extends Component {
           menu={
             <Menu>
               <Navbar.Brand style={{ fontFamily: 'chalkduster' }}>
-                <Image src={require('../pieces/standard/wr.svg')} alt="Chess Piece" style={imgStyle} fluid />
+                <Image src={require('../icons/pieces/standard/wr.svg')} alt="Chess Piece" style={imgStyle} fluid />
                 <Link to="/" style={{ color: '#333333', fontSize: '28px' }}>Chess Variants</Link>
               </Navbar.Brand>
               <ul>

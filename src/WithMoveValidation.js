@@ -2,13 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
-// import { API, graphqlOperation } from 'aws-amplify';
-//import * as queries from './graphql/queries';
-// import * as mutations from './graphql/mutations';
 import GameData from './GameData.js';
 import wn_test from "./icons/wn.svg"; // testing the use of custom icons
-import bn_test from "./icons/bn.svg"
-import trash from "./icons/trash.svg"
+import bn_test from "./icons/bn.svg";
 import './variant-style.css';
 
 class HumanVsHuman extends Component {
@@ -18,7 +14,7 @@ class HumanVsHuman extends Component {
     fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
     pgn: '',
     squareStyles: {}, // custom square styles
-    pieceSquare: '', // piece on the most recently selected square
+    fromSquare: '', // most recently clicked square (empty if a move was just made)
     turn: '',
     gameOver: false,
     gameResult: '', // checkmate, stalemate, insufficient material, ...
@@ -89,13 +85,13 @@ class HumanVsHuman extends Component {
 
   onSquareClick = (square) => {
     if (!this.props.editMode) {
-    // disable user input if game is over and we are not in edit mode
+    // disable user input if game is over
       if (this.state.gameOver) return;
 
       // highlight the square you just clicked
       this.setState(() => ({
         squareStyles: { [square]: { backgroundColor: '#38f' } },
-        pieceSquare: square,
+        fromSquare: square,
       }));
 
       // get list of possible moves for the piece on this square
@@ -111,7 +107,7 @@ class HumanVsHuman extends Component {
 
       // process the case where the user has registered a move by clicking
       const move = this.game.move({
-        from: this.state.pieceSquare,
+        from: this.state.fromSquare,
         to: square,
         promotion: 'q', // always promote to a queen for example simplicity
         // fix this so the user can choose what to promote to
@@ -124,15 +120,15 @@ class HumanVsHuman extends Component {
       this.setState({
         fen: this.game.fen(),
         pgn: this.game.pgn(),
-        pieceSquare: '',
+        fromSquare: '',
         turn: this.game.turn(),
       });
 
       // end the game if necessary
       this.updateGameResult();
     }
-    else {
-      if (this.props.sparePiece) {
+    else { // edit mode
+      if (this.props.sparePiece !== 'cursor') {
         // if the selected square is not empty
         if (this.game.get(square)) {
           if (this.props.sparePiece === 'trash') { // if trash icon is selected, delete piece on selected square
@@ -150,6 +146,31 @@ class HumanVsHuman extends Component {
             fen: this.game.fen()
           });
         }
+      }
+      else {
+        // do nothing if the person clicked on the same square twice
+        if (this.state.fromSquare === square) return;
+
+        // highlight clicked square, and update the from square
+        this.setState({
+          squareStyles: { [square]: { backgroundColor: '#68f' } },
+          fromSquare: square,
+        });
+
+        // get just selected piece if it exists
+        const piece = this.game.get(this.state.fromSquare);
+
+        if (piece === null) return;
+
+        // displace the selected piece on the board
+        this.game.remove(this.state.fromSquare);
+        this.game.put(piece, square);
+
+        // update the fen, and empty out the from square
+        this.setState({
+          fen: this.game.fen(),
+          fromSquare: '',
+        });
       }
     }
   };
@@ -245,7 +266,7 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                   onSquareClick={onSquareClick}
                   onSquareRightClick={onSquareRightClick}
                   calcWidth={calcWidth}
-                  draggable={true}
+                  draggable={false}
                 />
               </div>
               { gameData }

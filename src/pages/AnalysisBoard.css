@@ -41,6 +41,10 @@
     background-image:url(../icons/pieces/standard/bp.svg);
 }
 
+.cursor {
+    background-image:url(../icons/cursor.svg);
+}
+
 .trash {
     background-image:url(../icons/trash.svg);
 }

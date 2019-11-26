@@ -8,27 +8,27 @@ class AnalysisBoard extends React.Component {
     super(props);
     this.state = {
       editMode: true,
-      sparePiece: '',
+      sparePiece: 'cursor',
     };
-    this.handlePieceChange = this.handlePieceChange.bind(this);
+    this.handleIconChange = this.handleIconChange.bind(this);
   }
 
-  handlePieceChange(event) {
+  handleIconChange(event) {
     this.setState({
       sparePiece: event.target.value
-    });
+    })
   };
 
   render() {
-    // 'k' will be the White king, i.e., the piece object is { piece: 'k' , color: 'w' }
-    // 'K' will be the Black king, i.e., the piece object is { piece: 'k' , color: 'b' }
     return (
       <div style={{textAlign: 'center'}}>
         <div style={{display: 'inline-block'}}>
           {/* render the board in edit or non-edit mode with knowledge of the currently selected spare piece  */}
           {Board(undefined, 0, true, false, this.state.editMode, this.state.sparePiece)}
-          {/* render the spare pieces module that will update this.state when a spare piece is selected */}
-          <SparePieces handleChange={this.handlePieceChange} />
+        </div>
+        <div>
+            {/* render the spare pieces module that will update this.state when a spare piece is selected */}
+            <SparePieces handleChange={this.handleIconChange} />
         </div>
       </div>
     );
