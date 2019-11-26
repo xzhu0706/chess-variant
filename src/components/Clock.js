@@ -5,11 +5,11 @@ const clockStyle = {
   fontSize: '30px',
 };
 
-function Clock() {
+function Clock({ time }) {
   return (
     <div style={clockStyle}>
       <Countdown
-        date={Date.now() + 3600000}
+        date={Date.now() + time}
         intervalDelay={3}
         zeroPadTime={2}
         autoStart={false}
