@@ -23,6 +23,7 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
     variant
     fen
     available
+    ended
   }
 }
 `;
@@ -48,6 +49,7 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
     variant
     fen
     available
+    ended
   }
 }
 `;
@@ -73,6 +75,7 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
     variant
     fen
     available
+    ended
   }
 }
 `;

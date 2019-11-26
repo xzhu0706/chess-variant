@@ -23,6 +23,7 @@ export const onCreateGame = `subscription OnCreateGame {
     variant
     fen
     available
+    ended
   }
 }
 `;
@@ -48,6 +49,7 @@ export const onUpdateGame = `subscription OnUpdateGame {
     variant
     fen
     available
+    ended
   }
 }
 `;
@@ -73,6 +75,7 @@ export const onDeleteGame = `subscription OnDeleteGame {
     variant
     fen
     available
+    ended
   }
 }
 `;

@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "chessvariant878b0ed7_identitypool_878b0ed7",
+    "identityPoolName": "chessvariantd72a1ae8_identitypool_d72a1ae8",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "chessv878b0ed7",
-    "userPoolName": "chessvariant878b0ed7_userpool_878b0ed7",
+    "resourceNameTruncated": "chessvd72a1ae8",
+    "userPoolName": "chessvariantd72a1ae8_userpool_d72a1ae8",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,9 +28,9 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "chessv878b0ed7_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "chessvd72a1ae8_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "resourceName": "chessvariant878b0ed7",
+    "resourceName": "chessvariantd72a1ae8",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [

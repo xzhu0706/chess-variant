@@ -1,35 +1,18 @@
 {
-    "dev": {
+    "dngenv": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-chess-variant-dev-182241-authRole",
-            "UnauthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-dev-182241-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-dev-182241-authRole",
+            "AuthRoleName": "amplify-chess-variant-dngenv-205135-authRole",
+            "UnauthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-dngenv-205135-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-dngenv-205135-authRole",
             "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-chess-variant-dev-182241-deployment",
-            "UnauthRoleName": "amplify-chess-variant-dev-182241-unauthRole",
-            "StackName": "amplify-chess-variant-dev-182241",
-            "StackId": "arn:aws:cloudformation:us-east-1:990932120713:stack/amplify-chess-variant-dev-182241/ff8db500-ff59-11e9-95c8-12c395c1242e"
+            "DeploymentBucketName": "amplify-chess-variant-dngenv-205135-deployment",
+            "UnauthRoleName": "amplify-chess-variant-dngenv-205135-unauthRole",
+            "StackName": "amplify-chess-variant-dngenv-205135",
+            "StackId": "arn:aws:cloudformation:us-east-1:990932120713:stack/amplify-chess-variant-dngenv-205135/479be1a0-0fef-11ea-adb4-12328959da6d"
         },
         "categories": {
             "auth": {
-                "chessvariants34a8e197": {}
-            }
-        }
-    },
-    "devenv": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-chessvariants-devenv-214446-authRole",
-            "UnauthRoleArn": "arn:aws:iam::990932120713:role/amplify-chessvariants-devenv-214446-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::990932120713:role/amplify-chessvariants-devenv-214446-authRole",
-            "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-chessvariants-devenv-214446-deployment",
-            "UnauthRoleName": "amplify-chessvariants-devenv-214446-unauthRole",
-            "StackName": "amplify-chessvariants-devenv-214446",
-            "StackId": "arn:aws:cloudformation:us-east-1:990932120713:stack/amplify-chessvariants-devenv-214446/b97123a0-0688-11ea-adb9-1204ddd846a2"
-        },
-        "categories": {
-            "auth": {
-                "chessvariants34a8e197": {}
+                "chessvariantd72a1ae8": {}
             }
         }
     }

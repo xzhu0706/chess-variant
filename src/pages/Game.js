@@ -11,6 +11,7 @@ import * as Colors from '../Constants/Colors';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
 import '../variant-style.css';
+import GameResignationDialog from '../components/GameResignationDialog';
 
 const YOUR_TURN_MESSAGE = `It's your turn!`
 
@@ -92,14 +93,9 @@ class Game extends Component {
   }
 
   componentWillUnmount(){
-    alert("Component unmounted")
     if(!this.game.game_over()){
-      //Display warning that the game is over yet!
+      this.setState({showResignationDialog: true})
     }
-    let gameInfo = this.gameInfo
-    this.removeTypenameFieldsFromGameObject(gameInfo)
-    gameInfo.ended = true
-    API.graphql(graphqlOperation(mutations.updateGame, {input: gameInfo}))
   }
 
   onSquareClick =  async (square) => {
@@ -144,6 +140,18 @@ class Game extends Component {
     gameInfo['creator'] = creator
   }
 
+  hideResignationDialog = () => {
+    this.setState({showResignationDialog: false})
+  }
+
+  leaveGame = () => {
+    let gameInfo = this.gameInfo
+    this.removeTypenameFieldsFromGameObject(gameInfo)
+    gameInfo.ended = true
+    API.graphql(graphqlOperation(mutations.updateGame, {input: gameInfo}))
+
+  }
+
   render(){
     // const boardStyle = {
     //   marginLeft: '15%',
@@ -151,6 +159,11 @@ class Game extends Component {
     // }
     return (
       <Box display='flex' justifyContent='center'>
+        <GameResignationDialog 
+          open = {this.state.showResignationDialog}
+          hideResignationDialog = {this.hideResignationDialog}
+          leaveGame = {this.leaveGame}
+        />
         <Box display='flex' flexDirection='column'>
           <Paper style={{border: '1px solid #D3D3D3', marginBottom: '2px'}}>
             <Typography style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px'}} variant="h5" component="h5">

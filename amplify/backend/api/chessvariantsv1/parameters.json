@@ -1,5 +1,5 @@
 {
-    "AppSyncApiName": "chessvariant",
+    "AppSyncApiName": "chessvariantsv1",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
     "DynamoDBEnableServerSideEncryption": "false"
 }

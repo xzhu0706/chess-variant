@@ -23,6 +23,7 @@ export const getGame = `query GetGame($id: ID!) {
     variant
     fen
     available
+    ended
   }
 }
 `;
@@ -53,6 +54,7 @@ export const listGames = `query ListGames(
       variant
       fen
       available
+      ended
     }
     nextToken
   }
