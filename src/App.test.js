@@ -20,7 +20,6 @@ describe('App Level Tests', () => {
     await page.goto(
       'http://chess-variant-20191104002115-hostingbucket-develop.s3-website-us-east-1.amazonaws.com/'
     );
-    await page.goto
 
     await browser.close();
   });
