@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
-import { Row, Col } from 'react-bootstrap';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
@@ -206,11 +205,14 @@ class Game extends Component {
                 onSquareClick={this.onSquareClick}
               />
             </div>
-            <Clock />
           </Box>
         </Grid>
         <Grid container item md={4}>
           {/* // for chat box */}
+        </Grid>
+        <Grid container item md={4} justify="space-between">
+          <Clock time={60000} />
+          <Clock time={60000} />
         </Grid>
       </Grid>
     );
