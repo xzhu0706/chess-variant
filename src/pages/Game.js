@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import {API, graphqlOperation, Auth } from 'aws-amplify';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
+import { Row, Col } from 'react-bootstrap';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
@@ -145,36 +146,48 @@ class Game extends Component {
     //   marginTop: '25%'
     // }
     return (
-      <Box display="flex" justifyContent="center">
-        <Box display="flex" flexDirection="column">
-          <Paper style={{ border: '1px solid #D3D3D3', marginBottom: '2px' }}>
-            <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h5" component="h5">
+      <div>
+        <Row>
+          <Col md={{ span: 4, offset: 4 }}>
+            <Box display="flex" justifyContent="center">
+              <Box display="flex" flexDirection="column">
+                <Paper style={{ border: '1px solid #D3D3D3', marginBottom: '2px' }}>
+                  <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h5" component="h5">
               You vs
-              {' '}
-              {this.opponent !== null ? this.opponent.username : 'Anonymous'}
-            </Typography>
-            <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h6" component="h6">
+                    {' '}
+                    {this.opponent !== null ? this.opponent.username : 'Anonymous'}
+                  </Typography>
+                  <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h6" component="h6">
               Variant:
-              {' '}
-              {this.gameInfo !== null ? this.gameInfo.variant : ''}
-            </Typography>
-            <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px' }} component="p">
-              {this.state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
-            </Typography>
-          </Paper>
-          <div id={this.boardId}>
-            <Chessboard
-              position={this.state.fen}
-              lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
-              darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
-              orientation={this.orientation}
-              squareStyles={this.state.squareStyles}
-              onSquareClick={this.onSquareClick}
-            />
-          </div>
-          <Clock />
-        </Box>
-      </Box>
+                    {' '}
+                    {this.gameInfo !== null ? this.gameInfo.variant : ''}
+                  </Typography>
+                  <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px' }} component="p">
+                    {this.state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
+                  </Typography>
+                </Paper>
+                <div id={this.boardId}>
+                  <Chessboard
+                    position={this.state.fen}
+                    lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
+                    darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
+                    orientation={this.orientation}
+                    squareStyles={this.state.squareStyles}
+                    onSquareClick={this.onSquareClick}
+                  />
+                </div>
+              </Box>
+            </Box>
+          </Col>
+          <Col>
+            <div style={{ marginTop: 55, marginBottom: 490 }}>
+              <Clock />
+            </div>
+            <Clock />
+          </Col>
+
+        </Row>
+      </div>
     );
   }
 }
