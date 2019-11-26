@@ -30,6 +30,20 @@ class HumanVsHuman extends Component {
     this.updateGameResult(); // in case the FEN string gives an ending position
   }
 
+  componentDidUpdate(prevProps) {
+    // get rid of old square-selection information if the user leaves cursor mode
+    if (this.props.editMode && this.props.sparePiece !== 'cursor' && prevProps.sparePiece === 'cursor') {
+      this.setState({
+        squareStyles: {},
+        fromSquare: ''
+      });
+    }
+    // not totally necessary, but if we didn't do this, then
+    // (a) one square would still be highlighted after the user de-selects the cursor
+    // (b) the fromSquare would still be set, so the user could move the selected piece
+    // after re-entering cursor mode
+  }
+
   // adjust board size according to window size
   calcWidth = (dimensions) => {
     let customWidth = Math.min(540/640 * dimensions.screenWidth, 540/640 * dimensions.screenHeight);
@@ -178,9 +192,12 @@ class HumanVsHuman extends Component {
   // When right clicking, we preserve the old squareStyles (we merely append the new style).
   // This will allow the user to have multiple squares be highlighted simultaneously,
   // for whatever reason (annotation?)
-  onSquareRightClick = (square) => this.setState(({ squareStyles }) => ({
-    squareStyles: { ...squareStyles, [square]: { backgroundColor: '#e86c65' } },
-  }));
+  onSquareRightClick = (square) => {
+    if (!this.props.editMode) 
+      this.setState(({ squareStyles }) => ({
+        squareStyles: { ...squareStyles, [square]: { backgroundColor: '#e86c65' } },
+      }));
+  };
 
   render() {
     const { fen, pgn, turn, gameResult, squareStyles } = this.state;

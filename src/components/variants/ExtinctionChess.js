@@ -18,25 +18,25 @@ import bq from '../../icons/pieces/standard/bq.svg';
 function ExtinctionChessDocument() {
   const piecesTable = (
     <table>
-    <tbody>
-      <tr>
-        <td><img style={{width: "3em", height: "3em"}} src={wp} alt="white pawn" /></td>
-        <td><img style={{width: "3em", height: "3em"}} src={wr} alt="white rook" /></td>
-        <td><img style={{width: "3em", height: "3em"}} src={wn} alt="white knight" /></td>
-        <td><img style={{width: "3em", height: "3em"}} src={wb} alt="white bishop" /></td>
-        <td><img style={{width: "3em", height: "3em"}} src={wq} alt="white queen" /></td>
-        <td><img style={{width: "3em", height: "3em"}} src={wk} alt="white king" /></td>
-      </tr>
-      <tr>
-        <td><img style={{width: "3em", height: "3em"}} src={bp} alt="black pawn" /></td>
-        <td><img style={{width: "3em", height: "3em"}} src={br} alt="black rook" /></td>
-        <td><img style={{width: "3em", height: "3em"}} src={bn} alt="black knight" /></td>
-        <td><img style={{width: "3em", height: "3em"}} src={bb} alt="black bishop" /></td>
-        <td><img style={{width: "3em", height: "3em"}} src={bq} alt="black queen" /></td>
-        <td><img style={{width: "3em", height: "3em"}} src={bk} alt="black king" /></td>
-      </tr>
-    </tbody>
-  </table>
+      <tbody>
+        <tr>
+          <td><img style={{ width: '3em', height: '3em' }} src={wp} alt="white pawn" /></td>
+          <td><img style={{ width: '3em', height: '3em' }} src={wr} alt="white rook" /></td>
+          <td><img style={{ width: '3em', height: '3em' }} src={wn} alt="white knight" /></td>
+          <td><img style={{ width: '3em', height: '3em' }} src={wb} alt="white bishop" /></td>
+          <td><img style={{ width: '3em', height: '3em' }} src={wq} alt="white queen" /></td>
+          <td><img style={{ width: '3em', height: '3em' }} src={wk} alt="white king" /></td>
+        </tr>
+        <tr>
+          <td><img style={{ width: '3em', height: '3em' }} src={bp} alt="black pawn" /></td>
+          <td><img style={{ width: '3em', height: '3em' }} src={br} alt="black rook" /></td>
+          <td><img style={{ width: '3em', height: '3em' }} src={bn} alt="black knight" /></td>
+          <td><img style={{ width: '3em', height: '3em' }} src={bb} alt="black bishop" /></td>
+          <td><img style={{ width: '3em', height: '3em' }} src={bq} alt="black queen" /></td>
+          <td><img style={{ width: '3em', height: '3em' }} src={bk} alt="black king" /></td>
+        </tr>
+      </tbody>
+    </table>
   );
 
   return (
@@ -48,21 +48,26 @@ function ExtinctionChessDocument() {
       <ContentBox
         board={ExtinctionChess(undefined, 3, true, true)}
       >
-      This is the default starting position. The pieces in the starting position determine the piece types that can "go extinct".
-      Thus, a player wins if he/she eliminates all of the other player's pawns, knights, bishops, rooks, queens or kings.<br/>
+      This is the default starting position. The pieces in the starting position determine the
+      piece types that can &quot;go extinct&quot;.
+      Thus, a player wins if he/she eliminates all of the other player&apost;s pawns, knights,
+      bishops, rooks, queens or kings.
+        <br />
       </ContentBox>
 
       <ContentBox
         board={ExtinctionChess('rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1', 3, true, true)}
       >
       A king has no special purpose in extinction chess (and check/checkmate is disabled).
-      Thus, a game can be played with no kings on either side, which is not the case in standard chess!
+      Thus, a game can be played with no kings on either side, which is not the case in
+      standard chess!
       </ContentBox>
 
       <ContentBox
         board={ExtinctionChess('rnbqkbnr/pppppppp/8/8/bbbbbbbb/8/8/R3K2R w KQkq - 0 1', 3, true, true)} 
       >
-      Because the king is not a special piece, the king can ignore attacks/checks and moreover can castle even when the interceding squares are under attack.
+      Because the king is not a special piece, the king can ignore attacks/checks and moreover
+      can castle even when the interceding squares are under attack.
       </ContentBox>
 
       <ContentBox

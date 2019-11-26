@@ -50,10 +50,9 @@ var Chess = function(fen, variant=0) {
   const KING = 'k';
 
   // custom pieces
-  const PAWN_180 = 'q';
   const KNIGHT_180 = 'm';
 
-  const SYMBOLS = 'pnbrqkPNBRQK' + 'qm'; // all possible pieces in a FEN string
+  const SYMBOLS = 'pnbrqkPNBRQK' + 'mM'; // all possible pieces in a FEN string
 
   const DEFAULT_POSITION = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
@@ -255,7 +254,7 @@ var Chess = function(fen, variant=0) {
       } else {
         const color = (piece < 'a') ? WHITE : BLACK; // if it's a capital letter then it's a white piece
         // put the piece, which has a piece.type and a piece.color, on the board
-        put({type: piece.toLowerCase(), color: color}, algebraic(square));
+        put({ type: piece.toLowerCase(), color: color }, algebraic(square));
         square++;
       }
     }
@@ -357,7 +356,8 @@ var Chess = function(fen, variant=0) {
           sum_fields += parseInt(rows[i][k], 10);
           previous_was_number = true;
         } else {
-          if (!/^[prnbqkPRNBQK]$/.test(rows[i][k])) {
+          const matcher = new RegExp('^[' + SYMBOLS + ']$');
+          if (!matcher.test(rows[i][k])) {
             return {valid: false, error_number: 9, error: errors[9]};
           }
           sum_fields += 1;

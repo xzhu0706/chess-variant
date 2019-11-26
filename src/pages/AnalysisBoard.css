@@ -49,7 +49,16 @@
     background-image:url(../icons/trash.svg);
 }
 
+.white-knight-180 {
+    background-image:url(../icons/pieces/fairy/wn_180.svg);
+}
+.black-knight-180 {
+    background-image:url(../icons/pieces/fairy/bn_180.svg);
+}
+
+
 .piece-selector input:checked +.piece-card {
+    border: 0.15em inset black;
     filter: none;
 }
 
@@ -58,8 +67,8 @@
     display: inline-block;
     background-size: contain;
     background-repeat: no-repeat;
-    width: 62px;
-    height: 62px;
+    width: 65px;
+    height: 65px;
     filter: opacity(.4);
 }
 .piece-card:hover {

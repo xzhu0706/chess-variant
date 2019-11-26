@@ -40,6 +40,12 @@ function SparePieces(props) {
           <input id="black-king" type="radio" name="piece" value="k" />
           <label className="piece-card black-king" htmlFor="black-king"></label>
         </div>
+        <div>
+          <input id="white-knight-180" type="radio" name="piece" value="M" />
+          <label className="piece-card white-knight-180" htmlFor="white-knight-180"></label>
+          <input id="black-knight-180" type="radio" name="piece" value="m" />
+          <label className="piece-card black-knight-180" htmlFor="black-knight-180"></label>
+        </div>
       </div>
     </form>
   );
