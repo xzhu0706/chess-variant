@@ -13,6 +13,8 @@ import { Authenticator, Greetings } from 'aws-amplify-react';
 
 import awsconfig from '../aws-exports';
 
+const icon = require('../pieces/standard/wr.svg');
+
 Amplify.configure(awsconfig);
 
 const Menu = styled.div`
@@ -110,44 +112,44 @@ class NavBar extends Component {
           menuOpenButton={<FaBars size={40} color="YellowGreen" />}
           menuCloseButton={<FaTimes size={40} color="YellowGreen" />}
           changeMenuOn="820px"
-          menu={
+          menu={(
             <Menu>
               <Navbar.Brand style={{ fontFamily: 'chalkduster' }}>
-                <Image src={require('../pieces/standard/wr.svg')} alt="Chess Piece" style={imgStyle} fluid />
+                <Image src={icon} alt="Chess Piece" style={imgStyle} fluid />
                 <Link to="/" style={{ color: '#333333', fontSize: '28px' }}>Chess Variants</Link>
               </Navbar.Brand>
               <ul>
                 <li>
-                  <a href="/">Home</a>
+                  <Link to="/">Home</Link>
                 </li>
                 <li>
-                  <a href="/variants">Browse Variants</a>
+                  <Link to="/variants">Browse Variants</Link>
                 </li>
                 <li>
-                  <a href="/">Leaderboard</a>
+                  <Link to="/">Leaderboard</Link>
                 </li>
                 <li>
-                  <a href="/">Analysis Board</a>
+                  <Link to="/">Analysis Board</Link>
                 </li>
 
                 {username
                   ? (
                     <span>
-                    <li>
-                      <a href="/account">
+                      <li>
+                        <Link to="/account">
                           Hello
                           {' '}
                           {username}
-                      </a>
-                    </li>
-                    <li>
-                      <Button
-                        onClick={handleSignOut}
-                        data-testid="logout-button"
-                      >
+                        </Link>
+                      </li>
+                      <li>
+                        <Button
+                          onClick={handleSignOut}
+                          data-testid="logout-button"
+                        >
                         Sign Out
-                      </Button>
-                    </li>
+                        </Button>
+                      </li>
                     </span>
                   )
                   : (
@@ -165,7 +167,7 @@ class NavBar extends Component {
                   )}
               </ul>
             </Menu>
-          }
+          )}
         />
 
         <Dialog onClose={handleCloseAuth} aria-labelledby="simple-dialog-title" open={showAuth}>
