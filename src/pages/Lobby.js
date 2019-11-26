@@ -148,9 +148,11 @@ class Lobby extends Component {
       next: (gameData) => {
         let game = gameData.value.data.onUpdateGame
         let currentGame = localStorage.getItem(CURRENT_GAME)
-        if(currentGame && currentGame === game.id){
+        if(currentGame && currentGame === game.id && !game.ended){
           this.props.history.push({pathname: `/game/${game.id}`, state: {message: game}})
         }
+        // since they didn't create the game which has now been joined, any other player
+        // will simply remove it from their lobby.
         else if(this.gamesData.hasOwnProperty(game.id)){
           delete this.gamesData[game.id]
           this.removeGameFromLobby(game.id)
@@ -176,6 +178,7 @@ class Lobby extends Component {
     this.setState({showDialog: false})
     gameInfo['fen'] = "init"
     gameInfo['available'] = true
+    gameInfo['ended'] = false
     let userInfo = await Auth.currentUserInfo()
     if(userInfo) {
       let user = {}

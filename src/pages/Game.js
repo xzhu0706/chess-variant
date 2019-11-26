@@ -87,6 +87,17 @@ class Game extends Component {
           this.game.load(gameState.fen)
           let yourTurn = this.game.turn() === this.orientation[0]? true : false
           this.setState({fen: gameState.fen, yourTurn})
+          // the other player hast left the game. just an alert for now
+          if(gameState.ended && !this.game.game_over()){
+            alert('The other player has left the game')
+            return
+          }
+          if(this.game.game_over){
+            if(this.game.in_checkmate)
+              alert('you have been checkmated')
+            else if(this.game.in_stalemate)
+              alert('stalemate')
+          }
         }
       },
     });
@@ -100,11 +111,13 @@ class Game extends Component {
 
   onSquareClick =  async (square) => {
     if(this.game.turn() !== this.orientation[0]) return
+    if(this.game_over() || this.gameInfo.ended) return
     let piece = this.game.get(square)
     if(this.moveFrom !== null){
       let move = this.game.move({from: this.moveFrom, to: square})
       if(move !== null){
         this.setState({fen: this.game.fen(), squareStyles: {}, yourTurn: false})
+        //
         let gameInfo = this.gameInfo
         this.removeTypenameFieldsFromGameObject(gameInfo)
         gameInfo.fen = this.game.fen()
