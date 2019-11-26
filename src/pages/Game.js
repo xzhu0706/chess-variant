@@ -12,6 +12,7 @@ import * as subscriptions from '../graphql/subscriptions';
 import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
+import './Game.css';
 import Clock from '../components/Clock';
 import GameData from '../GameData';
 
@@ -160,20 +161,26 @@ class Game extends Component {
     this.setState({ squareStyles: newSquareStyles });
   }
 
+  prevMove = () => {
+    // TODO
+    this.game.undo();
+  }
+
+  nextMove = () => {
+    // TODO
+    this.game.move();
+  }
+
   render() {
-    // const boardStyle = {
-    //   marginLeft: '15%',
-    //   marginTop: '25%'
-    // }
     const { state } = this;
     return (
       <Grid container spacing={1}>
         <Grid container item md={4}>
-          <GameData history={state.history} fen={state.fen} />
+          <GameData history={state.history} fen={state.fen} prevMove={this.prevMove} nextMove={this.nextMove} />
         </Grid>
         <Grid container item md={4}>
           <Box display="flex" flexDirection="column">
-            <Paper style={{ border: '1px solid #D3D3D3', marginBottom: '2px' }} onClick={this.testUndo}>
+            <Paper style={{ border: '1px solid #D3D3D3', marginBottom: '2px' }}>
               <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h5" component="h5">
                 You vs
                 {' '}
@@ -202,7 +209,7 @@ class Game extends Component {
           </Box>
         </Grid>
         <Grid container item md={4}>
-          {/* for chat box */}
+          {/* // for chat box */}
         </Grid>
       </Grid>
     );
