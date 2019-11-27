@@ -33,7 +33,7 @@
  * https://github.com/jhlywa/chess.js/blob/master/LICENSE
  */
 
-var Chess = function(fen, variant=0) {
+var Chess = function(fen, variant=0, customPieces={}) {
 
   /* jshint indent: false */
 
@@ -49,7 +49,15 @@ var Chess = function(fen, variant=0) {
   const QUEEN = 'q';
   const KING = 'k';
 
-  const SYMBOLS = 'pnbrqkPNBRQK'; // all possible pieces in a FEN string
+  // new pieces
+  const MANN = 'm';
+  const FERZ = 'f';
+  const NIGHTRIDER = 'd';
+  const CENTAUR = 'c';
+  const EMPRESS = 'e';
+  const PRINCESS = 's';
+
+  const SYMBOLS = 'pnbrqkPNBRQK' + 'mfdcesMFDCES'; // all possible pieces in a FEN string
 
   const DEFAULT_POSITION = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
@@ -64,20 +72,64 @@ var Chess = function(fen, variant=0) {
     w: [-16, -32, -17, -15]
   };
 
-  const PIECE_OFFSETS = {
-    n: [-18, -33, -31, -14,  18, 33, 31,  14],
+  let PIECE_OFFSETS_REPEATING = {
+    n: [],
     b: [-17, -15,  17,  15],
     r: [-16,   1,  16,  -1],
     q: [-17, -16, -15,   1,  17, 16, 15,  -1],
-    k: [-17, -16, -15,   1,  17, 16, 15,  -1]
+    k: [],
+    m: [],
+    f: [],
+    d: [-18, -33, -31, -14,  18, 33, 31,  14],
+    c: [],
+    e: [-16,   1,  16,  -1],
+    s: [-17, -15,  17,  15],
   };
+
+  // add custom pieces to PIECE_OFFSETS_REPEATING
+  // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
+  for (let [key, value] of Object.entries(customPieces)) {
+    if (!(key in PIECE_OFFSETS_REPEATING)) {
+      PIECE_OFFSETS_REPEATING[key] = value[0];
+    }
+  }
+
+  let PIECE_OFFSETS = {
+    n: [-18, -33, -31, -14,  18, 33, 31,  14],
+    b: [],
+    r: [],
+    q: [],
+    k: [-17, -16, -15,   1,  17, 16, 15,  -1],
+    m: [-17, -16, -15,   1,  17, 16, 15,  -1],
+    f: [-17, -15,  17,  15],
+    d: [],
+    c: [-18, -33, -31, -14,  18, 33, 31,  14,
+        -17, -16, -15,   1,  17, 16, 15,  -1],
+    e: [-18, -33, -31, -14,  18, 33, 31,  14],
+    s: [-18, -33, -31, -14,  18, 33, 31,  14],
+  };
+
+  // add custom pieces to PIECE_OFFSETS
+  // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
+  for (const [key, value] of Object.entries(customPieces)) {
+    if (!(key in PIECE_OFFSETS)) {
+      PIECE_OFFSETS[key] = value[1];
+    }
+  }
+
+  const SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5 };
+
+  // add custom pieces to SHIFTS
+  for (const key of Object.keys(customPieces)) {
+    SHIFTS[key] = Object.keys(SHIFTS).length;
+  }
 
   // the ATTACKS array is a bit-mask of attacks based on a 6-bit string of the form kqrbnp.
   // For example:
   // kqrbnp = 010100 = 20 (only the queen and bishop can attack the center piece)
   // kqrbnp = 000010 =  2 (only the knight can attack the center piece)
   // kqrbnp = 011000 = 24 (only the queen and rook can attack the center piece)
-  const ATTACKS = [
+  let ATTACKS = [
     20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20, 0,
      0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
      0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
@@ -92,7 +144,7 @@ var Chess = function(fen, variant=0) {
      0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
      0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
      0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
-    20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20
+    20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20,
   ];
 
   // how to shift the board in order to make a move (?)
@@ -113,8 +165,6 @@ var Chess = function(fen, variant=0) {
       0,-15,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,-17,  0, 0,
     -15,  0,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,  0,-17
   ];
-
-  const SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5 };
 
   const FLAGS = {
     NORMAL: 'n',
@@ -251,7 +301,7 @@ var Chess = function(fen, variant=0) {
       } else {
         const color = (piece < 'a') ? WHITE : BLACK; // if it's a capital letter then it's a white piece
         // put the piece, which has a piece.type and a piece.color, on the board
-        put({type: piece.toLowerCase(), color: color}, algebraic(square));
+        put({ type: piece.toLowerCase(), color: color }, algebraic(square));
         square++;
       }
     }
@@ -353,7 +403,8 @@ var Chess = function(fen, variant=0) {
           sum_fields += parseInt(rows[i][k], 10);
           previous_was_number = true;
         } else {
-          if (!/^[prnbqkPRNBQK]$/.test(rows[i][k])) {
+          const matcher = new RegExp('^[' + SYMBOLS + ']$');
+          if (!matcher.test(rows[i][k])) {
             return {valid: false, error_number: 9, error: errors[9]};
           }
           sum_fields += 1;
@@ -619,7 +670,7 @@ var Chess = function(fen, variant=0) {
         }
         
         /* pawn captures */
-        for (j = 2; j < 4; j++) {
+        for (let j = 2; j < 4; j++) {
           var square = i + PAWN_OFFSETS[us][j];
           if (square & 0x88) continue;
 
@@ -639,19 +690,21 @@ var Chess = function(fen, variant=0) {
           }
         }
       } else {
-        for (var j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
-          var offset = PIECE_OFFSETS[piece.type][j];
-          var square = i;
+        for (let j = 0, len = PIECE_OFFSETS_REPEATING[piece.type].length; j < len; j++) {
+          const offset = PIECE_OFFSETS_REPEATING[piece.type][j];
+          let square = i;
 
+          // generate all moves in the direction of the offset
           while (true) {
             square += offset;
-            if (square & 0x88) break;
+            if (square & 0x88) break; // stop if we've fallen off the edge of the board
 
+            // if we're moving to a null square, just add the move (unless we're playing grid chess)
             if (board[square] == null) {
               if (variant !== GRID || valid_2x2_grid_move(i, square)) {
                 add_move(board, moves, i, square, BITS.NORMAL);
               }
-            } else {
+            } else { // we're moving to a square occupied by a piece
               if (board[square].color === us) break;
               if (variant !== GRID || valid_2x2_grid_move(i, square)) {
                 add_move(board, moves, i, square, BITS.CAPTURE);
@@ -659,9 +712,22 @@ var Chess = function(fen, variant=0) {
               }
               break;
             }
+          }
+        }
 
-            /* break, if knight or king */
-            if (piece.type === 'n' || piece.type === 'k') break;
+        for (let j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
+          let square = i + PIECE_OFFSETS[piece.type][j];
+          if (square & 0x88) continue;
+          if (board[square] == null) {
+            if (variant !== GRID || valid_2x2_grid_move(i, square)) {
+              add_move(board, moves, i, square, BITS.NORMAL);
+            }
+          }
+          else if (board[square].color === them) { // we're moving to a square occupied by an enemy piece
+            if (variant !== GRID || valid_2x2_grid_move(i, square)) {
+              add_move(board, moves, i, square, BITS.CAPTURE);
+              capturePossible = 1;
+            }
           }
         }
       }
@@ -1797,7 +1863,7 @@ var Chess = function(fen, variant=0) {
   };
 };
 
-let valid_2x2_grid_move = (from, to) => {
+const valid_2x2_grid_move = (from, to) => {
   /* returns true if the `from` and `to` squares are in different 2x2 subgrids */
   // a8:   0, b8:   1, c8:   2, d8:   3, e8:   4, f8:   5, g8:   6, h8:   7,
   // a7:  16, b7:  17, c7:  18, d7:  19, e7:  20, f7:  21, g7:  22, h7:  23,
@@ -1810,9 +1876,54 @@ let valid_2x2_grid_move = (from, to) => {
   return !((from >> 5 === to >> 5) && ((from & 15) >> 1 === (to & 15) >> 1));
 };
 
+const moduloEuclid = (a, b) => {
+  let m = a % b;
+  if (m < 0) {
+    m = (b < 0) ? m - b : m + b;
+  }
+  return m;
+}
+
+// const updateAttacks = (ATTACKS, SHIFTS, customPieces) => {
+//   // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
+
+//   for (const [key, value] of Object.entries(customPieces)) {
+//     // process repeating offsets
+//     value[0].forEach(offset => {
+//       if 
+//       const movementDirection = moduloEuclid(offset, 16) < 0 ? 'left' : 'right';
+//       let nextOffset = offset;
+//       if (nextOffset )
+//       let k = 119 - nextOffset;
+//       // keep updating ATTACKS array until you fall off the edge
+//       // top edge: simply check (k >= 0)
+//       // bottom edge: simply check (k < ATTACKS.length)
+//       // left edge, right edge: we use modulo for this, which calculates the horizontal offset
+//       while (k >= 0 &&
+//              k < ATTACKS.length &&
+//              (movementDirection === 'left' ?  )
+//              ) {
+//         ATTACKS[119 - nextOffset] |= 1 << SHIFTS[key];
+//         k -= offset;
+//       }
+//     });
+//     // process non-repeating offsets
+//     value[1].forEach(offset => {
+//       const k = 119 - offset;
+//       if (k >= 0 && k < ATTACKS.length) {
+//         ATTACKS[k] |= 1 << SHIFTS[key]; // toggle the bit that corresponds to the piece
+//       }
+//     });
+//   }
+
+//   return ATTACKS;
+// }
+
 /* export Chess object if using node or any other CommonJS compatible
  * environment */
 if (typeof exports !== 'undefined') exports.Chess = Chess;
 if (typeof exports !== 'undefined') exports.valid_2x2_grid_move = valid_2x2_grid_move;
+// if (typeof exports !== 'undefined') exports.updateAttacks = updateAttacks;
+
 /* export Chess object for any RequireJS compatible environment */
 if (typeof define !== 'undefined') define( function () { return Chess;  });

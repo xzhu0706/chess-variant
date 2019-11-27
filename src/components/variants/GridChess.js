@@ -2,18 +2,18 @@ import React from 'react';
 import GridChess from '../../WithMoveValidation';
 import ContentBox from './ContentBox';
 import VariantDocument from './Variant';
-import wb from '../../pieces/standard/wb.svg';
-import wr from '../../pieces/standard/wr.svg';
-import wn from '../../pieces/standard/wn.svg';
-import wp from '../../pieces/standard/wp.svg';
-import wk from '../../pieces/standard/wk.svg';
-import wq from '../../pieces/standard/wq.svg';
-import bb from '../../pieces/standard/bb.svg';
-import br from '../../pieces/standard/br.svg';
-import bn from '../../pieces/standard/bn.svg';
-import bp from '../../pieces/standard/bp.svg';
-import bk from '../../pieces/standard/bk.svg';
-import bq from '../../pieces/standard/bq.svg';
+import wb from '../../icons/pieces/standard/wb.svg';
+import wr from '../../icons/pieces/standard/wr.svg';
+import wn from '../../icons/pieces/standard/wn.svg';
+import wp from '../../icons/pieces/standard/wp.svg';
+import wk from '../../icons/pieces/standard/wk.svg';
+import wq from '../../icons/pieces/standard/wq.svg';
+import bb from '../../icons/pieces/standard/bb.svg';
+import br from '../../icons/pieces/standard/br.svg';
+import bn from '../../icons/pieces/standard/bn.svg';
+import bp from '../../icons/pieces/standard/bp.svg';
+import bk from '../../icons/pieces/standard/bk.svg';
+import bq from '../../icons/pieces/standard/bq.svg';
 
 function GridChessDocument() {
   const piecesTable = (
@@ -41,19 +41,20 @@ function GridChessDocument() {
 
   return (
     <VariantDocument title="Grid chess" piecesTable={piecesTable}>
+      <p>
       In grid chess, all standard chess rules apply, except that each move must cross one or more
-      grid lines. It follows that the king will not be under attack by any opposing piece that is
-      currently in the same grid.
-
+      grid lines. It follows that the king will not be under attack by any opposing piece that is currently in the same grid.
+      </p>
+      
       <ContentBox
-        board={GridChess('', 'w', '', undefined, 2, false, true)}
+        board={GridChess(undefined, 2, false, true)}
       >
         This is the starting position in grid chess.
         All the standard moves are legal at the start because they all cross one grid line.
       </ContentBox>
 
       <ContentBox
-        board={GridChess('', 'w', '', 'rnbqkbnr/ppp1pppp/8/4P3/3p4/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3', 2, false, true)}
+        board={GridChess('rnbqkbnr/ppp1pppp/8/4P3/3p4/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3', 2, false, true)}
       >
         After
         <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 1. e4 d5 2. e5 d4</span>
@@ -71,7 +72,7 @@ function GridChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={GridChess('', 'w', '', '2k5/8/8/8/2N5/8/1q6/1K6 w - - 0 1', 2, false, true)}
+        board={GridChess('2k5/8/8/8/2N5/8/1q6/1K6 w - - 0 1', 2, false, true)}
       >
         There are two things to observe in this position.
         <br />
@@ -86,7 +87,7 @@ function GridChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={GridChess('', 'w', '', '4k3/8/8/R7/6B1/8/8/4K3 w - - 0 1', 2, false, true)}
+        board={GridChess('4k3/8/8/R7/6B1/8/8/4K3 w - - 0 1', 2, false, true)}
       >
         Here is a checkmate-in-one scenario.
         <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 1. ♖a8#</span>

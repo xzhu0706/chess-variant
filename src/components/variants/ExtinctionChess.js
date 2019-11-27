@@ -2,18 +2,18 @@ import React from 'react';
 import ExtinctionChess from '../../WithMoveValidation';
 import ContentBox from './ContentBox';
 import VariantDocument from './Variant';
-import wb from '../../pieces/standard/wb.svg';
-import wr from '../../pieces/standard/wr.svg';
-import wn from '../../pieces/standard/wn.svg';
-import wp from '../../pieces/standard/wp.svg';
-import wk from '../../pieces/standard/wk.svg';
-import wq from '../../pieces/standard/wq.svg';
-import bb from '../../pieces/standard/bb.svg';
-import br from '../../pieces/standard/br.svg';
-import bn from '../../pieces/standard/bn.svg';
-import bp from '../../pieces/standard/bp.svg';
-import bk from '../../pieces/standard/bk.svg';
-import bq from '../../pieces/standard/bq.svg';
+import wb from '../../icons/pieces/standard/wb.svg';
+import wr from '../../icons/pieces/standard/wr.svg';
+import wn from '../../icons/pieces/standard/wn.svg';
+import wp from '../../icons/pieces/standard/wp.svg';
+import wk from '../../icons/pieces/standard/wk.svg';
+import wq from '../../icons/pieces/standard/wq.svg';
+import bb from '../../icons/pieces/standard/bb.svg';
+import br from '../../icons/pieces/standard/br.svg';
+import bn from '../../icons/pieces/standard/bn.svg';
+import bp from '../../icons/pieces/standard/bp.svg';
+import bk from '../../icons/pieces/standard/bk.svg';
+import bq from '../../icons/pieces/standard/bq.svg';
 
 function ExtinctionChessDocument() {
   const piecesTable = (
@@ -41,22 +41,22 @@ function ExtinctionChessDocument() {
 
   return (
     <VariantDocument title="Extinction chess" piecesTable={piecesTable}>
-      In extinction chess, all standard chess rules apply, except that a player loses only when
-      he/she loses every member of one of the piece types that were present in the starting
-      position, i.e., when one of those pieces goes extinct.
-
+      <p>
+      In extinction chess, all standard chess rules apply, except that a player loses only when he/she loses every member of one of the piece types that were present in the starting position, i.e., when one of those pieces goes extinct.
+      </p>
+      
       <ContentBox
-        board={ExtinctionChess('', 'w', '', undefined, 3, false, true)}
+        board={ExtinctionChess(undefined, 3, true, true)}
       >
       This is the default starting position. The pieces in the starting position determine the
       piece types that can &quot;go extinct&quot;.
-      Thus, a player wins if he/she eliminates all of the other player&apost;s pawns, knights,
+      Thus, a player wins if he/she eliminates all of the other player's pawns, knights,
       bishops, rooks, queens or kings.
         <br />
       </ContentBox>
 
       <ContentBox
-        board={ExtinctionChess('', 'w', '', 'rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1', 3, false, true)}
+        board={ExtinctionChess('rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1', 3, false, true)}
       >
       A king has no special purpose in extinction chess (and check/checkmate is disabled).
       Thus, a game can be played with no kings on either side, which is not the case in
@@ -64,17 +64,16 @@ function ExtinctionChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={ExtinctionChess('', 'w', '', 'rnbqkbnr/pppppppp/8/8/bbbbbbbb/8/8/R3K2R w KQkq - 0 1', 3, false, true)}
+        board={ExtinctionChess('rnbqkbnr/pppppppp/8/8/bbbbbbbb/8/8/R3K2R w KQkq - 0 1', 3, false, true)} 
       >
       Because the king is not a special piece, the king can ignore attacks/checks and moreover
       can castle even when the interceding squares are under attack.
       </ContentBox>
 
       <ContentBox
-        board={ExtinctionChess('', 'w', '', '8/8/3q1p2/2r5/4N3/2b3k1/3n1n2/8 w KQkq - 0 1', 3, false, true)}
+        board={ExtinctionChess('8/8/3q1p2/2r5/4N3/2b3k1/3n1n2/8 w KQkq - 0 1', 3, false, true)}  
       >
-      Here is an example of an ending scenario. White wins in one move if he/she captures any of
-      Black&apost;s pieces except for the knight, because of the fact Black has two knights.
+      Here is an example of an ending scenario. White wins in one move if he/she captures any of Black's pieces except for the knight because Black has two knights.
       </ContentBox>
     </VariantDocument>
   );
