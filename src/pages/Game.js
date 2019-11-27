@@ -40,6 +40,7 @@ class Game extends Component {
     this.moveFrom = null;
     this.gameInfo = null;
     this.boardId = '';
+    this.isViewer = false;
   }
 
   async componentDidMount() {
@@ -65,6 +66,8 @@ class Game extends Component {
     } else if (this.gameInfo.opponent.id === userId) {
       this.orientation = this.gameInfo.creatorOrientation === 'white' ? 'black' : 'white';
       this.opponent = this.gameInfo.creator;
+    } else {
+      this.isViewer = true;
     }
     console.log(this.orientation, userId, this.gameInfo.opponent.id, this.gameInfo.creator.id);
     let initialFen = '';
@@ -238,6 +241,12 @@ class Game extends Component {
 
   render() {
     const { state } = this;
+    let players = '';
+    if (this.isViewer && (this.gameInfo !== null)) {
+      players = `${this.gameInfo.creator.username} vs ${this.gameInfo.opponent.username}`;
+    } else {
+      players = `You vs ${this.opponent !== null ? this.opponent.username : 'Anonymous'}`;
+    }
     return (
       <Grid container spacing={1}>
         <Grid container item md={4}>
@@ -255,9 +264,7 @@ class Game extends Component {
           <Box display="flex" flexDirection="column">
             <Paper style={{ border: '1px solid #D3D3D3', marginBottom: '2px' }}>
               <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h5" component="h5">
-                You vs
-                {' '}
-                {this.opponent !== null ? this.opponent.username : 'Anonymous'}
+                {players}
               </Typography>
               <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h6" component="h6">
                 Variant:
