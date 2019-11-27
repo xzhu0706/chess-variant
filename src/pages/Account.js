@@ -19,7 +19,7 @@ export default class Account extends Component {
     const user = await Auth.currentUserInfo();
     if (user) {
       let userid = user.attributes.sub
-      let queryResult = await API.graphql(graphqlOperation(customQueries.getUserWithPastGames, { id: "703e8c5c-be09-4122-9df4-fb38b3c6b330" }));
+      let queryResult = await API.graphql(graphqlOperation(customQueries.getUserWithPastGames, { id: userid }));
       this.setState({ user: queryResult.data.getUser })
     }
   }
