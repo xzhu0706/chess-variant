@@ -19,10 +19,8 @@ export default class Account extends Component {
     const user = await Auth.currentUserInfo();
     if(user){
       let userid = user.attributes.sub
-      let queryResult = await API.graphql(graphqlOperation(customQueries.getUserWithPastGames, { id:userid }));
+      let queryResult = await API.graphql(graphqlOperation(customQueries.getUserWithPastGames, { id: "3c26ab26-33ab-4b2c-a47a-b1997114800d" }));
       this.setState({user : queryResult.data.getUser})
-      console.log(queryResult)
-      console.log(queryResult.data.getUser)
     }
   }
 
@@ -33,6 +31,7 @@ export default class Account extends Component {
           username={this.state.user ? this.state.user.username : 'Loading..'}
           email={this.state.user ? this.state.user.email : 'Loading..'}
           phone={this.state.user ? this.state.user.phoneNumber : 'Loading..'}
+          history={this.state.user ? this.state.user.pastGames.items : 'Loading..'}
         />
       </Container>
     );
@@ -49,7 +48,7 @@ const Profile = (props) => (
           phone={props.phone}
         />
       </Col>
-      <MatchHistory />
+      <MatchHistory history={props.history}/>
       <Col sm={{ span: 8 }} />
     </Row>
   </div>
@@ -67,28 +66,53 @@ const AccountInfo = (props) => (
   </div>
 );
 
-const MatchHistory = (props) => (
-  <div>
+const GameRow = (props) => {
+
+  return <tr>
+    <td>{props.available}</td>
+    <td>{props.opponent}</td>
+    <td>{props.variant}</td>
+    <td>{props.time}|</td>
+    <td>{props.winner}</td>
+  </tr>
+}
+
+const MatchHistory = (props) => {
+
+  let index = 0;
+  let games = props.history
+  let gamesList = []
+  if(games != "Loading.."){
+    while (index < games.length) { 
+            let game = games[index].game
+            console.log(game)
+            let row = <GameRow 
+                        available={game.available ? "yes":"no"}
+                        opponent={game.opponent.username}
+                        variant={game.variant}
+                        time={game.time}
+                        winner={game.winner}
+                      />
+            gamesList.push(row)
+            index++; 
+    }
+  }
+
+  return <div>
     <h2>Match History</h2>
     <Table striped bordered responsive>
       <thead>
         <tr>
-          <td>#</td>
-          <td>Variant</td>
+          <td>Available</td>
           <td>Opponent</td>
-          <td>Outcome</td>
-          <td>end FEN</td>
+          <td>Variant</td>
+          <td>Time</td>
+          <td>Winner</td>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>AntiChess</td>
-          <td>Magnus</td>
-          <td>Win</td>
-          <td>FEN here</td>
-        </tr>
+        {gamesList[0]}
       </tbody>
     </Table>
-  </div>
-);
+  </div>;
+};
