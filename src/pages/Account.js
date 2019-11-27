@@ -13,7 +13,6 @@ export default class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        // userId: null
     };
   }
   async componentDidMount() {
@@ -21,7 +20,9 @@ export default class Account extends Component {
     if(user){
       let userid = user.attributes.sub
       let queryResult = await API.graphql(graphqlOperation(customQueries.getUserWithPastGames, { id:userid }));
+      this.setState({user : queryResult.data.getUser})
       console.log(queryResult)
+      console.log(queryResult.data.getUser)
     }
   }
 
@@ -30,8 +31,8 @@ export default class Account extends Component {
       <Container>
         <Profile
           username={this.state.user ? this.state.user.username : 'Loading..'}
-          email={this.state.user ? this.state.user.attributes.email : 'Loading..'}
-          phone={this.state.user ? this.state.user.attributes.phone_number : 'Loading..'}
+          email={this.state.user ? this.state.user.email : 'Loading..'}
+          phone={this.state.user ? this.state.user.phoneNumber : 'Loading..'}
         />
       </Container>
     );
