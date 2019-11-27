@@ -11,7 +11,7 @@
     "aws-amplify-react": "^2.5.4",
     "bootstrap": "^4.3.1",
     "chess.js": "0.10.2",
-    "chessboardjsx": "^2.4.2",
+    "chessboardjsx": "github:seyson/chessboardjsx",
     "date-fns": "^2.8.0",
     "material-table": "^1.54.1",
     "prop-types": "^15.7.2",

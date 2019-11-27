@@ -26,17 +26,20 @@ function GameData({ turn, gameResult, fen, pgn, history, prevMove, nextMove, win
   const hightlightMoveStyle = {
     backgroundColor: 'yellow',
   }
-  const moves = history.map((move, index) => {
-    return (
-      <span>
-        {index % 2 === 0 ? <span>{index/2 + 1}. </span> : ''}
-        <span style={currentMove - 1 === index ? hightlightMoveStyle : null}>
-          {move}
-          {' '}
+  let moves;
+  if (history) {
+    moves = history.map((move, index) => {
+      return (
+        <span>
+          {index % 2 === 0 ? <span>{index/2 + 1}. </span> : ''}
+          <span style={currentMove - 1 === index ? hightlightMoveStyle : null}>
+            {move}
+            {' '}
+          </span>
         </span>
-      </span>
-    );
-  });
+      );
+    });
+  }
   return (
     <div className="game-data">
       <div>FEN: {fen}</div>
