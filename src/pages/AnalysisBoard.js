@@ -1,7 +1,6 @@
 import React from 'react';
 import Board from '../WithMoveValidation';
 import SparePieces from '../components/customization/SparePieces.js';
-import FenInput from '../components/customization/FenInput.js';
 import './AnalysisBoard.css';
 
 class AnalysisBoard extends React.Component {
@@ -9,8 +8,7 @@ class AnalysisBoard extends React.Component {
     super(props);
     this.state = {
       editMode: true,
-      sparePiece: 'cursor',
-      fen: '',
+      sparePiece: 'cursor'
     };
     this.handleIconChange = this.handleIconChange.bind(this);
   }
@@ -21,12 +19,6 @@ class AnalysisBoard extends React.Component {
     })
   };
 
-  handleFenChange(event) {
-    this.setState({
-      fen: event.target.value
-    })
-  }
-
   render() {
     return (
       <div style={{textAlign: 'center'}}>
@@ -35,11 +27,15 @@ class AnalysisBoard extends React.Component {
           {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, this.state.editMode, this.state.sparePiece)}
         </div>
         <div>
-          <FenInput />
-        </div>
-        <div>
             {/* render spare pieces component that calls handleIconChange() when one of its icons is selected */}
             <SparePieces handleChange={this.handleIconChange} />
+        </div>
+        <div>
+          {/* <form onSubmit={this.handleSubmit}>
+            <label htmlFor="customize">Enter move offsets</label>
+            <input id="customize" name="customize" type="text" />
+            <Button type='submit'>Play</Button>
+          </form> */}
         </div>
       </div>
     );

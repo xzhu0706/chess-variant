@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
 import GameData from './GameData.js';
+import FenInput from './components/customization/FenInput.js';
 import wm from "./icons/pieces/fairy/wk_180.svg"; // "mann" (upside-down king)
 import bm from "./icons/pieces/fairy/bk_180.svg";
 import wf from "./icons/pieces/fairy/wb_180.svg"; // "ferz" (upside-down bishop)
@@ -393,6 +394,7 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
 
           return (
             <div className="d-flex flex-column">
+              { editMode ? <FenInput fen={fen}/> : null }
               <div id={boardId}>
                 <Chessboard
                   position={fen}

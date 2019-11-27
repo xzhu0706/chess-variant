@@ -1,12 +1,43 @@
 import React from 'react';
-import './Moves.css';
+import Button from '@material-ui/core/Button';
+import { Redirect } from 'react-router-dom';
 
-function FenInput(props) {
-  return (
-    <div>
+class FenInput extends React.Component {
+  constructor(props) {
+    super(props);
 
-    </div>
-  );
+    this.state = {
+      redirect: false
+    };
+  }
+
+  handleSubmit = () => {
+    this.setState({
+      redirect: true
+    });
+  }
+
+  render() {
+    return (
+      <div style={{textAlign: 'center'}}>
+        { this.state.redirect ?
+            <Redirect to={{
+              pathname: '/analysis',
+              state: { fen: this.props.fen }
+            }} />
+            : null
+        }
+        <form onSubmit={this.handleSubmit}>
+          <Button type='submit'>Play</Button>
+        </form>
+        <input
+          value={this.props.fen}
+          style={{ margin: '0.25em' }}
+        >
+        </input>
+      </div>
+    );
+  }
 }
 
 export default FenInput;

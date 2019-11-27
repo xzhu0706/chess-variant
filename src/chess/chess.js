@@ -33,7 +33,7 @@
  * https://github.com/jhlywa/chess.js/blob/master/LICENSE
  */
 
-var Chess = function(fen, variant=0, customPieces) {
+var Chess = function(fen, variant=0, customPieces={}) {
 
   /* jshint indent: false */
 
@@ -86,6 +86,7 @@ var Chess = function(fen, variant=0, customPieces) {
     s: [-17, -15,  17,  15],
   };
 
+  // add custom pieces to PIECE_OFFSETS_REPEATING
   // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
   for (let [key, value] of Object.entries(customPieces)) {
     if (!(key in PIECE_OFFSETS_REPEATING)) {
@@ -108,6 +109,7 @@ var Chess = function(fen, variant=0, customPieces) {
     s: [-18, -33, -31, -14,  18, 33, 31,  14],
   };
 
+  // add custom pieces to PIECE_OFFSETS
   // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
   for (const [key, value] of Object.entries(customPieces)) {
     if (!(key in PIECE_OFFSETS)) {
@@ -117,6 +119,7 @@ var Chess = function(fen, variant=0, customPieces) {
 
   const SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5 };
 
+  // add custom pieces to SHIFTS
   for (const key of Object.keys(customPieces)) {
     SHIFTS[key] = Object.keys(SHIFTS).length;
   }
@@ -126,7 +129,7 @@ var Chess = function(fen, variant=0, customPieces) {
   // kqrbnp = 010100 = 20 (only the queen and bishop can attack the center piece)
   // kqrbnp = 000010 =  2 (only the knight can attack the center piece)
   // kqrbnp = 011000 = 24 (only the queen and rook can attack the center piece)
-  const ATTACKS = [
+  let ATTACKS = [
     20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20, 0,
      0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
      0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
@@ -141,16 +144,8 @@ var Chess = function(fen, variant=0, customPieces) {
      0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
      0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
      0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
-    20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20
+    20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20,
   ];
-
-  for (let sq = 0, len = ATTACKS.length; sq < len; sq++) {
-    PIECE_OFFSETS_REPEATING['m'].forEach(offset => {
-      if ((sq - 119) % offset === 0) {
-        ATTACKS[sq] | 1 << SHIFTS[piece.type])
-      }
-    })
-  };
 
   // how to shift the board in order to make a move (?)
   const RAYS = [
@@ -1868,7 +1863,7 @@ var Chess = function(fen, variant=0, customPieces) {
   };
 };
 
-let valid_2x2_grid_move = (from, to) => {
+const valid_2x2_grid_move = (from, to) => {
   /* returns true if the `from` and `to` squares are in different 2x2 subgrids */
   // a8:   0, b8:   1, c8:   2, d8:   3, e8:   4, f8:   5, g8:   6, h8:   7,
   // a7:  16, b7:  17, c7:  18, d7:  19, e7:  20, f7:  21, g7:  22, h7:  23,
@@ -1881,9 +1876,54 @@ let valid_2x2_grid_move = (from, to) => {
   return !((from >> 5 === to >> 5) && ((from & 15) >> 1 === (to & 15) >> 1));
 };
 
+const moduloEuclid = (a, b) => {
+  let m = a % b;
+  if (m < 0) {
+    m = (b < 0) ? m - b : m + b;
+  }
+  return m;
+}
+
+// const updateAttacks = (ATTACKS, SHIFTS, customPieces) => {
+//   // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
+
+//   for (const [key, value] of Object.entries(customPieces)) {
+//     // process repeating offsets
+//     value[0].forEach(offset => {
+//       if 
+//       const movementDirection = moduloEuclid(offset, 16) < 0 ? 'left' : 'right';
+//       let nextOffset = offset;
+//       if (nextOffset )
+//       let k = 119 - nextOffset;
+//       // keep updating ATTACKS array until you fall off the edge
+//       // top edge: simply check (k >= 0)
+//       // bottom edge: simply check (k < ATTACKS.length)
+//       // left edge, right edge: we use modulo for this, which calculates the horizontal offset
+//       while (k >= 0 &&
+//              k < ATTACKS.length &&
+//              (movementDirection === 'left' ?  )
+//              ) {
+//         ATTACKS[119 - nextOffset] |= 1 << SHIFTS[key];
+//         k -= offset;
+//       }
+//     });
+//     // process non-repeating offsets
+//     value[1].forEach(offset => {
+//       const k = 119 - offset;
+//       if (k >= 0 && k < ATTACKS.length) {
+//         ATTACKS[k] |= 1 << SHIFTS[key]; // toggle the bit that corresponds to the piece
+//       }
+//     });
+//   }
+
+//   return ATTACKS;
+// }
+
 /* export Chess object if using node or any other CommonJS compatible
  * environment */
 if (typeof exports !== 'undefined') exports.Chess = Chess;
 if (typeof exports !== 'undefined') exports.valid_2x2_grid_move = valid_2x2_grid_move;
+// if (typeof exports !== 'undefined') exports.updateAttacks = updateAttacks;
+
 /* export Chess object for any RequireJS compatible environment */
 if (typeof define !== 'undefined') define( function () { return Chess;  });
