@@ -23,6 +23,7 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
     variant
     fen
     available
+    ended
     history
     result
     winner
@@ -146,6 +147,7 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
       variant
       fen
       available
+      ended
       history
       result
       winner
@@ -187,6 +189,7 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
       variant
       fen
       available
+      ended
       history
       result
       winner
@@ -229,6 +232,7 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
     variant
     fen
     available
+    ended
     history
     result
     winner
@@ -258,6 +262,7 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
     variant
     fen
     available
+    ended
     history
     result
     winner
@@ -287,6 +292,7 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
     variant
     fen
     available
+    ended
     history
     result
     winner

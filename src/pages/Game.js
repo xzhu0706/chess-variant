@@ -15,6 +15,7 @@ import '../variant-style.css';
 import './Game.css';
 import Clock from '../components/Clock';
 import GameData from '../GameData';
+import GameResignationDialog from '../components/GameResignationDialog';
 
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
 
@@ -101,6 +102,7 @@ class Game extends Component {
         const gameState = gameData.value.data.onUpdateGameState;
         if (this.gameInfo.id === gameState.id) {
           this.game.load(gameState.fen);
+          this.gameInfo.ended = gameState.ended
           let yourTurn = this.game.turn() === this.orientation[0];
           let gameResult
           if(gameState.ended === true){
@@ -117,9 +119,9 @@ class Game extends Component {
               //Player on the other end left the game.
               alert('The other player has left the game')
             }
-            youTurn = false
+            yourTurn = false
           }
-          this.setState({fen: gameState.fen, yourTurn, gameResult, history: gameState.history, game});
+          this.setState({fen: gameState.fen, yourTurn, gameResult, history: gameState.history});
 
         }
       },
@@ -127,9 +129,10 @@ class Game extends Component {
   }
 
   componentWillUnmount(){
-    if(this.game.is_over() === false){
-      this.setState({showGameResignationDialog: true})
-    }
+    if(this.gameUpdateSubscription)
+      this.gameUpdateSubscription.unsubscribe()
+    if(!this.game.game_over() && !this.gameInfo.ended)
+      this.leaveGame()
   }
 
   getUserInfo = async () => {
@@ -146,6 +149,7 @@ class Game extends Component {
 
   onSquareClick = async (square) => {
     if (this.game.turn() !== this.orientation[0]) return;
+    if(this.game.game_over() || this.gameInfo.ended) return
     const piece = this.game.get(square);
     if (this.moveFrom !== null) {
       const move = this.game.move({ from: this.moveFrom, to: square });
@@ -203,15 +207,15 @@ class Game extends Component {
     this.game.move();
   }
 
-  hideGameResignationDialog = () => {
-    this.setState({showGameResignationDialog: false})
-  }
 
   leaveGame = () => {
     let newGameState = {}
     newGameState.id = this.gameId
     newGameState.ended = true;
-    API.graphql(graphqlOperation(mutations.updateGameState, { input: newGameState},))
+    let update = API.graphql(graphqlOperation(
+      mutations.updateGameState, { input: newGameState },
+    ));
+    
   }
 
   render() {
@@ -239,11 +243,6 @@ class Game extends Component {
               </Typography>
 
             </Paper>
-            <GameResignationDialog
-              open = {this.state.showGameResignationDialog}
-              hide = {this.hideGameResignationDialog}
-              leaveGame = {this.leaveGame} 
-            />
             <div id={this.boardId}>
               <Chessboard
                 position={state.fen}
