@@ -27,6 +27,10 @@ class Game extends Component {
       squareStyles: {},
       yourTurn: false,
       history: [],
+      gameOver: false,
+      gameResult: '',
+      winner: '',
+      reverseHistory: [],
     };
     this.game = null;
     this.opponent = null; // the opponent. null if user created or joined game anonymously
@@ -43,9 +47,12 @@ class Game extends Component {
     const queryResult = await API.graphql(graphqlOperation(queries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame;
     if (this.gameInfo.history) {
-      console.log('getting history from db');
+      console.log('getting history from db', this.gameInfo);
       this.setState({
         history: [...this.gameInfo.history],
+        gameOver: !!this.gameInfo.result,
+        gameResult: this.gameInfo.result,
+        winner: this.gameInfo.winner,
       });
     }
     // let currentGame = localStorage.getItem('currentGame');
@@ -86,6 +93,16 @@ class Game extends Component {
       this.game = new Chess();
       initialFen = Games.STANDARD_FEN;
     }
+    if (this.gameInfo.result) {
+      // if a game was ended, play all the moves to the end
+      this.gameInfo.history.forEach((move) => {
+        this.game.move(move);
+      });
+      this.setState({
+        fen: this.game.fen(),
+      });
+      return;
+    }
     if (this.gameInfo.fen !== 'init') {
       initialFen = this.gameInfo.fen;
       this.game.load(initialFen);
@@ -104,6 +121,9 @@ class Game extends Component {
             fen: gameState.fen,
             yourTurn,
             history: gameState.history,
+            gameResult: gameState.result,
+            gameOver: !!gameState.gameResult,
+            winner: gameState.winner,
           });
         }
       },
@@ -123,7 +143,7 @@ class Game extends Component {
   }
 
   onSquareClick = async (square) => {
-    if (this.game.turn() !== this.orientation[0]) return;
+    if (this.state.gameOver || this.game.turn() !== this.orientation[0]) return;
     const piece = this.game.get(square);
     if (this.moveFrom !== null) {
       const move = this.game.move({ from: this.moveFrom, to: square });
@@ -138,6 +158,13 @@ class Game extends Component {
           yourTurn: false,
           history: [...this.state.history, move.san],
         });
+        // end the game if necessary
+        const result = this.updateGameResult();
+        if (result) {
+          updateGameData.result = result;
+          updateGameData.winner = this.game.turn();
+          console.log('game end', this.game.turn(), result);
+        }
         const updated = await API.graphql(graphqlOperation(
           mutations.updateGameState, { input: updateGameData },
         ));
@@ -161,14 +188,52 @@ class Game extends Component {
     this.setState({ squareStyles: newSquareStyles });
   }
 
+  updateGameResult = () => {
+    if (this.game.game_over() || this.state.history.length >= 50) {
+      let result = 'fifty'; // fifty move rule
+      if (this.game.in_checkmate()) {
+        result = 'checkmate';
+      } else if (this.gameInfo.variant === Games.EXTINCTION_CHESS && this.game.extinguished()) {
+        result = 'extinction';
+      } else if (this.game.in_stalemate()) {
+        result = 'stalemate';
+      } else if (this.game.insufficient_material()) {
+        result = 'insufficient';
+      } else if (this.game.in_threefold_repetition()) {
+        result = 'repetition';
+      }
+      this.setState({
+        gameOver: true,
+        gameResult: result,
+      });
+      return result;
+    }
+    /* (we will pass the value of this.state.gameResult to GameData) */
+  }
+
   prevMove = () => {
-    // TODO
-    this.game.undo();
+    if (this.game.history().length > 0) {
+      const reverseHistory = [...this.state.reverseHistory, this.game.history().pop()];
+      this.game.undo();
+      this.setState({
+        fen: this.game.fen(),
+        reverseHistory,
+      }, () => console.log(this.game.fen(), this.state.fen));
+      console.log(this.game.history(), this.state.reverseHistory);
+    }
   }
 
   nextMove = () => {
-    // TODO
-    this.game.move();
+    const reverseHistory = [...this.state.reverseHistory];
+    if (reverseHistory.length > 0) {
+      const move = reverseHistory.pop();
+      const newMove = this.game.move(move);
+      this.setState({
+        fen: this.game.fen(),
+        reverseHistory,
+      }, () => console.log(this.game.fen(), this.state.fen));
+      console.log(move, newMove.san, this.game.history(), reverseHistory);
+    }
   }
 
   render() {
@@ -176,7 +241,15 @@ class Game extends Component {
     return (
       <Grid container spacing={1}>
         <Grid container item md={4}>
-          <GameData history={state.history} fen={state.fen} prevMove={this.prevMove} nextMove={this.nextMove} />
+          <GameData
+            history={state.history}
+            fen={state.fen}
+            gameResult={state.gameResult}
+            winner={state.winner}
+            prevMove={this.prevMove}
+            nextMove={this.nextMove}
+            currentMove={state.history.length - state.reverseHistory.length}
+          />
         </Grid>
         <Grid container item md={4}>
           <Box display="flex" flexDirection="column">
