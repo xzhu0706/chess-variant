@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 // import * as queries from '../graphql/queries';
 import * as customQueries from '../customGraphql/queries';
+import { Link } from 'react-router-dom';
 
 
 import {
@@ -78,6 +79,7 @@ const GameRow = (props) => {
     <td>{props.winner}</td>
     <td>{props.result}</td>
     <td>{props.fen}</td>
+    <td><Link to={`/game/${props.id}`}>Link</Link></td>
   </tr>
 }
 
@@ -99,6 +101,7 @@ const MatchHistory = (props) => {
         winner={game.winner ? game.winner : "N/A"}
         result={game.result ? game.result : "N/A"}
         fen={game.fen}
+        id={game.id}
       />
       gamesList.push(row)
       index++;
