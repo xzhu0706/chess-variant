@@ -1,6 +1,7 @@
 import React from 'react';
 import Board from '../WithMoveValidation';
 import SparePieces from '../components/customization/SparePieces.js';
+import FenInput from '../components/customization/FenInput.js';
 import './AnalysisBoard.css';
 
 class AnalysisBoard extends React.Component {
@@ -9,6 +10,7 @@ class AnalysisBoard extends React.Component {
     this.state = {
       editMode: true,
       sparePiece: 'cursor',
+      fen: '',
     };
     this.handleIconChange = this.handleIconChange.bind(this);
   }
@@ -19,15 +21,24 @@ class AnalysisBoard extends React.Component {
     })
   };
 
+  handleFenChange(event) {
+    this.setState({
+      fen: event.target.value
+    })
+  }
+
   render() {
     return (
       <div style={{textAlign: 'center'}}>
         <div style={{display: 'inline-block'}}>
-          {/* render the board in edit or non-edit mode with knowledge of the currently selected spare piece  */}
+          {/* render the board */}
           {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, this.state.editMode, this.state.sparePiece)}
         </div>
         <div>
-            {/* render the spare pieces module that will update this.state when a spare piece is selected */}
+          <FenInput />
+        </div>
+        <div>
+            {/* render spare pieces component that calls handleIconChange() when one of its icons is selected */}
             <SparePieces handleChange={this.handleIconChange} />
         </div>
       </div>

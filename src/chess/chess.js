@@ -33,7 +33,7 @@
  * https://github.com/jhlywa/chess.js/blob/master/LICENSE
  */
 
-var Chess = function(fen, variant=0) {
+var Chess = function(fen, variant=0, customPieces) {
 
   /* jshint indent: false */
 
@@ -49,7 +49,7 @@ var Chess = function(fen, variant=0) {
   const QUEEN = 'q';
   const KING = 'k';
 
-  // custom pieces
+  // new pieces
   const MANN = 'm';
   const FERZ = 'f';
   const NIGHTRIDER = 'd';
@@ -72,7 +72,7 @@ var Chess = function(fen, variant=0) {
     w: [-16, -32, -17, -15]
   };
 
-  const PIECE_OFFSETS_REPEATING = {
+  let PIECE_OFFSETS_REPEATING = {
     n: [],
     b: [-17, -15,  17,  15],
     r: [-16,   1,  16,  -1],
@@ -80,26 +80,46 @@ var Chess = function(fen, variant=0) {
     k: [],
     m: [],
     f: [],
-    d: [],
+    d: [-18, -33, -31, -14,  18, 33, 31,  14],
     c: [],
-    e: [],
-    s: [],
+    e: [-16,   1,  16,  -1],
+    s: [-17, -15,  17,  15],
   };
 
-  const PIECE_OFFSETS = {
+  // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
+  for (let [key, value] of Object.entries(customPieces)) {
+    if (!(key in PIECE_OFFSETS_REPEATING)) {
+      PIECE_OFFSETS_REPEATING[key] = value[0];
+    }
+  }
+
+  let PIECE_OFFSETS = {
     n: [-18, -33, -31, -14,  18, 33, 31,  14],
     b: [],
     r: [],
     q: [],
     k: [-17, -16, -15,   1,  17, 16, 15,  -1],
-    k: [],
-    m: [],
-    f: [],
+    m: [-17, -16, -15,   1,  17, 16, 15,  -1],
+    f: [-17, -15,  17,  15],
     d: [],
-    c: [],
-    e: [],
-    s: [],
+    c: [-18, -33, -31, -14,  18, 33, 31,  14,
+        -17, -16, -15,   1,  17, 16, 15,  -1],
+    e: [-18, -33, -31, -14,  18, 33, 31,  14],
+    s: [-18, -33, -31, -14,  18, 33, 31,  14],
   };
+
+  // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
+  for (const [key, value] of Object.entries(customPieces)) {
+    if (!(key in PIECE_OFFSETS)) {
+      PIECE_OFFSETS[key] = value[1];
+    }
+  }
+
+  const SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5 };
+
+  for (const key of Object.keys(customPieces)) {
+    SHIFTS[key] = Object.keys(SHIFTS).length;
+  }
 
   // the ATTACKS array is a bit-mask of attacks based on a 6-bit string of the form kqrbnp.
   // For example:
@@ -124,6 +144,14 @@ var Chess = function(fen, variant=0) {
     20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20
   ];
 
+  for (let sq = 0, len = ATTACKS.length; sq < len; sq++) {
+    PIECE_OFFSETS_REPEATING['m'].forEach(offset => {
+      if ((sq - 119) % offset === 0) {
+        ATTACKS[sq] | 1 << SHIFTS[piece.type])
+      }
+    })
+  };
+
   // how to shift the board in order to make a move (?)
   const RAYS = [
      17,  0,  0,  0,  0,  0,  0, 16,  0,  0,  0,  0,  0,  0, 15, 0,
@@ -142,8 +170,6 @@ var Chess = function(fen, variant=0) {
       0,-15,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,-17,  0, 0,
     -15,  0,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,  0,-17
   ];
-
-  const SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5 };
 
   const FLAGS = {
     NORMAL: 'n',

@@ -50,7 +50,7 @@ function ExtinctionChessDocument() {
       >
       This is the default starting position. The pieces in the starting position determine the
       piece types that can &quot;go extinct&quot;.
-      Thus, a player wins if he/she eliminates all of the other player&apost;s pawns, knights,
+      Thus, a player wins if he/she eliminates all of the other player's pawns, knights,
       bishops, rooks, queens or kings.
         <br />
       </ContentBox>

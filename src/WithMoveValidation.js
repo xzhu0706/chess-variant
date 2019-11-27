@@ -83,11 +83,11 @@ class HumanVsHuman extends Component {
 
   updateGameResult() {
     if (this.game.game_over()) {
-      let result = "fifty"; // fifty move rule
+      let result; // fifty move rule
       if (this.game.in_checkmate()) {
         result = "checkmate";
       }
-      else if (this.state.variant === 3 && this.game.extinguished()) {
+      else if (this.props.variant === 3 && this.game.extinguished()) {
         result = 'extinction';
       }
       else if (this.game.in_stalemate()) {
@@ -98,6 +98,9 @@ class HumanVsHuman extends Component {
       }
       else if (this.game.in_threefold_repetition()) {
         result = "repetition";
+      }
+      else {
+        result = 'fifty';
       }
       this.setState({
         gameOver: true,
@@ -287,7 +290,7 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                   height: squareWidth,
                 }}
                 src={wd}
-                alt="white night rider"
+                alt="white nightrider"
               />
             ),
             bD: ({ squareWidth }) => (
@@ -297,7 +300,7 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                   height: squareWidth,
                 }}
                 src={bd}
-                alt="black night rider"
+                alt="black nightrider"
               />
             ),
             wF: ({ squareWidth }) => (

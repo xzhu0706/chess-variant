@@ -1,9 +1,10 @@
 import React from 'react';
+import './Moves.css';
 
 function FenInput(props) {
   return (
     <div>
-      {this.props.fen};
+
     </div>
   );
 }

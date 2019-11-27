@@ -4,8 +4,8 @@ function SparePieces(props) {
   return (
     <form onChange={props.handleChange}>
       <div className="piece-selector">
-        Select a piece to add to the board or the trash can to delete from the board. <br/>
-        Or select the cursor to move pieces already on the board.
+        Select a piece in order to add to the board or the trash can in order to delete from the board. <br/>
+        Select the cursor to move pieces already on the board.
         <div>
           <input id="cursor" type="radio" name="piece" value="cursor" defaultChecked />
           <label className="piece-card cursor" htmlFor="cursor"></label>
