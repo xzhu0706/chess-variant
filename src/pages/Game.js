@@ -278,11 +278,14 @@ class Game extends Component {
                 onSquareClick={this.onSquareClick}
               />
             </div>
-            <Clock />
           </Box>
         </Grid>
         <Grid container item md={4}>
           {/* // for chat box */}
+        </Grid>
+        <Grid container item md={4} justify="space-between">
+          <Clock time={60000} />
+          <Clock time={60000} />
         </Grid>
       </Grid>
     );
