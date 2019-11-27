@@ -72,12 +72,33 @@ var Chess = function(fen, variant=0) {
     w: [-16, -32, -17, -15]
   };
 
-  const PIECE_OFFSETS = {
-    n: [-18, -33, -31, -14,  18, 33, 31,  14],
+  const PIECE_OFFSETS_REPEATING = {
+    n: [],
     b: [-17, -15,  17,  15],
     r: [-16,   1,  16,  -1],
     q: [-17, -16, -15,   1,  17, 16, 15,  -1],
-    k: [-17, -16, -15,   1,  17, 16, 15,  -1]
+    k: [],
+    m: [],
+    f: [],
+    d: [],
+    c: [],
+    e: [],
+    s: [],
+  };
+
+  const PIECE_OFFSETS = {
+    n: [-18, -33, -31, -14,  18, 33, 31,  14],
+    b: [],
+    r: [],
+    q: [],
+    k: [-17, -16, -15,   1,  17, 16, 15,  -1],
+    k: [],
+    m: [],
+    f: [],
+    d: [],
+    c: [],
+    e: [],
+    s: [],
   };
 
   // the ATTACKS array is a bit-mask of attacks based on a 6-bit string of the form kqrbnp.
@@ -628,7 +649,7 @@ var Chess = function(fen, variant=0) {
         }
         
         /* pawn captures */
-        for (j = 2; j < 4; j++) {
+        for (let j = 2; j < 4; j++) {
           var square = i + PAWN_OFFSETS[us][j];
           if (square & 0x88) continue;
 
@@ -648,19 +669,21 @@ var Chess = function(fen, variant=0) {
           }
         }
       } else {
-        for (var j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
-          var offset = PIECE_OFFSETS[piece.type][j];
-          var square = i;
+        for (let j = 0, len = PIECE_OFFSETS_REPEATING[piece.type].length; j < len; j++) {
+          const offset = PIECE_OFFSETS_REPEATING[piece.type][j];
+          let square = i;
 
+          // generate all moves in the direction of the offset
           while (true) {
             square += offset;
-            if (square & 0x88) break;
+            if (square & 0x88) break; // stop if we've fallen off the edge of the board
 
+            // if we're moving to a null square, just add the move (unless we're playing grid chess)
             if (board[square] == null) {
               if (variant !== GRID || valid_2x2_grid_move(i, square)) {
                 add_move(board, moves, i, square, BITS.NORMAL);
               }
-            } else {
+            } else { // we're moving to a square occupied by a piece
               if (board[square].color === us) break;
               if (variant !== GRID || valid_2x2_grid_move(i, square)) {
                 add_move(board, moves, i, square, BITS.CAPTURE);
@@ -668,9 +691,22 @@ var Chess = function(fen, variant=0) {
               }
               break;
             }
+          }
+        }
 
-            /* break, if knight or king */
-            if (piece.type === 'n' || piece.type === 'k') break;
+        for (let j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
+          let square = i + PIECE_OFFSETS[piece.type][j];
+          if (square & 0x88) continue;
+          if (board[square] == null) {
+            if (variant !== GRID || valid_2x2_grid_move(i, square)) {
+              add_move(board, moves, i, square, BITS.NORMAL);
+            }
+          }
+          else if (board[square].color === them) { // we're moving to a square occupied by an enemy piece
+            if (variant !== GRID || valid_2x2_grid_move(i, square)) {
+              add_move(board, moves, i, square, BITS.CAPTURE);
+              capturePossible = 1;
+            }
           }
         }
       }
