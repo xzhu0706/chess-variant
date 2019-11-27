@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Auth, API, graphqlOperation} from 'aws-amplify';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
 // import * as queries from '../graphql/queries';
 import * as customQueries from '../customGraphql/queries';
 
@@ -17,10 +17,10 @@ export default class Account extends Component {
   }
   async componentDidMount() {
     const user = await Auth.currentUserInfo();
-    if(user){
+    if (user) {
       let userid = user.attributes.sub
-      let queryResult = await API.graphql(graphqlOperation(customQueries.getUserWithPastGames, { id: "3c26ab26-33ab-4b2c-a47a-b1997114800d" }));
-      this.setState({user : queryResult.data.getUser})
+      let queryResult = await API.graphql(graphqlOperation(customQueries.getUserWithPastGames, { id: "703e8c5c-be09-4122-9df4-fb38b3c6b330" }));
+      this.setState({ user: queryResult.data.getUser })
     }
   }
 
@@ -48,8 +48,10 @@ const Profile = (props) => (
           phone={props.phone}
         />
       </Col>
-      <MatchHistory history={props.history}/>
-      <Col sm={{ span: 8 }} />
+      <Col sm={{ span: 7 }} >
+        <MatchHistory history={props.history} />
+      </Col>
+      
     </Row>
   </div>
 );
@@ -72,29 +74,34 @@ const GameRow = (props) => {
     <td>{props.available}</td>
     <td>{props.opponent}</td>
     <td>{props.variant}</td>
-    <td>{props.time}|</td>
+    <td>{props.time}</td>
     <td>{props.winner}</td>
+    <td>{props.result}</td>
+    <td>{props.fen}</td>
   </tr>
 }
 
 const MatchHistory = (props) => {
 
+  // get row elements
   let index = 0;
   let games = props.history
   let gamesList = []
-  if(games != "Loading.."){
-    while (index < games.length) { 
-            let game = games[index].game
-            console.log(game)
-            let row = <GameRow 
-                        available={game.available ? "yes":"no"}
-                        opponent={game.opponent.username}
-                        variant={game.variant}
-                        time={game.time}
-                        winner={game.winner}
-                      />
-            gamesList.push(row)
-            index++; 
+  if (games != "Loading..") {
+    while (index < games.length) {
+      let game = games[index].game
+      console.log(game)
+      let row = <GameRow
+        available={game.available ? "yes" : "no"}
+        opponent={game.opponent.username ? game.opponent.username : "anonymous"}
+        variant={game.variant}
+        time={game.time ? game.time : "N/A"}
+        winner={game.winner ? game.winner : "N/A"}
+        result={game.result ? game.result : "N/A"}
+        fen={game.fen}
+      />
+      gamesList.push(row)
+      index++;
     }
   }
 
@@ -108,10 +115,12 @@ const MatchHistory = (props) => {
           <td>Variant</td>
           <td>Time</td>
           <td>Winner</td>
+          <td>Result</td>
+          <td>Fen</td>
         </tr>
       </thead>
       <tbody>
-        {gamesList[0]}
+        {gamesList}
       </tbody>
     </Table>
   </div>;
