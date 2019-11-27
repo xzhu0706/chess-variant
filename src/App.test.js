@@ -18,8 +18,8 @@ describe('App Level Tests', () => {
     });
     const page = await browser.newPage();
     await page.goto(
-      // 'http://chess-variant-20191104002115-hostingbucket-develop.s3-website-us-east-1.amazonaws.com/'
-      'http://localhost:3000/'
+      'http://chess-variant-20191104002115-hostingbucket-develop.s3-website-us-east-1.amazonaws.com/'
+      // 'http://localhost:3000/'
     );
     
     await page.click('#btncreategame');

@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { Auth } from 'aws-amplify';
+import { Auth, API, graphqlOperation} from 'aws-amplify';
+// import * as queries from '../graphql/queries';
+import * as customQueries from '../customGraphql/queries';
+
+
 import {
   Container, Row, Col, Image, ListGroup, ListGroupItem, Table,
 } from 'react-bootstrap';
@@ -9,15 +13,16 @@ export default class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+        // userId: null
     };
   }
-
-  componentDidMount() {
-    const user = Auth.currentUserInfo();
-    user.then((result) => {
-      this.setState({ user: result });
-    });
+  async componentDidMount() {
+    const user = await Auth.currentUserInfo();
+    if(user){
+      let userid = user.attributes.sub
+      let queryResult = await API.graphql(graphqlOperation(customQueries.getUserWithPastGames, { id:userid }));
+      console.log(queryResult)
+    }
   }
 
   render() {
