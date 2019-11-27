@@ -341,7 +341,7 @@ class Lobby extends Component {
     return (
       <Container maxWidth="sm" style={lobbyStyle}>
         <CreateGameDialog closeDialog = {this.closeDialog} showDialog = {this.state.showDialog} createGame = {this.createGame} />
-        <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog}>
+        <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog} id="btncreategame">
                 Create a game
         </Button>
         <Dialog
