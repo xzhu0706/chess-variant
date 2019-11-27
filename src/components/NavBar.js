@@ -13,8 +13,6 @@ import { Authenticator, Greetings } from 'aws-amplify-react';
 
 import awsconfig from '../aws-exports';
 
-const icon = require('../pieces/standard/wr.svg');
-
 Amplify.configure(awsconfig);
 
 const Menu = styled.div`
@@ -115,7 +113,7 @@ class NavBar extends Component {
           menu={(
             <Menu>
               <Navbar.Brand style={{ fontFamily: 'chalkduster' }}>
-                <Image src={icon} alt="Chess Piece" style={imgStyle} fluid />
+                <Image src={require('../icons/pieces/standard/wr.svg')} alt="Chess Piece" style={imgStyle} fluid />
                 <Link to="/" style={{ color: '#333333', fontSize: '28px' }}>Chess Variants</Link>
               </Navbar.Brand>
               <ul>
@@ -129,7 +127,7 @@ class NavBar extends Component {
                   <Link to="/">Leaderboard</Link>
                 </li>
                 <li>
-                  <Link to="/">Analysis Board</Link>
+                  <Link to="/create">Create a Variant</Link>
                 </li>
 
                 {username

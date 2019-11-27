@@ -2,18 +2,18 @@ import React from 'react';
 import Antichess from '../../WithMoveValidation';
 import ContentBox from './ContentBox';
 import VariantDocument from './Variant';
-import wb from '../../pieces/standard/wb.svg';
-import wr from '../../pieces/standard/wr.svg';
-import wn from '../../pieces/standard/wn.svg';
-import wp from '../../pieces/standard/wp.svg';
-import wk from '../../pieces/standard/wk.svg';
-import wq from '../../pieces/standard/wq.svg';
-import bb from '../../pieces/standard/bb.svg';
-import br from '../../pieces/standard/br.svg';
-import bn from '../../pieces/standard/bn.svg';
-import bp from '../../pieces/standard/bp.svg';
-import bk from '../../pieces/standard/bk.svg';
-import bq from '../../pieces/standard/bq.svg';
+import wb from '../../icons/pieces/standard/wb.svg';
+import wr from '../../icons/pieces/standard/wr.svg';
+import wn from '../../icons/pieces/standard/wn.svg';
+import wp from '../../icons/pieces/standard/wp.svg';
+import wk from '../../icons/pieces/standard/wk.svg';
+import wq from '../../icons/pieces/standard/wq.svg';
+import bb from '../../icons/pieces/standard/bb.svg';
+import br from '../../icons/pieces/standard/br.svg';
+import bn from '../../icons/pieces/standard/bn.svg';
+import bp from '../../icons/pieces/standard/bp.svg';
+import bk from '../../icons/pieces/standard/bk.svg';
+import bq from '../../icons/pieces/standard/bq.svg';
 
 function AntiChessDocument() {
   const piecesTable = (
@@ -42,7 +42,6 @@ function AntiChessDocument() {
   return (
     <VariantDocument title="Antichess" piecesTable={piecesTable}>
       In antichess, there are three rules that break from the standard chess rules:
-      <br />
       <ol>
         <li>
           The first player to run out of legal moves (typically by losing all his/her
@@ -57,7 +56,7 @@ function AntiChessDocument() {
         </li>
       </ol>
       <ContentBox
-        board={Antichess('', 'w', '', undefined, 1, false, true)}
+        board={Antichess(undefined, 1, false, true)}
       >
         This is the starting position in antichess.
         Because White cannot make a capture on the first move, the beginning
@@ -65,7 +64,7 @@ function AntiChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={Antichess('', 'w', '', 'rnbqkbnr/pppppp1p/8/6p1/8/7N/PPPPPPPP/RNBQKB1R w KQkq - 0 2', 1, false, true)}
+        board={Antichess('rnbqkbnr/pppppp1p/8/6p1/8/7N/PPPPPPPP/RNBQKB1R w KQkq - 0 2', 1, false, true)}
       >
         A popular opening move in antichess is
         <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 1. ♘h3</span>
@@ -78,7 +77,7 @@ function AntiChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={Antichess('', 'w', '', 'rnbqk1nr/ppppppbp/8/6N1/8/8/PPPPPPPP/RNBQKB1R w KQkq - 1 3', 1, false, true)}
+        board={Antichess('rnbqk1nr/ppppppbp/8/6N1/8/8/PPPPPPPP/RNBQKB1R w KQkq - 1 3', 1, false, true)}
       >
         White must make some capture if any is available.
         White may have multiple capturing moves available, as in this position based on the
@@ -89,7 +88,7 @@ function AntiChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={Antichess('', 'w', '', '8/8/8/8/7r/8/P7/8 w - - 0 1', 1, false, true)}
+        board={Antichess('8/8/8/8/7r/8/P7/8 w - - 0 1', 1, false, true)}
       >
         Here is a sample ending scenario.
         {' '}

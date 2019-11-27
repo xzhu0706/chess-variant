@@ -19,7 +19,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Button from '@material-ui/core/Button';
 import * as subscriptions from '../graphql/subscriptions';
-import * as queries from '../graphql/queries';
+// import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 import { Auth } from 'aws-amplify';
 import CreateGameDialog from './CreateGameDialog';
@@ -186,6 +186,7 @@ class Lobby extends Component {
     console.log('new', newGame);
     newGame.fen = 'init';
     newGame.available = true;
+    newGame.ended = false;
     await this.getUserInfo().then((user) => {
       console.log(typeof (user), user);
       if (typeof (user) === 'object') {

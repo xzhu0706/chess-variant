@@ -1,15 +1,21 @@
 import React from 'react';
 import Countdown from 'react-countdown-now';
 
-function Clock() {
+const clockStyle = {
+  fontSize: '30px',
+};
+
+function Clock({ time }) {
   return (
-    <Countdown
-      date={Date.now() + 3600000}
-      intervalDelay={3}
-      zeroPadTime={2}
-      autoStart={false}
-      daysInHours
-    />
+    <div style={clockStyle}>
+      <Countdown
+        date={Date.now() + time}
+        intervalDelay={3}
+        zeroPadTime={2}
+        autoStart={false}
+        daysInHours
+      />
+    </div>
   );
 }
 
