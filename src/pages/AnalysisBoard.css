@@ -101,40 +101,43 @@
     display: inline-block;
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
     width: 65px;
     height: 65px;
     filter: opacity(.4);
+    flex: 0 1 16%;
 }
 .piece-card:hover {
     filter: opacity(.85);
 }
 
+
 .board {
     position: relative;
 }
 
-.explanation {
-    align-self: flex-start;
+.category {
+    text-decoration: underline; 
 }
 
 .non-spares {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: nowrap;
-    background-color: #9a9;
+    background-color: #fffe93;
+    padding-top: 0.5em;
 }
 
 .spares {
-    width: 100%;
-    margin: auto;
-    background-color: #9a9;
+    background-color: #fff;
 }
 
-.spares .standard-pieces {
-    background-color: #ba9;
+.piece-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-.spares .fairy-pieces {
-    background-color: #7c2;
+.piece-selector {
+    display: flex;
+    flex-direction: column;
 }
+
