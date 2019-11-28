@@ -15,7 +15,11 @@ import '../variant-style.css';
 import './Game.css';
 import Clock from '../components/Clock';
 import GameData from '../GameData';
-import GameResignationDialog from '../components/GameResignationDialog';
+import GameInfo from '../components/GameInfo';
+import { Widget } from 'react-chat-widget';
+import 'react-chat-widget/lib/styles.css';
+
+
 
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
 
@@ -224,49 +228,34 @@ class Game extends Component {
   render() {
     const { state } = this;
     return (
-      <Grid container spacing={1}>
-        <Grid container item md={4}>
-          <GameData history={state.history} fen={state.fen} prevMove={this.prevMove} nextMove={this.nextMove} />
-        </Grid>
-        <Grid container item md={4}>
-          <Box display="flex" flexDirection="column">
-            <Paper style={{ border: '1px solid #D3D3D3', marginBottom: '2px' }}>
-              <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h5" component="h5">
-                You vs
-                {' '}
-                {this.opponent !== null ? this.opponent.username : 'Anonymous'}
-              </Typography>
-              <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h6" component="h6">
-                Variant:
-                {' '}
-                {this.gameInfo !== null ? this.gameInfo.variant : ''}
-              </Typography>
-              <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px' }} variant='h6' component="h6">
-                {this.state.gameResult}
-              </Typography>
-              <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px' }} component="p">
-                {state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
-              </Typography>
-
-            </Paper>
-            <div id={this.boardId}>
-              <Chessboard
-                position={state.fen}
-                lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
-                darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
-                orientation={this.orientation}
-                squareStyles={state.squareStyles}
-                onSquareClick={this.onSquareClick}
-              />
-            </div>
-            <Clock />
-          </Box>
-        </Grid>
-        <Grid container item md={4}>
-          {/* // for chat box */}
-        </Grid>
-      </Grid>
-    );
+      <Box display='flex' flexDirection='row' justifyContent='center'>
+        <Box display="flex" flexDirection="column">
+          <GameInfo
+            yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
+            opponent={this.opponent !== null ? this.opponent.username : 'Anonymous'}
+            variant={this.gameInfo !== null ? this.gameInfo.variant : ''}
+            gameResult={this.state.gameResult}
+          />
+          <div id={this.boardId}>
+            <Chessboard
+              position={state.fen}
+              lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
+              darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
+              orientation={this.orientation}
+              squareStyles={state.squareStyles}
+              onSquareClick={this.onSquareClick}
+            />
+          </div>
+        </Box>
+        <Box>
+        <Widget
+          className='App'
+           title="Chat"
+           subtitle="Chat with your oppoenent"
+        />
+        </Box>
+      </Box>
+    )
   }
 }
 
