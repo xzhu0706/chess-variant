@@ -15,10 +15,6 @@ class Home extends Component {
     };
   }
 
-  componentWillUnmount() {
-    alert("UNMOUNTED")
-  }
-
   render() {
     return (
       <div>

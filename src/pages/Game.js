@@ -109,8 +109,8 @@ class Game extends Component {
             if(this.game.game_over()){
               //checkmate or stalemate
               if(this.game.in_checkmate) {
-                let winner = this.game.turn() === 'w'? "Black" : "White"
-                gameResult = `CHECKMATE: ${winner} WINS!`
+                //let winner = this.game.turn() === 'w'? "Black" : "White"
+                gameResult = `CHECKMATE: YOU LOSE!`
               }
               // else the game ended in stalemate.
               else gameResult = 'STALEMATE: TIE GAME!'
@@ -119,6 +119,7 @@ class Game extends Component {
               //Player on the other end left the game.
               alert('The other player has left the game')
             }
+            this.gameUpdateSubscription.unsubscribe()
             yourTurn = false
           }
           this.setState({fen: gameState.fen, yourTurn, gameResult, history: gameState.history});
@@ -149,7 +150,10 @@ class Game extends Component {
 
   onSquareClick = async (square) => {
     if (this.game.turn() !== this.orientation[0]) return;
-    if(this.game.game_over() || this.gameInfo.ended) return
+    if(this.game.game_over() || this.gameInfo.ended) {
+      alert('GAME OVER')
+      return
+    }
     const piece = this.game.get(square);
     if (this.moveFrom !== null) {
       const move = this.game.move({ from: this.moveFrom, to: square });
@@ -160,10 +164,10 @@ class Game extends Component {
         let gameResult = ''
         if(this.game.game_over()){
           if(this.game.in_checkmate){
-            let winner = this.orientation
-            gameResult = `CHECKMATE: ${winner} WINS!`
+            gameResult = `CHECKMATE: YOU WIN!`
           }
           else gameResult = 'STALEMATE: TIE GAME!'
+          this.gameUpdateSubscription.unsubscribe()
           updateGameData.ended = true
         }
         updateGameData.history = [...this.state.history, move.san];
@@ -212,10 +216,9 @@ class Game extends Component {
     let newGameState = {}
     newGameState.id = this.gameId
     newGameState.ended = true;
-    let update = API.graphql(graphqlOperation(
+    API.graphql(graphqlOperation(
       mutations.updateGameState, { input: newGameState },
     ));
-    
   }
 
   render() {
@@ -237,6 +240,9 @@ class Game extends Component {
                 Variant:
                 {' '}
                 {this.gameInfo !== null ? this.gameInfo.variant : ''}
+              </Typography>
+              <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px' }} variant='h6' component="h6">
+                {this.state.gameResult}
               </Typography>
               <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px' }} component="p">
                 {state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
