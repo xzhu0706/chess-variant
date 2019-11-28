@@ -84,7 +84,12 @@
     background-image:url(../icons/pieces/fairy/bs.svg);
 }
 
-
+.white-joker {
+    background-image:url(../icons/white_joker.svg);
+}
+.black-joker {
+    background-image:url(../icons/black_joker.svg);
+}
 
 .piece-selector input:checked +.piece-card {
     border: 0.15em inset black;
@@ -102,4 +107,34 @@
 }
 .piece-card:hover {
     filter: opacity(.85);
+}
+
+.board {
+    position: relative;
+}
+
+.explanation {
+    align-self: flex-start;
+}
+
+.non-spares {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: nowrap;
+    background-color: #9a9;
+}
+
+.spares {
+    width: 100%;
+    margin: auto;
+    background-color: #9a9;
+}
+
+.spares .standard-pieces {
+    background-color: #ba9;
+}
+
+.spares .fairy-pieces {
+    background-color: #7c2;
 }

@@ -22,14 +22,15 @@ class AnalysisBoard extends React.Component {
   render() {
     return (
       <div style={{textAlign: 'center'}}>
-        <div style={{display: 'inline-block'}}>
+        <div id='board' style={{display: 'inline-block', position: 'relative', border: '0.15em dotted pink'}}>
           {/* render the board */}
-          {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, this.state.editMode, this.state.sparePiece)}
-        </div>
-        <div>
-            {/* render spare pieces component that calls handleIconChange() when one of its icons is selected */}
-            <SparePieces handleChange={this.handleIconChange} />
-        </div>
+          <div style={{display: 'inline-block'}}>
+            {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, this.state.editMode, this.state.sparePiece)}
+          </div>
+
+          {/* render spare pieces component that calls handleIconChange() when one of its icons is selected */}
+          <SparePieces handleChange={this.handleIconChange} />
+          </div>
         <div>
           {/* <form onSubmit={this.handleSubmit}>
             <label htmlFor="customize">Enter move offsets</label>

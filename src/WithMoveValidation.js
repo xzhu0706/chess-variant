@@ -14,6 +14,8 @@ import we from "./icons/pieces/fairy/we.svg"; // "empress" (knight/rook combo)
 import be from "./icons/pieces/fairy/be.svg"; // "empress"
 import ws from "./icons/pieces/fairy/ws.svg"; // "princess" (knight/bishop combo)
 import bs from "./icons/pieces/fairy/bs.svg"; // "princess"
+import wj from "./icons/white_joker.svg"; //
+import bj from "./icons/black_joker.svg";
 
 
 import './variant-style.css';
@@ -32,7 +34,7 @@ class HumanVsHuman extends Component {
   };
 
   componentDidMount() {
-    this.game = new Chess(this.props.fen || this.state.fen, this.props.variant);
+    this.game = new Chess(this.props.fen || this.state.fen, this.props.variant, { c: { 0: [-18, -33, -31, -14,  18, 33, 31,  14], 1: [] } });
     // initialize the internal game
     this.setState({
       fen: this.game.fen(),
@@ -362,6 +364,27 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                 }}
                 src={bs}
                 alt="black princess"
+              />
+            ),
+
+            wC: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={wj}
+                alt="white joker"
+              />
+            ),
+            bC: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={bj}
+                alt="black joker"
               />
             ),
           }

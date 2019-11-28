@@ -32,6 +32,7 @@ class FenInput extends React.Component {
         </form>
         <input
           value={this.props.fen}
+          readOnly
           style={{ margin: '0.25em' }}
         >
         </input>
