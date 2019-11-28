@@ -4,14 +4,14 @@ function SparePieces(props) {
   return (
     <form onChange={props.handleChange}>
       <div className="piece-selector">
-        <div className="non-spares">
+        <div className="misc-section">
           <input id="cursor" type="radio" name="piece" value="cursor" defaultChecked />
-          <label className="piece-card cursor" htmlFor="cursor"></label>
+          <label className="piece-card cursor" htmlFor="cursor" title="move"></label>
           <input id="trash" type="radio" name="piece" value="trash" />
-          <label className="piece-card trash" htmlFor="trash"></label>
+          <label className="piece-card trash" htmlFor="trash" title="remove"></label>
         </div>
-        <div className="spares">
-          <div className="category">standard spares</div>
+        <div className="spares-section">
+          <div className="title">standard spares</div>
           <div className="piece-row">
             <input id="white-pawn" type="radio" name="piece" value="P"/>
             <label className="piece-card white-pawn" htmlFor="white-pawn" title="white pawn"></label>
@@ -40,7 +40,7 @@ function SparePieces(props) {
             <input id="black-king" type="radio" name="piece" value="k" />
             <label className="piece-card black-king" htmlFor="black-king" title="black king"></label>
           </div>
-          <div className="category">fairy spares</div>
+          <div className="title">fairy spares</div>
           <div className="piece-row">
             <input id="white-empress" type="radio" name="piece" value="E" />
             <label className="piece-card white-empress" htmlFor="white-empress" title="white empress"></label>
@@ -66,12 +66,14 @@ function SparePieces(props) {
             <label className="piece-card black-nightrider" htmlFor="black-nightrider" title="black nightrider"></label>
           </div>
         </div>
-        <div className="category">custom spares</div>
-        <div className="piece-row">
-          <input id="white-joker" type="radio" name="piece" value="C" />
-          <label className="piece-card white-joker" htmlFor="white-joker" title="white joker" ></label>
-          <input id="black-joker" type="radio" name="piece" value="c" />
-          <label className="piece-card black-joker" htmlFor="black-joker" title="black joker"></label>
+        <div className="customize-section">
+          <div className="title">customizable spares</div>
+          <div className="piece-row">
+            <input id="white-joker" type="radio" name="piece" value="C" />
+            <label className="piece-card white-joker" htmlFor="white-joker" title="white joker" ></label>
+            <input id="black-joker" type="radio" name="piece" value="c" />
+            <label className="piece-card black-joker" htmlFor="black-joker" title="black joker"></label>
+          </div>
         </div>
       </div>
     </form>
