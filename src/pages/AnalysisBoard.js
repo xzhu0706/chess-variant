@@ -28,7 +28,7 @@ class AnalysisBoard extends React.Component {
     // separate input into list of numbers (separation criterion: any number of spaces/commas/semicolons); e.g.,
     // '1 2 , -3,4' -> [ 1, 2, -3, 4 ]
     const offsets = (event.target.value).split(/[\s,;]+/).map(Number);
-    // remove everything from the list except for numbers between -16 and 16
+    // remove everything from the list except for numbers that are valid offsets
     const filtered = offsets.filter(offset => offset && offset >= -119 && offset <= 119 && offset !== 0);
     this.setState({
       offsets: filtered
@@ -37,7 +37,7 @@ class AnalysisBoard extends React.Component {
 
   handleRepeatOffsetsChange(event) {
     const offsets = (event.target.value).split(/[\s,;]+/).map(Number);
-    const filtered = offsets.filter(offset => offset && offset >= -16 && offset <= 16 && offset !== 0);
+    const filtered = offsets.filter(offset => offset && offset >= -119 && offset <= 119 && offset !== 0);
     this.setState({
       repeatOffsets: filtered
     })

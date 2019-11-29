@@ -1,9 +1,6 @@
 import React from 'react';
 
 function PieceCustomize(props) {
-  // console.log(props.offsets);
-  // console.log(props.repeatOffsets);
-
   /*
   (center is 150, 150)
 
@@ -29,27 +26,33 @@ function PieceCustomize(props) {
 
   /* I want circles to look like this:
   [
-    <circle key="1" className="move" cx="150" cy="150" r="6" />,
-    <circle key="2" className="move" cx="110" cy="10" r="6" />,
-    <circle key="3" className="move" cx="90" cy="10" r="6" />,
-    <circle key="4" className="move" cx="70" cy="10" r="6" />,
     <circle key="5" className="move" cx="50" cy="10" r="6" />,
     <circle key="6" className="move" cx="30" cy="10" r="6" />,
     <circle key="7" className="move" cx="10" cy="10" r="6" />
   ]
   */
 
-  function createCircle(offset, index) {
-    // calculate cx and cy from given offset
-    const cx = 10 + 20*(offset+119 & 15);
-    const cy = 10 + 20*(offset+119 >>> 4);
-    console.log("offset is " + offset + ", cx is " + cx + " and cy is " + cy);
-    return <circle key={index} className="move" cx={cx} cy={cy} r="6" />;
-  }
+  let keyCount = 0;
 
-  // for each offset, push circle (JSX element) to circles array
-  props.offsets.forEach((element, index) => {
-    circles.push(createCircle(element, index));
+  props.offsets.forEach(offset => {
+    // calculate cx , cy from the given offset
+    const cx = (10 + 20*(offset+119 & 15)) / 3;
+    const cy = (10 + 20*(offset+119 >>> 4)) / 3;
+    circles.push(<circle key={keyCount} className="move" cx={cx + '%'} cy={cy + '%'} r="2.5%" />); 
+    keyCount++;   
+  });
+
+  props.repeatOffsets.forEach(offset => {
+    let cx, cy;
+    // determine how many repetitions (offset multiplications) until we hit the end of the board
+    let reps = Math.floor(7 / Math.max(Math.abs(7 - (offset+119 & 15)), Math.abs(7 - (offset+119 >>> 4))));
+    for (let i = 1; i <= reps; i++) {
+      // calculate cx , cy from the given offset
+      cx = (10 + 20*(offset*i+119 & 15)) / 3;
+      cy = (10 + 20*(offset*i+119 >>> 4)) / 3;
+      circles.push(<circle key={keyCount} className="move" cx={cx + '%'} cy={cy + '%'} r="2.5%" />);
+      keyCount++;
+    }
   });
 
   return (
@@ -69,8 +72,8 @@ function PieceCustomize(props) {
         </div>
       </div>
       <div className="move-diagram">
-        <svg width="300" height="300">
-          <rect x="144" y="144" width="11" height="11"/>
+        <svg width="100%" height="100%">
+          <rect x="48%" y="48%" width="4%" height="4%"/>
           {circles}
         </svg>
       </div>
