@@ -1,7 +1,7 @@
 import React from 'react';
 import VariantNav from '../components/VariantNav';
 
-function VariantIndex() {
+function Variants() {
     return (
       <div>
         <VariantNav />
@@ -9,4 +9,4 @@ function VariantIndex() {
     );
 }
 
-export default VariantIndex;
+export default Variants;

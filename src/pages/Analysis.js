@@ -1,14 +1,14 @@
 import React from 'react';
 import Board from '../WithMoveValidation';
 
-function AnalysisBoardReal(props) {
+function Analysis(props) {
   return (
     <div style={{textAlign: 'center'}}>
       <div style={{display: 'inline-block'}}>
-      {Board(props.location.state.fen, 0, false, false, false, undefined, props.location.state.customPiece)}
+        {Board(props.location.state.fen, 0, false, false, false, undefined, props.location.state.customPiece)}
       </div>
     </div>
   );
 }
 
-export default AnalysisBoardReal;
+export default Analysis;

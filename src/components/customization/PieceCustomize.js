@@ -60,13 +60,13 @@ function PieceCustomize(props) {
       <div style={{ margin: '0.25em' }}>
         <div>
           <label>
-            non-repeating offsets:<br/>
+            <div title="offsets for knight-like moves">non-repeating offsets:</div>
             <input type="text" onChange={props.onChangeOffsets} />
           </label>
         </div>
         <div>
           <label>
-            repeating offsets:<br/>
+            <div title="offsets for rook-like/bishop-like moves">repeating offsets:</div>
             <input type="text" onChange={props.onChangeRepeatOffsets} />
           </label>
         </div>

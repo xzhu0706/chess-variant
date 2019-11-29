@@ -2,9 +2,9 @@ import React from 'react';
 import Board from '../WithMoveValidation';
 import SparePieces from '../components/customization/SparePieces.js';
 import PieceCustomize from '../components/customization/PieceCustomize.js';
-import './AnalysisBoard.css';
+import './Create.css';
 
-class AnalysisBoard extends React.Component {
+class Create extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -70,4 +70,4 @@ class AnalysisBoard extends React.Component {
   }
 }
 
-export default AnalysisBoard;
+export default Create;

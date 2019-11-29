@@ -692,7 +692,11 @@ var Chess = function(fen, variant=0, customPieces={}) {
         }
       } else {
         for (let j = 0, len = PIECE_OFFSETS_REPEATING[piece.type].length; j < len; j++) {
-          const offset = PIECE_OFFSETS_REPEATING[piece.type][j];
+          // flip the offsets for the black pieces
+          const offset =
+            piece.color === 'w'?
+            PIECE_OFFSETS_REPEATING[piece.type][j] :
+            -PIECE_OFFSETS_REPEATING[piece.type][j];
           let square = i;
 
           // generate all moves in the direction of the offset
@@ -717,7 +721,11 @@ var Chess = function(fen, variant=0, customPieces={}) {
         }
 
         for (let j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
-          let square = i + PIECE_OFFSETS[piece.type][j];
+          const offset =
+            piece.color === 'w'?
+            PIECE_OFFSETS[piece.type][j] :
+            -PIECE_OFFSETS[piece.type][j];
+          let square = i + offset;
           if (square & 0x88) continue;
           if (board[square] == null) {
             if (variant !== GRID || valid_2x2_grid_move(i, square)) {

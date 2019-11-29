@@ -67,7 +67,7 @@ function SparePieces(props) {
           </div>
         </div>
         <div className="customize-section">
-          <div className="title">customizable spares</div>
+          <div className="title">customizable spare</div>
           <div className="piece-row">
             <input id="white-joker" type="radio" name="piece" value="C" />
             <label className="piece-card white-joker" htmlFor="white-joker" title="white joker" ></label>

@@ -1,18 +1,16 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 // shows fen input above customizable board and also shows play button
 // pressing the play button goes to another page
-class FenInput extends React.Component {
+class CustomPlay extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       redirect: false
     };
-
-    this.goBack = this.goBack.bind(this);
   }
 
   handleSubmit = () => {
@@ -21,23 +19,21 @@ class FenInput extends React.Component {
     });
   }
 
-  goBack() {
-    this.props.history.goBack();
+  play() {
+    // redirect to analysis page and pass props that are accessible via props.location.state
+    let path = '/analysis';
+    this.props.history.push({
+      pathname: path,
+      state: { fen: this.props.fen, customPiece: this.props.customPiece}
+    });
   }
 
   render() {
-    const redirect = (
-      <Redirect to={{
-        pathname: '/analysis',
-        state: { fen: this.props.fen, customPiece: this.props.customPiece }
-      }} />
-    );
     return (
       <div style={{ textAlign: 'center' }}>
-        { this.state.redirect ? redirect : null }
-        <form onSubmit={this.handleSubmit}>
-          <Button type='submit'>Play</Button>
-        </form>
+        <Button variant="contained" color="primary" onClick={() => this.play()}>
+          Play
+        </Button>
         <input
           value={this.props.fen}
           name="fen"
@@ -50,4 +46,4 @@ class FenInput extends React.Component {
   }
 }
 
-export default FenInput;
+export default withRouter(CustomPlay);
