@@ -71,7 +71,7 @@ class HumanVsHuman extends Component {
         ...{
           [c]: {
             background:
-                'radial-gradient(circle, rgba(255, 120, 12, 67%), 50%, transparent 10%)',
+                'radial-gradient(circle, rgba(255, 120, 12, 0.67), 50%, transparent 10%)',
             borderRadius: '50%',
           },
         },

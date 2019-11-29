@@ -9,7 +9,7 @@ class AnalysisBoard extends React.Component {
     super(props);
     this.state = {
       editMode: true,
-      sparePiece: 'cursor',
+      icon: 'cursor',
       offsets: [],
       repeatOffsets: [],
     };
@@ -20,44 +20,49 @@ class AnalysisBoard extends React.Component {
 
   handleIconChange(event) {
     this.setState({
-      sparePiece: event.target.value
+      icon: event.target.value
     })
   };
 
-  handleRepeatOffsetsChange(event) {
-    // separate input into list of numbers separated by spaces and/or commas; e.g.,
-    // '1 2 , -3,4' -> [ '1', '2', '-3', '4' ]
-    const offsets = (event.target.value).split(/[\s,]+/);
+  handleOffsetsChange(event) {
+    // separate input into list of numbers (separation criterion: any number of spaces/commas/semicolons); e.g.,
+    // '1 2 , -3,4' -> [ 1, 2, -3, 4 ]
+    const offsets = (event.target.value).split(/[\s,;]+/).map(Number);
     // remove everything from the list except for numbers between -16 and 16
-    const filteredOffsets = offsets.filter(offset => offset && offset >= -16 && offset <= 16);
+    const filtered = offsets.filter(offset => offset && offset >= -16 && offset <= 16 && offset !== 0);
     this.setState({
-      repeatOffsets: filteredOffsets
+      offsets: filtered
     })
   }
 
-  handleOffsetsChange(event) {
-    const offsets = (event.target.value).split(/[\s,]+/);
-    const filteredOffsets = offsets.filter(offset => offset >= -16 && offset <= 16);
+  handleRepeatOffsetsChange(event) {
+    const offsets = (event.target.value).split(/[\s,;]+/).map(Number);
+    const filtered = offsets.filter(offset => offset && offset >= -16 && offset <= 16 && offset !== 0);
     this.setState({
-      offsets: filteredOffsets
+      repeatOffsets: filtered
     })
+  }
+
+  customPiece() {
+    return { 'c': { '0': this.state.offsets, '1': this.state.repeatOffsets } };
   }
 
   render() {
-    console.log(this.state);
     return (
-      <div style={{textAlign: 'center'}}>
-        <div id='board' style={{display: 'inline-block', position: 'relative', border: '0.15em dotted pink'}}>
+      <div style={{ textAlign: 'center' }}>
+        <div id='board' style={{ display: 'inline-block', position: 'relative', border: '0.15em dotted pink' }}>
           {/* render the board */}
-          <div style={{display: 'inline-block'}}>
-            {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, this.state.editMode, this.state.sparePiece)}
+          <div style={{ display: 'inline-block' }}>
+            {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, this.state.editMode, this.state.icon)}
           </div>
 
           {/* render spare pieces component that calls handleIconChange() when one of its icons is selected */}
           <SparePieces handleChange={this.handleIconChange} />
           <PieceCustomize
-            onOffsetsChange={this.handleOffsetsChange}
-            onRepeatOffsetsChange={this.handleRepeatOffsetsChange}
+            offsets={this.state.offsets}
+            repeatOffsets={this.state.repeatOffsets}
+            onChangeOffsets={this.handleOffsetsChange}
+            onChangeRepeatOffsets={this.handleRepeatOffsetsChange}
           />
           </div>
       </div>

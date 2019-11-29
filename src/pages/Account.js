@@ -89,7 +89,7 @@ const MatchHistory = (props) => {
   let index = 0;
   let games = props.history
   let gamesList = []
-  if (games != "Loading..") {
+  if (games !== "Loading..") {
     while (index < games.length) {
       let game = games[index].game
       console.log(game)

@@ -111,7 +111,7 @@
     filter: opacity(.85);
 }
 
-.piece-card.cursor,.trash {
+.piece-card.cursor, .piece-card.trash {
     width: 50px;
     height: 50px;
     flex: 0 1 12%;
@@ -137,14 +137,14 @@
     background-color: #fff;
 }
 .customize-section {
-    padding-bottom: 0.8em;
+    padding-bottom: 0em;
 }
 
 .piece-row {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .piece-selector {
@@ -167,7 +167,7 @@
     align-self: center;
 }
 
-.diagram {
+.move-diagram {
     display: inline-block;
     position: relative;
     background-image:
@@ -182,12 +182,12 @@
     height: 300px; 
 }
 
-.hint {
+.move {
     fill: #fd4362;
 }
 
 @media only screen and (max-width: 400px) {
-    .diagram {
+    .move-diagram {
         background-size: 30px 30px;
         background-position: 0 0, 0 15px, 15px -15px, -15px 0px;
         width: 225px;
