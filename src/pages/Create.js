@@ -4,6 +4,12 @@ import SparePieces from '../components/customization/SparePieces.js';
 import PieceCustomize from '../components/customization/PieceCustomize.js';
 import './Create.css';
 
+/* /create page that contains
+(a) the board in edit mode,
+(b) spare pieces that can be added to the board,
+(c) customization,
+*/
+
 class Create extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +17,7 @@ class Create extends React.Component {
       editMode: true,
       icon: 'cursor',
       offsets: [],
-      repeatOffsets: [],
+      repeatOffsets: []
     };
     this.handleIconChange = this.handleIconChange.bind(this);
     this.handleRepeatOffsetsChange = this.handleRepeatOffsetsChange.bind(this);
@@ -53,7 +59,7 @@ class Create extends React.Component {
         <div id='board' style={{ display: 'inline-block', position: 'relative', border: '0.15em dotted pink' }}>
           {/* render the board */}
           <div style={{ display: 'inline-block' }}>
-            {Board(undefined, 0, false, false, this.state.editMode, this.state.icon, this.customPiece())}
+            {Board('rnbqkbnr/pppppppp/8/8/8/4P3/PPPP1PPP/RNBQKBNR b KQkq - 0 1', 0, false, false, this.state.editMode, this.state.icon, this.customPiece())}
           </div>
 
           {/* render spare pieces component that calls handleIconChange() when one of its icons is selected */}

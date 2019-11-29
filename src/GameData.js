@@ -1,6 +1,7 @@
 import React from 'react';
+import './GameData.css'
 
-function GameData({ turn, gameResult, fen, pgn, history, prevMove, nextMove, winner, currentMove }) {
+function GameData({ turn, gameResult, history, prevMove, nextMove, winner, currentMove }) {
   let game_state = `${turn === 'w' ? 'White' : 'Black'}'s turn`;
   if (gameResult === 'checkmate') {
     game_state = `${winner} wins (checkmate)`;
@@ -21,7 +22,7 @@ function GameData({ turn, gameResult, fen, pgn, history, prevMove, nextMove, win
     game_state = `Draw (fifty-move rule)`;
   }
   const mystyle = {
-    fontSize: "2em"
+    fontSize: "1.4em"
   };
   const hightlightMoveStyle = {
     backgroundColor: 'yellow',
@@ -42,9 +43,7 @@ function GameData({ turn, gameResult, fen, pgn, history, prevMove, nextMove, win
   }
   return (
     <div className="game-data">
-      <div>FEN: {fen}</div>
-      <div>PGN: {pgn}</div>
-      <div style={mystyle}>STATE: {game_state}</div>
+      <div style={mystyle}>{game_state}</div>
       <div className="moves">{moves}</div>
       { gameResult && (
         <div className="text-center">

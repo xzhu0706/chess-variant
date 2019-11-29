@@ -1,0 +1,8 @@
+.game-data {
+    border: 0.15em dotted pink;
+}
+
+.moves {
+    width: 100%;
+    overflow: auto;
+}

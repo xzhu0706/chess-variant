@@ -5,7 +5,10 @@ function Analysis(props) {
   return (
     <div style={{textAlign: 'center'}}>
       <div style={{display: 'inline-block'}}>
-        {Board(props.location.state.fen, 0, false, false, false, undefined, props.location.state.customPiece)}
+        { props.location.state ? 
+          Board(props.location.state.fen, 0, true, false, false, undefined, props.location.state.customPiece) :
+          Board(undefined, 0, true, false, false, undefined)
+        }
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
 import React from 'react';
 
+/* user-defined offsets plus a move diagram */
+
 function PieceCustomize(props) {
   /*
   (center is 150, 150)

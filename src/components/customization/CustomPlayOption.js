@@ -2,9 +2,10 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 
-// shows fen input above customizable board and also shows play button
-// pressing the play button goes to another page
-class CustomPlay extends React.Component {
+// shows a FEN field above the board and a play button
+// pressing the play button goes to another page (that we pass props)
+
+class CustomPlayOption extends React.Component {
   constructor(props) {
     super(props);
 
@@ -46,4 +47,4 @@ class CustomPlay extends React.Component {
   }
 }
 
-export default withRouter(CustomPlay);
+export default withRouter(CustomPlayOption);

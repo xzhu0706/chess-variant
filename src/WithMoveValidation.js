@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
+import Button from '@material-ui/core/Button';
 import GameData from './GameData.js';
-import CustomPlay from './components/customization/CustomPlay';
+import CustomPlayOption from './components/customization/CustomPlayOption';
 import wm from "./icons/pieces/fairy/wk_180.svg"; // "mann" (upside-down king)
 import bm from "./icons/pieces/fairy/bk_180.svg";
 import wf from "./icons/pieces/fairy/wb_180.svg"; // "ferz" (upside-down bishop)
@@ -25,16 +26,16 @@ class HumanVsHuman extends Component {
 
   state = {
     fen: this.props.fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-    pgn: '',
+    history: [],
     squareStyles: {}, // custom square styles
     fromSquare: '', // most recently clicked square (empty if a move was just made)
     turn: '',
+    orientation: 'white',
     gameOver: false,
     gameResult: '', // checkmate, stalemate, insufficient material, ...
   };
 
   game = new Chess(this.props.fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', this.props.variant, this.props.customPiece || { c: { 0: [], 1: [] } });
-
 
   componentDidMount() {
     this.setState({
@@ -55,6 +56,12 @@ class HumanVsHuman extends Component {
     // (a) one square would still be highlighted after the user de-selects the cursor
     // (b) the fromSquare would still be set, so the user could move the selected piece
     // after re-entering cursor mode
+  }
+
+  flipOrientation = () => {
+    this.setState({
+      orientation: this.state.orientation === 'white' ? 'black' : 'white'
+    })
   }
 
   // adjust board size according to window size
@@ -149,7 +156,7 @@ class HumanVsHuman extends Component {
       // legal move, so update the game state
       this.setState({
         fen: this.game.fen(),
-        pgn: this.game.pgn(),
+        history: this.game.history(),
         fromSquare: '',
         turn: this.game.turn(),
       });
@@ -185,7 +192,7 @@ class HumanVsHuman extends Component {
 
         // highlight clicked square, and update the from square
         this.setState({
-          squareStyles: { [square]: { backgroundColor: '#68f' } },
+          squareStyles: { [square]: { backgroundColor: '#ebae34' } },
           fromSquare: square,
         });
 
@@ -218,16 +225,18 @@ class HumanVsHuman extends Component {
   };
 
   render() {
-    const { fen, pgn, turn, gameResult, squareStyles } = this.state;
+    const { fen, history, turn, gameResult, squareStyles, orientation } = this.state;
     return this.props.children({
       squareStyles,
       fen,
-      pgn,
+      history,
       turn,
       gameResult,
       onSquareClick: this.onSquareClick,
       onSquareRightClick: this.onSquareRightClick,
       calcWidth: this.calcWidth,
+      flipOrientation: this.flipOrientation,
+      orientation
     });
   }
 }
@@ -241,12 +250,14 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
         {({
           squareStyles,
           fen,
-          pgn,
-          gameResult,
+          history,
           turn,
+          gameResult,
           onSquareClick,
           onSquareRightClick,
-          calcWidth
+          calcWidth,
+          flipOrientation,
+          orientation
         }) => {
           // redefine calcWidth() if smallBoard arg is true
           if (smallBoard) {
@@ -259,7 +270,7 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
           const gameData =
             showData ? (
               <div className="p-1">
-                <GameData pgn={pgn} turn={turn} gameResult={gameResult} />
+                <GameData history={history} turn={turn} gameResult={gameResult} />
               </div>
             ) :
             null;
@@ -417,7 +428,7 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
 
           return (
             <div className="d-flex flex-column">
-              { editMode ? <CustomPlay fen={fen} customPiece={customPiece} /> : null }
+              { editMode ? <CustomPlayOption fen={fen} customPiece={customPiece} /> : null }
               <div id={boardId}>
                 <Chessboard
                   position={fen}
@@ -433,7 +444,11 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                   onSquareRightClick={onSquareRightClick}
                   calcWidth={calcWidth}
                   draggable={false}
+                  orientation={orientation}
                 />
+                <div style={{ margin: '0.4em' }}>
+                  <Button size="small" variant="outlined" onClick={flipOrientation}>Flip board</Button>
+                </div>
               </div>
               { gameData }
             </div>
