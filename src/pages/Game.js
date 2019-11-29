@@ -247,8 +247,11 @@ class Game extends Component {
     const { state } = this;
     return (
       <Box display='flex' flexDirection='row' justifyContent='flex-end'>
-        <div style={{backgroundColor: 'blue'}} className="App">
-          <Widget />
+        <div className="App">
+          <Widget 
+            title="Chat with your opponent"
+            subtitle=''
+          />
         </div>
         <Box display="flex" flexDirection="column">
           <GameInfo
