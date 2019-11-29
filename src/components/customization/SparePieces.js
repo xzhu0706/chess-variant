@@ -6,9 +6,9 @@ function SparePieces(props) {
       <div className="piece-selector">
         <div className="misc-section">
           <input id="cursor" type="radio" name="piece" value="cursor" defaultChecked />
-          <label className="piece-card cursor" htmlFor="cursor" title="move"></label>
+          <label className="piece-card cursor" htmlFor="cursor" title="move piece"></label>
           <input id="trash" type="radio" name="piece" value="trash" />
-          <label className="piece-card trash" htmlFor="trash" title="remove"></label>
+          <label className="piece-card trash" htmlFor="trash" title="remove piece"></label>
         </div>
         <div className="spares-section">
           <div className="title">standard spares</div>

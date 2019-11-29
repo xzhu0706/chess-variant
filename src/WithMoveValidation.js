@@ -24,7 +24,7 @@ class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = {
-    fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+    fen: this.props.fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
     pgn: '',
     squareStyles: {}, // custom square styles
     fromSquare: '', // most recently clicked square (empty if a move was just made)
@@ -33,12 +33,12 @@ class HumanVsHuman extends Component {
     gameResult: '', // checkmate, stalemate, insufficient material, ...
   };
 
+  game = new Chess(this.props.fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', this.props.variant, this.props.customPiece || { c: { 0: [], 1: [] } });
+
+
   componentDidMount() {
-    this.game = new Chess(this.props.fen || this.state.fen, this.props.variant, this.props.customPiece || { c: { 0: [], 1: [] } });
-    // initialize the internal game
     this.setState({
-      fen: this.game.fen(),
-      turn: this.game.turn(),
+      turn: this.game.turn()
     });
     this.updateGameResult(); // in case the FEN string gives an ending position
   }

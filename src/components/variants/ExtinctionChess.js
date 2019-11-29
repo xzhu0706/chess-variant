@@ -56,7 +56,7 @@ function ExtinctionChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={ExtinctionChess('rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1', 3, false, true)}
+        board={ExtinctionChess('rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR b KQkq - 0 1', 3, true, true)}
       >
       A king has no special purpose in extinction chess (and check/checkmate is disabled).
       Thus, a game can be played with no kings on either side, which is not the case in
@@ -64,7 +64,7 @@ function ExtinctionChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={ExtinctionChess('rnbqkbnr/pppppppp/8/8/bbbbbbbb/8/8/R3K2R w KQkq - 0 1', 3, false, true)} 
+        board={ExtinctionChess('rnbqkbnr/pppppppp/8/8/bbbbbbbb/8/8/R3K2R w KQkq - 0 1', 3, true, true)} 
       >
       Because the king is not a special piece, the king can ignore attacks/checks and moreover
       can castle even when the interceding squares are under attack.
