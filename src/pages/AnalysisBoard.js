@@ -29,7 +29,7 @@ class AnalysisBoard extends React.Component {
     // '1 2 , -3,4' -> [ 1, 2, -3, 4 ]
     const offsets = (event.target.value).split(/[\s,;]+/).map(Number);
     // remove everything from the list except for numbers between -16 and 16
-    const filtered = offsets.filter(offset => offset && offset >= -16 && offset <= 16 && offset !== 0);
+    const filtered = offsets.filter(offset => offset && offset >= -119 && offset <= 119 && offset !== 0);
     this.setState({
       offsets: filtered
     })

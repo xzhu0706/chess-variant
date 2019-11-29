@@ -12,11 +12,17 @@ function PieceCustomize(props) {
   ...
   last row/column is 290
 
-  the offset -17 = -16 + -1 should give us -1 on the row and -1 on the column, i.e., (-20, -20)
-  the offset -15 = -16 + +1 should give us +1 on the row and -1 on the column, i.e., (+20, -20)
+  the offset o = 16x + y should give us x on the row and y on the column, i.e., (20x, 20y)
+  (and x,y must be in [-7, +7]).
+
+  the offset -23 = -16 + -7 should give us -1 on the row and -7 on the column, i.e., ( -20, -140) 
+  the offset -17 = -16 + -1 should give us -1 on the row and -1 on the column, i.e., ( -20,  -20)
+  the offset -15 = -16 + +1 should give us -1 on the row and +1 on the column, i.e., ( -20,  +20)
+  the offset  -7 =   0 + -7 should give us  0 on the row and -7 on the column, i.e., ( -20, +140)
   the offset 0 should give us no change in the row/column indexes, i.e., (0, 0)
-  the offset +15 = +16 + -1 should give us +1 on the row and -1 on the column, i.e., (+20, -20)
-  the offset +17 = +16 + +1 should give us +1 on the row and +1 on the column, i.e., (+20, +20)
+  the offset  +7 =   0 + +7 should give us  0 on the row and +7 on the column, i.e., (   0, +140)
+  the offset +15 = +16 + -1 should give us +1 on the row and -1 on the column, i.e., ( +20,  -20)
+  the offset +17 = +16 + +1 should give us +1 on the row and +1 on the column, i.e., ( +20,  +20)
   */
 
   let circles = [];
@@ -34,10 +40,11 @@ function PieceCustomize(props) {
   */
 
   function createCircle(offset, index) {
-    // calculate cx and cy from offset
-    
-
-    return <circle key={index} className="move" r="6"/>;
+    // calculate cx and cy from given offset
+    const cx = 10 + 20*(offset+119 & 15);
+    const cy = 10 + 20*(offset+119 >>> 4);
+    console.log("offset is " + offset + ", cx is " + cx + " and cy is " + cy);
+    return <circle key={index} className="move" cx={cx} cy={cy} r="6" />;
   }
 
   // for each offset, push circle (JSX element) to circles array
