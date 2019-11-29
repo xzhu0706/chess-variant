@@ -30,6 +30,14 @@ type Game @model(subscriptions: null) @auth(rules: [{allow: public}]) {
   result: String
   winner: String
   createdAt: String
+  messages: [Message] @connection(name: "GameMessages")
+}
+
+type Message @model{
+  id: ID!
+  author: PlayerInfo
+  content: String!
+  game: Game @connection(name: "GameMessages")
 }
 
 type PlayerInfo {

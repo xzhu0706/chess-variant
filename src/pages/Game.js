@@ -228,7 +228,13 @@ class Game extends Component {
   render() {
     const { state } = this;
     return (
-      <Box display='flex' flexDirection='row' justifyContent='center'>
+      <Box display='flex' flexDirection='row' justifyContent='flex-start'>
+          <Widget
+            className='App'
+            title="Chat"
+            style={{textAlign: 'left'}}
+            subtitle="Chat with your oppoenent"
+          />
         <Box display="flex" flexDirection="column">
           <GameInfo
             yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
@@ -246,13 +252,6 @@ class Game extends Component {
               onSquareClick={this.onSquareClick}
             />
           </div>
-        </Box>
-        <Box>
-        <Widget
-          className='App'
-           title="Chat"
-           subtitle="Chat with your oppoenent"
-        />
         </Box>
       </Box>
     )
