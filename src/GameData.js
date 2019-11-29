@@ -1,12 +1,12 @@
 import React from 'react';
 
-function GameData({ turn, gameResult, fen, pgn, history, prevMove, nextMove}) {
+function GameData({ turn, gameResult, fen, pgn, history, prevMove, nextMove, winner, currentMove }) {
   let game_state = `${turn === 'w' ? 'White' : 'Black'}'s turn`;
   if (gameResult === 'checkmate') {
-    game_state = `${turn === 'w' ? 'Black' : 'White'} wins (checkmate)`;
+    game_state = `${winner} wins (checkmate)`;
   }
   else if (gameResult === 'extinction') {
-    game_state = `${turn === 'w' ? 'Black' : 'White'} wins (extinction)`;
+    game_state = `${winner} wins (extinction)`;
   }
   else if (gameResult === 'repetition') {
     game_state = 'Draw (three-fold repetition)';
@@ -23,24 +23,35 @@ function GameData({ turn, gameResult, fen, pgn, history, prevMove, nextMove}) {
   const mystyle = {
     fontSize: "2em"
   };
-  const moves = history.map((move, index) => {
-    return (
-      <span>
-        {index % 2 === 0 ? <span>{index/2 + 1}. </span> : ''}
-				<span>{move} </span>
-      </span>
-    );
-  });
+  const hightlightMoveStyle = {
+    backgroundColor: 'yellow',
+  }
+  let moves;
+  if (history) {
+    moves = history.map((move, index) => {
+      return (
+        <span>
+          {index % 2 === 0 ? <span>{index/2 + 1}. </span> : ''}
+          <span style={currentMove - 1 === index ? hightlightMoveStyle : null}>
+            {move}
+            {' '}
+          </span>
+        </span>
+      );
+    });
+  }
   return (
     <div className="game-data">
       <div>FEN: {fen}</div>
       <div>PGN: {pgn}</div>
       <div style={mystyle}>STATE: {game_state}</div>
       <div className="moves">{moves}</div>
-      <div>
-        <button onClick={prevMove}> prev </button>
-        <button onClick={nextMove}> next </button>
-      </div>
+      { gameResult && (
+        <div className="text-center">
+          <button onClick={prevMove}> prev </button>
+          <button onClick={nextMove}> next </button>
+        </div>
+      )}
     </div>
   );
 }
