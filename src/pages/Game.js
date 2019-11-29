@@ -18,6 +18,8 @@ import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
 import { Widget } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
+import { Launcher } from 'react-chat-window'
+
 
 
 
@@ -32,8 +34,10 @@ class Game extends Component {
       squareStyles: {},
       yourTurn: false,
       showGameResignationDialog: false,
-      gameResult: '', 
+      gameResult: '',
       history: [],
+      messageList: [],
+      reverseHistory: [],
     };
     this.game = null;
     this.opponent = null; // the opponent. null if user created or joined game anonymously
@@ -72,26 +76,26 @@ class Game extends Component {
     this.gameId = this.gameInfo.id;
     const { variant } = this.gameInfo;
     switch (variant) {
-    case Games.ANTICHESS:
-      this.game = new Chess(Games.STANDARD_FEN, 1);
-      initialFen = Games.STANDARD_FEN;
-      break;
-    case Games.GRID_CHESS:
-      this.game = new Chess(Games.STANDARD_FEN, 2);
-      initialFen = Games.STANDARD_FEN;
-      this.boardId = 'grid-board';
-      break;
-    case Games.EXTINCTION_CHESS:
-      this.game = new Chess(Games.STANDARD_FEN, 3);
-      initialFen = Games.STANDARD_FEN;
-      break;
-    case Games.STANDARD_CHESS:
-      this.game = new Chess();
-      initialFen = Games.STANDARD_FEN;
-      break;
-    default:
-      this.game = new Chess();
-      initialFen = Games.STANDARD_FEN;
+      case Games.ANTICHESS:
+        this.game = new Chess(Games.STANDARD_FEN, 1);
+        initialFen = Games.STANDARD_FEN;
+        break;
+      case Games.GRID_CHESS:
+        this.game = new Chess(Games.STANDARD_FEN, 2);
+        initialFen = Games.STANDARD_FEN;
+        this.boardId = 'grid-board';
+        break;
+      case Games.EXTINCTION_CHESS:
+        this.game = new Chess(Games.STANDARD_FEN, 3);
+        initialFen = Games.STANDARD_FEN;
+        break;
+      case Games.STANDARD_CHESS:
+        this.game = new Chess();
+        initialFen = Games.STANDARD_FEN;
+        break;
+      default:
+        this.game = new Chess();
+        initialFen = Games.STANDARD_FEN;
     }
     if (this.gameInfo.fen !== 'init') {
       initialFen = this.gameInfo.fen;
@@ -109,34 +113,34 @@ class Game extends Component {
           this.gameInfo.ended = gameState.ended
           let yourTurn = this.game.turn() === this.orientation[0];
           let gameResult
-          if(gameState.ended === true){
-            if(this.game.game_over()){
+          if (gameState.ended === true) {
+            if (this.game.game_over()) {
               //checkmate or stalemate
-              if(this.game.in_checkmate) {
+              if (this.game.in_checkmate) {
                 //let winner = this.game.turn() === 'w'? "Black" : "White"
                 gameResult = `CHECKMATE: YOU LOSE!`
               }
               // else the game ended in stalemate.
               else gameResult = 'STALEMATE: TIE GAME!'
             }
-            else{
+            else {
               //Player on the other end left the game.
               alert('The other player has left the game')
             }
             this.gameUpdateSubscription.unsubscribe()
             yourTurn = false
           }
-          this.setState({fen: gameState.fen, yourTurn, gameResult, history: gameState.history});
+          this.setState({ fen: gameState.fen, yourTurn, gameResult, history: gameState.history });
 
         }
       },
     });
   }
 
-  componentWillUnmount(){
-    if(this.gameUpdateSubscription)
+  componentWillUnmount() {
+    if (this.gameUpdateSubscription)
       this.gameUpdateSubscription.unsubscribe()
-    if(!this.game.game_over() && !this.gameInfo.ended)
+    if (!this.game.game_over() && !this.gameInfo.ended)
       this.leaveGame()
   }
 
@@ -154,7 +158,7 @@ class Game extends Component {
 
   onSquareClick = async (square) => {
     if (this.game.turn() !== this.orientation[0]) return;
-    if(this.game.game_over() || this.gameInfo.ended) {
+    if (this.game.game_over() || this.gameInfo.ended) {
       alert('GAME OVER')
       return
     }
@@ -166,8 +170,8 @@ class Game extends Component {
         updateGameData.id = this.gameId;
         updateGameData.fen = this.game.fen();
         let gameResult = ''
-        if(this.game.game_over()){
-          if(this.game.in_checkmate){
+        if (this.game.game_over()) {
+          if (this.game.in_checkmate) {
             gameResult = `CHECKMATE: YOU WIN!`
           }
           else gameResult = 'STALEMATE: TIE GAME!'
@@ -206,15 +210,29 @@ class Game extends Component {
   }
 
   prevMove = () => {
-    // TODO
-    this.game.undo();
+    if (this.game.history().length > 0) {
+      const reverseHistory = [...this.state.reverseHistory, this.game.history().pop()];
+      this.game.undo();
+      this.setState({
+        fen: this.game.fen(),
+        reverseHistory,
+      }, () => console.log(this.game.fen(), this.state.fen));
+      console.log(this.game.history(), this.state.reverseHistory);
+    }
   }
 
   nextMove = () => {
-    // TODO
-    this.game.move();
+    const reverseHistory = [...this.state.reverseHistory];
+    if (reverseHistory.length > 0) {
+      const move = reverseHistory.pop();
+      const newMove = this.game.move(move);
+      this.setState({
+        fen: this.game.fen(),
+        reverseHistory,
+      }, () => console.log(this.game.fen(), this.state.fen));
+      console.log(move, newMove.san, this.game.history(), reverseHistory);
+    }
   }
-
 
   leaveGame = () => {
     let newGameState = {}
@@ -228,13 +246,10 @@ class Game extends Component {
   render() {
     const { state } = this;
     return (
-      <Box display='flex' flexDirection='row' justifyContent='flex-start'>
-          <Widget
-            className='App'
-            title="Chat"
-            style={{textAlign: 'left'}}
-            subtitle="Chat with your oppoenent"
-          />
+      <Box display='flex' flexDirection='row' justifyContent='flex-end'>
+        <div style={{backgroundColor: 'blue'}} className="App">
+          <Widget />
+        </div>
         <Box display="flex" flexDirection="column">
           <GameInfo
             yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
@@ -253,6 +268,15 @@ class Game extends Component {
             />
           </div>
         </Box>
+        <GameData style = {{width: '100px'}}
+            history={state.history}
+            fen={state.fen}
+            gameResult={state.gameResult}
+            winner={state.winner}
+            prevMove={this.prevMove}
+            nextMove={this.nextMove}
+            currentMove={state.history.length - state.reverseHistory.length}
+          />
       </Box>
     )
   }
