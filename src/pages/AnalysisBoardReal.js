@@ -5,7 +5,7 @@ function AnalysisBoardReal(props) {
   return (
     <div style={{textAlign: 'center'}}>
       <div style={{display: 'inline-block'}}>
-      {Board(props.location.state.fen, 0, false, false)}
+      {Board(props.location.state.fen, 0, false, false, false, undefined, props.location.state.customPiece)}
       </div>
     </div>
   );

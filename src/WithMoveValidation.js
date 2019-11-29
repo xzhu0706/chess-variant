@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
 import GameData from './GameData.js';
-import FenInput from './components/customization/FenInput.js';
+import CustomPlay from './components/customization/CustomPlay';
 import wm from "./icons/pieces/fairy/wk_180.svg"; // "mann" (upside-down king)
 import bm from "./icons/pieces/fairy/bk_180.svg";
 import wf from "./icons/pieces/fairy/wb_180.svg"; // "ferz" (upside-down bishop)
@@ -34,7 +34,7 @@ class HumanVsHuman extends Component {
   };
 
   componentDidMount() {
-    this.game = new Chess(this.props.fen || this.state.fen, this.props.variant, { c: { 0: [-18, -33, -31, -14,  18, 33, 31,  14], 1: [] } });
+    this.game = new Chess(this.props.fen || this.state.fen, this.props.variant, this.props.customPiece || { c: { 0: [], 1: [] } });
     // initialize the internal game
     this.setState({
       fen: this.game.fen(),
@@ -232,11 +232,11 @@ class HumanVsHuman extends Component {
   }
 }
 
-export default function WithMoveValidation(start_fen, variant=0, showData=true, smallBoard=false, editMode=false, sparePiece) {
+export default function WithMoveValidation(start_fen, variant=0, showData=true, smallBoard=false, editMode=false, sparePiece, customPiece) {
   let boardId = variant === 2 ? "grid-board" : "false"; // if variant isn't grid chess, boardId will be set to false
   return (
     <div>
-      <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece}>
+      <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece} customPiece={customPiece}>
         { /* HumanVsHuman calls the following function as this.props.children() in its render() method */ }
         {({
           squareStyles,
@@ -417,7 +417,7 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
 
           return (
             <div className="d-flex flex-column">
-              { editMode ? <FenInput fen={fen}/> : null }
+              { editMode ? <CustomPlay fen={fen} customPiece={customPiece} /> : null }
               <div id={boardId}>
                 <Chessboard
                   position={fen}

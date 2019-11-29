@@ -21,7 +21,7 @@ class AnalysisBoard extends React.Component {
   handleIconChange(event) {
     this.setState({
       icon: event.target.value
-    })
+    });
   };
 
   handleOffsetsChange(event) {
@@ -32,7 +32,7 @@ class AnalysisBoard extends React.Component {
     const filtered = offsets.filter(offset => offset && offset >= -119 && offset <= 119 && offset !== 0);
     this.setState({
       offsets: filtered
-    })
+    });
   }
 
   handleRepeatOffsetsChange(event) {
@@ -40,7 +40,7 @@ class AnalysisBoard extends React.Component {
     const filtered = offsets.filter(offset => offset && offset >= -119 && offset <= 119 && offset !== 0);
     this.setState({
       repeatOffsets: filtered
-    })
+    });
   }
 
   customPiece() {
@@ -53,7 +53,7 @@ class AnalysisBoard extends React.Component {
         <div id='board' style={{ display: 'inline-block', position: 'relative', border: '0.15em dotted pink' }}>
           {/* render the board */}
           <div style={{ display: 'inline-block' }}>
-            {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, this.state.editMode, this.state.icon)}
+            {Board(undefined, 0, false, false, this.state.editMode, this.state.icon, this.customPiece())}
           </div>
 
           {/* render spare pieces component that calls handleIconChange() when one of its icons is selected */}

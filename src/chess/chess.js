@@ -72,28 +72,6 @@ var Chess = function(fen, variant=0, customPieces={}) {
     w: [-16, -32, -17, -15]
   };
 
-  let PIECE_OFFSETS_REPEATING = {
-    n: [],
-    b: [-17, -15,  17,  15],
-    r: [-16,   1,  16,  -1],
-    q: [-17, -16, -15,   1,  17, 16, 15,  -1],
-    k: [],
-    m: [],
-    f: [],
-    d: [-18, -33, -31, -14,  18, 33, 31,  14],
-    // c: [],
-    e: [-16,   1,  16,  -1],
-    s: [-17, -15,  17,  15],
-  };
-
-  // add custom pieces to PIECE_OFFSETS_REPEATING
-  // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
-  for (let [key, value] of Object.entries(customPieces)) {
-    if (!(key in PIECE_OFFSETS_REPEATING)) {
-      PIECE_OFFSETS_REPEATING[key] = value[0];
-    }
-  }
-
   let PIECE_OFFSETS = {
     n: [-18, -33, -31, -14,  18, 33, 31,  14],
     b: [],
@@ -110,14 +88,37 @@ var Chess = function(fen, variant=0, customPieces={}) {
   };
 
   // add custom pieces to PIECE_OFFSETS
-  // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
+  // customPieces is of the form { m: { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] } }
   for (const [key, value] of Object.entries(customPieces)) {
-    if (!(key in PIECE_OFFSETS)) {
-      PIECE_OFFSETS[key] = value[1];
-    }
+    // if (!(key in PIECE_OFFSETS)) {
+      PIECE_OFFSETS[key] = value[0];
+    // }
+  }
+  // console.log(PIECE_OFFSETS[c]);
+
+  let PIECE_OFFSETS_REPEATING = {
+    n: [],
+    b: [-17, -15,  17,  15],
+    r: [-16,   1,  16,  -1],
+    q: [-17, -16, -15,   1,  17, 16, 15,  -1],
+    k: [],
+    m: [],
+    f: [],
+    d: [-18, -33, -31, -14,  18, 33, 31,  14],
+    // c: [],
+    e: [-16,   1,  16,  -1],
+    s: [-17, -15,  17,  15],
+  };
+
+  // add custom pieces to PIECE_OFFSETS_REPEATING
+  // customPieces is of the form { m: { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] } }
+  for (let [key, value] of Object.entries(customPieces)) {
+    // if (!(key in PIECE_OFFSETS_REPEATING)) {
+      PIECE_OFFSETS_REPEATING[key] = value[1];
+    // }
   }
 
-  const SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5 };
+  const SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5, m: 6, f: 7, d: 8, e: 9, s: 10 };
 
   // add custom pieces to SHIFTS
   for (const key of Object.keys(customPieces)) {
@@ -1885,11 +1886,18 @@ const moduloEuclid = (a, b) => {
 }
 
 // const updateAttacks = (ATTACKS, SHIFTS, customPieces) => {
-//   // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
+//   // customPieces is of the form { m: { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] } }
 
 //   for (const [key, value] of Object.entries(customPieces)) {
-//     // process repeating offsets
+//     // process non-repeating offsets
 //     value[0].forEach(offset => {
+//       const k = 119 - offset;
+//       if (k >= 0 && k < ATTACKS.length) {
+//         ATTACKS[k] |= 1 << SHIFTS[key]; // toggle the bit that corresponds to the piece
+//       }
+//     });
+//     // process repeating offsets
+//     value[1].forEach(offset => {
 //       if 
 //       const movementDirection = moduloEuclid(offset, 16) < 0 ? 'left' : 'right';
 //       let nextOffset = offset;
@@ -1905,13 +1913,6 @@ const moduloEuclid = (a, b) => {
 //              ) {
 //         ATTACKS[119 - nextOffset] |= 1 << SHIFTS[key];
 //         k -= offset;
-//       }
-//     });
-//     // process non-repeating offsets
-//     value[1].forEach(offset => {
-//       const k = 119 - offset;
-//       if (k >= 0 && k < ATTACKS.length) {
-//         ATTACKS[k] |= 1 << SHIFTS[key]; // toggle the bit that corresponds to the piece
 //       }
 //     });
 //   }
