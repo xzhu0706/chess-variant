@@ -176,7 +176,7 @@ class Game extends Component {
 
   // chessboard.jsx method for responsive board sizing
   calcWidth = (dimensions) => {
-    let customWidth = Math.min(540/640 * dimensions.screenWidth, 540/640 * dimensions.screenHeight);
+    let customWidth = Math.min(600/640 * dimensions.screenWidth, 600/640 * dimensions.screenHeight);
     if (customWidth < 300) customWidth = 300;
     return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
   }
@@ -324,7 +324,7 @@ class Game extends Component {
             />
           </div>
           <Grid container item justify="center" direction="row" wrap="wrap" spacing={1}>
-            <Box display="flex" flexDirection="column" width="auto">
+            <Box display="flex" flexDirection="column" >
               <GameInfo
                 yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
                 players={players}
@@ -342,19 +342,19 @@ class Game extends Component {
                   calcWidth={this.calcWidth}
                 />
               </div>
-              <Box display="flex" width="100%" maxWidth="540px">
-                <GameData
-                  history={state.history}
-                  fen={state.fen}
-                  gameResult={state.gameResult}
-                  winner={state.winner}
-                  prevMove={this.prevMove}
-                  nextMove={this.nextMove}
-                  currentMove={state.history.length - state.reverseHistory.length}
-                />
-              </Box>
             </Box>
           </Grid>
+          <Box display="flex" width="inherit" maxWidth="540px"> {/* how do i make this always the same width as the board? */}
+            <GameData
+              history={state.history}
+              fen={state.fen}
+              gameResult={state.gameResult}
+              winner={state.winner}
+              prevMove={this.prevMove}
+              nextMove={this.nextMove}
+              currentMove={state.history.length - state.reverseHistory.length}
+            />
+          </Box>
         </Grid>
       </div>
     );
