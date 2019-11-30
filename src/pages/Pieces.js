@@ -12,25 +12,27 @@ const Pieces = () => {
     <div style={{ textAlign: 'center' }}>
       <h1>Glossary of Pieces</h1>
       <table className="pieces-table">
-        <tr>
-          <th className="pieces-header">id</th>
-          <th className="pieces-header">piece</th>
-          <th className="pieces-header">name</th>
-        </tr>
-        <tr>
-          <td className=".pieces-data">m</td>
-          <td className=".pieces-data"><img src={wm} alt="white mann" /></td>
-          <td className=".pieces-data">mann</td>
-        </tr>
-        <tr>
-        <td colspan='3'>
-          <PieceCustomize
-            offsets={[-1,-17,-16,-15,1,17,16,15]}
-            repeatOffsets={[]}
-            hideInput={true}
-          />
-        </td>
-        </tr>
+        <tbody>
+          <tr>
+            <th className="pieces-header">id</th>
+            <th className="pieces-header">piece</th>
+            <th className="pieces-header">name</th>
+          </tr>
+          <tr>
+            <td className=".pieces-data">m</td>
+            <td className=".pieces-data"><img src={wm} alt="white mann" /></td>
+            <td className=".pieces-data">mann</td>
+          </tr>
+          <tr>
+          <td colspan='3'>
+            <PieceCustomize
+              offsets={[-1,-17,-16,-15,1,17,16,15]}
+              repeatOffsets={[]}
+              hideInput={true}
+            />
+          </td>
+          </tr>
+        </tbody>
       </table>
       
       <hr/>

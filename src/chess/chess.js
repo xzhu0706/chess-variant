@@ -109,41 +109,41 @@ var Chess = function(fen, variant=0, customPieces={}) {
   // kqrbnp = 000010 =  2 (only the knight can attack the center piece)
   // kqrbnp = 011000 = 24 (only the queen and rook can attack the center piece)
   let ATTACKS = [
-    20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20, 0,
-     0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
-     0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
-     0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
-     0, 0, 0, 0,20, 0, 0, 24,  0, 0,20, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0,20, 2, 24,  2,20, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0, 2,53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
-    24,24,24,24,24,24,56,  0, 56,24,24,24,24,24,24, 0,
-     0, 0, 0, 0, 0, 2,53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0,20, 2, 24,  2,20, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0,20, 0, 0, 24,  0, 0,20, 0, 0, 0, 0, 0,
-     0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
-     0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
-     0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
-    20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20,
+    1044,   0,   0,   0,   0,   0,   0, 536,   0,   0,   0,   0,   0,   0,1044,   0,
+       0,1044,   0,   0, 256,   0,   0, 536,   0,   0, 256,   0,   0,1044,   0,   0,
+       0,   0,1044,   0,   0,   0,   0, 536,   0,   0,   0,   0,1044,   0,   0,   0,
+       0,   0,   0,1044,   0, 256,   0, 536,   0, 256,   0,1044,   0,   0,   0,   0,
+       0, 256,   0,   0,1044,   0,   0, 536,   0,   0,1044,   0,   0, 256,   0,   0,
+       0,   0,   0, 256,   0,1044,1794, 536,1794,1044,   0, 256,   0,   0,   0,   0,
+       0,   0,   0,   0,   0,1794,1269, 632,1269,1794,   0,   0,   0,   0,   0,   0,
+     536, 536, 536, 536, 536, 536, 632,   0, 632, 536, 536, 536, 536, 536, 536,   0,
+       0,   0,   0,   0,   0,1794,1269, 632,1269,1794,   0,   0,   0,   0,   0,   0,
+       0,   0,   0, 256,   0,1044,1794, 536,1794,1044,   0, 256,   0,   0,   0,   0,
+       0, 256,   0,   0,1044,   0,   0, 536,   0,   0,1044,   0,   0, 256,   0,   0,
+       0,   0,   0,1044,   0, 256,   0, 536,   0, 256,   0,1044,   0,   0,   0,   0,
+       0,   0,1044,   0,   0,   0,   0, 536,   0,   0,   0,   0,1044,   0,   0,   0,
+       0,1044,   0,   0, 256,   0,   0, 536,   0,   0, 256,   0,   0,1044,   0,   0,
+       1044,0,   0,   0,   0,   0,   0, 536,   0,   0,   0,   0,   0,   0,1044,
   ];
 
   // how to shift the board in order to make a move (?)
-  const RAYS = [
-     17,  0,  0,  0,  0,  0,  0, 16,  0,  0,  0,  0,  0,  0, 15, 0,
-      0, 17,  0,  0,  0,  0,  0, 16,  0,  0,  0,  0,  0, 15,  0, 0,
-      0,  0, 17,  0,  0,  0,  0, 16,  0,  0,  0,  0, 15,  0,  0, 0,
-      0,  0,  0, 17,  0,  0,  0, 16,  0,  0,  0, 15,  0,  0,  0, 0,
-      0,  0,  0,  0, 17,  0,  0, 16,  0,  0, 15,  0,  0,  0,  0, 0,
-      0,  0,  0,  0,  0, 17,  0, 16,  0, 15,  0,  0,  0,  0,  0, 0,
-      0,  0,  0,  0,  0,  0, 17, 16, 15,  0,  0,  0,  0,  0,  0, 0,
-      1,  1,  1,  1,  1,  1,  1,  0, -1, -1,  -1,-1, -1, -1, -1, 0,
-      0,  0,  0,  0,  0,  0,-15,-16,-17,  0,  0,  0,  0,  0,  0, 0,
-      0,  0,  0,  0,  0,-15,  0,-16,  0,-17,  0,  0,  0,  0,  0, 0,
-      0,  0,  0,  0,-15,  0,  0,-16,  0,  0,-17,  0,  0,  0,  0, 0,
-      0,  0,  0,-15,  0,  0,  0,-16,  0,  0,  0,-17,  0,  0,  0, 0,
-      0,  0,-15,  0,  0,  0,  0,-16,  0,  0,  0,  0,-17,  0,  0, 0,
-      0,-15,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,-17,  0, 0,
-    -15,  0,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,  0,-17
-  ];
+  // const RAYS = [
+  //    17,  0,  0,  0,  0,  0,  0, 16,  0,  0,  0,  0,  0,  0, 15, 0,
+  //     0, 17,  0,  0, 33,  0,  0, 16,  0,  0,  0,  0,  0, 15,  0, 0,
+  //     0,  0, 17,  0,  0,  0,  0, 16,  0,  0,  0,  0, 15,  0,  0, 0,
+  //     0, 36,  0, 17,  0, 33,  0, 16,  0,  0,  0, 15,  0,  0,  0, 0,
+  //     0, 18,  0,  0, 17,  0, 49, 16,  0,  0, 15,  0,  0, 14,  0, 0,
+  //     0, 19,  0, 18, 36, 17, 33, 16,  0, 15,  0, 14,  0,  0,  0, 0,
+  //    23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10,  9, 0,
+  //     1,  1,  1,  1,  1,  1,  1,  0, -1, -1,  -1,-1, -1, -1, -1, 0,
+  //     0,  0,  0,  0,  0,  0,-15,-16,-17,  0,  0,  0,  0,  0,  0, 0,
+  //     0,  0,  0,  0,  0,-15,  0,-16,  0,-17,  0,  0,  0,  0,  0, 0,
+  //     0,  0,  0,  0,-15,  0,  0,-16,  0,  0,-17,  0,  0,  0,  0, 0,
+  //     0,  0,  0,-15,  0,  0,  0,-16,  0,  0,  0,-17,  0,  0,  0, 0,
+  //     0,  0,-15,  0,  0,  0,  0,-16,  0,  0,  0,  0,-17,  0,  0, 0,
+  //     0,-15,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,-17,  0, 0,
+  //   -15,  0,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,  0,-17
+  // ];
 
   /* update PIECE_OFFSETS, PIECE_OFFSETS_REPEATING, SHIFTS, ATTACKS with custom pieces */
   // customPieces is of the form { m: { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] } }
@@ -171,6 +171,8 @@ var Chess = function(fen, variant=0, customPieces={}) {
       ATTACKS[index] |= 1 << SHIFTS[key];
     });
   }
+
+  console.log(ATTACKS);
 
   const FLAGS = {
     NORMAL: 'n',
@@ -904,13 +906,13 @@ var Chess = function(fen, variant=0, customPieces={}) {
       if (variant === GRID && !valid_2x2_grid_move(i, square)) continue;
 
       const piece = board[i];
-      const offset = i - square;
+      const difference = i - square;
       const index = difference + 119;
 
       if (ATTACKS[index] & (1 << SHIFTS[piece.type])) {
         // pawn attacks
         if (piece.type === PAWN) {
-          if (offset > 0) {
+          if (difference > 0) {
             if (piece.color === WHITE) return true;
           } else {
             if (piece.color === BLACK) return true;
@@ -918,22 +920,30 @@ var Chess = function(fen, variant=0, customPieces={}) {
           continue;
         }
 
+        // compute list of repeating offsets underlying the attack
+        const offsets = PIECE_OFFSETS_REPEATING[piece.type].filter(offset =>
+          (offset > 0) == (difference > 0) && difference % offset === 0
+        );
+
+        // the offset is not repeating, so just return true (no need to check for blocking pieces)
         if (!(offset in PIECE_OFFSETS_REPEATING[piece.type])) {
           return true;
         }
+
         // the offset is one of the repeating offsets for the given piece => there could be a
         // blocking piece that invalidates the attack
-        const offset = RAYS[index];
+        const rayUnit = -offset;
         let j = i + offset;
 
         let blocked = false;
         while (j !== square) {
           if (board[j] != null) { blocked = true; break; }
-          j += offset;
+          j += rayUnit;
         }
 
         if (!blocked) return true;
       }
+    }
 
     return false;
   }
@@ -1892,54 +1902,47 @@ const valid_2x2_grid_move = (from, to) => {
   return !((from >> 5 === to >> 5) && ((from & 15) >> 1 === (to & 15) >> 1));
 };
 
-const moduloEuclid = (a, b) => {
-  let m = a % b;
-  if (m < 0) {
-    m = (b < 0) ? m - b : m + b;
+/* Given a repeating offset, return the list of 'actual' offsets
+between -119 and 119.
+Expected results:
+ -17 -> [-17, -34, -51, -68, -85, -102, -119]
+ +17 -> [+17, +34, +51, +68, +85, +102, +119]
+  -1 -> [ -1,  -2,  -3,  -4,  -5,   -6,   -7]
+  +1 -> [ +1,  +2,  +3,  +4,  +5,   +6,   +7]
+ -18 -> [-18, -36, -54]
+ +18 -> [+18, +36, +54]
+ -19 -> [-19, -38]
+ +19 -> [+19, +38]
+ -20 -> [-20]
+ +20 -> [+20]
+ -24 -> []
+ +24 -> []
+ -34 -> [-34, -68, -102]
+ +34 -> [+34, +68, +102]
+ -51 -> [-51, -102]
+ +51 -> [+51, +102]
+-119 -> [-119]
++119 -> [+119]
+*/
+function generateOffsets(offset) {
+  const row = offset+119 >>> 4; // gives row between 0 and 14
+  const col = offset+119 & 15; // gives col between 0 and 15
+  const reps = Math.floor(7 / Math.max(Math.abs(7 - (offset+119 & 15)), Math.abs(7 - (offset+119 >>> 4))));
+
+  let offsets = []
+  for (let i = 1; i <= reps; i++) {
+    offsets.push(offset*i);
   }
-  return m;
+  return offsets;
 }
 
-// const updateAttacks = (ATTACKS, SHIFTS, customPieces) => {
-//   // customPieces is of the form { m: { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] } }
-
-//   for (const [key, value] of Object.entries(customPieces)) {
-//     // process non-repeating offsets
-//     value[0].forEach(offset => {
-//       const k = 119 - offset;
-//       if (k >= 0 && k < ATTACKS.length) {
-//         ATTACKS[k] |= 1 << SHIFTS[key]; // toggle the bit that corresponds to the piece
-//       }
-//     });
-//     // process repeating offsets
-//     value[1].forEach(offset => {
-//       if 
-//       const movementDirection = moduloEuclid(offset, 16) < 0 ? 'left' : 'right';
-//       let nextOffset = offset;
-//       if (nextOffset )
-//       let k = 119 - nextOffset;
-//       // keep updating ATTACKS array until you fall off the edge
-//       // top edge: simply check (k >= 0)
-//       // bottom edge: simply check (k < ATTACKS.length)
-//       // left edge, right edge: we use modulo for this, which calculates the horizontal offset
-//       while (k >= 0 &&
-//              k < ATTACKS.length &&
-//              (movementDirection === 'left' ?  )
-//              ) {
-//         ATTACKS[119 - nextOffset] |= 1 << SHIFTS[key];
-//         k -= offset;
-//       }
-//     });
-//   }
-
-//   return ATTACKS;
-// }
 
 /* export Chess object if using node or any other CommonJS compatible
  * environment */
 if (typeof exports !== 'undefined') exports.Chess = Chess;
 if (typeof exports !== 'undefined') exports.valid_2x2_grid_move = valid_2x2_grid_move;
-// if (typeof exports !== 'undefined') exports.updateAttacks = updateAttacks;
+if (typeof exports !== 'undefined') exports.generateOffsets = generateOffsets;
+
 
 /* export Chess object for any RequireJS compatible environment */
 if (typeof define !== 'undefined') define( function () { return Chess;  });
