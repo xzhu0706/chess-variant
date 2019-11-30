@@ -32,10 +32,10 @@ function GameData({ turn, gameResult, history, prevMove, nextMove, winner, curre
     moves = history.map((move, index) => {
       return (
         <span>
-          {index % 2 === 0 ? <span>{index/2 + 1}. </span> : ''}
+          {index % 2 === 0 ? <span>{index/2 + 1}.&nbsp;</span> : ''}
           <span style={currentMove - 1 === index ? hightlightMoveStyle : null}>
             {move}
-            {' '}
+            &nbsp;
           </span>
         </span>
       );

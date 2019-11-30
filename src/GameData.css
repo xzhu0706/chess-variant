@@ -1,8 +1,12 @@
 .game-data {
     border: 0.15em dotted pink;
+    min-height: 2em;
+    max-width: inherit;
 }
 
 .moves {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     width: 100%;
-    overflow: auto;
 }

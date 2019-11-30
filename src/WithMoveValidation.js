@@ -244,7 +244,7 @@ class HumanVsHuman extends Component {
 export default function WithMoveValidation(start_fen, variant=0, showData=true, smallBoard=false, editMode=false, sparePiece, customPiece) {
   let boardId = variant === 2 ? "grid-board" : "false"; // if variant isn't grid chess, boardId will be set to false
   return (
-    <div>
+    <div style={smallBoard ? { width: '384px' } : { width: '540px' } }>
       <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece} customPiece={customPiece}>
         { /* HumanVsHuman calls the following function as this.props.children() in its render() method */ }
         {({

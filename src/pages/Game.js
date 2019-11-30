@@ -13,7 +13,7 @@ import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
 import './Game.css';
-import Clock from '../components/Clock';
+// import Clock from '../components/Clock';
 import GameData from '../GameData';
 
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
@@ -145,6 +145,11 @@ class Game extends Component {
     return userInfo;
   }
 
+  calcWidth = (dimensions) => {
+    let customWidth = Math.min(540/640 * dimensions.screenWidth, 540/640 * dimensions.screenHeight);
+    return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
+  }
+
   onSquareClick = async (square) => {
     if (this.state.gameOver || this.game.turn() !== this.orientation[0]) return;
     const piece = this.game.get(square);
@@ -248,8 +253,8 @@ class Game extends Component {
       players = `You vs ${this.opponent !== null ? this.opponent.username : 'Anonymous'}`;
     }
     return (
-      <Grid container spacing={1}>
-        <Grid container item md={4}>
+      <Grid container justify="center" direction="row" spacing={1}>
+        <Box display="flex" flexDirection="column" flexWrap="wrap" >
           <GameData
             history={state.history}
             fen={state.fen}
@@ -259,8 +264,17 @@ class Game extends Component {
             nextMove={this.nextMove}
             currentMove={state.history.length - state.reverseHistory.length}
           />
-        </Grid>
-        <Grid container item md={4}>
+            {/* // for chat box */}
+            below game data
+        </Box>
+        <Grid
+          container
+          item
+          direction="row"
+          alignItems="flex-start"
+          justify="center"
+          xs={2} md={4}
+        >
           <Box display="flex" flexDirection="column">
             <Paper style={{ border: '1px solid #D3D3D3', marginBottom: '2px' }}>
               <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h5" component="h5">
@@ -283,17 +297,16 @@ class Game extends Component {
                 orientation={this.orientation}
                 squareStyles={state.squareStyles}
                 onSquareClick={this.onSquareClick}
+                calcWidth={this.calcWidth}
               />
             </div>
           </Box>
         </Grid>
-        <Grid container item md={4}>
-          {/* // for chat box */}
-        </Grid>
-        <Grid container item md={4} justify="space-between">
+
+        {/* <Grid container item md={4} justify="space-between">
           <Clock time={60000} />
           <Clock time={60000} />
-        </Grid>
+        </Grid> */}
       </Grid>
     );
   }
