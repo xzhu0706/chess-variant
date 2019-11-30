@@ -188,7 +188,7 @@ class Lobby extends Component {
     console.log('new', newGame);
     newGame.fen = 'init';
     newGame.available = true;
-    newGame.ended = false
+    newGame.ended = false;
     await this.getUserInfo().then((user) => {
       console.log(typeof (user), user);
       if (typeof (user) === 'object') {
@@ -343,7 +343,7 @@ class Lobby extends Component {
     return (
       <Container maxWidth="sm" style={lobbyStyle}>
         <CreateGameDialog closeDialog = {this.closeDialog} showDialog = {this.state.showDialog} createGame = {this.createGame} />
-        <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog}>
+        <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog} id="btncreategame">
                 Create a game
         </Button>
         <Dialog

@@ -32,7 +32,7 @@
     "build": "react-scripts build",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "test": "react-scripts test --watchAll=false",
+    "test": "react-scripts test --watchAll=false  --detectOpenHandles",
     "test:coverage": "react-scripts test --coverage --watchAll=false",
     "test:update": "react-scripts test --updateSnapshot --watchAll=false",
     "coveralls": "react-scripts test --coverage --watchAll=false && cat ./coverage/lcov.info | coveralls",
@@ -47,7 +47,7 @@
       "!src/**/index.{js,jsx}",
       "!src/config/**"
     ]
-  },
+    },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -78,7 +78,9 @@
     "install": "^0.13.0",
     "jest": "^24.9.0",
     "jest-dom": "^4.0.0",
-    "lint-staged": "^9.4.3"
+    "jest-puppeteer": "^4.3.0",
+    "lint-staged": "^9.4.3",
+    "puppeteer": "^2.0.0"
   },
   "husky": {
     "hooks": {

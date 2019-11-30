@@ -34,7 +34,6 @@ class Game extends Component {
       squareStyles: {},
       yourTurn: false,
       showGameResignationDialog: false,
-      gameResult: '',
       history: [],
       messageList: [],
       gameOver: false,
@@ -129,27 +128,27 @@ class Game extends Component {
         const gameState = gameData.value.data.onUpdateGameState;
         if (this.gameInfo.id === gameState.id) {
           this.game.load(gameState.fen);
-          this.gameInfo.ended = gameState.ended
+          this.gameInfo.ended = gameState.ended;
           let yourTurn = this.game.turn() === this.orientation[0];
-          let gameResult
-          if (gameState.ended === true) {
-            if (this.game.game_over()) {
-              //checkmate or stalemate
-              if (this.game.in_checkmate) {
-                //let winner = this.game.turn() === 'w'? "Black" : "White"
-                gameResult = `CHECKMATE: YOU LOSE!`
-              }
-              // else the game ended in stalemate.
-              else gameResult = 'STALEMATE: TIE GAME!'
-            }
-            else {
-              //Player on the other end left the game.
-              alert('The other player has left the game')
-            }
-            this.gameUpdateSubscription.unsubscribe()
-            yourTurn = false
-          }
-          this.setState({ fen: gameState.fen, yourTurn, gameResult, history: gameState.history });
+          // let gameResult
+          // if (gameState.ended === true) {
+          //   if (this.game.game_over()) {
+          //     //checkmate or stalemate
+          //     if (this.game.in_checkmate) {
+          //       //let winner = this.game.turn() === 'w'? "Black" : "White"
+          //       gameResult = `CHECKMATE: YOU LOSE!`
+          //     }
+          //     // else the game ended in stalemate.
+          //     else gameResult = 'STALEMATE: TIE GAME!'
+          //   }
+          //   else {
+          //     //Player on the other end left the game.
+          //     alert('The other player has left the game')
+          //   }
+          //   this.gameUpdateSubscription.unsubscribe()
+          //   yourTurn = false
+          // }
+          this.setState({ fen: gameState.fen, yourTurn, gameResult: gameState.result, history: gameState.history });
 
         }
       },
@@ -159,8 +158,8 @@ class Game extends Component {
   componentWillUnmount() {
     if (this.gameUpdateSubscription)
       this.gameUpdateSubscription.unsubscribe()
-    if (!this.game.game_over() && !this.gameInfo.ended)
-      this.leaveGame()
+    // if (!this.game.game_over() && !this.gameInfo.ended)
+    //   this.leaveGame()
   }
 
   getUserInfo = async () => {
@@ -209,7 +208,8 @@ class Game extends Component {
         const result = this.updateGameResult();
         if (result) {
           updateGameData.result = result;
-          updateGameData.winner = this.game.turn();
+          updateGameData.winner = this.game.turn() === 'w' ? 'Black' : 'White';
+          updateGameData.ended = true;
           console.log('game end', this.game.turn(), result);
         }
         const updated = await API.graphql(graphqlOperation(
@@ -284,6 +284,8 @@ class Game extends Component {
   }
 
   leaveGame = () => {
+    // this should be called if a player resign
+    // should also include newGameState.result stating who resigned and who won
     let newGameState = {}
     newGameState.id = this.gameId
     newGameState.ended = true;
@@ -303,7 +305,7 @@ class Game extends Component {
     return (
       <Box display='flex' flexDirection='row' justifyContent='flex-end'>
         <div className="App">
-          <Widget 
+          <Widget
             title="Chat with your opponent"
             subtitle=''
           />
@@ -311,9 +313,9 @@ class Game extends Component {
         <Box display="flex" flexDirection="column">
           <GameInfo
             yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
-            opponent={this.opponent !== null ? this.opponent.username : 'Anonymous'}
+            players={players}
             variant={this.gameInfo !== null ? this.gameInfo.variant : ''}
-            gameResult={this.state.gameResult}
+            gameResult={state.gameResult}
           />
           <div id={this.boardId}>
             <Chessboard
@@ -326,17 +328,18 @@ class Game extends Component {
             />
           </div>
         </Box>
-        <GameData style = {{width: '100px'}}
-            history={state.history}
-            fen={state.fen}
-            gameResult={state.gameResult}
-            winner={state.winner}
-            prevMove={this.prevMove}
-            nextMove={this.nextMove}
-            currentMove={state.history.length - state.reverseHistory.length}
-          />
+        <GameData
+          style={{ width: '100px' }}
+          history={state.history}
+          fen={state.fen}
+          gameResult={state.gameResult}
+          winner={state.winner}
+          prevMove={this.prevMove}
+          nextMove={this.nextMove}
+          currentMove={state.history.length - state.reverseHistory.length}
+        />
       </Box>
-    )
+    );
   }
 }
 
