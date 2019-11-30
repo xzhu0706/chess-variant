@@ -71,7 +71,7 @@ function ExtinctionChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={ExtinctionChess('8/8/3q1p2/2r5/4N3/2b3k1/3n1n2/8 w KQkq - 0 1', 3, false, true)}  
+        board={ExtinctionChess('8/8/3q1p2/2r5/4N3/2b3k1/3n1n2/8 w KQkq - 0 1', 3, true, true)}  
       >
       Here is an example of an ending scenario. White wins in one move if he/she captures any of Black's pieces except for the knight because Black has two knights.
       </ContentBox>
