@@ -87,15 +87,6 @@ var Chess = function(fen, variant=0, customPieces={}) {
     s: [-18, -33, -31, -14,  18, 33, 31,  14],
   };
 
-  // add custom pieces to PIECE_OFFSETS
-  // customPieces is of the form { m: { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] } }
-  for (const [key, value] of Object.entries(customPieces)) {
-    // if (!(key in PIECE_OFFSETS)) {
-      PIECE_OFFSETS[key] = value[0];
-    // }
-  }
-  // console.log(PIECE_OFFSETS[c]);
-
   let PIECE_OFFSETS_REPEATING = {
     n: [],
     b: [-17, -15,  17,  15],
@@ -110,20 +101,7 @@ var Chess = function(fen, variant=0, customPieces={}) {
     s: [-17, -15,  17,  15],
   };
 
-  // add custom pieces to PIECE_OFFSETS_REPEATING
-  // customPieces is of the form { m: { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] } }
-  for (let [key, value] of Object.entries(customPieces)) {
-    // if (!(key in PIECE_OFFSETS_REPEATING)) {
-      PIECE_OFFSETS_REPEATING[key] = value[1];
-    // }
-  }
-
   const SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5, m: 6, f: 7, d: 8, e: 9, s: 10 };
-
-  // add custom pieces to SHIFTS
-  for (const key of Object.keys(customPieces)) {
-    SHIFTS[key] = Object.keys(SHIFTS).length;
-  }
 
   // the ATTACKS array is a bit-mask of attacks based on a 6-bit string of the form kqrbnp.
   // For example:
@@ -166,6 +144,33 @@ var Chess = function(fen, variant=0, customPieces={}) {
       0,-15,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,-17,  0, 0,
     -15,  0,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,  0,-17
   ];
+
+  /* update PIECE_OFFSETS, PIECE_OFFSETS_REPEATING, SHIFTS, ATTACKS with custom pieces */
+  // customPieces is of the form { m: { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] } }
+  for (let [key, value] of Object.entries(customPieces)) {
+    // if (!(key in PIECE_OFFSETS_REPEATING) && !(key in PIECE_OFFSETS)) {
+    // copy over the offsets
+    PIECE_OFFSETS[key] = value[0];
+    PIECE_OFFSETS_REPEATING[key] = value[1];
+    // }
+    // if (!(key in SHIFTS))
+    // assign the new piece a unique index value
+    SHIFTS[key] = Object.keys(SHIFTS).length;
+    // update ATTACKS and RAYS so that the new piece can be recognized by attacked()
+    // (for check/checkmate detection)
+    value[0].forEach(off => {
+      const row = off+119 >>> 4; // gives row between 0 and 14
+      const col = off+119 & 15; // gives col between 0 and 15
+      const index = 16*row + col;
+      ATTACKS[index] |= 1 << SHIFTS[key]; // activate the bit of the custom piece
+    });
+    value[1].forEach(off => {
+      const row = off+119 >>> 4;
+      const col = off+119 & 15;
+      const index = 16*row + col;
+      ATTACKS[index] |= 1 << SHIFTS[key];
+    });
+  }
 
   const FLAGS = {
     NORMAL: 'n',
@@ -895,16 +900,17 @@ var Chess = function(fen, variant=0, customPieces={}) {
       /* if empty square or wrong color */
       if (board[i] == null || board[i].color !== color) continue;
 
-      /* if we're playing grid chess and it's not a valid, out-of-grid move, no attack can occur */
+      /* if we're playing grid chess and it's not a valid, out-of-grid move */
       if (variant === GRID && !valid_2x2_grid_move(i, square)) continue;
 
       const piece = board[i];
-      const difference = i - square;
+      const offset = i - square;
       const index = difference + 119;
 
       if (ATTACKS[index] & (1 << SHIFTS[piece.type])) {
+        // pawn attacks
         if (piece.type === PAWN) {
-          if (difference > 0) {
+          if (offset > 0) {
             if (piece.color === WHITE) return true;
           } else {
             if (piece.color === BLACK) return true;
@@ -912,9 +918,11 @@ var Chess = function(fen, variant=0, customPieces={}) {
           continue;
         }
 
-        /* if the piece is a knight or a king */
-        if (piece.type === 'n' || piece.type === 'k') return true;
-
+        if (!(offset in PIECE_OFFSETS_REPEATING[piece.type])) {
+          return true;
+        }
+        // the offset is one of the repeating offsets for the given piece => there could be a
+        // blocking piece that invalidates the attack
         const offset = RAYS[index];
         let j = i + offset;
 
@@ -926,7 +934,6 @@ var Chess = function(fen, variant=0, customPieces={}) {
 
         if (!blocked) return true;
       }
-    }
 
     return false;
   }

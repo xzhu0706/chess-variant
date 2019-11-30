@@ -52,7 +52,7 @@ function PieceCustomize(props) {
       // calculate cx , cy from the given offset
       cx = (10 + 20*(offset*i+119 & 15)) / 3;
       cy = (10 + 20*(offset*i+119 >>> 4)) / 3;
-      circles.push(<circle key={keyCount} className="move" cx={cx + '%'} cy={cy + '%'} r="2.5%" />);
+      circles.push(<circle key={keyCount} className="moveRepeat" cx={cx + '%'} cy={cy + '%'} r="2.5%" />);
       keyCount++;
     }
   });

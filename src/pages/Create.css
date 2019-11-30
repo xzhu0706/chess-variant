@@ -182,6 +182,10 @@
 }
 
 .move {
+    fill: #105801;
+}
+
+.moveRepeat {
     fill: #fd4362;
 }
 
