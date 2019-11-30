@@ -129,6 +129,9 @@ class NavBar extends Component {
                 <li>
                   <Link to="/create">Create a Variant</Link>
                 </li>
+                <li>
+                  <Link to="/pieces">Glossary of Pieces</Link>
+                </li>
 
                 {username
                   ? (

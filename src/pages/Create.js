@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Board from '../WithMoveValidation';
 import SparePieces from '../components/customization/SparePieces.js';
 import PieceCustomize from '../components/customization/PieceCustomize.js';
@@ -70,6 +71,7 @@ class Create extends React.Component {
             onChangeOffsets={this.handleOffsetsChange}
             onChangeRepeatOffsets={this.handleRepeatOffsetsChange}
           />
+          <div style={{ margin: '0.25em' }}><Link to="/pieces">Go to glossary of pieces</Link></div>
           </div>
       </div>
     );

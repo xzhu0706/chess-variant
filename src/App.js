@@ -6,6 +6,7 @@ import Account from './pages/Account';
 import Variants from './pages/Variants';
 import Create from './pages/Create';
 import Analysis from './pages/Analysis';
+import Pieces from './pages/Pieces';
 import './App.css';
 import NavBar from './components/NavBar';
 
@@ -28,6 +29,7 @@ class App extends Component {
           <Route path="/account" component={Account} />
           <Route path="/create" component={Create} />
           <Route path="/analysis" component={Analysis} />
+          <Route path="/pieces" component={Pieces} />
         </Switch>
       </Router>
     );

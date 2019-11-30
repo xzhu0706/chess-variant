@@ -59,6 +59,8 @@ function PieceCustomize(props) {
 
   return (
     <div className="piece-customize">
+      { props.hideInput ?
+      null : (
       <div style={{ margin: '0.25em' }}>
         <div>
           <label>
@@ -72,7 +74,9 @@ function PieceCustomize(props) {
             <input type="text" onChange={props.onChangeRepeatOffsets} />
           </label>
         </div>
-      </div>
+      </div>)
+      }
+
       <div className="move-diagram">
         <svg width="100%" height="100%">
           <rect x="48%" y="48%" width="4%" height="4%"/>

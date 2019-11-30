@@ -40,7 +40,7 @@ function SparePieces(props) {
             <input id="black-king" type="radio" name="piece" value="k" />
             <label className="piece-card black-king" htmlFor="black-king" title="black king"></label>
           </div>
-          <div className="title">fairy spares</div>
+          <div className="title">fairy pieces</div>
           <div className="piece-row">
             <input id="white-empress" type="radio" name="piece" value="E" />
             <label className="piece-card white-empress" htmlFor="white-empress" title="white empress"></label>
