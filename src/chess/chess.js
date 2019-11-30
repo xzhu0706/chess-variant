@@ -148,31 +148,14 @@ var Chess = function(fen, variant=0, customPieces={}) {
   /* update PIECE_OFFSETS, PIECE_OFFSETS_REPEATING, SHIFTS, ATTACKS with custom pieces */
   // customPieces is of the form { m: { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] } }
   for (let [key, value] of Object.entries(customPieces)) {
-    // if (!(key in PIECE_OFFSETS_REPEATING) && !(key in PIECE_OFFSETS)) {
     // copy over the offsets
     PIECE_OFFSETS[key] = value[0];
     PIECE_OFFSETS_REPEATING[key] = value[1];
-    // }
-    // if (!(key in SHIFTS))
     // assign the new piece a unique index value
     SHIFTS[key] = Object.keys(SHIFTS).length;
-    // update ATTACKS and RAYS so that the new piece can be recognized by attacked()
-    // (for check/checkmate detection)
-    value[0].forEach(off => {
-      const row = off+119 >>> 4; // gives row between 0 and 14
-      const col = off+119 & 15; // gives col between 0 and 15
-      const index = 16*row + col;
-      ATTACKS[index] |= 1 << SHIFTS[key]; // activate the bit of the custom piece
-    });
-    value[1].forEach(off => {
-      const row = off+119 >>> 4;
-      const col = off+119 & 15;
-      const index = 16*row + col;
-      ATTACKS[index] |= 1 << SHIFTS[key];
-    });
+    // update ATTACKS so that the new piece can be recognized as an attacker (see attacked())
+    updateAttacks(ATTACKS, value);
   }
-
-  console.log(ATTACKS);
 
   const FLAGS = {
     NORMAL: 'n',
@@ -1927,7 +1910,7 @@ Expected results:
 function generateOffsets(offset) {
   const row = offset+119 >>> 4; // gives row between 0 and 14
   const col = offset+119 & 15; // gives col between 0 and 15
-  const reps = Math.floor(7 / Math.max(Math.abs(7 - (offset+119 & 15)), Math.abs(7 - (offset+119 >>> 4))));
+  const reps = Math.floor(7 / Math.max(Math.abs(7 - (col)), Math.abs(7 - (row))));
 
   let offsets = []
   for (let i = 1; i <= reps; i++) {
@@ -1936,13 +1919,33 @@ function generateOffsets(offset) {
   return offsets;
 }
 
+function updateAttacks(ATTACKS, customPieceOffsets, shifts) {
+  // the input looks like this:
+  // { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] }
+  customPieceOffsets[0].forEach(off => {
+    const row = off+119 >>> 4; // gives row between 0 and 14
+    const col = off+119 & 15; // gives col between 0 and 15
+    const index = 16*row + col;
+    ATTACKS[index] |= 1 << shifts; // activate the bit of the custom piece
+  });
+  customPieceOffsets[1].forEach(off => {
+    const offsets = generateOffsets(off); // generate list of offsets derived from the repeating offset
+    offsets.forEach(off => { // for each of those offsets, activate the bit of the custom piece
+      const row = off+119 >>> 4;
+      const col = off+119 & 15;
+      const index = 16*row + col;
+      ATTACKS[index] |= 1 << shifts;
+    });
+  });
+  return ATTACKS;
+}
 
 /* export Chess object if using node or any other CommonJS compatible
  * environment */
 if (typeof exports !== 'undefined') exports.Chess = Chess;
 if (typeof exports !== 'undefined') exports.valid_2x2_grid_move = valid_2x2_grid_move;
 if (typeof exports !== 'undefined') exports.generateOffsets = generateOffsets;
-
+if (typeof exports !== 'undefined') exports.updateAttacks = updateAttacks;
 
 /* export Chess object for any RequireJS compatible environment */
 if (typeof define !== 'undefined') define( function () { return Chess;  });

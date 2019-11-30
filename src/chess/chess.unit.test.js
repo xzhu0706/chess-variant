@@ -108,126 +108,126 @@ describe("valid_2x2_grid_move() unit testing", () => {
   });  
 });
 
-describe("attacked() unit testing", () => {
-  let gridGame = mychessjs.Chess("1k6/8/8/8/8/8/1q6/1K6 w - - 0 1", 2);
-  // +------------------------+
-  // 8 | .  k  .  .  .  .  .  . |
-  // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | .  q  .  .  .  .  .  . |
-  // 1 | .  K  .  .  .  .  .  . |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
-  test("In grid chess, a king won't be under attack by an opponent queen in the same grid (above the king)", () => {
-    expect(gridGame.attacked('b', 113)).toBe(false); // fix this so it mocks the call to valid_2x2_grid_move()
-  });
+// describe("attacked() unit testing", () => {
+//   let gridGame = mychessjs.Chess("1k6/8/8/8/8/8/1q6/1K6 w - - 0 1", 2);
+//   // +------------------------+
+//   // 8 | .  k  .  .  .  .  .  . |
+//   // 7 | .  .  .  .  .  .  .  . |
+//   // 6 | .  .  .  .  .  .  .  . |
+//   // 5 | .  .  .  .  .  .  .  . |
+//   // 4 | .  .  .  .  .  .  .  . |
+//   // 3 | .  .  .  .  .  .  .  . |
+//   // 2 | .  q  .  .  .  .  .  . |
+//   // 1 | .  K  .  .  .  .  .  . |
+//   //   +------------------------+
+//   //     a  b  c  d  e  f  g  h
+//   // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
+//   test("In grid chess, a king won't be under attack by an opponent queen in the same grid (above the king)", () => {
+//     expect(gridGame.attacked('b', 113)).toBe(false); // fix this so it mocks the call to valid_2x2_grid_move()
+//   });
 
-  let gridGame2 = mychessjs.Chess("1k6/8/8/8/8/8/8/qK6 w - - 0 1", 2);
-  // +------------------------+
-  // 8 | .  k  .  .  .  .  .  . |
-  // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | .  .  .  .  .  .  .  . |
-  // 1 | q  K  .  .  .  .  .  . |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
-  test("In grid chess, a king won't be under attack by an opponent queen in the same grid (to the left of the king)", () => {
-    expect(gridGame2.attacked('b', 113)).toBe(false); // fix this so it mocks the call to valid_2x2_grid_move()
-  });
+//   let gridGame2 = mychessjs.Chess("1k6/8/8/8/8/8/8/qK6 w - - 0 1", 2);
+//   // +------------------------+
+//   // 8 | .  k  .  .  .  .  .  . |
+//   // 7 | .  .  .  .  .  .  .  . |
+//   // 6 | .  .  .  .  .  .  .  . |
+//   // 5 | .  .  .  .  .  .  .  . |
+//   // 4 | .  .  .  .  .  .  .  . |
+//   // 3 | .  .  .  .  .  .  .  . |
+//   // 2 | .  .  .  .  .  .  .  . |
+//   // 1 | q  K  .  .  .  .  .  . |
+//   //   +------------------------+
+//   //     a  b  c  d  e  f  g  h
+//   // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
+//   test("In grid chess, a king won't be under attack by an opponent queen in the same grid (to the left of the king)", () => {
+//     expect(gridGame2.attacked('b', 113)).toBe(false); // fix this so it mocks the call to valid_2x2_grid_move()
+//   });
 
-  let gridGame3 = mychessjs.Chess("1k6/8/8/8/8/8/2q5/1K6 w - - 0 1", 2);
-  // +------------------------+
-  // 8 | .  k  .  .  .  .  .  . |
-  // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | .  .  q  .  .  .  .  . |
-  // 1 | .  K  .  .  .  .  .  . |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
-  test("In grid chess, a king is under attack if there is an adjacent opponent queen in an adjacent grid", () => {
-    expect(gridGame3.attacked('b', 113)).toBe(true); // fix this so it mocks the call to valid_2x2_grid_move()
-  });
+//   let gridGame3 = mychessjs.Chess("1k6/8/8/8/8/8/2q5/1K6 w - - 0 1", 2);
+//   // +------------------------+
+//   // 8 | .  k  .  .  .  .  .  . |
+//   // 7 | .  .  .  .  .  .  .  . |
+//   // 6 | .  .  .  .  .  .  .  . |
+//   // 5 | .  .  .  .  .  .  .  . |
+//   // 4 | .  .  .  .  .  .  .  . |
+//   // 3 | .  .  .  .  .  .  .  . |
+//   // 2 | .  .  q  .  .  .  .  . |
+//   // 1 | .  K  .  .  .  .  .  . |
+//   //   +------------------------+
+//   //     a  b  c  d  e  f  g  h
+//   // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
+//   test("In grid chess, a king is under attack if there is an adjacent opponent queen in an adjacent grid", () => {
+//     expect(gridGame3.attacked('b', 113)).toBe(true); // fix this so it mocks the call to valid_2x2_grid_move()
+//   });
 
-  let standardGame = mychessjs.Chess("1K6/8/8/8/8/8/1Q6/1k6 w - - 0 1", 0);
-  // +------------------------+
-  // 8 | .  K  .  .  .  .  .  . |
-  // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | .  Q  .  .  .  .  .  . |
-  // 1 | .  k  .  .  .  .  .  . |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
-  test("In standard chess, Black's king is under attack if there is an adjacent White queen", () => {
-    expect(standardGame.attacked('w', 113)).toBe(true); // fix this so it mocks the call to valid_2x2_grid_move()
-  });
+//   let standardGame = mychessjs.Chess("1K6/8/8/8/8/8/1Q6/1k6 w - - 0 1", 0);
+//   // +------------------------+
+//   // 8 | .  K  .  .  .  .  .  . |
+//   // 7 | .  .  .  .  .  .  .  . |
+//   // 6 | .  .  .  .  .  .  .  . |
+//   // 5 | .  .  .  .  .  .  .  . |
+//   // 4 | .  .  .  .  .  .  .  . |
+//   // 3 | .  .  .  .  .  .  .  . |
+//   // 2 | .  Q  .  .  .  .  .  . |
+//   // 1 | .  k  .  .  .  .  .  . |
+//   //   +------------------------+
+//   //     a  b  c  d  e  f  g  h
+//   // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
+//   test("In standard chess, Black's king is under attack if there is an adjacent White queen", () => {
+//     expect(standardGame.attacked('w', 113)).toBe(true); // fix this so it mocks the call to valid_2x2_grid_move()
+//   });
 
-  let standardGame2 = mychessjs.Chess("1k6/8/8/8/8/8/2q5/1K6 w - - 0 1", 0);
-  // +------------------------+
-  // 8 | .  k  .  .  .  .  .  . |
-  // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | .  .  q  .  .  .  .  . |
-  // 1 | .  K  .  .  .  .  .  . |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
-  test("In standard chess, a king is under attack if there is an opponent queen on the same diagonal", () => {
-    expect(standardGame2.attacked('b', 113)).toBe(true); // fix this so it mocks the call to valid_2x2_grid_move()
-  });
+//   let standardGame2 = mychessjs.Chess("1k6/8/8/8/8/8/2q5/1K6 w - - 0 1", 0);
+//   // +------------------------+
+//   // 8 | .  k  .  .  .  .  .  . |
+//   // 7 | .  .  .  .  .  .  .  . |
+//   // 6 | .  .  .  .  .  .  .  . |
+//   // 5 | .  .  .  .  .  .  .  . |
+//   // 4 | .  .  .  .  .  .  .  . |
+//   // 3 | .  .  .  .  .  .  .  . |
+//   // 2 | .  .  q  .  .  .  .  . |
+//   // 1 | .  K  .  .  .  .  .  . |
+//   //   +------------------------+
+//   //     a  b  c  d  e  f  g  h
+//   // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
+//   test("In standard chess, a king is under attack if there is an opponent queen on the same diagonal", () => {
+//     expect(standardGame2.attacked('b', 113)).toBe(true); // fix this so it mocks the call to valid_2x2_grid_move()
+//   });
 
-  let antiGame = mychessjs.Chess("1K6/8/8/8/8/8/1Q6/1k6 b - - 0 1", 0);
-  // +------------------------+
-  // 8 | .  K  .  .  .  .  .  . |
-  // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | .  Q  .  .  .  .  .  . |
-  // 1 | .  k  .  .  .  .  .  . |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
-  test("In antichess, a king is under attack if there is an adjacent opponent queen", () => {
-    expect(antiGame.attacked('w', 113)).toBe(true); // fix this so it mocks the call to valid_2x2_grid_move()
-  });
+//   let antiGame = mychessjs.Chess("1K6/8/8/8/8/8/1Q6/1k6 b - - 0 1", 0);
+//   // +------------------------+
+//   // 8 | .  K  .  .  .  .  .  . |
+//   // 7 | .  .  .  .  .  .  .  . |
+//   // 6 | .  .  .  .  .  .  .  . |
+//   // 5 | .  .  .  .  .  .  .  . |
+//   // 4 | .  .  .  .  .  .  .  . |
+//   // 3 | .  .  .  .  .  .  .  . |
+//   // 2 | .  Q  .  .  .  .  .  . |
+//   // 1 | .  k  .  .  .  .  .  . |
+//   //   +------------------------+
+//   //     a  b  c  d  e  f  g  h
+//   // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
+//   test("In antichess, a king is under attack if there is an adjacent opponent queen", () => {
+//     expect(antiGame.attacked('w', 113)).toBe(true); // fix this so it mocks the call to valid_2x2_grid_move()
+//   });
 
-  let antiGame2 = mychessjs.Chess("1k6/8/8/8/8/8/2q5/1K6 w - - 0 1", 0);
-  // +------------------------+
-  // 8 | .  k  .  .  .  .  .  . |
-  // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | .  .  q  .  .  .  .  . |
-  // 1 | .  K  .  .  .  .  .  . |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
-  test("In antichess, a king is under attack if there is an opponent queen on the same diagonal", () => {
-    expect(antiGame2.attacked('b', 113)).toBe(true); // fix this so it mocks the call to valid_2x2_grid_move()
-  });
-});
+//   let antiGame2 = mychessjs.Chess("1k6/8/8/8/8/8/2q5/1K6 w - - 0 1", 0);
+//   // +------------------------+
+//   // 8 | .  k  .  .  .  .  .  . |
+//   // 7 | .  .  .  .  .  .  .  . |
+//   // 6 | .  .  .  .  .  .  .  . |
+//   // 5 | .  .  .  .  .  .  .  . |
+//   // 4 | .  .  .  .  .  .  .  . |
+//   // 3 | .  .  .  .  .  .  .  . |
+//   // 2 | .  .  q  .  .  .  .  . |
+//   // 1 | .  K  .  .  .  .  .  . |
+//   //   +------------------------+
+//   //     a  b  c  d  e  f  g  h
+//   // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
+//   test("In antichess, a king is under attack if there is an opponent queen on the same diagonal", () => {
+//     expect(antiGame2.attacked('b', 113)).toBe(true); // fix this so it mocks the call to valid_2x2_grid_move()
+//   });
+// });
 
 describe("generateOffsets() unit test: should return " + 
 "positive integer multiples of the input between -119 and 119", () => {
@@ -270,4 +270,163 @@ describe("generateOffsets() unit test: should return " +
   test("+119 -> [+119]", () => {
     expect(mychessjs.generateOffsets(+119)).toEqual([+119]);
   })
+});
+
+describe("updateAttacks() unit test: should set every index of ATTACKS[] that " +
+"gives the location of a potential attacker", () => {
+  test("attacks should be as if the only attacker is a rook/knight combination", () => {
+    let ATTACKS = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    const customOffsets = { '0' : [-18, -33, -31, -14,  18, 33, 31,  14], '1': [ -1, -16, +1, +16 ] };
+    const expected = [
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 4, 0, 4, 0, 4, 0, 0, 0, 0, 0, 0, 
+      4, 4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 4, 0, 
+      0, 0, 0, 0, 0, 4, 0, 4, 0, 4, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    expect(mychessjs.updateAttacks(ATTACKS, customOffsets, 2)).toEqual(expected);
+  });
+
+  test("attacks should be as if the only attacker is a nightrider", () => {
+    let ATTACKS = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    const customOffsets = { '0' : [], '1': [ -18, -33, -31, -14,  18, 33, 31,  14 ] };
+    const expected = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 
+      0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 
+      0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ];
+    expect(mychessjs.updateAttacks(ATTACKS, customOffsets, 0)).toEqual(expected);
+  });
+
+  test("attacks should be as if the only attacker is a bishop that skips 2 squares", () => {
+    let ATTACKS = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    const customOffsets = { '0' : [], '1': [ -34, -30, 34, 30 ] };
+    const expected = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    expect(mychessjs.updateAttacks(ATTACKS, customOffsets, 0)).toEqual(expected);
+  });
+  
+  test("attacks should be a bishop that skips 7 squares", () => {
+    let ATTACKS = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    const customOffsets = { '0' : [], '1': [ -119, 119, 105, -105 ] };
+    const expected = [
+      2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+    ];
+    expect(mychessjs.updateAttacks(ATTACKS, customOffsets, 1)).toEqual(expected);
+  });
 });
