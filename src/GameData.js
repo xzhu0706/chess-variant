@@ -22,7 +22,8 @@ function GameData({ turn, gameResult, history, prevMove, nextMove, winner, curre
     game_state = `Draw (fifty-move rule)`;
   }
   const mystyle = {
-    fontSize: "1.4em"
+    fontSize: "1.4em",
+    textAlign: "center"
   };
   const hightlightMoveStyle = {
     backgroundColor: 'yellow',
@@ -31,7 +32,7 @@ function GameData({ turn, gameResult, history, prevMove, nextMove, winner, curre
   if (history) {
     moves = history.map((move, index) => {
       return (
-        <span>
+        <span key={index}>
           {index % 2 === 0 ? <span>{index/2 + 1}.&nbsp;</span> : ''}
           <span style={currentMove - 1 === index ? hightlightMoveStyle : null}>
             {move}

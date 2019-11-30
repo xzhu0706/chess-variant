@@ -244,7 +244,7 @@ class HumanVsHuman extends Component {
 export default function WithMoveValidation(start_fen, variant=0, showData=true, smallBoard=false, editMode=false, sparePiece, customPiece) {
   let boardId = variant === 2 ? "grid-board" : "false"; // if variant isn't grid chess, boardId will be set to false
   return (
-    <div style={smallBoard ? { width: '384px' } : { width: '540px' } }>
+    <div style={smallBoard ? { maxWidth: '384px' } : { maxWidth: '540px' } }>
       <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece} customPiece={customPiece}>
         { /* HumanVsHuman calls the following function as this.props.children() in its render() method */ }
         {({
@@ -266,14 +266,6 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
               return (dimensions.screenWidth < 460 || dimensions.screenHeight < 460) ? customWidth : 384;
             }
           }
-
-          const gameData =
-            showData ? (
-              <div className="p-1">
-                <GameData history={history} turn={turn} gameResult={gameResult} />
-              </div>
-            ) :
-            null;
 
           let customPieces = {
             wM: ({ squareWidth }) => (
@@ -426,10 +418,19 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
             }}
           }
 
+          const gameData =
+            showData ? (
+              <div className="p-1">
+                <GameData history={history} turn={turn} gameResult={gameResult} />
+              </div>
+            ) :
+            null;
+
           return (
-            <div className="d-flex flex-column">
+            // <div className="d-flex flex-column">
+            <div>
               { editMode ? <CustomPlayOption fen={fen} customPiece={customPiece} /> : null }
-              <div id={boardId}>
+              <div id={boardId} style={{ display: 'inline-block' }}>
                 <Chessboard
                   position={fen}
                   boardStyle={{
@@ -446,9 +447,9 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                   draggable={false}
                   orientation={orientation}
                 />
-                <div style={{ margin: '0.4em' }}>
-                  <Button size="small" variant="outlined" onClick={flipOrientation}>Flip board</Button>
-                </div>
+              </div>
+              <div style={{ textAlign: "left", margin: '0.4em' }}>
+                <Button size="small" variant="outlined" onClick={flipOrientation}>Flip board</Button>
               </div>
               { gameData }
             </div>

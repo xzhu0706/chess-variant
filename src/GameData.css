@@ -1,6 +1,7 @@
 .game-data {
     border: 0.15em dotted pink;
     min-height: 2em;
+    width: inherit;
     max-width: inherit;
 }
 
