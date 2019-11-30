@@ -18,9 +18,7 @@ import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
 import { Widget } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
-import { Launcher } from 'react-chat-window'
-
-
+import { Launcher } from 'react-chat-window';
 
 
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
@@ -30,7 +28,7 @@ class Game extends Component {
     super(props);
     this.state = {
       fen: '',
-      time: '',
+      time: 6000,
       squareStyles: {},
       yourTurn: false,
       showGameResignationDialog: false,
@@ -80,30 +78,31 @@ class Game extends Component {
     }
     console.log(this.orientation, userId, this.gameInfo.opponent.id, this.gameInfo.creator.id);
     let initialFen = '';
+    const startTime = parseInt(this.gameInfo.time);
     let yourTurn = this.orientation === 'white';
     this.gameId = this.gameInfo.id;
     const { variant } = this.gameInfo;
     switch (variant) {
-      case Games.ANTICHESS:
-        this.game = new Chess(Games.STANDARD_FEN, 1);
-        initialFen = Games.STANDARD_FEN;
-        break;
-      case Games.GRID_CHESS:
-        this.game = new Chess(Games.STANDARD_FEN, 2);
-        initialFen = Games.STANDARD_FEN;
-        this.boardId = 'grid-board';
-        break;
-      case Games.EXTINCTION_CHESS:
-        this.game = new Chess(Games.STANDARD_FEN, 3);
-        initialFen = Games.STANDARD_FEN;
-        break;
-      case Games.STANDARD_CHESS:
-        this.game = new Chess();
-        initialFen = Games.STANDARD_FEN;
-        break;
-      default:
-        this.game = new Chess();
-        initialFen = Games.STANDARD_FEN;
+    case Games.ANTICHESS:
+      this.game = new Chess(Games.STANDARD_FEN, 1);
+      initialFen = Games.STANDARD_FEN;
+      break;
+    case Games.GRID_CHESS:
+      this.game = new Chess(Games.STANDARD_FEN, 2);
+      initialFen = Games.STANDARD_FEN;
+      this.boardId = 'grid-board';
+      break;
+    case Games.EXTINCTION_CHESS:
+      this.game = new Chess(Games.STANDARD_FEN, 3);
+      initialFen = Games.STANDARD_FEN;
+      break;
+    case Games.STANDARD_CHESS:
+      this.game = new Chess();
+      initialFen = Games.STANDARD_FEN;
+      break;
+    default:
+      this.game = new Chess();
+      initialFen = Games.STANDARD_FEN;
     }
     if (this.gameInfo.result) {
       // if a game was ended, play all the moves to the end
@@ -120,7 +119,7 @@ class Game extends Component {
       this.game.load(initialFen);
       yourTurn = this.game.turn() === this.orientation[0];
     }
-    this.setState({ fen: initialFen, yourTurn });
+    this.setState({ fen: initialFen, yourTurn, time: startTime });
     this.gameUpdateSubscription = API.graphql(graphqlOperation(
       subscriptions.onUpdateGameState, { id: gameId },
     )).subscribe({
@@ -129,7 +128,7 @@ class Game extends Component {
         if (this.gameInfo.id === gameState.id) {
           this.game.load(gameState.fen);
           this.gameInfo.ended = gameState.ended;
-          let yourTurn = this.game.turn() === this.orientation[0];
+          const yourTurn = this.game.turn() === this.orientation[0];
           // let gameResult
           // if (gameState.ended === true) {
           //   if (this.game.game_over()) {
@@ -148,16 +147,16 @@ class Game extends Component {
           //   this.gameUpdateSubscription.unsubscribe()
           //   yourTurn = false
           // }
-          this.setState({ fen: gameState.fen, yourTurn, gameResult: gameState.result, history: gameState.history });
-
+          this.setState({
+            fen: gameState.fen, yourTurn, gameResult: gameState.result, history: gameState.history,
+          });
         }
       },
     });
   }
 
   componentWillUnmount() {
-    if (this.gameUpdateSubscription)
-      this.gameUpdateSubscription.unsubscribe()
+    if (this.gameUpdateSubscription) { this.gameUpdateSubscription.unsubscribe(); }
     // if (!this.game.game_over() && !this.gameInfo.ended)
     //   this.leaveGame()
   }
@@ -177,8 +176,8 @@ class Game extends Component {
   onSquareClick = async (square) => {
     if (this.game.turn() !== this.orientation[0]) return;
     if (this.game.game_over() || this.gameInfo.ended) {
-      alert('GAME OVER')
-      return
+      alert('GAME OVER');
+      return;
     }
     const piece = this.game.get(square);
     if (this.moveFrom !== null) {
@@ -187,14 +186,13 @@ class Game extends Component {
         const updateGameData = {};
         updateGameData.id = this.gameId;
         updateGameData.fen = this.game.fen();
-        let gameResult = ''
+        let gameResult = '';
         if (this.game.game_over()) {
           if (this.game.in_checkmate) {
-            gameResult = `CHECKMATE: YOU WIN!`
-          }
-          else gameResult = 'STALEMATE: TIE GAME!'
-          this.gameUpdateSubscription.unsubscribe()
-          updateGameData.ended = true
+            gameResult = 'CHECKMATE: YOU WIN!';
+          } else gameResult = 'STALEMATE: TIE GAME!';
+          this.gameUpdateSubscription.unsubscribe();
+          updateGameData.ended = true;
         }
         updateGameData.history = [...this.state.history, move.san];
         this.setState({
@@ -286,8 +284,8 @@ class Game extends Component {
   leaveGame = () => {
     // this should be called if a player resign
     // should also include newGameState.result stating who resigned and who won
-    let newGameState = {}
-    newGameState.id = this.gameId
+    const newGameState = {};
+    newGameState.id = this.gameId;
     newGameState.ended = true;
     API.graphql(graphqlOperation(
       mutations.updateGameState, { input: newGameState },
@@ -303,11 +301,11 @@ class Game extends Component {
       players = `You vs ${this.opponent !== null ? this.opponent.username : 'Anonymous'}`;
     }
     return (
-      <Box display='flex' flexDirection='row' justifyContent='flex-end'>
+      <Box display="flex" flexDirection="row" justifyContent="flex-end">
         <div className="App">
           <Widget
             title="Chat with your opponent"
-            subtitle=''
+            subtitle=""
           />
         </div>
         <Box display="flex" flexDirection="column">
@@ -338,6 +336,7 @@ class Game extends Component {
           nextMove={this.nextMove}
           currentMove={state.history.length - state.reverseHistory.length}
         />
+        <Clock time={state.time} color="black" />
       </Box>
     );
   }
