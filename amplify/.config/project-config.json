@@ -1,5 +1,5 @@
 {
-    "projectName": "chessvariants",
+    "projectName": "chess-variant",
     "version": "2.0",
     "frontend": "javascript",
     "javascript": {

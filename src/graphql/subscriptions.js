@@ -23,6 +23,7 @@ export const onCreateGame = `subscription OnCreateGame {
     variant
     fen
     available
+    ended
     history
     result
     winner
@@ -52,6 +53,7 @@ export const onUpdateGame = `subscription OnUpdateGame {
     variant
     fen
     available
+    ended
     history
     result
     winner
@@ -81,6 +83,7 @@ export const onDeleteGame = `subscription OnDeleteGame {
     variant
     fen
     available
+    ended
     history
     result
     winner
@@ -110,6 +113,7 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
     variant
     fen
     available
+    ended
     history
     result
     winner
