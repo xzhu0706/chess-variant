@@ -355,10 +355,3 @@ Outputs :
     Description: The user pool app client id
   AppClientSecret:
     Value: !GetAtt UserPoolClientInputs.appSecret
-  
-   
-   
-  
-   
-   
-  

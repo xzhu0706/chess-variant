@@ -63,6 +63,7 @@ export const getGame = `query GetGame($id: ID!) {
     variant
     fen
     available
+    ended
     history
     result
     winner
@@ -94,6 +95,7 @@ export const listGames = `query ListGames(
       variant
       fen
       available
+      ended
       history
       result
       winner
