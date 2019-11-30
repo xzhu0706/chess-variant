@@ -25,10 +25,19 @@ type Game @model(subscriptions: null) @auth(rules: [{allow: public}]) {
   variant: String!
   fen: String!
   available: Boolean!
+  ended: Boolean!
   history: [String]
   result: String
   winner: String
   createdAt: String
+  messages: [Message] @connection(name: "GameMessages")
+}
+
+type Message @model{
+  id: ID!
+  author: PlayerInfo
+  content: String!
+  game: Game @connection(name: "GameMessages")
 }
 
 type PlayerInfo {
@@ -43,6 +52,7 @@ input UpdateGameStateInput {
 	history: [String]
 	result: String
 	winner: String
+  ended: Boolean
 }
 
 type Mutation {
