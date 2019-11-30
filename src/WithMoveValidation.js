@@ -93,7 +93,7 @@ class HumanVsHuman extends Component {
 
   updateGameResult() {
     if (this.game.game_over()) {
-      let result; // fifty move rule
+      let result;
       if (this.game.in_checkmate()) {
         result = "checkmate";
       }

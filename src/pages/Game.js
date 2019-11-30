@@ -145,11 +145,13 @@ class Game extends Component {
     return userInfo;
   }
 
+  // chessboard.jsx method for responsive board sizing
   calcWidth = (dimensions) => {
     let customWidth = Math.min(540/640 * dimensions.screenWidth, 540/640 * dimensions.screenHeight);
     return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
   }
 
+  // chessboard.jsx method for defining what happens when user clicks a square
   onSquareClick = async (square) => {
     if (this.state.gameOver || this.game.turn() !== this.orientation[0]) return;
     const piece = this.game.get(square);
@@ -198,7 +200,7 @@ class Game extends Component {
 
   updateGameResult = () => {
     if (this.game.game_over() || this.state.history.length >= 50) {
-      let result = 'fifty'; // fifty move rule
+      let result;
       if (this.game.in_checkmate()) {
         result = 'checkmate';
       } else if (this.gameInfo.variant === Games.EXTINCTION_CHESS && this.game.extinguished()) {
@@ -209,6 +211,9 @@ class Game extends Component {
         result = 'insufficient';
       } else if (this.game.in_threefold_repetition()) {
         result = 'repetition';
+      }
+      else {
+        result = 'fifty';
       }
       this.setState({
         gameOver: true,
@@ -254,7 +259,7 @@ class Game extends Component {
     }
     return (
       <Grid container justify="center" direction="row" spacing={1}>
-        <Box display="flex" flexDirection="column" flexWrap="wrap" >
+        <Box style={{ maxWidth: '240px', textAlign:'center' }} display="flex" flexDirection="column" flexWrap="wrap" >
           <GameData
             history={state.history}
             fen={state.fen}
@@ -264,8 +269,8 @@ class Game extends Component {
             nextMove={this.nextMove}
             currentMove={state.history.length - state.reverseHistory.length}
           />
-            {/* // for chat box */}
-            below game data
+          {/* // for chat box */}
+          below game data
         </Box>
         <Grid
           container
