@@ -65,6 +65,7 @@ class CreateGameDialog extends Component {
                             style={{ marginRight: '20px', padding: '20px', color: 'black' }}
                             variant="contained"
                             onClick={(gameInfo, event) => this.props.createGame(event, { creatorOrientation: 'white', variant: this.state.variant, time: this.state.minutesPerSide })}
+                            id="btnwhite"
                         >
                             WHITE
               </Button>
@@ -72,6 +73,7 @@ class CreateGameDialog extends Component {
                             style={{ padding: '20px', backgroundColor: '#333333', color: 'white' }}
                             variant="contained"
                             onClick={(event) => this.props.createGame(event, { creatorOrientation: 'black', variant: this.state.variant, time: this.state.minutesPerSide })}
+                            id="btnblack"
                         >
                             BLACK
               </Button>

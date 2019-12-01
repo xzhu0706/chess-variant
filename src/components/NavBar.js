@@ -127,7 +127,7 @@ class NavBar extends Component {
                   <Link to="/">Leaderboard</Link>
                 </li>
                 <li>
-                  <a href="/create">Create a Variant</a>
+                  <Link to="/create">Create a Variant</Link>
                 </li>
 
                 {username
