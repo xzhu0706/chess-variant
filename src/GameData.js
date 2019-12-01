@@ -1,19 +1,34 @@
 import React from 'react';
 import './GameData.css'
 
-function GameData({ turn, gameResult, history, prevMove, nextMove, winner, currentMove }) {
+function GameData({ variant, turn, gameResult, history, prevMove, nextMove, winner, currentMove }) {
   let game_state = `${turn === 'w' ? 'White' : 'Black'}'s turn`;
+
   if (gameResult === 'checkmate') {
+    if (!winner) {
+      winner = turn === 'w' ? 'Black' : 'White' // the person whose turn it is LOSES
+    }
     game_state = `${winner} wins (checkmate)`;
   }
   else if (gameResult === 'extinction') {
+    if (!winner) {
+      winner = turn === 'w' ? 'Black' : 'White'
+    }
     game_state = `${winner} wins (extinction)`;
   }
   else if (gameResult === 'repetition') {
     game_state = 'Draw (three-fold repetition)';
   }
   else if (gameResult === 'stalemate') {
-    game_state = `Draw (stalemate)`;
+    if (variant === 1) { // antichess
+      if (!winner) {
+        winner = turn === 'w' ? 'White' : 'Black' // the person whose turn it is WINS
+      }
+      game_state = `${winner} wins (antichess stalemate)`
+    }
+    else {
+      game_state = `Draw (stalemate)`;
+    }
   }
   else if (gameResult === 'insufficient') {
     game_state = `Draw (insufficient material)`;

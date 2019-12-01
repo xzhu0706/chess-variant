@@ -443,7 +443,7 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
           const gameData =
             showData ? (
               <div className="p-1">
-                <GameData history={history} turn={turn} gameResult={gameResult} />
+                <GameData variant={variant} history={history} turn={turn} gameResult={gameResult} />
               </div>
             ) :
             null;
