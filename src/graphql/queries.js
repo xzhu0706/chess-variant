@@ -91,7 +91,10 @@ export const listGames = `query ListGames(
 export const getMessage = `query GetMessage($id: ID!) {
   getMessage(id: $id) {
     id
-    author
+    author {
+      id
+      username
+    }
     content
     game {
       id
@@ -117,7 +120,6 @@ export const listMessages = `query ListMessages(
   listMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      author
       content
     }
     nextToken

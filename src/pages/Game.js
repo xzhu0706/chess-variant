@@ -56,7 +56,7 @@ class Game extends Component {
 
   async componentDidMount() {
     const gameId = this.props.match.params.id;
-    this.currentUser = await Auth.currentUserInfo()
+    this.currentUser = await this._getUserInfo()
     const queryResult = await API.graphql(graphqlOperation(queries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame;
     if (this.gameInfo.history) {
@@ -127,9 +127,10 @@ class Game extends Component {
 
     API.graphql(graphqlOperation(subscriptions.onCreateMessage)).subscribe({
       next: (messageData) => {
-        const message = messageData.value.data.onCreateGame
+        const message = messageData.value.data.onCreateMessage
         const gameId = message.game.id;
-        if(gameId === this.gameId){
+        let authorId = message.author.id
+        if(gameId === this.gameId && authorId !== this.currentUser.id){
           addResponseMessage(message.content)
         }
       },
@@ -305,12 +306,26 @@ class Game extends Component {
   }
 
   handleNewUserMessage = async (message) => {
-    let messageObject;
-      if(this.currentUser) messageObject.author = this.currentUser.username
-    messageObject.game = this.gameId
+    let messageObject = {}
+    messageObject.author = this.currentUser
+    messageObject.messageGameId = this.gameId
     messageObject.content = message
-    await API.graphql(graphqlOperation(mutations.createGame, { input: messageObject}));
-    addUserMessage(message)
+    let createdMessage = await API.graphql(graphqlOperation(mutations.createMessage, {input: messageObject}));
+    //addUserMessage(message)
+  }
+
+  _getUserInfo = async () => {
+    let currentUser = {};
+    await Auth.currentAuthenticatedUser().then((user) => {
+      currentUser.id = user.attributes.sub
+      currentUser.username = user.username
+    }).catch(async (e) => {
+      await Auth.currentCredentials().then((credential) => {
+          currentUser.id = credential.identityId.split(':')[1];
+          currentUser.username = 'anonymous'
+      });
+    });
+    return currentUser;
   }
 
   render() {

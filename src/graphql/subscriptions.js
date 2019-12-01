@@ -253,7 +253,10 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
 export const onCreateMessage = `subscription OnCreateMessage {
   onCreateMessage {
     id
-    author
+    author {
+      id
+      username
+    }
     content
     game {
       id
@@ -274,7 +277,10 @@ export const onCreateMessage = `subscription OnCreateMessage {
 export const onUpdateMessage = `subscription OnUpdateMessage {
   onUpdateMessage {
     id
-    author
+    author {
+      id
+      username
+    }
     content
     game {
       id
@@ -295,7 +301,10 @@ export const onUpdateMessage = `subscription OnUpdateMessage {
 export const onDeleteMessage = `subscription OnDeleteMessage {
   onDeleteMessage {
     id
-    author
+    author {
+      id
+      username
+    }
     content
     game {
       id

@@ -253,7 +253,10 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
 export const createMessage = `mutation CreateMessage($input: CreateMessageInput!) {
   createMessage(input: $input) {
     id
-    author
+    author {
+      id
+      username
+    }
     content
     game {
       id
@@ -274,7 +277,10 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
 export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!) {
   updateMessage(input: $input) {
     id
-    author
+    author {
+      id
+      username
+    }
     content
     game {
       id
@@ -295,7 +301,10 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
 export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!) {
   deleteMessage(input: $input) {
     id
-    author
+    author {
+      id
+      username
+    }
     content
     game {
       id

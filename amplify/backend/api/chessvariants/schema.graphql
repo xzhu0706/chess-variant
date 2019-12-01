@@ -35,7 +35,7 @@ type Game @model(subscriptions: null) @auth(rules: [{allow: public}]) {
 
 type Message @model{
   id: ID!
-  author: String
+  author: PlayerInfo!
   content: String!
   game: Game @connection(name: "GameMessages")
 }
