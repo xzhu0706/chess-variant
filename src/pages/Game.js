@@ -182,7 +182,7 @@ class Game extends Component {
 
   // chessboard.jsx method for responsive board sizing
   calcWidth = (dimensions) => {
-    let customWidth = Math.min(600/640 * dimensions.screenWidth, 600/640 * dimensions.screenHeight);
+    let customWidth = Math.min(dimensions.screenWidth, 600/640 * dimensions.screenHeight);
     if (customWidth < 300) customWidth = 300;
     return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
   }
@@ -252,7 +252,7 @@ class Game extends Component {
   }
 
   updateGameResult = () => {
-    if (this.game.game_over() || this.state.history.length >= 50) {
+    if (this.game.game_over()) {
       let result;
       if (this.game.in_checkmate()) {
         result = 'checkmate';
@@ -274,7 +274,6 @@ class Game extends Component {
       });
       return result;
     }
-    /* (we will pass the value of this.state.gameResult to GameData) */
   }
 
   prevMove = () => {
@@ -283,9 +282,8 @@ class Game extends Component {
       this.game.undo();
       this.setState({
         fen: this.game.fen(),
-        reverseHistory,
-      }, () => console.log(this.game.fen(), this.state.fen));
-      console.log(this.game.history(), this.state.reverseHistory);
+        reverseHistory
+      }, () => console.log(this.game.history(), this.state.reverseHistory));
     }
   }
 
@@ -293,12 +291,11 @@ class Game extends Component {
     const reverseHistory = [...this.state.reverseHistory];
     if (reverseHistory.length > 0) {
       const move = reverseHistory.pop();
-      const newMove = this.game.move(move);
+      this.game.move(move);
       this.setState({
         fen: this.game.fen(),
-        reverseHistory,
-      }, () => console.log(this.game.fen(), this.state.fen));
-      console.log(move, newMove.san, this.game.history(), reverseHistory);
+        reverseHistory
+      }, () => console.log(this.game.history(), this.state.reverseHistory));
     }
   }
 
@@ -322,7 +319,7 @@ class Game extends Component {
       players = `You vs ${this.opponent !== null ? this.opponent.username : 'Anonymous'}`;
     }
     return (
-      <div style={{ paddingTop: '1em' }}>
+      <Box pt='1em'>
         <Grid container justify="center" direction="row" spacing={1}>
           <div className="App">
             <Widget
@@ -353,7 +350,6 @@ class Game extends Component {
                 <GameData
                   turn={state.turn}
                   history={state.history}
-                  fen={state.fen}
                   gameResult={state.gameResult}
                   winner={state.winner}
                   prevMove={this.prevMove}
@@ -364,7 +360,7 @@ class Game extends Component {
             </Box>
           </Grid>
         </Grid>
-      </div>
+      </Box>
     );
   }
 }
