@@ -64,6 +64,24 @@ class HumanVsHuman extends Component {
     })
   }
 
+  clearBoard = () => {
+    this.game.clear();
+    this.setState({
+      fen: this.game.fen(),
+      fromSquare: '',
+      squareStyles: {}
+    });
+  }
+
+  resetBoard = () => {
+    this.game.reset();
+    this.setState({
+      fen: this.game.fen(),
+      fromSquare: '',
+      squareStyles: {}
+    });
+  }
+
   // adjust board size according to window size
   calcWidth = (dimensions) => {
     let customWidth = Math.min(540/640 * dimensions.screenWidth, 540/640 * dimensions.screenHeight);
@@ -236,6 +254,8 @@ class HumanVsHuman extends Component {
       onSquareRightClick: this.onSquareRightClick,
       calcWidth: this.calcWidth,
       flipOrientation: this.flipOrientation,
+      resetBoard: this.resetBoard,
+      clearBoard: this.clearBoard,
       orientation
     });
   }
@@ -257,6 +277,8 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
           onSquareRightClick,
           calcWidth,
           flipOrientation,
+          resetBoard,
+          clearBoard,
           orientation
         }) => {
           // redefine calcWidth() if smallBoard arg is true
@@ -450,6 +472,8 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
               </div>
               <div style={{ textAlign: "left", margin: '0.4em' }}>
                 <Button size="small" variant="outlined" onClick={flipOrientation}>Flip board</Button>
+                {editMode ? <Button size="small" variant="outlined" onClick={resetBoard}>Reset starting position</Button> : null}
+                {editMode ? <Button size="small" variant="outlined" onClick={clearBoard}>Clear board</Button> : null}
               </div>
               { gameData }
             </div>

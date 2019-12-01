@@ -292,6 +292,107 @@ describe("attacked() unit testing", () => {
     expect(standardGame8.attacked('w', 4)).toBe(true);
   });
 
+  let standardGame9 = mychessjs.Chess("rnbqkbnr/pppp4/5p2/8/6D1/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  .  .  .  . |
+  // 6 | .  .  .  .  .  p  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  D  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  N  B  Q  K  B  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  test("In standard chess, a nightrider does not attack the king from 2 knight distances away " +
+  "when it is blocked by an enemy piece 1 knight distance away", () => {
+    expect(standardGame9.attacked('w', 4)).toBe(false);
+  });
+
+  let standardGame10 = mychessjs.Chess("rnbqkbnr/pppp4/5Q2/8/6D1/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  .  .  .  . |
+  // 6 | .  .  .  .  .  Q  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  D  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  N  B  Q  K  B  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  test("In standard chess, a nightrider does not attack the king from 2 knight distances away " +
+  "when it is blocked by a friendly piece 1 knight distance away", () => {
+    expect(standardGame10.attacked('w', 4)).toBe(false);
+  });
+
+  let standardGame11 = mychessjs.Chess("rnbqkbnr/pppp4/5Q2/8/6S1/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  .  .  .  . |
+  // 6 | .  .  .  .  .  Q  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  S  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  N  B  Q  K  B  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  test("In standard chess, a princess does not attack the king from 2 knight distances away " +
+  "when it is blocked by a friendly piece 1 knight distance away", () => {
+    expect(standardGame11.attacked('w', 4)).toBe(false);
+  });
+
+  let standardGame12 = mychessjs.Chess("rnbqkbnr/pppp1F2/8/8/8/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  .  F  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  N  B  Q  K  B  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  test("In standard chess, a diagonally adjacent ferz attacks the enemy king ", () => {
+    expect(standardGame12.attacked('w', 4)).toBe(true);
+  });
+
+  let standardGame13 = mychessjs.Chess("rnbqkbnr/pppp4/8/7S/8/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  .  .  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  S |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  N  B  Q  K  B  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  test("In standard chess, a princess attacks the king when on the same diagonal " +
+  "when the diagonal contains no intermediate piece", () => {
+    expect(standardGame13.attacked('w', 4)).toBe(true);
+  });
+
+  let standardGame14 = mychessjs.Chess("rnbqkbnr/pppp1p2/8/7S/8/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1", 0);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  .  p  .  . |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  S |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  .  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  N  B  Q  K  B  .  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  test("In standard chess, a princess does not attack the enemy king along the same diagonal " +
+  "when the diagonal contains an intermediate piece", () => {
+    expect(standardGame14.attacked('w', 4)).toBe(false);
+  });
+
   let antiGame = mychessjs.Chess("1K6/8/8/8/8/8/1Q6/1k6 b - - 0 1", 0);
   // +------------------------+
   // 8 | .  K  .  .  .  .  .  . |
