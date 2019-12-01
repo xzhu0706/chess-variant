@@ -49,13 +49,13 @@ var Chess = function(fen, variant=0, customPieces={}) {
   const QUEEN = 'q';
   const KING = 'k';
 
-  // new pieces
-  const MANN = 'm';
-  const FERZ = 'f';
-  const NIGHTRIDER = 'd';
-  const CENTAUR = 'c';
-  const EMPRESS = 'e';
-  const PRINCESS = 's';
+  // // new pieces
+  // const MANN = 'm';
+  // const FERZ = 'f';
+  // const NIGHTRIDER = 'd';
+  // const CENTAUR = 'c';
+  // const EMPRESS = 'e';
+  // const PRINCESS = 's';
 
   const SYMBOLS = 'pnbrqkPNBRQK' + 'mfdcesMFDCES'; // all possible pieces in a FEN string
 
@@ -81,8 +81,7 @@ var Chess = function(fen, variant=0, customPieces={}) {
     m: [-17, -16, -15,   1,  17, 16, 15,  -1],
     f: [-17, -15,  17,  15],
     d: [],
-    // c: [-18, -33, -31, -14,  18, 33, 31,  14,
-    //     -17, -16, -15,   1,  17, 16, 15,  -1],
+    c: [],
     e: [-18, -33, -31, -14,  18, 33, 31,  14],
     s: [-18, -33, -31, -14,  18, 33, 31,  14],
   };
@@ -96,7 +95,7 @@ var Chess = function(fen, variant=0, customPieces={}) {
     m: [],
     f: [],
     d: [-18, -33, -31, -14,  18, 33, 31,  14],
-    // c: [],
+    c: [],
     e: [-16,   1,  16,  -1],
     s: [-17, -15,  17,  15],
   };
@@ -126,35 +125,16 @@ var Chess = function(fen, variant=0, customPieces={}) {
        1044,0,   0,   0,   0,   0,   0, 536,   0,   0,   0,   0,   0,   0,1044,
   ];
 
-  // how to shift the board in order to make a move (?)
-  // const RAYS = [
-  //    17,  0,  0,  0,  0,  0,  0, 16,  0,  0,  0,  0,  0,  0, 15, 0,
-  //     0, 17,  0,  0, 33,  0,  0, 16,  0,  0,  0,  0,  0, 15,  0, 0,
-  //     0,  0, 17,  0,  0,  0,  0, 16,  0,  0,  0,  0, 15,  0,  0, 0,
-  //     0, 36,  0, 17,  0, 33,  0, 16,  0,  0,  0, 15,  0,  0,  0, 0,
-  //     0, 18,  0,  0, 17,  0, 49, 16,  0,  0, 15,  0,  0, 14,  0, 0,
-  //     0, 19,  0, 18, 36, 17, 33, 16,  0, 15,  0, 14,  0,  0,  0, 0,
-  //    23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10,  9, 0,
-  //     1,  1,  1,  1,  1,  1,  1,  0, -1, -1,  -1,-1, -1, -1, -1, 0,
-  //     0,  0,  0,  0,  0,  0,-15,-16,-17,  0,  0,  0,  0,  0,  0, 0,
-  //     0,  0,  0,  0,  0,-15,  0,-16,  0,-17,  0,  0,  0,  0,  0, 0,
-  //     0,  0,  0,  0,-15,  0,  0,-16,  0,  0,-17,  0,  0,  0,  0, 0,
-  //     0,  0,  0,-15,  0,  0,  0,-16,  0,  0,  0,-17,  0,  0,  0, 0,
-  //     0,  0,-15,  0,  0,  0,  0,-16,  0,  0,  0,  0,-17,  0,  0, 0,
-  //     0,-15,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,-17,  0, 0,
-  //   -15,  0,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,  0,-17
-  // ];
-
   /* update PIECE_OFFSETS, PIECE_OFFSETS_REPEATING, SHIFTS, ATTACKS with custom pieces */
   // customPieces is of the form { m: { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] } }
-  for (let [key, value] of Object.entries(customPieces)) {
+  for (let [customPiece, customOffsets] of Object.entries(customPieces)) {
     // copy over the offsets
-    PIECE_OFFSETS[key] = value[0];
-    PIECE_OFFSETS_REPEATING[key] = value[1];
+    PIECE_OFFSETS[customPiece] = customOffsets[0];
+    PIECE_OFFSETS_REPEATING[customPiece] = customOffsets[1];
     // assign the new piece a unique index value
-    SHIFTS[key] = Object.keys(SHIFTS).length;
+    SHIFTS[customPiece] = Object.keys(SHIFTS).length;
     // update ATTACKS so that the new piece can be recognized as an attacker (see attacked())
-    updateAttacks(ATTACKS, value);
+    updateAttacks(ATTACKS, customOffsets, SHIFTS[customPiece]);
   }
 
   const FLAGS = {

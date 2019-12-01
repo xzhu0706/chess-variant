@@ -1084,7 +1084,46 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
 
 describe("updateAttacks() test: should set every index of ATTACKS[] that " +
 "gives the location of a potential attacker", () => {
-  test("attacks should be as if the only attacker is a rook/knight combination", () => {
+  test("attacks[] should not have different behavior when there are duplicate offsets", () => {
+    let ATTACKS = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    const customOffsets = { '0' : [-1, -16, 1, 16], '1': [-1, -16, 1, 16] };
+    const expected = [
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      4, 4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 4, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    expect(mychessjs.updateAttacks(ATTACKS, customOffsets, 2)).toEqual(expected);    
+  });
+
+  test("attacks[] should be as if the only attacker is a rook/knight combination", () => {
     let ATTACKS = [
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -1124,7 +1163,7 @@ describe("updateAttacks() test: should set every index of ATTACKS[] that " +
     expect(mychessjs.updateAttacks(ATTACKS, customOffsets, 2)).toEqual(expected);    
   });
 
-  test("attacks should be as if the only attacker is a nightrider", () => {
+  test("attacks[] should be as if the only attacker is a nightrider", () => {
     let ATTACKS = [
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -1163,7 +1202,7 @@ describe("updateAttacks() test: should set every index of ATTACKS[] that " +
     expect(mychessjs.updateAttacks(ATTACKS, customOffsets, 0)).toEqual(expected);
   });
 
-  test("attacks should be as if the only attacker is a bishop that skips 2 squares", () => {
+  test("attacks[] should be as if the only attacker is a bishop that skips 2 squares", () => {
     let ATTACKS = [
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -1202,7 +1241,7 @@ describe("updateAttacks() test: should set every index of ATTACKS[] that " +
     expect(mychessjs.updateAttacks(ATTACKS, customOffsets, 0)).toEqual(expected);
   });
   
-  test("attacks should be a bishop that skips 7 squares", () => {
+  test("attacks[] should be a bishop that skips 7 squares", () => {
     let ATTACKS = [
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -1264,5 +1303,24 @@ describe("offsetsFromAttack() test: given a list of (repeating) offsets, return 
   test("an attack from -54 units away can only be produced by offsets [-54,-18]", () => {
     const attack = -54;
     expect(mychessjs.offsetsFromAttack(attack, allOffsets)).toEqual([-54, -18]);
+  });
+});
+
+describe("custom pieces test", () => {
+  let customPieces = { 'c': { '0': [], '1': [-1,-16,1,16] } };
+  let customGame = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/4E3/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 0, customPieces);
+  // +------------------------+
+  // 8 | r  n  b  q  k  b  n  r |
+  // 7 | p  p  p  p  p  p  p  p |
+  // 6 | .  .  .  .  .  .  .  . |
+  // 5 | .  .  .  .  .  .  .  . |
+  // 4 | .  .  .  .  .  .  .  . |
+  // 3 | .  .  .  .  C  .  .  . |
+  // 2 | P  P  P  P  P  P  P  P |
+  // 1 | R  N  B  Q  K  B  N  R |
+  //   +------------------------+
+  //     a  b  c  d  e  f  g  h
+  test("an attack from 6 units away can only be produced by offsets [1,2,3,6]", () => {
+    console.log(customGame.generate_moves());
   });
 });

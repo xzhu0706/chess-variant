@@ -65,7 +65,7 @@ class HumanVsHuman extends Component {
   }
 
   clearBoard = () => {
-    this.game.clear();
+    this.game.load('4k3/8/8/8/8/8/8/4K3 w KQkq - 0 1');
     this.setState({
       fen: this.game.fen(),
       fromSquare: '',
@@ -470,9 +470,9 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                   orientation={orientation}
                 />
               </div>
-              <div style={{ textAlign: "left", margin: '0.4em' }}>
+              <div style={{ textAlign: "center", margin: '0.4em' }}>
                 <Button size="small" variant="outlined" onClick={flipOrientation}>Flip board</Button>
-                {editMode ? <Button size="small" variant="outlined" onClick={resetBoard}>Reset starting position</Button> : null}
+                {editMode ? <Button size="small" variant="outlined" onClick={resetBoard}>Reset to starting position</Button> : null}
                 {editMode ? <Button size="small" variant="outlined" onClick={clearBoard}>Clear board</Button> : null}
               </div>
               { gameData }
