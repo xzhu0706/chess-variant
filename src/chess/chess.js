@@ -893,7 +893,7 @@ var Chess = function(fen, variant=0, customPieces={}) {
       const index = difference + 119;
 
       if (ATTACKS[index] & (1 << SHIFTS[piece.type])) {
-        // pawn attacks
+        // pawn attacks:
         if (piece.type === PAWN) {
           if (difference > 0) {
             if (piece.color === WHITE) return true;
@@ -902,9 +902,12 @@ var Chess = function(fen, variant=0, customPieces={}) {
           }
           continue;
         }
+        // non-pawn attacks:
 
-        // compute list of repeating offsets underlying the attack
-        const offsets = PIECE_OFFSETS_REPEATING[piece.type].filter(offset =>
+        // compute list of possible offsets underlying the attack
+        // e.g. an attack from -6 units away could be due to a repeating offset of -1, -2, -3 or -6
+        // e.g. an attack from -51 units away could be due to a repeating offset of -51 or -17 (but not -1)
+        const possibleOffsets = PIECE_OFFSETS_REPEATING[piece.type].filter(offset =>
           (offset > 0) == (difference > 0) && difference % offset === 0
         );
 
@@ -1908,11 +1911,12 @@ Expected results:
 +119 -> [+119]
 */
 function generateOffsets(offset) {
+  if (offset === 0) return [];
   const row = offset+119 >>> 4; // gives row between 0 and 14
   const col = offset+119 & 15; // gives col between 0 and 15
   const reps = Math.floor(7 / Math.max(Math.abs(7 - (col)), Math.abs(7 - (row))));
 
-  let offsets = []
+  let offsets = [];
   for (let i = 1; i <= reps; i++) {
     offsets.push(offset*i);
   }
@@ -1940,12 +1944,23 @@ function updateAttacks(ATTACKS, customPieceOffsets, shifts) {
   return ATTACKS;
 }
 
+// given a list of (repeating) offsets, compute the subset of offsets that can produce the given attack
+// e.g. an attack from +6 units away could be due to a repeating offset of +1, +2, +3 or +6
+// e.g. an attack from -51 units away could be due to a repeating offset of -51 or -17 (but not -1)
+function matchOffsetsWithAttack(attack, repeatingOffsets) {
+  return repeatingOffsets.filter(offset => {
+    const generatedOffsets = generateOffsets(offset);
+    return (generatedOffsets.indexOf(attack) !== -1); // if the particular offset can create the given attack, return true
+  });
+}
+
 /* export Chess object if using node or any other CommonJS compatible
  * environment */
 if (typeof exports !== 'undefined') exports.Chess = Chess;
 if (typeof exports !== 'undefined') exports.valid_2x2_grid_move = valid_2x2_grid_move;
 if (typeof exports !== 'undefined') exports.generateOffsets = generateOffsets;
 if (typeof exports !== 'undefined') exports.updateAttacks = updateAttacks;
+if (typeof exports !== 'undefined') exports.matchOffsetsWithAttack = matchOffsetsWithAttack;
 
 /* export Chess object for any RequireJS compatible environment */
 if (typeof define !== 'undefined') define( function () { return Chess;  });

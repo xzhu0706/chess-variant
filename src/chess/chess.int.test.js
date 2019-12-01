@@ -1,6 +1,6 @@
 /* integration tests for chess.js */
 
-const chessjs = require("./chess.js");
+const mychessjs = require("./chess.js");
 
 /* For each variant, this file tests the functions we modified in chess/chess.js, which are
  * generate_moves()         (generates a list of valid moves in the current game position)
@@ -21,7 +21,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
   //   a2:  96, b2:  97, c2:  98, d2:  99, e2: 100, f2: 101, g2: 102, h2: 103,
   //   a1: 112, b1: 113, c1: 114, d1: 115, e1: 116, f1: 117, g1: 118, h1: 119
 
-  let standardGame = new chessjs.Chess("r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4", 0);
+  let standardGame = new mychessjs.Chess("r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4", 0);
   // +------------------------+
   // 8 | r  .  b  q  k  b  .  r |
   // 7 | p  p  p  p  .  p  p  p |
@@ -43,7 +43,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
     );
   });
 
-  let standardGame2 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/2b5/8/PPPP4/RNBQK2R w KQkq - 0 1", 0);
+  let standardGame2 = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/2b5/8/PPPP4/RNBQK2R w KQkq - 0 1", 0);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -64,7 +64,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
     );
   });
 
-  let standardGame3 = new chessjs.Chess("8/3K1P2/1k6/8/8/8/8/8 w - - 0 1", 0);
+  let standardGame3 = new mychessjs.Chess("8/3K1P2/1k6/8/8/8/8/8 w - - 0 1", 0);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  K  .  P  .  . |
@@ -108,7 +108,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
     );
   });
 
-  let standardGame4 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/7b/8/PPPP4/RNBQK2R w KQkq - 0 1", 0);
+  let standardGame4 = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/7b/8/PPPP4/RNBQK2R w KQkq - 0 1", 0);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -129,7 +129,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
     );
   });
 
-  let standardGame5 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/7b/8/PPPP4/RNBQK2R w KQkq - 0 1", 0);
+  let standardGame5 = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/7b/8/PPPP4/RNBQK2R w KQkq - 0 1", 0);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -155,7 +155,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
     expect(moves).toMatchObject(expected);
   });
 
-  let standardGame6 = new chessjs.Chess("rnbqkbnr/ppp1p1pp/8/3pPp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3", 0);
+  let standardGame6 = new mychessjs.Chess("rnbqkbnr/ppp1p1pp/8/3pPp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3", 0);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  .  p  .  p  p |
@@ -175,7 +175,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
     );
   });
 
-  let standardGame7 = new chessjs.Chess("rnbqkbnr/ppppp2p/5p2/6pQ/8/4P3/PPPP1PPP/RNB1KBNR b KQkq - 1 3", 0);
+  let standardGame7 = new mychessjs.Chess("rnbqkbnr/ppppp2p/5p2/6pQ/8/4P3/PPPP1PPP/RNB1KBNR b KQkq - 1 3", 0);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  .  .  p |
@@ -193,7 +193,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
     expect(standardGame7.in_checkmate()).toEqual(true);
   });
 
-  let standardGame8 = new chessjs.Chess("k7/P2N4/BP6/8/8/4P3/PPPP1PPP/R1B1KBNR b KQ - 0 1", 0);
+  let standardGame8 = new mychessjs.Chess("k7/P2N4/BP6/8/8/4P3/PPPP1PPP/R1B1KBNR b KQ - 0 1", 0);
   // +------------------------+
   // 8 | k  .  .  .  .  .  .  . |
   // 7 | P  .  .  N  .  .  .  . |
@@ -213,7 +213,7 @@ describe("Make sure our modifications to chess.js did not mess up the implementa
 });
 
 describe("Testing antichess (move generation, winning conditions, etc)", () => {
-  let antiGame = new chessjs.Chess("rnbqk1nr/ppppppbp/8/6N1/8/8/PPPPPPPP/RNBQKB1R w - - 1 3", 1);
+  let antiGame = new mychessjs.Chess("rnbqk1nr/ppppppbp/8/6N1/8/8/PPPPPPPP/RNBQKB1R w - - 1 3", 1);
   /*   
   *   +------------------------+    
   *   8 | r  n  b  q  k  .  n  r |
@@ -257,7 +257,7 @@ describe("Testing antichess (move generation, winning conditions, etc)", () => {
     }
   );
 
-  let antiGame2 = new chessjs.Chess("rnbqkbnr/ppppp1pp/5p2/7Q/8/4P3/PPPP1PPP/RNB1KBNR b - - 1 2", 1);
+  let antiGame2 = new mychessjs.Chess("rnbqkbnr/ppppp1pp/5p2/7Q/8/4P3/PPPP1PPP/RNB1KBNR b - - 1 2", 1);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  .  p  p |
@@ -273,7 +273,7 @@ describe("Testing antichess (move generation, winning conditions, etc)", () => {
       expect(antiGame2.in_check()).toBe(false);
     });
 
-  let antiGame3 = new chessjs.Chess("8/5k2/8/7Q/8/8/8/4K3 w - - 0 1", 1);
+  let antiGame3 = new mychessjs.Chess("8/5k2/8/7Q/8/8/8/4K3 w - - 0 1", 1);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  k  .  . |
@@ -293,7 +293,7 @@ describe("Testing antichess (move generation, winning conditions, etc)", () => {
     expect(antiGame3.generate_moves()).toMatchObject(expected);
   });
 
-  let antiGame4 = new chessjs.Chess("rnbqkbnr/pppp3p/4ppp1/8/8/4PN2/PPPPBPPP/RNBQK2R w KQkq - 0 4", 1);
+  let antiGame4 = new mychessjs.Chess("rnbqkbnr/pppp3p/4ppp1/8/8/4PN2/PPPPBPPP/RNBQK2R w KQkq - 0 4", 1);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  .  .  .  p |
@@ -315,7 +315,7 @@ describe("Testing antichess (move generation, winning conditions, etc)", () => {
     );
   });
 
-  let antiGame5 = new chessjs.Chess("8/3K2P1/8/8/8/8/8/3k4 w - - 0 1", 1);
+  let antiGame5 = new mychessjs.Chess("8/3K2P1/8/8/8/8/8/3k4 w - - 0 1", 1);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  K  .  .  P  . |
@@ -337,7 +337,7 @@ describe("Testing antichess (move generation, winning conditions, etc)", () => {
     );
   });
 
-  let antiGame6 = new chessjs.Chess("8/8/8/8/8/8/8/r3K3 b - - 0 1", 1);
+  let antiGame6 = new mychessjs.Chess("8/8/8/8/8/8/8/r3K3 b - - 0 1", 1);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -354,7 +354,7 @@ describe("Testing antichess (move generation, winning conditions, etc)", () => {
     expect(antiGame6.game_over()).toBe(false);
   });
 
-  let antiGame7 = new chessjs.Chess("8/8/8/8/8/8/8/4r3 w - - 0 2", 1);
+  let antiGame7 = new mychessjs.Chess("8/8/8/8/8/8/8/4r3 w - - 0 2", 1);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -370,7 +370,7 @@ describe("Testing antichess (move generation, winning conditions, etc)", () => {
     expect(antiGame7.game_over()).toBe(true);
   });
 
-  let antiGame8 = new chessjs.Chess("7n/5p2/5Pp1/6P1/8/8/8/8 b - - 0 1", 1);
+  let antiGame8 = new mychessjs.Chess("7n/5p2/5Pp1/6P1/8/8/8/8 b - - 0 1", 1);
 //   +------------------------+
 // 8 | .  .  .  .  .  .  .  n |
 // 7 | .  .  .  .  .  p  .  . |
@@ -396,7 +396,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
   //   a3:  80, b3:  81, c3:  82, d3:  83, e3:  84, f3:  85, g3:  86, h3:  87,
   //   a2:  96, b2:  97, c2:  98, d2:  99, e2: 100, f2: 101, g2: 102, h2: 103,
   //   a1: 112, b1: 113, c1: 114, d1: 115, e1: 116, f1: 117, g1: 118, h1: 119
-  let gridGame = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 2);
+  let gridGame = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 2);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -424,7 +424,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
     );
   });
 
-  let gridGame2 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", 2);
+  let gridGame2 = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", 2);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -452,7 +452,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
     );
   });
 
-  let gridGame3 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1", 2);
+  let gridGame3 = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1", 2);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -480,7 +480,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
     );
   });
 
-  let gridGame4 = new chessjs.Chess("rnbqkbnr/pppp1ppp/8/4p3/8/4P3/PPPP1PPP/RNBQKBNR w KQkq - 0 2", 2);
+  let gridGame4 = new mychessjs.Chess("rnbqkbnr/pppp1ppp/8/4p3/8/4P3/PPPP1PPP/RNBQKBNR w KQkq - 0 2", 2);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  .  p  p  p |
@@ -501,7 +501,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
     );
   });
 
-  let gridGame5 = new chessjs.Chess("k7/8/8/8/8/8/1K6/8 w - - 0 1", 2);
+  let gridGame5 = new mychessjs.Chess("k7/8/8/8/8/8/1K6/8 w - - 0 1", 2);
   // +------------------------+
   // 8 | k  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -526,7 +526,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
     expect(moves).toMatchObject(expected);
   });
 
-  let gridGame6 = new chessjs.Chess("k7/8/8/8/8/8/Kq6/8 w - - 0 1", 2);
+  let gridGame6 = new mychessjs.Chess("k7/8/8/8/8/8/Kq6/8 w - - 0 1", 2);
   // +------------------------+
   // 8 | k  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -543,7 +543,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
     expect(gridGame6.in_check()).toBe(false);
   });
 
-  let gridGame7 = new chessjs.Chess("8/8/8/8/8/8/Kk6/8 w - - 0 1", 2);
+  let gridGame7 = new mychessjs.Chess("8/8/8/8/8/8/Kk6/8 w - - 0 1", 2);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -560,7 +560,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
     expect(gridGame7.in_check()).toBe(false);
   });
 
-  let gridGame8 = new chessjs.Chess("8/8/8/8/8/2k5/K7/8 b - - 0 1", 2);
+  let gridGame8 = new mychessjs.Chess("8/8/8/8/8/2k5/K7/8 b - - 0 1", 2);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -582,7 +582,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
     );
   });
 
-  let gridGame9 = new chessjs.Chess("k7/8/8/8/8/2n5/K7/8 w - - 0 1", 2);
+  let gridGame9 = new mychessjs.Chess("k7/8/8/8/8/2n5/K7/8 w - - 0 1", 2);
   // +------------------------+
   // 8 | k  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -599,7 +599,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
     expect(gridGame9.in_check()).toBe(true);
   });
 
-  let gridGame10 = new chessjs.Chess("k7/8/8/8/8/8/8/K7 w - - 0 1", 2);
+  let gridGame10 = new mychessjs.Chess("k7/8/8/8/8/8/8/K7 w - - 0 1", 2);
   // +------------------------+
   // 8 | k  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -617,7 +617,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
     expect(gridGame10.in_stalemate()).toBe(true);
   });
 
-  let gridGame11 = new chessjs.Chess("8/8/2k5/8/8/3r4/K7/8 w - - 0 1", 2);
+  let gridGame11 = new mychessjs.Chess("8/8/2k5/8/8/3r4/K7/8 w - - 0 1", 2);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -636,7 +636,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
     expect(gridGame11.in_stalemate()).toBe(true);
   });
 
-  let gridGame12 = new chessjs.Chess("8/8/2k5/8/r7/3r4/K7/8 w - - 0 1", 2);
+  let gridGame12 = new mychessjs.Chess("8/8/2k5/8/r7/3r4/K7/8 w - - 0 1", 2);
   // +------------------------+
   // 8 | .  .  .  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -655,7 +655,7 @@ describe("Testing grid chess (move generation, checking and game-over conditions
     expect(gridGame12.in_checkmate()).toBe(true);
   });
 
-  let gridGame13 = new chessjs.Chess("2k5/8/6N1/8/8/8/8/1K6 w - - 0 1", 2);
+  let gridGame13 = new mychessjs.Chess("2k5/8/6N1/8/8/8/8/1K6 w - - 0 1", 2);
   // +------------------------+
   // 8 | .  .  k  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -683,7 +683,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
   //   a3:  80, b3:  81, c3:  82, d3:  83, e3:  84, f3:  85, g3:  86, h3:  87,
   //   a2:  96, b2:  97, c2:  98, d2:  99, e2: 100, f2: 101, g2: 102, h2: 103,
   //   a1: 112, b1: 113, c1: 114, d1: 115, e1: 116, f1: 117, g1: 118, h1: 119
-  let extinctionGame = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1", 3);
+  let extinctionGame = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1", 3);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -700,7 +700,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame.game_over()).toEqual(false);
   });
 
-  let extinctionGame2 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNB1KBNR w KQkq - 0 1", 3);
+  let extinctionGame2 = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNB1KBNR w KQkq - 0 1", 3);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -717,7 +717,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame2.game_over()).toEqual(false);
   });
 
-  let extinctionGame3 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RN1QK1NR w KQkq - 0 1", 3);
+  let extinctionGame3 = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RN1QK1NR w KQkq - 0 1", 3);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -734,7 +734,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame3.game_over()).toEqual(false);
   });
 
-  let extinctionGame4 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R1BQKB1R w KQkq - 0 1", 3);
+  let extinctionGame4 = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R1BQKB1R w KQkq - 0 1", 3);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -751,7 +751,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame4.game_over()).toEqual(false);
   });
 
-  let extinctionGame5 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1 w KQkq - 0 1", 3);
+  let extinctionGame5 = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1 w KQkq - 0 1", 3);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -768,7 +768,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame5.game_over()).toEqual(false);
   });
 
-  let extinctionGame6 = new chessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/8/RNBQKBNR w KQkq - 0 1", 3);
+  let extinctionGame6 = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/8/8/RNBQKBNR w KQkq - 0 1", 3);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -785,7 +785,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame6.game_over()).toEqual(false);
   });
 
-  let extinctionGame7 = new chessjs.Chess('3qk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  let extinctionGame7 = new mychessjs.Chess('3qk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
   // +------------------------+
   // 8 | .  .  .  q  k  .  .  . |
   // 7 | .  .  .  .  .  N  .  . |
@@ -803,7 +803,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame7.game_over()).toEqual(true);
   });
 
-  let extinctionGame8 = new chessjs.Chess('3rk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  let extinctionGame8 = new mychessjs.Chess('3rk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
   // +------------------------+
   // 8 | .  .  .  r  k  .  .  . |
   // 7 | .  .  .  .  .  N  .  . |
@@ -821,7 +821,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame8.game_over()).toEqual(true);
   });
 
-  let extinctionGame9 = new chessjs.Chess('3bk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  let extinctionGame9 = new mychessjs.Chess('3bk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
   // +------------------------+
   // 8 | .  .  .  b  k  .  .  . |
   // 7 | .  .  .  .  .  N  .  . |
@@ -839,7 +839,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame9.game_over()).toEqual(true);
   });
 
-  let extinctionGame10 = new chessjs.Chess('3nk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  let extinctionGame10 = new mychessjs.Chess('3nk3/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
   // +------------------------+
   // 8 | .  .  .  q  k  .  .  . |
   // 7 | .  .  .  .  .  N  .  . |
@@ -857,7 +857,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame10.game_over()).toEqual(true);
   });
 
-  let extinctionGame11 = new chessjs.Chess('4k3/5N2/3p4/8/8/8/8/4K3 w - - 0 1', 3);
+  let extinctionGame11 = new mychessjs.Chess('4k3/5N2/3p4/8/8/8/8/4K3 w - - 0 1', 3);
   // +------------------------+
   // 8 | .  .  .  .  k  .  .  . |
   // 7 | .  .  .  .  .  N  .  . |
@@ -875,7 +875,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame11.game_over()).toEqual(true);
   });
 
-  let extinctionGame12 = new chessjs.Chess('3k4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  let extinctionGame12 = new mychessjs.Chess('3k4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
   // +------------------------+
   // 8 | .  .  .  k  .  .  .  . |
   // 7 | .  .  .  .  .  N  .  . |
@@ -893,7 +893,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame12.game_over()).toEqual(true);
   });
 
-  let extinctionGame13 = new chessjs.Chess('2kk4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  let extinctionGame13 = new mychessjs.Chess('2kk4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
   // +------------------------+
   // 8 | .  .  k  k  .  .  .  . |
   // 7 | .  .  .  .  .  N  .  . |
@@ -911,7 +911,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame13.game_over()).toEqual(false);
   });
 
-  let extinctionGame14 = new chessjs.Chess('2nn4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  let extinctionGame14 = new mychessjs.Chess('2nn4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
   // +------------------------+
   // 8 | .  .  n  n  .  .  .  . |
   // 7 | .  .  .  .  .  N  .  . |
@@ -929,7 +929,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame14.game_over()).toEqual(false);
   });
 
-  let extinctionGame15 = new chessjs.Chess('2bb4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  let extinctionGame15 = new mychessjs.Chess('2bb4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
   // +------------------------+
   // 8 | .  .  b  b  .  .  .  . |
   // 7 | .  .  .  .  .  N  .  . |
@@ -947,7 +947,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame15.game_over()).toEqual(false);
   });
 
-  let extinctionGame16 = new chessjs.Chess('2rr4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  let extinctionGame16 = new mychessjs.Chess('2rr4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
   // +------------------------+
   // 8 | .  .  r  r  .  .  .  . |
   // 7 | .  .  .  .  .  N  .  . |
@@ -965,7 +965,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame16.game_over()).toEqual(false);
   });
 
-  let extinctionGame17 = new chessjs.Chess('2qq4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  let extinctionGame17 = new mychessjs.Chess('2qq4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
   // +------------------------+
   // 8 | .  .  q  q  .  .  .  . |
   // 7 | .  .  .  .  .  N  .  . |
@@ -983,7 +983,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame17.game_over()).toEqual(false);
   });
 
-  let extinctionGame18 = new chessjs.Chess('2pp4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
+  let extinctionGame18 = new mychessjs.Chess('2pp4/5N2/8/8/8/8/8/4K3 w - - 0 1', 3);
   // +------------------------+
   // 8 | .  .  p  p  .  .  .  . |
   // 7 | .  .  .  .  .  N  .  . |
@@ -1001,7 +1001,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame18.game_over()).toEqual(false);
   });
 
-  let extinctionGame19 = new chessjs.Chess('rnbqkbnr/ppppp1pp/5p2/7Q/8/4P3/PPPP1PPP/RNB1KBNR b KQkq - 0 1', 3);
+  let extinctionGame19 = new mychessjs.Chess('rnbqkbnr/ppppp1pp/5p2/7Q/8/4P3/PPPP1PPP/RNB1KBNR b KQkq - 0 1', 3);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  .  p  p |
@@ -1018,7 +1018,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame19.in_check()).toEqual(false);
   });
 
-  let extinctionGame20 = new chessjs.Chess('rnbqkbnr/pppppppp/8/8/8/2bbb3/8/RNBQK2R w KQkq - 0 1', 3);
+  let extinctionGame20 = new mychessjs.Chess('rnbqkbnr/pppppppp/8/8/8/2bbb3/8/RNBQK2R w KQkq - 0 1', 3);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -1041,7 +1041,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     );
   });
 
-  let extinctionGame21 = new chessjs.Chess('rnbqkbnr/pppppppp/8/8/5bbb/8/PP4PP/R3KBNR w KQkq - 0 1', 3);
+  let extinctionGame21 = new mychessjs.Chess('rnbqkbnr/pppppppp/8/8/5bbb/8/PP4PP/R3KBNR w KQkq - 0 1', 3);
   // +------------------------+
   // 8 | r  n  b  q  k  b  n  r |
   // 7 | p  p  p  p  p  p  p  p |
@@ -1063,7 +1063,7 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     );
   });
 
-  let extinctionGame22 = new chessjs.Chess("2k5/8/6N1/8/8/8/8/1K6 w - - 0 1", 3);
+  let extinctionGame22 = new mychessjs.Chess("2k5/8/6N1/8/8/8/8/1K6 w - - 0 1", 3);
   // +------------------------+
   // 8 | .  .  k  .  .  .  .  . |
   // 7 | .  .  .  .  .  .  .  . |
@@ -1080,4 +1080,196 @@ describe("Testing extinction chess (winning conditions, etc.)", () => {
     expect(extinctionGame22.insufficient_material()).toBe(false);
   });
 
+});
+
+describe("updateAttacks() test: should set every index of ATTACKS[] that " +
+"gives the location of a potential attacker", () => {
+  test("attacks should be as if the only attacker is a rook/knight combination", () => {
+    let ATTACKS = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    const customOffsets = { '0' : [-18, -33, -31, -14,  18, 33, 31,  14], '1': [ -1, -16, +1, +16 ] };
+    const expected = [
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 4, 0, 4, 0, 4, 0, 0, 0, 0, 0, 0, 
+      4, 4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 4, 0, 
+      0, 0, 0, 0, 0, 4, 0, 4, 0, 4, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+
+    expect(mychessjs.updateAttacks(ATTACKS, customOffsets, 2)).toEqual(expected);    
+  });
+
+  test("attacks should be as if the only attacker is a nightrider", () => {
+    let ATTACKS = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    const customOffsets = { '0' : [], '1': [ -18, -33, -31, -14,  18, 33, 31,  14 ] };
+    const expected = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 
+      0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 
+      0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ];
+    expect(mychessjs.updateAttacks(ATTACKS, customOffsets, 0)).toEqual(expected);
+  });
+
+  test("attacks should be as if the only attacker is a bishop that skips 2 squares", () => {
+    let ATTACKS = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    const customOffsets = { '0' : [], '1': [ -34, -30, 34, 30 ] };
+    const expected = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    expect(mychessjs.updateAttacks(ATTACKS, customOffsets, 0)).toEqual(expected);
+  });
+  
+  test("attacks should be a bishop that skips 7 squares", () => {
+    let ATTACKS = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    ];
+    const customOffsets = { '0' : [], '1': [ -119, 119, 105, -105 ] };
+    const expected = [
+      2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+      2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+    ];
+    expect(mychessjs.updateAttacks(ATTACKS, customOffsets, 1)).toEqual(expected);
+  });
+});
+
+describe("matchOffsetsWithAttack() test: given a list of (repeating) offsets, return subset of offsets that " +
+"produces the given attack", () => {
+  // e.g. an attack from +6 units away could be due to a repeating offset of +1, +2, +3 or +6
+  // e.g. an attack from -51 units away could be due to a repeating offset of -51 or -17 (but not -1)
+  let allOffsets = [];
+  for (let i = -119; i <= 119; i++) {
+    allOffsets.push(i);
+  }
+
+  test("an attack from 6 units away can only be produced by offsets [1,2,3,6]", () => {
+    const attack = 6;
+    expect(mychessjs.matchOffsetsWithAttack(attack, allOffsets)).toEqual([1,2,3,6]);
+  });
+
+  test("an attack from -119 units away can only be produced by offsets [-119,-17]", () => {
+    const attack = -119;
+    expect(mychessjs.matchOffsetsWithAttack(attack, allOffsets)).toEqual([-119,-17,]);
+  });
+
+  test("an attack from -54 units away can only be produced by offsets [-54,-18]", () => {
+    const attack = -54;
+    expect(mychessjs.matchOffsetsWithAttack(attack, allOffsets)).toEqual([-54, -18]);
+  });
+
+  // test("given repeating offsets [1,2,3,4,5,6,7,9,10,-1,-2,-3,-4,-5,-6,-7,-9,-10] an attack from 6 units away can only be " +
+  // "produced by offsets [1,2,3,6]", () => {
+  //   const offsets = [1,2,3,4,5,6,7,9,10,-1,-2,-3,-4,-5,-6,-7,-9,-10];
+  //   const attack = 6;
+  //   expect(mychessjs.matchOffsetsWithAttack(attack, offsets)).toEqual([1,2,3,6]);
+  // });
 });
