@@ -1,9 +1,11 @@
 import React from 'react';
+import { Container, Row } from 'react-bootstrap';
 
 const Variant = (props) => {
   const headingStyle = {
       fontFamily: "Helvetica, Arial, sans-serif",
       fontWeight: "bold",
+      textAlign: "center"
     };
   
     const bodyStyle = {
@@ -15,19 +17,16 @@ const Variant = (props) => {
     };
 
   return (
-    <div>
-      <h1 className="text-center" style={headingStyle}>{props.title}</h1>
-      <div>
-        <h2 style={headingStyle}>Pieces</h2>
-        {props.piecesTable}
-      </div>
-      <div>
-        <h2 style={headingStyle}>Rules</h2>
-        <div style={bodyStyle}>
-          {props.children}
+    <Container>
+      <h1 style={headingStyle}>Rules of {props.title}</h1>
+      <Row xs={8}>
+        <div>
+          <div style={bodyStyle}>
+            {props.children}
+          </div>
         </div>
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 }
 

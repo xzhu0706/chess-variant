@@ -2,45 +2,10 @@ import React from 'react';
 import GridChess from '../../WithMoveValidation';
 import ContentBox from './ContentBox';
 import VariantDocument from './Variant';
-import wb from '../../icons/pieces/standard/wb.svg';
-import wr from '../../icons/pieces/standard/wr.svg';
-import wn from '../../icons/pieces/standard/wn.svg';
-import wp from '../../icons/pieces/standard/wp.svg';
-import wk from '../../icons/pieces/standard/wk.svg';
-import wq from '../../icons/pieces/standard/wq.svg';
-import bb from '../../icons/pieces/standard/bb.svg';
-import br from '../../icons/pieces/standard/br.svg';
-import bn from '../../icons/pieces/standard/bn.svg';
-import bp from '../../icons/pieces/standard/bp.svg';
-import bk from '../../icons/pieces/standard/bk.svg';
-import bq from '../../icons/pieces/standard/bq.svg';
 
 function GridChessDocument() {
-  const piecesTable = (
-    <table>
-      <tbody>
-        <tr>
-          <td><img style={{ width: '3em', height: '3em' }} src={wp} alt="white pawn" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={wr} alt="white rook" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={wn} alt="white knight" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={wb} alt="white bishop" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={wq} alt="white queen" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={wk} alt="white king" /></td>
-        </tr>
-        <tr>
-          <td><img style={{ width: '3em', height: '3em' }} src={bp} alt="black pawn" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={br} alt="black rook" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={bn} alt="black knight" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={bb} alt="black bishop" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={bq} alt="black queen" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={bk} alt="black king" /></td>
-        </tr>
-      </tbody>
-    </table>
-  );
-
   return (
-    <VariantDocument title="Grid chess" piecesTable={piecesTable}>
+    <VariantDocument title="Grid Chess">
       <p>
       In grid chess, all standard chess rules apply, except that each move must cross one or more
       grid lines. It follows that the king will not be under attack by any opposing piece that is currently in the same grid.
