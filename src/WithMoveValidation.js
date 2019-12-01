@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
+import Button from '@material-ui/core/Button';
 import GameData from './GameData.js';
-import FenInput from './components/customization/FenInput.js';
+import CustomPlayOption from './components/customization/CustomPlayOption';
 import wm from "./icons/pieces/fairy/wk_180.svg"; // "mann" (upside-down king)
 import bm from "./icons/pieces/fairy/bk_180.svg";
 import wf from "./icons/pieces/fairy/wb_180.svg"; // "ferz" (upside-down bishop)
@@ -14,6 +15,8 @@ import we from "./icons/pieces/fairy/we.svg"; // "empress" (knight/rook combo)
 import be from "./icons/pieces/fairy/be.svg"; // "empress"
 import ws from "./icons/pieces/fairy/ws.svg"; // "princess" (knight/bishop combo)
 import bs from "./icons/pieces/fairy/bs.svg"; // "princess"
+import wj from "./icons/white_joker.svg"; //
+import bj from "./icons/black_joker.svg";
 
 
 import './variant-style.css';
@@ -22,21 +25,21 @@ class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = {
-    fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-    pgn: '',
+    fen: this.props.fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+    history: [],
     squareStyles: {}, // custom square styles
     fromSquare: '', // most recently clicked square (empty if a move was just made)
     turn: '',
+    orientation: 'white',
     gameOver: false,
     gameResult: '', // checkmate, stalemate, insufficient material, ...
   };
 
+  game = new Chess(this.props.fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', this.props.variant, this.props.customPiece || { c: { 0: [], 1: [] } });
+
   componentDidMount() {
-    this.game = new Chess(this.props.fen || this.state.fen, this.props.variant);
-    // initialize the internal game
     this.setState({
-      fen: this.game.fen(),
-      turn: this.game.turn(),
+      turn: this.game.turn()
     });
     this.updateGameResult(); // in case the FEN string gives an ending position
   }
@@ -55,6 +58,30 @@ class HumanVsHuman extends Component {
     // after re-entering cursor mode
   }
 
+  flipOrientation = () => {
+    this.setState({
+      orientation: this.state.orientation === 'white' ? 'black' : 'white'
+    })
+  }
+
+  clearBoard = () => {
+    this.game.load('4k3/8/8/8/8/8/8/4K3 w - - 0 1');
+    this.setState({
+      fen: this.game.fen(),
+      fromSquare: '',
+      squareStyles: {}
+    });
+  }
+
+  resetBoard = () => {
+    this.game.reset();
+    this.setState({
+      fen: this.game.fen(),
+      fromSquare: '',
+      squareStyles: {}
+    });
+  }
+
   // adjust board size according to window size
   calcWidth = (dimensions) => {
     let customWidth = Math.min(540/640 * dimensions.screenWidth, 540/640 * dimensions.screenHeight);
@@ -69,7 +96,7 @@ class HumanVsHuman extends Component {
         ...{
           [c]: {
             background:
-                'radial-gradient(circle, rgba(255, 120, 12, 67%), 50%, transparent 10%)',
+                'radial-gradient(circle, rgba(255, 120, 12, 0.67), 50%, transparent 10%)',
             borderRadius: '50%',
           },
         },
@@ -84,7 +111,7 @@ class HumanVsHuman extends Component {
 
   updateGameResult() {
     if (this.game.game_over()) {
-      let result; // fifty move rule
+      let result;
       if (this.game.in_checkmate()) {
         result = "checkmate";
       }
@@ -147,7 +174,7 @@ class HumanVsHuman extends Component {
       // legal move, so update the game state
       this.setState({
         fen: this.game.fen(),
-        pgn: this.game.pgn(),
+        history: this.game.history(),
         fromSquare: '',
         turn: this.game.turn(),
       });
@@ -183,7 +210,7 @@ class HumanVsHuman extends Component {
 
         // highlight clicked square, and update the from square
         this.setState({
-          squareStyles: { [square]: { backgroundColor: '#68f' } },
+          squareStyles: { [square]: { backgroundColor: '#ebae34' } },
           fromSquare: square,
         });
 
@@ -216,35 +243,43 @@ class HumanVsHuman extends Component {
   };
 
   render() {
-    const { fen, pgn, turn, gameResult, squareStyles } = this.state;
+    const { fen, history, turn, gameResult, squareStyles, orientation } = this.state;
     return this.props.children({
       squareStyles,
       fen,
-      pgn,
+      history,
       turn,
       gameResult,
       onSquareClick: this.onSquareClick,
       onSquareRightClick: this.onSquareRightClick,
       calcWidth: this.calcWidth,
+      flipOrientation: this.flipOrientation,
+      resetBoard: this.resetBoard,
+      clearBoard: this.clearBoard,
+      orientation
     });
   }
 }
 
-export default function WithMoveValidation(start_fen, variant=0, showData=true, smallBoard=false, editMode=false, sparePiece) {
+export default function WithMoveValidation(start_fen, variant=0, showData=true, smallBoard=false, editMode=false, sparePiece, customPiece) {
   let boardId = variant === 2 ? "grid-board" : "false"; // if variant isn't grid chess, boardId will be set to false
   return (
-    <div>
-      <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece}>
+    <div style={smallBoard ? { maxWidth: '384px' } : { maxWidth: '540px' } }>
+      <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece} customPiece={customPiece}>
         { /* HumanVsHuman calls the following function as this.props.children() in its render() method */ }
         {({
           squareStyles,
           fen,
-          pgn,
-          gameResult,
+          history,
           turn,
+          gameResult,
           onSquareClick,
           onSquareRightClick,
-          calcWidth
+          calcWidth,
+          flipOrientation,
+          resetBoard,
+          clearBoard,
+          orientation
         }) => {
           // redefine calcWidth() if smallBoard arg is true
           if (smallBoard) {
@@ -253,14 +288,6 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
               return (dimensions.screenWidth < 460 || dimensions.screenHeight < 460) ? customWidth : 384;
             }
           }
-
-          const gameData =
-            showData ? (
-              <div className="p-1">
-                <GameData pgn={pgn} turn={turn} gameResult={gameResult} />
-              </div>
-            ) :
-            null;
 
           let customPieces = {
             wM: ({ squareWidth }) => (
@@ -364,6 +391,27 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                 alt="black princess"
               />
             ),
+
+            wC: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={wj}
+                alt="white joker"
+              />
+            ),
+            bC: ({ squareWidth }) => (
+              <img
+                style={{
+                  width: squareWidth,
+                  height: squareWidth,
+                }}
+                src={bj}
+                alt="black joker"
+              />
+            ),
           }
 
           // for antichess, replace king with flipped king
@@ -392,10 +440,19 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
             }}
           }
 
+          const gameData =
+            showData ? (
+              <div className="p-1">
+                <GameData variant={variant} history={history} turn={turn} gameResult={gameResult} />
+              </div>
+            ) :
+            null;
+
           return (
-            <div className="d-flex flex-column">
-              { editMode ? <FenInput fen={fen}/> : null }
-              <div id={boardId}>
+            // <div className="d-flex flex-column">
+            <div>
+              { editMode ? <CustomPlayOption fen={fen} customPiece={customPiece} /> : null }
+              <div id={boardId} style={{ display: 'inline-block' }}>
                 <Chessboard
                   position={fen}
                   boardStyle={{
@@ -410,7 +467,13 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                   onSquareRightClick={onSquareRightClick}
                   calcWidth={calcWidth}
                   draggable={false}
+                  orientation={orientation}
                 />
+              </div>
+              <div style={{ textAlign: "center", margin: '0.4em' }}>
+                <Button size="small" variant="outlined" onClick={flipOrientation}>Flip board</Button>
+                {editMode ? <Button size="small" variant="outlined" onClick={resetBoard}>Reset to starting position</Button> : null}
+                {editMode ? <Button size="small" variant="outlined" onClick={clearBoard}>Clear board</Button> : null}
               </div>
               { gameData }
             </div>

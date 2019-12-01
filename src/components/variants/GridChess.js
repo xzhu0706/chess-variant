@@ -2,59 +2,24 @@ import React from 'react';
 import GridChess from '../../WithMoveValidation';
 import ContentBox from './ContentBox';
 import VariantDocument from './Variant';
-import wb from '../../icons/pieces/standard/wb.svg';
-import wr from '../../icons/pieces/standard/wr.svg';
-import wn from '../../icons/pieces/standard/wn.svg';
-import wp from '../../icons/pieces/standard/wp.svg';
-import wk from '../../icons/pieces/standard/wk.svg';
-import wq from '../../icons/pieces/standard/wq.svg';
-import bb from '../../icons/pieces/standard/bb.svg';
-import br from '../../icons/pieces/standard/br.svg';
-import bn from '../../icons/pieces/standard/bn.svg';
-import bp from '../../icons/pieces/standard/bp.svg';
-import bk from '../../icons/pieces/standard/bk.svg';
-import bq from '../../icons/pieces/standard/bq.svg';
 
 function GridChessDocument() {
-  const piecesTable = (
-    <table>
-      <tbody>
-        <tr>
-          <td><img style={{ width: '3em', height: '3em' }} src={wp} alt="white pawn" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={wr} alt="white rook" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={wn} alt="white knight" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={wb} alt="white bishop" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={wq} alt="white queen" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={wk} alt="white king" /></td>
-        </tr>
-        <tr>
-          <td><img style={{ width: '3em', height: '3em' }} src={bp} alt="black pawn" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={br} alt="black rook" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={bn} alt="black knight" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={bb} alt="black bishop" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={bq} alt="black queen" /></td>
-          <td><img style={{ width: '3em', height: '3em' }} src={bk} alt="black king" /></td>
-        </tr>
-      </tbody>
-    </table>
-  );
-
   return (
-    <VariantDocument title="Grid chess" piecesTable={piecesTable}>
+    <VariantDocument title="Grid Chess">
       <p>
       In grid chess, all standard chess rules apply, except that each move must cross one or more
       grid lines. It follows that the king will not be under attack by any opposing piece that is currently in the same grid.
       </p>
       
       <ContentBox
-        board={GridChess(undefined, 2, false, true)}
+        board={GridChess(undefined, 2, true, true)}
       >
         This is the starting position in grid chess.
         All the standard moves are legal at the start because they all cross one grid line.
       </ContentBox>
 
       <ContentBox
-        board={GridChess('rnbqkbnr/ppp1pppp/8/4P3/3p4/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3', 2, false, true)}
+        board={GridChess('rnbqkbnr/ppp1pppp/8/4P3/3p4/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3', 2, true, true)}
       >
         After
         <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 1. e4 d5 2. e5 d4</span>
@@ -72,14 +37,14 @@ function GridChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={GridChess('2k5/8/8/8/2N5/8/1q6/1K6 w - - 0 1', 2, false, true)}
+        board={GridChess('2k5/8/8/8/2N5/8/1q6/1K6 w - - 0 1', 2, true, true)}
       >
         There are two things to observe in this position.
         <br />
-        First, White&apost;s king is not in check, and therefore White does not have to capture the
+        First, White's king is not in check, and therefore White does not have to capture the
         queen with the knight.
         <br />
-        Second, White&apost;s king cannot move anywhere. In particular, it cannot capture the queen
+        Second, White's king cannot move anywhere. In particular, it cannot capture the queen
         (because it cannot move in its own grid) or move to
         <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> c2 </span>
         (because it would be placing itself in check by the queen).
@@ -87,14 +52,14 @@ function GridChessDocument() {
       </ContentBox>
 
       <ContentBox
-        board={GridChess('4k3/8/8/R7/6B1/8/8/4K3 w - - 0 1', 2, false, true)}
+        board={GridChess('4k3/8/8/R7/6B1/8/8/4K3 w - - 0 1', 2, true, true)}
       >
         Here is a checkmate-in-one scenario.
         <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 1. ♖a8#</span>
 .
         <br />
-        Note that checkmate occurs in the standard way: a player&apos;s king is attacked but
-        can&apos;t move and in addition the attack can&apost;t be blocked.
+        Note that checkmate occurs in the standard way: a player's king is attacked but
+        can't move and in addition the attack can't be blocked.
       </ContentBox>
 
     </VariantDocument>

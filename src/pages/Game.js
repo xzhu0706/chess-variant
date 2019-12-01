@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+// import Paper from '@material-ui/core/Paper';
+// import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
@@ -13,12 +13,12 @@ import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
 import './Game.css';
-import Clock from '../components/Clock';
+// import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
 import { Widget } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
-import { Launcher } from 'react-chat-window'
+// import { Launcher } from 'react-chat-window'
 
 
 
@@ -174,7 +174,16 @@ class Game extends Component {
     return userInfo;
   }
 
+  // chessboard.jsx method for responsive board sizing
+  calcWidth = (dimensions) => {
+    let customWidth = Math.min(600/640 * dimensions.screenWidth, 600/640 * dimensions.screenHeight);
+    if (customWidth < 300) customWidth = 300;
+    return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
+  }
+
+  // chessboard.jsx method for defining what happens when user clicks a square
   onSquareClick = async (square) => {
+    if (!this.game) return;
     if (this.game.turn() !== this.orientation[0]) return;
     if (this.game.game_over() || this.gameInfo.ended) {
       alert('GAME OVER')
@@ -227,7 +236,7 @@ class Game extends Component {
       newSquareStyles[square] = { backgroundColor: Colors.BOARD_HIGHLIGHT_COLOR };
       validMoves.forEach((move) => {
         newSquareStyles[move.to] = {
-          background: `radial-gradient(circle, ${Colors.BOARD_HIGHLIGHT_COLOR} 18%, transparent 15%)`,
+          background: `radial-gradient(circle, ${Colors.BOARD_HIGHLIGHT_COLOR} 50%, transparent 20%)`,
           borderRadius: '50%',
         };
       });
@@ -237,7 +246,7 @@ class Game extends Component {
 
   updateGameResult = () => {
     if (this.game.game_over() || this.state.history.length >= 50) {
-      let result = 'fifty'; // fifty move rule
+      let result;
       if (this.game.in_checkmate()) {
         result = 'checkmate';
       } else if (this.gameInfo.variant === Games.EXTINCTION_CHESS && this.game.extinguished()) {
@@ -248,6 +257,9 @@ class Game extends Component {
         result = 'insufficient';
       } else if (this.game.in_threefold_repetition()) {
         result = 'repetition';
+      }
+      else {
+        result = 'fifty';
       }
       this.setState({
         gameOver: true,
@@ -303,42 +315,48 @@ class Game extends Component {
       players = `You vs ${this.opponent !== null ? this.opponent.username : 'Anonymous'}`;
     }
     return (
-      <Box display='flex' flexDirection='row' justifyContent='flex-end'>
-        <div className="App">
-          <Widget
-            title="Chat with your opponent"
-            subtitle=''
-          />
-        </div>
-        <Box display="flex" flexDirection="column">
-          <GameInfo
-            yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
-            players={players}
-            variant={this.gameInfo !== null ? this.gameInfo.variant : ''}
-            gameResult={state.gameResult}
-          />
-          <div id={this.boardId}>
-            <Chessboard
-              position={state.fen}
-              lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
-              darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
-              orientation={this.orientation}
-              squareStyles={state.squareStyles}
-              onSquareClick={this.onSquareClick}
+      <div style={{ paddingTop: '1em' }}>
+        <Grid container justify="center" direction="row" spacing={1}>
+          <div className="App">
+            <Widget
+              title="Chat with your opponent"
+              subtitle=''
             />
           </div>
-        </Box>
-        <GameData
-          style={{ width: '100px' }}
-          history={state.history}
-          fen={state.fen}
-          gameResult={state.gameResult}
-          winner={state.winner}
-          prevMove={this.prevMove}
-          nextMove={this.nextMove}
-          currentMove={state.history.length - state.reverseHistory.length}
-        />
-      </Box>
+          <Grid container item justify="center" direction="row" wrap="wrap" spacing={1}>
+            <Box display="flex" flexDirection="column" >
+              <GameInfo
+                yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
+                players={players}
+                variant={this.gameInfo !== null ? this.gameInfo.variant : ''}
+                gameResult={state.gameResult}
+              />
+              <div id={this.boardId}>
+                <Chessboard
+                  position={state.fen}
+                  lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
+                  darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
+                  orientation={this.orientation}
+                  squareStyles={state.squareStyles}
+                  onSquareClick={this.onSquareClick}
+                  calcWidth={this.calcWidth}
+                />
+              </div>
+            </Box>
+          </Grid>
+          <Box display="flex" width="inherit" maxWidth="540px"> {/* how do i make this always the same width as the board? */}
+            <GameData
+              history={state.history}
+              fen={state.fen}
+              gameResult={state.gameResult}
+              winner={state.winner}
+              prevMove={this.prevMove}
+              nextMove={this.nextMove}
+              currentMove={state.history.length - state.reverseHistory.length}
+            />
+          </Box>
+        </Grid>
+      </div>
     );
   }
 }
