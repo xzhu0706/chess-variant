@@ -40,6 +40,7 @@ class Game extends Component {
       gameResult: '',
       winner: '',
       reverseHistory: [],
+      turn: '',
     };
     this.game = null;
     this.opponent = null; // the opponent. null if user created or joined game anonymously
@@ -120,7 +121,7 @@ class Game extends Component {
       this.game.load(initialFen);
       yourTurn = this.game.turn() === this.orientation[0];
     }
-    this.setState({ fen: initialFen, yourTurn });
+    this.setState({ fen: initialFen, yourTurn, turn: this.game.turn() });
     this.gameUpdateSubscription = API.graphql(graphqlOperation(
       subscriptions.onUpdateGameState, { id: gameId },
     )).subscribe({
@@ -148,8 +149,13 @@ class Game extends Component {
           //   this.gameUpdateSubscription.unsubscribe()
           //   yourTurn = false
           // }
-          this.setState({ fen: gameState.fen, yourTurn, gameResult: gameState.result, history: gameState.history });
-
+          this.setState({
+            fen: gameState.fen,
+            yourTurn,
+            gameResult: gameState.result,
+            history: gameState.history,
+            turn: this.game.turn(),
+          });
         }
       },
     });
@@ -212,6 +218,7 @@ class Game extends Component {
           yourTurn: false,
           gameResult,
           history: [...this.state.history, move.san],
+          turn: this.game.turn(),
         });
         // end the game if necessary
         const result = this.updateGameResult();
@@ -324,9 +331,9 @@ class Game extends Component {
             />
           </div>
           <Grid container item justify="center" direction="row" wrap="wrap" spacing={1}>
-            <Box display="flex" flexDirection="column" >
+            <Box display="flex" flexDirection="column">
               <GameInfo
-                yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
+                yourTurn={state.yourTurn && !state.gameOver ? YOUR_TURN_MESSAGE : ''}
                 players={players}
                 variant={this.gameInfo !== null ? this.gameInfo.variant : ''}
                 gameResult={state.gameResult}
@@ -342,19 +349,20 @@ class Game extends Component {
                   calcWidth={this.calcWidth}
                 />
               </div>
+              <Box maxWidth="540px">
+                <GameData
+                  turn={state.turn}
+                  history={state.history}
+                  fen={state.fen}
+                  gameResult={state.gameResult}
+                  winner={state.winner}
+                  prevMove={this.prevMove}
+                  nextMove={this.nextMove}
+                  currentMove={state.history.length - state.reverseHistory.length}
+                />
+              </Box>
             </Box>
           </Grid>
-          <Box display="flex" width="inherit" maxWidth="540px"> {/* how do i make this always the same width as the board? */}
-            <GameData
-              history={state.history}
-              fen={state.fen}
-              gameResult={state.gameResult}
-              winner={state.winner}
-              prevMove={this.prevMove}
-              nextMove={this.nextMove}
-              currentMove={state.history.length - state.reverseHistory.length}
-            />
-          </Box>
         </Grid>
       </div>
     );
