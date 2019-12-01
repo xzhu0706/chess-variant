@@ -65,7 +65,7 @@ class HumanVsHuman extends Component {
   }
 
   clearBoard = () => {
-    this.game.load('4k3/8/8/8/8/8/8/4K3 w KQkq - 0 1');
+    this.game.load('4k3/8/8/8/8/8/8/4K3 w - - 0 1');
     this.setState({
       fen: this.game.fen(),
       fromSquare: '',

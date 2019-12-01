@@ -246,14 +246,13 @@ describe("Testing antichess (move generation, winning conditions, etc)", () => {
   test("After 1. Nh3 g5 2. Nxg5, the only generated moves for White are " + 
     "Nxf7 (square 54 to square 21) and Nxh7 (square 54 to square 23). This is testing the " +
     "mandatory capture rule in antichess.", () => {
-      const moves = antiGame.generate_moves(); // an array of move objects
       const expected = [
         { color: 'w', piece: 'n', from: 54, to: 21, captured: 'p' },
         { color: 'w', piece: 'n', from: 54, to: 23, captured: 'p' }
       ];
       // we want the moves array to have the moves in the expected array and no other moves
       // note that with toMatchObject(), some fields in the move objects may be omitted (e.g., `captured`)
-      expect(moves).toMatchObject(expected); // expect the moves array to match the expected array
+      expect(antiGame.generate_moves()).toMatchObject(expected); // expect the moves array to match the expected array
     }
   );
 
@@ -1306,21 +1305,114 @@ describe("offsetsFromAttack() test: given a list of (repeating) offsets, return 
   });
 });
 
-describe("custom pieces test", () => {
-  let customPieces = { 'c': { '0': [], '1': [-1,-16,1,16] } };
-  let customGame = new mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/4E3/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 0, customPieces);
-  // +------------------------+
-  // 8 | r  n  b  q  k  b  n  r |
-  // 7 | p  p  p  p  p  p  p  p |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  C  .  .  . |
-  // 2 | P  P  P  P  P  P  P  P |
-  // 1 | R  N  B  Q  K  B  N  R |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  test("an attack from 6 units away can only be produced by offsets [1,2,3,6]", () => {
-    console.log(customGame.generate_moves());
+describe("games with custom pieces", () => {
+  test("custom piece defined with non-repeating offsets -16 and 16 can only move up and down", () => {
+    let customPieces = {
+      'c': {
+        '0': [-16, 16],
+        '1': []
+      }
+    };
+    let customGame = new mychessjs.Chess("4k3/8/8/2C5/8/8/8/4K3 w KQkq - 0 1", 0, customPieces);
+    // +------------------------+
+    // 8 | .  .  .  .  k  .  .  . |
+    // 7 | .  .  .  .  .  .  .  . |
+    // 6 | .  .  .  .  .  .  .  . |
+    // 5 | .  .  C  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | .  .  .  .  .  .  .  . |
+    // 1 | .  .  .  .  K  .  .  . |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
+    // White's turn. White should be able to play C from c5 to c6 or to c4.
+    const expected = [
+      { color: 'w', from: 50, to: 34, flags: 1, piece: 'c' },
+      { color: 'w', from: 50, to: 66, flags: 1, piece: 'c' }
+    ];
+    expect(customGame.generate_moves()).toEqual(expect.objectContaining(expected));
   });
+
+  test("attacks by a custom piece defined in the same way as the empress follow the same rules: " +
+  "it can check the king on the same file/rank as long as there is no piece in the way, and it can check " +
+  "the king like a knight regardless of any pieces in the way", () => {
+    const customPieces = {
+      'c': {
+        '0': [-18, -33, -31, -14,  18, 33, 31,  14],
+        '1': [-16,   1,  16,  -1]
+      }
+    };
+    let customGame = new mychessjs.Chess("4k3/8/8/4C3/8/8/8/4K3 b - - 0 1", 0, customPieces);
+    // +------------------------+
+    // 8 | .  .  .  .  k  .  .  . |
+    // 7 | .  .  .  .  .  .  .  . |
+    // 6 | .  .  .  .  .  .  .  . |
+    // 5 | .  .  .  .  C  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | .  .  .  .  .  .  .  . |
+    // 1 | .  .  .  .  K  .  .  . |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
+    // Black should be in check here.
+    expect(customGame.in_check()).toBe(true);
+
+    customGame = new mychessjs.Chess("4k3/8/4P3/4C3/8/8/8/4K3 b - - 0 1", 0, customPieces);
+    // +------------------------+
+    // 8 | .  .  .  .  k  .  .  . |
+    // 7 | .  .  .  .  .  .  .  . |
+    // 6 | .  .  .  .  P  .  .  . |
+    // 5 | .  .  .  .  C  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | .  .  .  .  .  .  .  . |
+    // 1 | .  .  .  .  K  .  .  . |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
+    // Black should not be in check here.
+    expect(customGame.in_check()).toBe(false);
+
+    customGame = new mychessjs.Chess("3rkr2/3rrrr1/3rrC2/8/8/8/8/4K3 b - - 0 1", 0, customPieces);
+    // +------------------------+
+    // 8 | .  .  .  r  k  r  .  . |
+    // 7 | .  .  .  r  r  r  r  . |
+    // 6 | .  .  .  r  r  C  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | .  .  .  .  .  .  .  . |
+    // 1 | .  .  .  .  K  .  .  . |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
+    // Black should be in check here.
+    expect(customGame.in_check()).toBe(true);
+  });
+
+  test("a piece with non-repeating offset 4 and repeating offset 2 is able to move 4 units even if " +
+  "a friendly piece is 2 units away", () => {
+    const customPieces = {
+      'c': {
+        '0': [4],
+        '1': [2]
+      }
+    };
+    const customGame = new mychessjs.Chess("k7/8/8/3C1P2/8/8/8/7K w - - 0 1", 0, customPieces);
+    // +------------------------+
+    // 8 | k  .  .  .  .  .  .  . |
+    // 7 | .  .  .  .  .  .  .  . |
+    // 6 | .  .  .  .  .  .  .  . |
+    // 5 | .  .  .  C  .  P  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | .  .  .  .  .  .  .  . |
+    // 1 | .  .  .  .  .  .  .  K |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
+    // White should be able to move from d5 to h5 not via the repeating offset 2 but via the non-repeating offset 4.
+    const expected = [
+      { color: 'w', from: 51, to: 55, flags: 1, piece: 'c' }
+    ];
+    expect(customGame.generate_moves()).toEqual(expect.objectContaining(expected));
+  });
+
 });
