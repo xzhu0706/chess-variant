@@ -80,10 +80,7 @@ function AntiChessDocument() {
         board={Antichess('rnbqk1nr/ppppppbp/8/6N1/8/8/PPPPPPPP/RNBQKB1R w KQkq - 1 3', 1, true, true)}
       >
         White must make some capture if any is available.
-        White may have multiple capturing moves available, as in this position based on the
-        continuation
-        <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 2. ♘xg5 ♗g7</span>
-.
+        White may have multiple capturing moves available, as in this position.
         In this case, White may choose how to make a capture.
       </ContentBox>
 
@@ -96,11 +93,11 @@ function AntiChessDocument() {
         White plays
         <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 1. a4</span>
         , which forces
-        <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 1...♖xa4#</span>
+        <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 1...♖xa4</span>
 .
         {' '}
         <br />
-        When control switches to White&apos;s turn, White has no valid moves. Therefore, White wins.
+        When control switches to White's turn, White has no valid moves. Therefore, White wins.
       </ContentBox>
 
     </VariantDocument>

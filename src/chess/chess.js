@@ -101,7 +101,7 @@ var Chess = function(fen, variant=0, customPieces={}) {
     s: [-17, -15,  17,  15],
   };
 
-  const SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5, m: 6, f: 7, d: 8, e: 9, s: 10 };
+  let SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5, m: 6, f: 7, d: 8, e: 9, s: 10 };
 
   // the ATTACKS array is a bit-mask of attacks based on a 6-bit string of the form kqrbnp.
   // For example:
@@ -893,7 +893,6 @@ var Chess = function(fen, variant=0, customPieces={}) {
       const index = difference + 119;
 
       if (ATTACKS[index] & (1 << SHIFTS[piece.type])) {
-        // pawn attacks:
         if (piece.type === PAWN) {
           if (difference > 0) {
             if (piece.color === WHITE) return true;
@@ -902,35 +901,42 @@ var Chess = function(fen, variant=0, customPieces={}) {
           }
           continue;
         }
-        // non-pawn attacks:
 
-        // compute list of possible offsets underlying the attack
-        // e.g. an attack from -6 units away could be due to a repeating offset of -1, -2, -3 or -6
-        // e.g. an attack from -51 units away could be due to a repeating offset of -51 or -17 (but not -1)
-        const possibleOffsets = PIECE_OFFSETS_REPEATING[piece.type].filter(offset =>
-          (offset > 0) == (difference > 0) && difference % offset === 0
-        );
-
-        // the offset is not repeating, so just return true (no need to check for blocking pieces)
-        if (!(offset in PIECE_OFFSETS_REPEATING[piece.type])) {
+        /* if the difference is equal to one of the regular offsets */
+        if (PIECE_OFFSETS[piece.type].indexOf(difference) !== -1) {
           return true;
         }
 
-        // the offset is one of the repeating offsets for the given piece => there could be a
-        // blocking piece that invalidates the attack
-        const rayUnit = -offset;
-        let j = i + offset;
+        // compute list of possible (repeating) offsets that produce the difference
+        // e.g. an attack from -6 units away could be due to an offset of -1, -2, -3 or -6
+        // e.g. an attack from -51 units away could be due to an offset of -51 or -17 (but not -1)
+        const derivedOffsets = offsetsFromAttack(difference, PIECE_OFFSETS_REPEATING[piece.type]);
 
-        let blocked = false;
-        while (j !== square) {
-          if (board[j] != null) { blocked = true; break; }
-          j += rayUnit;
+        // if none of the repeating offsets match this difference
+        if (derivedOffsets && derivedOffsets.length === 0) {
+          continue;
         }
 
-        if (!blocked) return true;
+        // one of the offsets can produce the difference, but
+        // now we need to check for a blocking piece that would invalidate the "attack".
+        // if there is no blocking piece for each offset, then the offset is validated -
+        // immediately return true.
+        for (const offset of derivedOffsets) {
+          const ray = -offset;
+          let intermediate = i + ray;
+      
+          let blocked = false;
+          while (intermediate !== square) {
+            if (board[intermediate] != null) { blocked = true; break; }
+            intermediate += ray;
+          }
+      
+          if (!blocked) return true;
+        }
       }
     }
 
+    // no square on the board contains a piece that attacks the given square
     return false;
   }
 
@@ -1947,7 +1953,7 @@ function updateAttacks(ATTACKS, customPieceOffsets, shifts) {
 // given a list of (repeating) offsets, compute the subset of offsets that can produce the given attack
 // e.g. an attack from +6 units away could be due to a repeating offset of +1, +2, +3 or +6
 // e.g. an attack from -51 units away could be due to a repeating offset of -51 or -17 (but not -1)
-function matchOffsetsWithAttack(attack, repeatingOffsets) {
+function offsetsFromAttack(attack, repeatingOffsets) {
   return repeatingOffsets.filter(offset => {
     const generatedOffsets = generateOffsets(offset);
     return (generatedOffsets.indexOf(attack) !== -1); // if the particular offset can create the given attack, return true
@@ -1960,7 +1966,7 @@ if (typeof exports !== 'undefined') exports.Chess = Chess;
 if (typeof exports !== 'undefined') exports.valid_2x2_grid_move = valid_2x2_grid_move;
 if (typeof exports !== 'undefined') exports.generateOffsets = generateOffsets;
 if (typeof exports !== 'undefined') exports.updateAttacks = updateAttacks;
-if (typeof exports !== 'undefined') exports.matchOffsetsWithAttack = matchOffsetsWithAttack;
+if (typeof exports !== 'undefined') exports.offsetsFromAttack = offsetsFromAttack;
 
 /* export Chess object for any RequireJS compatible environment */
 if (typeof define !== 'undefined') define( function () { return Chess;  });

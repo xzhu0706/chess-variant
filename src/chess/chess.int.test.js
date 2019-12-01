@@ -1242,7 +1242,7 @@ describe("updateAttacks() test: should set every index of ATTACKS[] that " +
   });
 });
 
-describe("matchOffsetsWithAttack() test: given a list of (repeating) offsets, return subset of offsets that " +
+describe("offsetsFromAttack() test: given a list of (repeating) offsets, return subset of offsets that " +
 "produces the given attack", () => {
   // e.g. an attack from +6 units away could be due to a repeating offset of +1, +2, +3 or +6
   // e.g. an attack from -51 units away could be due to a repeating offset of -51 or -17 (but not -1)
@@ -1253,23 +1253,16 @@ describe("matchOffsetsWithAttack() test: given a list of (repeating) offsets, re
 
   test("an attack from 6 units away can only be produced by offsets [1,2,3,6]", () => {
     const attack = 6;
-    expect(mychessjs.matchOffsetsWithAttack(attack, allOffsets)).toEqual([1,2,3,6]);
+    expect(mychessjs.offsetsFromAttack(attack, allOffsets)).toEqual([1,2,3,6]);
   });
 
   test("an attack from -119 units away can only be produced by offsets [-119,-17]", () => {
     const attack = -119;
-    expect(mychessjs.matchOffsetsWithAttack(attack, allOffsets)).toEqual([-119,-17,]);
+    expect(mychessjs.offsetsFromAttack(attack, allOffsets)).toEqual([-119,-17,]);
   });
 
   test("an attack from -54 units away can only be produced by offsets [-54,-18]", () => {
     const attack = -54;
-    expect(mychessjs.matchOffsetsWithAttack(attack, allOffsets)).toEqual([-54, -18]);
+    expect(mychessjs.offsetsFromAttack(attack, allOffsets)).toEqual([-54, -18]);
   });
-
-  // test("given repeating offsets [1,2,3,4,5,6,7,9,10,-1,-2,-3,-4,-5,-6,-7,-9,-10] an attack from 6 units away can only be " +
-  // "produced by offsets [1,2,3,6]", () => {
-  //   const offsets = [1,2,3,4,5,6,7,9,10,-1,-2,-3,-4,-5,-6,-7,-9,-10];
-  //   const attack = 6;
-  //   expect(mychessjs.matchOffsetsWithAttack(attack, offsets)).toEqual([1,2,3,6]);
-  // });
 });

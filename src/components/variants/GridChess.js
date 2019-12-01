@@ -76,10 +76,10 @@ function GridChessDocument() {
       >
         There are two things to observe in this position.
         <br />
-        First, White&apost;s king is not in check, and therefore White does not have to capture the
+        First, White's king is not in check, and therefore White does not have to capture the
         queen with the knight.
         <br />
-        Second, White&apost;s king cannot move anywhere. In particular, it cannot capture the queen
+        Second, White's king cannot move anywhere. In particular, it cannot capture the queen
         (because it cannot move in its own grid) or move to
         <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> c2 </span>
         (because it would be placing itself in check by the queen).
@@ -93,8 +93,8 @@ function GridChessDocument() {
         <span style={{ fontFamily: 'serif', fontWeight: 'bold' }}> 1. ♖a8#</span>
 .
         <br />
-        Note that checkmate occurs in the standard way: a player&apos;s king is attacked but
-        can&apos;t move and in addition the attack can&apost;t be blocked.
+        Note that checkmate occurs in the standard way: a player's king is attacked but
+        can't move and in addition the attack can't be blocked.
       </ContentBox>
 
     </VariantDocument>
