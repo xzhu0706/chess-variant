@@ -16,7 +16,7 @@ import './Game.css';
 import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
-import { Widget } from 'react-chat-widget';
+import { Widget, addResponseMessage, addLinkSnippet, addUserMessage } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 import { Launcher } from 'react-chat-window'
 
@@ -51,10 +51,12 @@ class Game extends Component {
     this.gameInfo = null;
     this.boardId = '';
     this.isViewer = false;
+    this.currentUser = null;
   }
 
   async componentDidMount() {
     const gameId = this.props.match.params.id;
+    this.currentUser = await Auth.currentUserInfo()
     const queryResult = await API.graphql(graphqlOperation(queries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame;
     if (this.gameInfo.history) {
@@ -122,6 +124,17 @@ class Game extends Component {
       yourTurn = this.game.turn() === this.orientation[0];
     }
     this.setState({ fen: initialFen, yourTurn });
+
+    API.graphql(graphqlOperation(subscriptions.onCreateMessage)).subscribe({
+      next: (messageData) => {
+        const message = messageData.value.data.onCreateGame
+        const gameId = message.game.id;
+        if(gameId === this.gameId){
+          addResponseMessage(message.content)
+        }
+      },
+    });
+
     this.gameUpdateSubscription = API.graphql(graphqlOperation(
       subscriptions.onUpdateGameState, { id: gameId },
     )).subscribe({
@@ -178,7 +191,6 @@ class Game extends Component {
   onSquareClick = async (square) => {
     if (this.game.turn() !== this.orientation[0]) return;
     if (this.game.game_over() || this.gameInfo.ended) {
-      alert('GAME OVER')
       return
     }
     const piece = this.game.get(square);
@@ -292,6 +304,15 @@ class Game extends Component {
     ));
   }
 
+  handleNewUserMessage = async (message) => {
+    let messageObject;
+      if(this.currentUser) messageObject.author = this.currentUser.username
+    messageObject.game = this.gameId
+    messageObject.content = message
+    await API.graphql(graphqlOperation(mutations.createGame, { input: messageObject}));
+    addUserMessage(message)
+  }
+
   render() {
     const { state } = this;
     let players = '';
@@ -306,6 +327,7 @@ class Game extends Component {
           <Widget 
             title="Chat with your opponent"
             subtitle=''
+            handleNewUserMessage = {this.handleNewUserMessage}
           />
         </div>
         <Box display="flex" flexDirection="column">

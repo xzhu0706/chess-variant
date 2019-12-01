@@ -8,9 +8,6 @@ export const getUser = `query GetUser($id: ID!) {
     email
     phoneNumber
     pastGames {
-      items {
-        id
-      }
       nextToken
     }
     points
@@ -30,9 +27,6 @@ export const listUsers = `query ListUsers(
       username
       email
       phoneNumber
-      pastGames {
-        nextToken
-      }
       points
       skillLevel
       rank
@@ -45,9 +39,6 @@ export const getGame = `query GetGame($id: ID!) {
   getGame(id: $id) {
     id
     players {
-      items {
-        id
-      }
       nextToken
     }
     creator {
@@ -68,6 +59,9 @@ export const getGame = `query GetGame($id: ID!) {
     result
     winner
     createdAt
+    messages {
+      nextToken
+    }
   }
 }
 `;
@@ -79,17 +73,6 @@ export const listGames = `query ListGames(
   listGames(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      players {
-        nextToken
-      }
-      creator {
-        id
-        username
-      }
-      opponent {
-        id
-        username
-      }
       creatorOrientation
       time
       variant
@@ -100,6 +83,42 @@ export const listGames = `query ListGames(
       result
       winner
       createdAt
+    }
+    nextToken
+  }
+}
+`;
+export const getMessage = `query GetMessage($id: ID!) {
+  getMessage(id: $id) {
+    id
+    author
+    content
+    game {
+      id
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+    }
+  }
+}
+`;
+export const listMessages = `query ListMessages(
+  $filter: ModelMessageFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      author
+      content
     }
     nextToken
   }

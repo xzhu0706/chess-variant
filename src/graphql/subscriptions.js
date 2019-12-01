@@ -5,9 +5,6 @@ export const onCreateGame = `subscription OnCreateGame {
   onCreateGame {
     id
     players {
-      items {
-        id
-      }
       nextToken
     }
     creator {
@@ -28,6 +25,9 @@ export const onCreateGame = `subscription OnCreateGame {
     result
     winner
     createdAt
+    messages {
+      nextToken
+    }
   }
 }
 `;
@@ -35,9 +35,6 @@ export const onUpdateGame = `subscription OnUpdateGame {
   onUpdateGame {
     id
     players {
-      items {
-        id
-      }
       nextToken
     }
     creator {
@@ -58,6 +55,9 @@ export const onUpdateGame = `subscription OnUpdateGame {
     result
     winner
     createdAt
+    messages {
+      nextToken
+    }
   }
 }
 `;
@@ -65,9 +65,6 @@ export const onDeleteGame = `subscription OnDeleteGame {
   onDeleteGame {
     id
     players {
-      items {
-        id
-      }
       nextToken
     }
     creator {
@@ -88,6 +85,9 @@ export const onDeleteGame = `subscription OnDeleteGame {
     result
     winner
     createdAt
+    messages {
+      nextToken
+    }
   }
 }
 `;
@@ -95,9 +95,6 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
   onUpdateGameState(id: $id) {
     id
     players {
-      items {
-        id
-      }
       nextToken
     }
     creator {
@@ -118,6 +115,9 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
     result
     winner
     createdAt
+    messages {
+      nextToken
+    }
   }
 }
 `;
@@ -128,9 +128,6 @@ export const onCreateUser = `subscription OnCreateUser {
     email
     phoneNumber
     pastGames {
-      items {
-        id
-      }
       nextToken
     }
     points
@@ -146,9 +143,6 @@ export const onUpdateUser = `subscription OnUpdateUser {
     email
     phoneNumber
     pastGames {
-      items {
-        id
-      }
       nextToken
     }
     points
@@ -164,9 +158,6 @@ export const onDeleteUser = `subscription OnDeleteUser {
     email
     phoneNumber
     pastGames {
-      items {
-        id
-      }
       nextToken
     }
     points
@@ -180,22 +171,12 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
     id
     game {
       id
-      players {
-        nextToken
-      }
-      creator {
-        id
-        username
-      }
-      opponent {
-        id
-        username
-      }
       creatorOrientation
       time
       variant
       fen
       available
+      ended
       history
       result
       winner
@@ -206,9 +187,6 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
       username
       email
       phoneNumber
-      pastGames {
-        nextToken
-      }
       points
       skillLevel
       rank
@@ -221,22 +199,12 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
     id
     game {
       id
-      players {
-        nextToken
-      }
-      creator {
-        id
-        username
-      }
-      opponent {
-        id
-        username
-      }
       creatorOrientation
       time
       variant
       fen
       available
+      ended
       history
       result
       winner
@@ -247,9 +215,6 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
       username
       email
       phoneNumber
-      pastGames {
-        nextToken
-      }
       points
       skillLevel
       rank
@@ -262,22 +227,12 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
     id
     game {
       id
-      players {
-        nextToken
-      }
-      creator {
-        id
-        username
-      }
-      opponent {
-        id
-        username
-      }
       creatorOrientation
       time
       variant
       fen
       available
+      ended
       history
       result
       winner
@@ -288,12 +243,72 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
       username
       email
       phoneNumber
-      pastGames {
-        nextToken
-      }
       points
       skillLevel
       rank
+    }
+  }
+}
+`;
+export const onCreateMessage = `subscription OnCreateMessage {
+  onCreateMessage {
+    id
+    author
+    content
+    game {
+      id
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+    }
+  }
+}
+`;
+export const onUpdateMessage = `subscription OnUpdateMessage {
+  onUpdateMessage {
+    id
+    author
+    content
+    game {
+      id
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+    }
+  }
+}
+`;
+export const onDeleteMessage = `subscription OnDeleteMessage {
+  onDeleteMessage {
+    id
+    author
+    content
+    game {
+      id
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
     }
   }
 }
