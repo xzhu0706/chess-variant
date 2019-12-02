@@ -18,13 +18,7 @@ import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
 import { Widget } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
-<<<<<<< HEAD
-import { Launcher } from 'react-chat-window';
-=======
 // import { Launcher } from 'react-chat-window'
-
-
->>>>>>> 553bc4b634be61b2bed710543b5b6977fb22d601
 
 
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
@@ -126,11 +120,7 @@ class Game extends Component {
       this.game.load(initialFen);
       yourTurn = this.game.turn() === this.orientation[0];
     }
-<<<<<<< HEAD
-    this.setState({ fen: initialFen, yourTurn, time: startTime });
-=======
     this.setState({ fen: initialFen, yourTurn, turn: this.game.turn() });
->>>>>>> 553bc4b634be61b2bed710543b5b6977fb22d601
     this.gameUpdateSubscription = API.graphql(graphqlOperation(
       subscriptions.onUpdateGameState, { id: gameId },
     )).subscribe({
@@ -159,15 +149,11 @@ class Game extends Component {
           //   yourTurn = false
           // }
           this.setState({
-<<<<<<< HEAD
-            fen: gameState.fen, yourTurn, gameResult: gameState.result, history: gameState.history,
-=======
             fen: gameState.fen,
             yourTurn,
             gameResult: gameState.result,
             history: gameState.history,
             turn: this.game.turn(),
->>>>>>> 553bc4b634be61b2bed710543b5b6977fb22d601
           });
         }
       },
@@ -194,7 +180,7 @@ class Game extends Component {
 
   // chessboard.jsx method for responsive board sizing
   calcWidth = (dimensions) => {
-    let customWidth = Math.min(600/640 * dimensions.screenWidth, 600/640 * dimensions.screenHeight);
+    let customWidth = Math.min(600 / 640 * dimensions.screenWidth, 600 / 640 * dimensions.screenHeight);
     if (customWidth < 300) customWidth = 300;
     return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
   }
@@ -275,8 +261,7 @@ class Game extends Component {
         result = 'insufficient';
       } else if (this.game.in_threefold_repetition()) {
         result = 'repetition';
-      }
-      else {
+      } else {
         result = 'fifty';
       }
       this.setState({
@@ -333,51 +318,12 @@ class Game extends Component {
       players = `You vs ${this.opponent !== null ? this.opponent.username : 'Anonymous'}`;
     }
     return (
-<<<<<<< HEAD
-      <Box display="flex" flexDirection="row" justifyContent="flex-end">
-        <div className="App">
-          <Widget
-            title="Chat with your opponent"
-            subtitle=""
-          />
-        </div>
-        <Box display="flex" flexDirection="column">
-          <GameInfo
-            yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
-            players={players}
-            variant={this.gameInfo !== null ? this.gameInfo.variant : ''}
-            gameResult={state.gameResult}
-          />
-          <div id={this.boardId}>
-            <Chessboard
-              position={state.fen}
-              lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
-              darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
-              orientation={this.orientation}
-              squareStyles={state.squareStyles}
-              onSquareClick={this.onSquareClick}
-            />
-          </div>
-        </Box>
-        <GameData
-          style={{ width: '100px' }}
-          history={state.history}
-          fen={state.fen}
-          gameResult={state.gameResult}
-          winner={state.winner}
-          prevMove={this.prevMove}
-          nextMove={this.nextMove}
-          currentMove={state.history.length - state.reverseHistory.length}
-        />
-        <Clock time={state.time} color="black" />
-      </Box>
-=======
       <div style={{ paddingTop: '1em' }}>
         <Grid container justify="center" direction="row" spacing={1}>
           <div className="App">
             <Widget
               title="Chat with your opponent"
-              subtitle=''
+              subtitle=""
             />
           </div>
           <Grid container item justify="center" direction="row" wrap="wrap" spacing={1}>
@@ -415,7 +361,6 @@ class Game extends Component {
           </Grid>
         </Grid>
       </div>
->>>>>>> 553bc4b634be61b2bed710543b5b6977fb22d601
     );
   }
 }
