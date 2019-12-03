@@ -18,7 +18,6 @@ import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
 import { Widget, addResponseMessage, addLinkSnippet, addUserMessage } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
-import { Launcher } from 'react-chat-window'
 
 
 
@@ -332,7 +331,7 @@ class Game extends Component {
   }
 
   handleToggle = (launcher) => {
-    alert(launcher)
+    alert('clicked')
   }
 
   render() {
@@ -345,11 +344,16 @@ class Game extends Component {
     }
     return (
       <Box display='flex' flexDirection='row' justifyContent='flex-end'>
-        <Box className="App" width="20%" marginLeft='20px'>
-          <Widget 
+        <Box className="App" width="20%" marginLeft='20px' backgroundColor='blue'>
+          <Widget
             title="Chat with your opponent"
             subtitle=''
             badge = {2}
+            launcher={handleToggle => (
+              <span onClick={this.handleToggle}>
+                <button style={{width: '100%'}}onClick={handleToggle}>Toggle</button>
+              </span>
+            )}
             handleNewUserMessage = {this.handleNewUserMessage}
             handleQuickButtonClicked = {this.handleQuickButtonClicked}
           />
