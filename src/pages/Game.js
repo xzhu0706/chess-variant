@@ -312,6 +312,14 @@ class Game extends Component {
     }
   }
 
+  setClockRefWhite(ref) {
+    this.clockRefWhite = ref;
+  }
+
+  setClockRefBlack(ref) {
+    this.clockRefBlack = ref;
+  }
+
   leaveGame = () => {
     // this should be called if a player resign
     // should also include newGameState.result stating who resigned and who won
@@ -339,17 +347,6 @@ class Game extends Component {
     this.clockRefBlack.pause();
   }
 
-  setClockRefWhite(ref) {
-    // When the `Clock` (and subsequently `Countdown` mounts
-    // this will give us access to the API
-    this.clockRefWhite = ref;
-  }
-
-  setClockRefBlack(ref) {
-    // When the `Clock` (and subsequently `Countdown` mounts
-    // this will give us access to the API
-    this.clockRefBlack = ref;
-  }
 
   render() {
     const { state } = this;
@@ -399,11 +396,7 @@ class Game extends Component {
                   currentMove={state.history.length - state.reverseHistory.length}
                 />
               </Box>
-              <Button onClick={this.startBlack}>Start Black Clock</Button>
-              <Button onClick={this.pauseBlack}>Pause Clock</Button>
               <Clock refCallback={this.setClockRefBlack} time={state.time} />
-              <Button onClick={this.startWhite}>Start Clock</Button>
-              <Button onClick={this.pauseWhite}>Pause Clock</Button>
               <Clock refCallback={this.setClockRefWhite} time={state.time} />
             </Box>
           </Grid>
