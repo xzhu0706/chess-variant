@@ -1,4 +1,8 @@
-type User @model {
+type User @model @auth(rules: [
+    { allow: owner, ownerField: "id", operations: [read, update] },
+    { allow: groups, groups: ["Admin"] },
+    { allow: public, operations: [read] },
+]) {
   id: ID!
   username: String!
   email: String!
@@ -7,6 +11,21 @@ type User @model {
   points: Int
   skillLevel: String
   rank: Int
+  createdAt: String
+}
+
+type Complaint @model @auth(
+  rules: [
+    { allow: public, operations: [create] },
+    { allow: groups, groups: ["Admin"] }
+  ]
+) {
+  id: ID!
+  user: User @connection
+  content: String!
+  processed: Boolean!
+  processedBy: User
+  createdAt: String
 }
 
 type PlayerGameMapping @model(queries: null) {
@@ -15,7 +34,7 @@ type PlayerGameMapping @model(queries: null) {
   player: User! @connection(name: "userPlayer")
 }
 
-type Game @model(subscriptions: null) @auth(rules: [{allow: public}]) {
+type Game @model(subscriptions: null) @auth(rules: [{ allow: public }]) {
   id: ID!
   players: [PlayerGameMapping] @connection(name: "playerGame") # for registered users only
   creator: PlayerInfo!

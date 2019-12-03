@@ -85,10 +85,13 @@ Parameters:
                       
   userPoolGroupList:
     Type: CommaDelimitedList
-                          
+              
   dependsOn:
     Type: CommaDelimitedList
-    
+      
+  adminQueryGroup:
+    Type: String
+            
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
 
@@ -355,3 +358,10 @@ Outputs :
     Description: The user pool app client id
   AppClientSecret:
     Value: !GetAtt UserPoolClientInputs.appSecret
+  
+   
+   
+  
+   
+   
+  
