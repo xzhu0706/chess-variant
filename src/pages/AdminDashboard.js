@@ -9,7 +9,6 @@ import Box from '@material-ui/core/Box';
 import MaterialTable from 'material-table';
 import Chip from '@material-ui/core/Chip';
 import PersonPin from '@material-ui/icons/PersonPin';
-import Block from '@material-ui/icons/Block';
 import awsconfig from '../aws-exports';
 
 Amplify.configure(awsconfig);
@@ -191,9 +190,9 @@ class AdminDashboard extends Component {
     }
   }
 
-  disableUser = async (username) => {
+  updateUserStatus = async (username, enable) => {
     try {
-      const path = '/disableUser';
+      const path = enable ? '/enableUser' : '/disableUser';
       const myInit = {
         body: {
           username,
@@ -235,10 +234,14 @@ class AdminDashboard extends Component {
 
   handleDisableUser = async (event, rowData) => {
     if (!rowData.enabled) {
+      if (window.confirm('Are you sure you wish to enable this user?')) {
+        const result = await this.updateUserStatus(rowData.username, true);
+        alert(result);
+      }
       return;
     }
     if (window.confirm('Are you sure you wish to disable this user?')) {
-      const result = await this.disableUser(rowData.username);
+      const result = await this.updateUserStatus(rowData.username, false);
       alert(result);
     }
     // TODO retrieve the single updated user and update its data in the table
@@ -284,16 +287,8 @@ class AdminDashboard extends Component {
                 onClick: this.handlePromoteToAdmin,
               }),
               (rowData) => ({
-                icon: () => (
-                  <Block
-                    color={
-                      rowData.enabled
-                        ? 'inherit'
-                        : 'disabled'
-                    }
-                  />
-                ),
-                tooltip: 'Disable User',
+                icon: rowData.enabled ? 'toggle_on' : 'toggle_off',
+                tooltip: rowData.enabled ? 'Disable User' : 'Enable User',
                 onClick: this.handleDisableUser,
               }),
             ]}
