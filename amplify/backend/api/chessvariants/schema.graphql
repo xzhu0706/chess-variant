@@ -1,4 +1,6 @@
-type User @model @auth(rules: [
+type User @model @searchable 
+  @key(name: "byUsername", fields: ["username"], queryField: "getUserByUsername")
+  @auth(rules: [
     { allow: owner, ownerField: "id", operations: [read, update] },
     { allow: groups, groups: ["Admin"] },
     { allow: public, operations: [read] },
@@ -21,7 +23,9 @@ type Complaint @model @auth(
   ]
 ) {
   id: ID!
-  user: User @connection
+  user: PlayerInfo
+  reportedUser: PlayerInfo
+  gameLink: String
   content: String!
   processed: Boolean!
   processedBy: User

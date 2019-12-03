@@ -28,6 +28,13 @@ export const onCreateGame = `subscription OnCreateGame {
     result
     winner
     createdAt
+    messages {
+      items {
+        id
+        content
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -58,6 +65,13 @@ export const onUpdateGame = `subscription OnUpdateGame {
     result
     winner
     createdAt
+    messages {
+      items {
+        id
+        content
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -88,6 +102,13 @@ export const onDeleteGame = `subscription OnDeleteGame {
     result
     winner
     createdAt
+    messages {
+      items {
+        id
+        content
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -118,60 +139,13 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
     result
     winner
     createdAt
-  }
-}
-`;
-export const onCreateUser = `subscription OnCreateUser {
-  onCreateUser {
-    id
-    username
-    email
-    phoneNumber
-    pastGames {
+    messages {
       items {
         id
+        content
       }
       nextToken
     }
-    points
-    skillLevel
-    rank
-  }
-}
-`;
-export const onUpdateUser = `subscription OnUpdateUser {
-  onUpdateUser {
-    id
-    username
-    email
-    phoneNumber
-    pastGames {
-      items {
-        id
-      }
-      nextToken
-    }
-    points
-    skillLevel
-    rank
-  }
-}
-`;
-export const onDeleteUser = `subscription OnDeleteUser {
-  onDeleteUser {
-    id
-    username
-    email
-    phoneNumber
-    pastGames {
-      items {
-        id
-      }
-      nextToken
-    }
-    points
-    skillLevel
-    rank
   }
 }
 `;
@@ -196,10 +170,14 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
       variant
       fen
       available
+      ended
       history
       result
       winner
       createdAt
+      messages {
+        nextToken
+      }
     }
     player {
       id
@@ -212,6 +190,7 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
       points
       skillLevel
       rank
+      createdAt
     }
   }
 }
@@ -237,10 +216,14 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
       variant
       fen
       available
+      ended
       history
       result
       winner
       createdAt
+      messages {
+        nextToken
+      }
     }
     player {
       id
@@ -253,6 +236,7 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
       points
       skillLevel
       rank
+      createdAt
     }
   }
 }
@@ -278,10 +262,14 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
       variant
       fen
       available
+      ended
       history
       result
       winner
       createdAt
+      messages {
+        nextToken
+      }
     }
     player {
       id
@@ -294,7 +282,272 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
       points
       skillLevel
       rank
+      createdAt
     }
+  }
+}
+`;
+export const onCreateMessage = `subscription OnCreateMessage {
+  onCreateMessage {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      players {
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+      messages {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onUpdateMessage = `subscription OnUpdateMessage {
+  onUpdateMessage {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      players {
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+      messages {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onDeleteMessage = `subscription OnDeleteMessage {
+  onDeleteMessage {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      players {
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+      messages {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onCreateUser = `subscription OnCreateUser {
+  onCreateUser {
+    id
+    username
+    email
+    phoneNumber
+    pastGames {
+      items {
+        id
+      }
+      nextToken
+    }
+    points
+    skillLevel
+    rank
+    createdAt
+  }
+}
+`;
+export const onUpdateUser = `subscription OnUpdateUser($id: String) {
+  onUpdateUser(id: $id) {
+    id
+    username
+    email
+    phoneNumber
+    pastGames {
+      items {
+        id
+      }
+      nextToken
+    }
+    points
+    skillLevel
+    rank
+    createdAt
+  }
+}
+`;
+export const onDeleteUser = `subscription OnDeleteUser {
+  onDeleteUser {
+    id
+    username
+    email
+    phoneNumber
+    pastGames {
+      items {
+        id
+      }
+      nextToken
+    }
+    points
+    skillLevel
+    rank
+    createdAt
+  }
+}
+`;
+export const onCreateComplaint = `subscription OnCreateComplaint {
+  onCreateComplaint {
+    id
+    user {
+      id
+      username
+    }
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+    }
+    createdAt
+  }
+}
+`;
+export const onUpdateComplaint = `subscription OnUpdateComplaint {
+  onUpdateComplaint {
+    id
+    user {
+      id
+      username
+    }
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+    }
+    createdAt
+  }
+}
+`;
+export const onDeleteComplaint = `subscription OnDeleteComplaint {
+  onDeleteComplaint {
+    id
+    user {
+      id
+      username
+    }
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+    }
+    createdAt
   }
 }
 `;
