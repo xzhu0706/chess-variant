@@ -39,5 +39,5 @@ export default Variant;
 
 Variant.propTypes = {
   title: PropTypes.string.isRequired,
-  children: PropTypes.string.isRequired,
+  children: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
