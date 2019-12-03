@@ -8,46 +8,35 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import MaterialTable from 'material-table';
 import Chip from '@material-ui/core/Chip';
+import PersonPin from '@material-ui/icons/PersonPin';
+import Block from '@material-ui/icons/Block';
 import awsconfig from '../aws-exports';
 
 Amplify.configure(awsconfig);
 
-// async function addToGroup() {
-//   let apiName = 'AdminQueries';
-//   let path = '/addUserToGroup';
-//   let myInit = {
-//       body: {
-//         "username" : "richard",
-//         "groupname": "Editors"
-//       }, 
-//       headers: {
-//         'Content-Type' : 'application/json',
-//         Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
-//       } 
-//   }
-//   return await API.post(apiName, path, myInit);
-// }
-
-
-// let nextToken;
-
 const apiName = 'AdminQueries';
 const userColumns = [
-  { title: 'Actions', field: 'actions' },
   { title: '', field: 'admin' },
   { title: 'ID', field: 'sub' },
   { title: 'Username', field: 'username' },
-  { title: 'Enabled', field: 'enabled' },
+  { title: 'Enabled', field: 'enableStatus' },
   { title: 'UserStatus', field: 'userStatus' },
   { title: 'Created Date', field: 'userCreateDate' },
   { title: 'Email', field: 'email' },
   { title: 'Email Verified', field: 'email_verified' },
   { title: 'Phone Number', field: 'phone_number' },
   { title: 'Phone Number Verified', field: 'phone_number_verified' },
+  { title: '', field: 'enabled' },
 ];
 
 const adminTag = (
   <Chip variant="outlined" color="primary" label="Admin" />
+);
+const activeTag = (
+  <Chip color="secondary" label="Active" />
+);
+const inactiveTag = (
+  <Chip label="Inactive" />
 );
 
 function TabPanel(props) {
@@ -120,10 +109,11 @@ class AdminDashboard extends Component {
       userInfo.username = user.Username;
       userInfo.userStatus = user.UserStatus;
       userInfo.userCreateDate = user.UserCreateDate;
-      userInfo.enabled = user.Enabled ? 'true' : 'false';
+      userInfo.enabled = user.Enabled;
       user.Attributes.forEach((attr) => {
         userInfo[attr.Name] = attr.Value;
       });
+      userInfo.enableStatus = user.Enabled ? activeTag : inactiveTag;
       if (this.adminUsers.includes(userInfo.username)) {
         userInfo.admin = adminTag;
       }
@@ -180,6 +170,47 @@ class AdminDashboard extends Component {
     }
   }
 
+  addToAdminGroup = async (username) => {
+    try {
+      const path = '/addUserToGroup';
+      const myInit = {
+        body: {
+          username,
+          groupname: 'Admin',
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`,
+        },
+      };
+      const result = await API.post(apiName, path, myInit);
+      return result;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  }
+
+  disableUser = async (username) => {
+    try {
+      const path = '/disableUser';
+      const myInit = {
+        body: {
+          username,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`,
+        },
+      };
+      const result = await API.post(apiName, path, myInit);
+      return result.message;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  }
+
   handleJumpPage = async () => {
     if (this.nextToken) {
       // fetch more and push to users array
@@ -189,6 +220,28 @@ class AdminDashboard extends Component {
         users: [...prevState.users, ...moreUserRows],
       }));
     }
+  }
+
+  handlePromoteToAdmin = async (event, rowData) => {
+    if (rowData.admin) {
+      return;
+    }
+    if (window.confirm('Are you sure you wish to promote this user to Admin?')) {
+      const result = await this.addToAdminGroup(rowData.username);
+      alert(result);
+    }
+    // TODO retrieve the single updated user and update its data in the table
+  }
+
+  handleDisableUser = async (event, rowData) => {
+    if (rowData.enabled) {
+      return;
+    }
+    if (window.confirm('Are you sure you wish to disable this user?')) {
+      const result = await this.disableUser(rowData.username);
+      alert(result);
+    }
+    // TODO retrieve the single updated user and update its data in the table
   }
 
   render() {
@@ -216,6 +269,34 @@ class AdminDashboard extends Component {
               showFirstLastPageButtons: false,
             }}
             onChangePage={this.handleJumpPage}
+            actions={[
+              (rowData) => ({
+                icon: () => (
+                  <PersonPin
+                    color={
+                      !rowData.admin
+                        ? 'inherit'
+                        : 'disabled'
+                    }
+                  />
+                ),
+                tooltip: 'Promote to Admin',
+                onClick: this.handlePromoteToAdmin,
+              }),
+              (rowData) => ({
+                icon: () => (
+                  <Block
+                    color={
+                      rowData.enabled
+                        ? 'inherit'
+                        : 'disabled'
+                    }
+                  />
+                ),
+                tooltip: 'Disable User',
+                onClick: this.handleDisableUser,
+              }),
+            ]}
           />
         </TabPanel>
         <TabPanel value={tabIndex} index={1}>
