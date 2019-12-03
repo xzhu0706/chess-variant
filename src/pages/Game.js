@@ -52,6 +52,7 @@ class Game extends Component {
       gameResult: '',
       winner: '',
       reverseHistory: [],
+      messagesCount: 0,
     };
     this.game = null;
     this.opponent = null; // the opponent. null if user created or joined game anonymously
@@ -78,6 +79,10 @@ class Game extends Component {
         gameResult: this.gameInfo.result,
         winner: this.gameInfo.winner,
       });
+    }
+    let messagesCount;
+    if(localStorage.getItem(gameId)){
+      messagesCount = localStorage.getItem(gameId)
     }
     // let currentGame = localStorage.getItem('currentGame');
     // if (currentGame && currentGame === this.gameId) {
@@ -134,7 +139,7 @@ class Game extends Component {
       this.game.load(initialFen);
       yourTurn = this.game.turn() === this.orientation[0];
     }
-    this.setState({ fen: initialFen, yourTurn });
+    this.setState({ fen: initialFen, yourTurn, messagesCount});
 
     API.graphql(graphqlOperation(subscriptions.onCreateMessage)).subscribe({
       next: (messageData) => {
@@ -143,6 +148,9 @@ class Game extends Component {
         let authorId = message.author.id
         if(gameId === this.gameId && authorId !== this.currentUser.id){
           addResponseMessage(message.content)
+          let messagesCount = this.state.messagesCount + 1
+          this.setState({messagesCount})
+          localStorage.setItem(this.gameId, messagesCount)
         }
       },
     });
@@ -324,10 +332,6 @@ class Game extends Component {
     let createdMessage = await API.graphql(graphqlOperation(mutations.createMessage, {input: messageObject}));
   }
 
-  handleQuickButtonClicked = () => {
-    alert("CLICKED")
-  }
-
   _getUserInfo = async () => {
     let currentUser = {};
     await Auth.currentAuthenticatedUser().then((user) => {
@@ -344,6 +348,8 @@ class Game extends Component {
 
   handleToggle = (launcher) => {
     toggleWidget()
+    this.setState({messages: 0})
+    localStorage.setItem(this.gameId, 0)
   }
 
   render() {
@@ -358,7 +364,7 @@ class Game extends Component {
       <Box display='flex' flexDirection='row' justifyContent='flex-start'>
         <Box style={{width: '30%'}}>
           <Widget
-            badge = {2}
+            badge = {this.state.messagesCount}
           />
           <span onClick = {this.handleToggle} style={{
               height: '60px', 
