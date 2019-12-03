@@ -62,7 +62,7 @@ function AntiChessDocument() {
 .
         {' '}
         <br />
-        When control switches to White's turn, White has no valid moves. Therefore, White wins.
+        When control switches to White&apos;s turn, White has no valid moves. Therefore, White wins.
       </ContentBox>
 
     </VariantDocument>

@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
+import { Widget } from 'react-chat-widget';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
@@ -13,24 +14,27 @@ import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
 import './Game.css';
+import Clock from '../components/Clock';
 // import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
-import { Widget } from 'react-chat-widget';
+
 import 'react-chat-widget/lib/styles.css';
 // import { Launcher } from 'react-chat-window'
-
-
 
 
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
 
 class Game extends Component {
+  clockRefWhite = null;
+
+  clockRefBlack = null;
+
   constructor(props) {
     super(props);
     this.state = {
       fen: '',
-      time: '',
+      time: 0,
       squareStyles: {},
       yourTurn: false,
       showGameResignationDialog: false,
@@ -51,6 +55,12 @@ class Game extends Component {
     this.gameInfo = null;
     this.boardId = '';
     this.isViewer = false;
+    this.setClockRefWhite = this.setClockRefWhite.bind(this);
+    this.startWhite = this.startWhite.bind(this);
+    this.pauseWhite = this.pauseWhite.bind(this);
+    this.setClockRefBlack = this.setClockRefBlack.bind(this);
+    this.startBlack = this.startBlack.bind(this);
+    this.pauseBlack = this.pauseBlack.bind(this);
   }
 
   async componentDidMount() {
@@ -81,30 +91,31 @@ class Game extends Component {
     }
     console.log(this.orientation, userId, this.gameInfo.opponent.id, this.gameInfo.creator.id);
     let initialFen = '';
+    const startTime = parseInt(this.gameInfo.time, 10);
     let yourTurn = this.orientation === 'white';
     this.gameId = this.gameInfo.id;
     const { variant } = this.gameInfo;
     switch (variant) {
-      case Games.ANTICHESS:
-        this.game = new Chess(Games.STANDARD_FEN, 1);
-        initialFen = Games.STANDARD_FEN;
-        break;
-      case Games.GRID_CHESS:
-        this.game = new Chess(Games.STANDARD_FEN, 2);
-        initialFen = Games.STANDARD_FEN;
-        this.boardId = 'grid-board';
-        break;
-      case Games.EXTINCTION_CHESS:
-        this.game = new Chess(Games.STANDARD_FEN, 3);
-        initialFen = Games.STANDARD_FEN;
-        break;
-      case Games.STANDARD_CHESS:
-        this.game = new Chess();
-        initialFen = Games.STANDARD_FEN;
-        break;
-      default:
-        this.game = new Chess();
-        initialFen = Games.STANDARD_FEN;
+    case Games.ANTICHESS:
+      this.game = new Chess(Games.STANDARD_FEN, 1);
+      initialFen = Games.STANDARD_FEN;
+      break;
+    case Games.GRID_CHESS:
+      this.game = new Chess(Games.STANDARD_FEN, 2);
+      initialFen = Games.STANDARD_FEN;
+      this.boardId = 'grid-board';
+      break;
+    case Games.EXTINCTION_CHESS:
+      this.game = new Chess(Games.STANDARD_FEN, 3);
+      initialFen = Games.STANDARD_FEN;
+      break;
+    case Games.STANDARD_CHESS:
+      this.game = new Chess();
+      initialFen = Games.STANDARD_FEN;
+      break;
+    default:
+      this.game = new Chess();
+      initialFen = Games.STANDARD_FEN;
     }
     if (this.gameInfo.result) {
       // if a game was ended, play all the moves to the end
@@ -121,7 +132,9 @@ class Game extends Component {
       this.game.load(initialFen);
       yourTurn = this.game.turn() === this.orientation[0];
     }
-    this.setState({ fen: initialFen, yourTurn, turn: this.game.turn() });
+    this.setState({
+      fen: initialFen, yourTurn, turn: this.game.turn(), time: startTime,
+    });
     this.gameUpdateSubscription = API.graphql(graphqlOperation(
       subscriptions.onUpdateGameState, { id: gameId },
     )).subscribe({
@@ -130,7 +143,7 @@ class Game extends Component {
         if (this.gameInfo.id === gameState.id) {
           this.game.load(gameState.fen);
           this.gameInfo.ended = gameState.ended;
-          let yourTurn = this.game.turn() === this.orientation[0];
+          const yourTurn = this.game.turn() === this.orientation[0];
           // let gameResult
           // if (gameState.ended === true) {
           //   if (this.game.game_over()) {
@@ -162,8 +175,7 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
-    if (this.gameUpdateSubscription)
-      this.gameUpdateSubscription.unsubscribe()
+    if (this.gameUpdateSubscription) { this.gameUpdateSubscription.unsubscribe(); }
     // if (!this.game.game_over() && !this.gameInfo.ended)
     //   this.leaveGame()
   }
@@ -182,7 +194,7 @@ class Game extends Component {
 
   // chessboard.jsx method for responsive board sizing
   calcWidth = (dimensions) => {
-    let customWidth = Math.min(600/640 * dimensions.screenWidth, 600/640 * dimensions.screenHeight);
+    let customWidth = Math.min(600 / 640 * dimensions.screenWidth, 600 / 640 * dimensions.screenHeight);
     if (customWidth < 300) customWidth = 300;
     return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
   }
@@ -192,8 +204,8 @@ class Game extends Component {
     if (!this.game) return;
     if (this.game.turn() !== this.orientation[0]) return;
     if (this.game.game_over() || this.gameInfo.ended) {
-      alert('GAME OVER')
-      return
+      alert('GAME OVER');
+      return;
     }
     const piece = this.game.get(square);
     if (this.moveFrom !== null) {
@@ -202,14 +214,13 @@ class Game extends Component {
         const updateGameData = {};
         updateGameData.id = this.gameId;
         updateGameData.fen = this.game.fen();
-        let gameResult = ''
+        let gameResult = '';
         if (this.game.game_over()) {
           if (this.game.in_checkmate) {
-            gameResult = `CHECKMATE: YOU WIN!`
-          }
-          else gameResult = 'STALEMATE: TIE GAME!'
-          this.gameUpdateSubscription.unsubscribe()
-          updateGameData.ended = true
+            gameResult = 'CHECKMATE: YOU WIN!';
+          } else gameResult = 'STALEMATE: TIE GAME!';
+          this.gameUpdateSubscription.unsubscribe();
+          updateGameData.ended = true;
         }
         updateGameData.history = [...this.state.history, move.san];
         this.setState({
@@ -264,8 +275,7 @@ class Game extends Component {
         result = 'insufficient';
       } else if (this.game.in_threefold_repetition()) {
         result = 'repetition';
-      }
-      else {
+      } else {
         result = 'fifty';
       }
       this.setState({
@@ -302,16 +312,41 @@ class Game extends Component {
     }
   }
 
+  setClockRefWhite(ref) {
+    this.clockRefWhite = ref;
+  }
+
+  setClockRefBlack(ref) {
+    this.clockRefBlack = ref;
+  }
+
   leaveGame = () => {
     // this should be called if a player resign
     // should also include newGameState.result stating who resigned and who won
-    let newGameState = {}
-    newGameState.id = this.gameId
+    const newGameState = {};
+    newGameState.id = this.gameId;
     newGameState.ended = true;
     API.graphql(graphqlOperation(
       mutations.updateGameState, { input: newGameState },
     ));
   }
+
+  startWhite() {
+    this.clockRefWhite.start();
+  }
+
+  pauseWhite() {
+    this.clockRefWhite.pause();
+  }
+
+  startBlack() {
+    this.clockRefBlack.start();
+  }
+
+  pauseBlack() {
+    this.clockRefBlack.pause();
+  }
+
 
   render() {
     const { state } = this;
@@ -327,7 +362,7 @@ class Game extends Component {
           <div className="App">
             <Widget
               title="Chat with your opponent"
-              subtitle=''
+              subtitle=""
             />
           </div>
           <Grid container item justify="center" direction="row" wrap="wrap" spacing={1}>
@@ -361,6 +396,11 @@ class Game extends Component {
                   currentMove={state.history.length - state.reverseHistory.length}
                 />
               </Box>
+              {/*
+              Retrieves the time from the database and displays it
+              <Clock refCallback={this.setClockRefBlack} time={state.time} />
+              <Clock refCallback={this.setClockRefWhite} time={state.time} />
+              */}
             </Box>
           </Grid>
         </Grid>
