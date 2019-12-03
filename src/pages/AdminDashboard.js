@@ -183,7 +183,7 @@ class AdminDashboard extends Component {
         },
       };
       const result = await API.post(apiName, path, myInit);
-      return result;
+      return result.message;
     } catch (e) {
       console.log(e);
       return e;
