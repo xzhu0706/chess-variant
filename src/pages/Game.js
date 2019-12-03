@@ -13,7 +13,6 @@ import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
 import './Game.css';
-import Button from 'react-bootstrap/Button';
 import Clock from '../components/Clock';
 // import Clock from '../components/Clock';
 import GameData from '../GameData';
@@ -34,7 +33,8 @@ class Game extends Component {
     super(props);
     this.state = {
       fen: '',
-      time: 6000,
+      timeW: 0,
+      timeB: 0,
       squareStyles: {},
       yourTurn: false,
       showGameResignationDialog: false,
@@ -133,7 +133,7 @@ class Game extends Component {
       yourTurn = this.game.turn() === this.orientation[0];
     }
     this.setState({
-      fen: initialFen, yourTurn, turn: this.game.turn(), time: startTime,
+      fen: initialFen, yourTurn, turn: this.game.turn(), timeW: startTime, timeB: startTime,
     });
     this.gameUpdateSubscription = API.graphql(graphqlOperation(
       subscriptions.onUpdateGameState, { id: gameId },
@@ -396,8 +396,8 @@ class Game extends Component {
                   currentMove={state.history.length - state.reverseHistory.length}
                 />
               </Box>
-              <Clock refCallback={this.setClockRefBlack} time={state.time} />
-              <Clock refCallback={this.setClockRefWhite} time={state.time} />
+              <Clock refCallback={this.setClockRefBlack} time={state.timeB} />
+              <Clock refCallback={this.setClockRefWhite} time={state.timeW} />
             </Box>
           </Grid>
         </Grid>
