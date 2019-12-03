@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import MaterialTable from 'material-table';
+import Chip from '@material-ui/core/Chip';
 import awsconfig from '../aws-exports';
 
 Amplify.configure(awsconfig);
@@ -30,7 +31,10 @@ Amplify.configure(awsconfig);
 
 // let nextToken;
 
+const apiName = 'AdminQueries';
 const userColumns = [
+  { title: 'Actions', field: 'actions' },
+  { title: '', field: 'admin' },
   { title: 'ID', field: 'sub' },
   { title: 'Username', field: 'username' },
   { title: 'Enabled', field: 'enabled' },
@@ -41,6 +45,10 @@ const userColumns = [
   { title: 'Phone Number', field: 'phone_number' },
   { title: 'Phone Number Verified', field: 'phone_number_verified' },
 ];
+
+const adminTag = (
+  <Chip variant="outlined" color="primary" label="Admin" />
+);
 
 function TabPanel(props) {
   const {
@@ -82,12 +90,19 @@ class AdminDashboard extends Component {
       tabIndex: 0,
     };
     this.nextToken = '';
+    this.nextTokenAdmin = '';
+    this.adminUsers = [];
+    this.listUsersLimit = 60;
   }
 
   async componentDidMount() {
-    const users = await this.listUsers(10);
+    const users = await this.listUsers(this.listUsersLimit);
+    const admins = await this.listAdmins(60);
+    admins.Users.forEach((admin) => {
+      this.adminUsers.push(admin.Username);
+    });
     const userRows = this.generateUserRows(users.Users);
-    console.log(users.Users);
+    console.log(users.Users, admins);
     this.setState({
       users: userRows,
     }, () => console.log(this.state));
@@ -109,21 +124,23 @@ class AdminDashboard extends Component {
       user.Attributes.forEach((attr) => {
         userInfo[attr.Name] = attr.Value;
       });
+      if (this.adminUsers.includes(userInfo.username)) {
+        userInfo.admin = adminTag;
+      }
       return userInfo;
     });
     return rows;
   }
 
-  async listUsers(limit, filter = '', attributes = '') {
+  listUsers = async (limit, filter = '', attributes = '') => {
     try {
-      const apiName = 'AdminQueries';
       const path = '/listUsers';
       const myInit = {
         queryStringParameters: {
-          AttributesToGet: attributes,
-          Filter: filter,
-          Limit: limit,
-          PaginationToken: this.nextToken,
+          attributesToGet: attributes,
+          filter,
+          limit,
+          nextToken: this.nextToken,
         },
         headers: {
           'Content-Type': 'application/json',
@@ -137,6 +154,40 @@ class AdminDashboard extends Component {
     } catch (e) {
       console.log(e);
       return false;
+    }
+  }
+
+  listAdmins = async (limit = 60) => {
+    try {
+      const path = '/listUsersInGroup';
+      const myInit = {
+        queryStringParameters: {
+          groupname: 'Admin',
+          limit,
+          nextToken: this.nextTokenAdmin,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`,
+        },
+      };
+      const { NextToken, ...rest } = await API.get(apiName, path, myInit);
+      this.nextTokenAdmin = NextToken;
+      return rest;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  }
+
+  handleJumpPage = async () => {
+    if (this.nextToken) {
+      // fetch more and push to users array
+      const moreUsers = await this.listUsers(this.listUsersLimit);
+      const moreUserRows = this.generateUserRows(moreUsers.Users);
+      this.setState((prevState) => ({
+        users: [...prevState.users, ...moreUserRows],
+      }));
     }
   }
 
@@ -159,6 +210,12 @@ class AdminDashboard extends Component {
             data={users}
             title="Users"
             maxWidth="md"
+            options={{
+              pageSize: 10,
+              pageSizeOptions: [10, 20, 30, 50],
+              showFirstLastPageButtons: false,
+            }}
+            onChangePage={this.handleJumpPage}
           />
         </TabPanel>
         <TabPanel value={tabIndex} index={1}>
