@@ -234,7 +234,7 @@ class AdminDashboard extends Component {
   }
 
   handleDisableUser = async (event, rowData) => {
-    if (rowData.enabled) {
+    if (!rowData.enabled) {
       return;
     }
     if (window.confirm('Are you sure you wish to disable this user?')) {
