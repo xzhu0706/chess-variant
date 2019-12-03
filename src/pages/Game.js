@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
+import { Widget } from 'react-chat-widget';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
@@ -17,7 +18,7 @@ import Clock from '../components/Clock';
 // import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
-import { Widget } from 'react-chat-widget';
+
 import 'react-chat-widget/lib/styles.css';
 // import { Launcher } from 'react-chat-window'
 
@@ -33,8 +34,7 @@ class Game extends Component {
     super(props);
     this.state = {
       fen: '',
-      timeW: 0,
-      timeB: 0,
+      time: 0,
       squareStyles: {},
       yourTurn: false,
       showGameResignationDialog: false,
@@ -91,7 +91,7 @@ class Game extends Component {
     }
     console.log(this.orientation, userId, this.gameInfo.opponent.id, this.gameInfo.creator.id);
     let initialFen = '';
-    const startTime = parseInt(this.gameInfo.time);
+    const startTime = parseInt(this.gameInfo.time, 10);
     let yourTurn = this.orientation === 'white';
     this.gameId = this.gameInfo.id;
     const { variant } = this.gameInfo;
@@ -133,7 +133,7 @@ class Game extends Component {
       yourTurn = this.game.turn() === this.orientation[0];
     }
     this.setState({
-      fen: initialFen, yourTurn, turn: this.game.turn(), timeW: startTime, timeB: startTime,
+      fen: initialFen, yourTurn, turn: this.game.turn(), time: startTime,
     });
     this.gameUpdateSubscription = API.graphql(graphqlOperation(
       subscriptions.onUpdateGameState, { id: gameId },
@@ -396,8 +396,11 @@ class Game extends Component {
                   currentMove={state.history.length - state.reverseHistory.length}
                 />
               </Box>
-              <Clock refCallback={this.setClockRefBlack} time={state.timeB} />
-              <Clock refCallback={this.setClockRefWhite} time={state.timeW} />
+              {/*
+              Retrieves the time from the database and displays it
+              <Clock refCallback={this.setClockRefBlack} time={state.time} />
+              <Clock refCallback={this.setClockRefWhite} time={state.time} />
+              */}
             </Box>
           </Grid>
         </Grid>
