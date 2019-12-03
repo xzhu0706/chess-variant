@@ -47,7 +47,7 @@ class CustomPlayOption extends React.Component {
 
   render() {
     return (
-      <div style={{ textAlign: 'center' }}>
+      <div>
         <div id="play-err"> </div>
         <Button variant="contained" color="primary" onClick={() => this.play()}>
           Play

@@ -14,7 +14,7 @@ import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
 import './Game.css';
-import Clock from '../components/Clock';
+//import Clock from '../components/Clock';
 // import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
