@@ -158,7 +158,7 @@ class Game extends Component {
             }
             else {
               //Player on the other end left the game.
-              alert('The other player has left the game')
+              alert('The other player has left the game!')
             }
             this.gameUpdateSubscription.unsubscribe()
             yourTurn = false
@@ -331,6 +331,10 @@ class Game extends Component {
     return currentUser;
   }
 
+  handleToggle = (launcher) => {
+    alert(launcher)
+  }
+
   render() {
     const { state } = this;
     let players = '';
@@ -341,15 +345,16 @@ class Game extends Component {
     }
     return (
       <Box display='flex' flexDirection='row' justifyContent='flex-end'>
-        <Box className="App">
+        <Box className="App" width="20%" marginLeft='20px'>
           <Widget 
             title="Chat with your opponent"
             subtitle=''
+            badge = {2}
             handleNewUserMessage = {this.handleNewUserMessage}
             handleQuickButtonClicked = {this.handleQuickButtonClicked}
           />
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent='center'>
+        <Box display="flex" flexDirection="column" justifyContent='center' marginRight='30px' >
           <GameInfo
             yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
             opponent={this.opponent !== null ? this.opponent.username : 'Anonymous'}
@@ -367,7 +372,8 @@ class Game extends Component {
             />
           </div>
         </Box>
-        <GameData style = {{width: '100px'}}
+        <Box display="flex" flexDirection="column" justifyContent='center' minWidth='30%' maxWidth='30%'>
+        <GameData style = {{width: '100%'}}
             history={state.history}
             fen={state.fen}
             gameResult={state.gameResult}
@@ -376,6 +382,7 @@ class Game extends Component {
             nextMove={this.nextMove}
             currentMove={state.history.length - state.reverseHistory.length}
           />
+      </Box>
       </Box>
     )
   }
