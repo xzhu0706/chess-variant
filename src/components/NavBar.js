@@ -53,14 +53,17 @@ class NavBar extends Component {
     this.state = {
       username: '',
       showAuth: false,
+      isAdmin: false,
     };
   }
 
   async componentDidMount() {
-    const user = await Auth.currentUserInfo();
+    const user = await Auth.currentUserPoolUser();
     if (user) {
+      const groups = user.signInUserSession.idToken.payload['cognito:groups'];
       this.setState({
         username: user.username,
+        isAdmin: groups && groups[0] === 'Admin',
       });
     }
   }
@@ -80,9 +83,11 @@ class NavBar extends Component {
   handleAuthStateChange = (state) => {
     if (state === 'signedIn') {
       const { username } = Auth.user;
+      const groups = Auth.user.signInUserSession.idToken.payload['cognito:groups'];
       this.setState({
         showAuth: false,
         username,
+        isAdmin: groups && groups[0] === 'Admin',
       });
     }
   }
@@ -91,6 +96,7 @@ class NavBar extends Component {
     Auth.signOut().then(() => {
       this.setState({
         username: '',
+        isAdmin: false,
       });
     });
   }
@@ -100,7 +106,7 @@ class NavBar extends Component {
       width: '2em',
       height: '2em',
     };
-    const { username, showAuth } = this.state;
+    const { username, showAuth, isAdmin } = this.state;
     const {
       handleShowAuth, handleCloseAuth, handleAuthStateChange, handleSignOut,
     } = this;
@@ -143,6 +149,13 @@ class NavBar extends Component {
                           {username}
                         </Link>
                       </li>
+                      {isAdmin && (
+                        <li>
+                          <Link to="/admin">
+                            Admin
+                          </Link>
+                        </li>
+                      )}
                       <li>
                         <Button
                           onClick={handleSignOut}
