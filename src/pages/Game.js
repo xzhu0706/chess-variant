@@ -16,8 +16,20 @@ import './Game.css';
 import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
-import { Widget, addResponseMessage, addLinkSnippet, addUserMessage } from 'react-chat-widget';
+import { Widget, toggleWidget, addResponseMessage, addLinkSnippet, addUserMessage } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
+import { Container, Button, lightColors, darkColors } from 'react-floating-action-button'
+import { IoIosAdd } from "react-icons/io";
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import "font-awesome/css/font-awesome.css";
+import { Fab, Action } from 'react-tiny-fab';
+import 'react-tiny-fab/dist/styles.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import 'react-tiny-fab/dist/styles.css';
+import { FaRegComments } from 'react-icons/fa';
+
+
+
 
 
 
@@ -331,7 +343,7 @@ class Game extends Component {
   }
 
   handleToggle = (launcher) => {
-    alert('clicked')
+    toggleWidget()
   }
 
   render() {
@@ -343,21 +355,25 @@ class Game extends Component {
       players = `You vs ${this.opponent !== null ? this.opponent.username : 'Anonymous'}`;
     }
     return (
-      <Box display='flex' flexDirection='row' justifyContent='flex-end'>
-        <Box className="App" width="20%" marginLeft='20px' backgroundColor='blue'>
+      <Box display='flex' flexDirection='row' justifyContent='flex-start'>
+        <Box style={{width: '30%'}}>
           <Widget
-            title="Chat with your opponent"
-            subtitle=''
             badge = {2}
-            launcher={handleToggle => (
-              <span onClick={this.handleToggle}>
-                <button style={{width: '100%'}}onClick={handleToggle}>Toggle</button>
-              </span>
-            )}
-            handleNewUserMessage = {this.handleNewUserMessage}
-            handleQuickButtonClicked = {this.handleQuickButtonClicked}
           />
-        </Box>
+          <span onClick = {this.handleToggle} style={{
+              height: '60px', 
+              width: '60px',
+              position: 'relative',
+              float: 'right',
+              marginRight: '52px',
+              marginTop: '129%',
+              backgroundColor: 'black',
+              opacity: '0',
+              zIndex: '10'
+              }}
+            >
+          </span>
+        </Box>          
         <Box display="flex" flexDirection="column" justifyContent='center' marginRight='30px' >
           <GameInfo
             yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
@@ -376,17 +392,17 @@ class Game extends Component {
             />
           </div>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent='center' minWidth='30%' maxWidth='30%'>
-        <GameData style = {{width: '100%'}}
-            history={state.history}
-            fen={state.fen}
-            gameResult={state.gameResult}
-            winner={state.winner}
-            prevMove={this.prevMove}
-            nextMove={this.nextMove}
-            currentMove={state.history.length - state.reverseHistory.length}
-          />
-      </Box>
+        <Box display="flex" flexDirection="column" justifyContent='center' width='30%'>
+            <GameData style={{ width: '100%' }}
+              history={state.history}
+              fen={state.fen}
+              gameResult={state.gameResult}
+              winner={state.winner}
+              prevMove={this.prevMove}
+              nextMove={this.nextMove}
+              currentMove={state.history.length - state.reverseHistory.length}
+            />
+        </Box>
       </Box>
     )
   }
