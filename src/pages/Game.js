@@ -311,7 +311,10 @@ class Game extends Component {
     messageObject.messageGameId = this.gameId
     messageObject.content = message
     let createdMessage = await API.graphql(graphqlOperation(mutations.createMessage, {input: messageObject}));
-    //addUserMessage(message)
+  }
+
+  handleQuickButtonClicked = () => {
+    alert("CLICKED")
   }
 
   _getUserInfo = async () => {
@@ -338,14 +341,15 @@ class Game extends Component {
     }
     return (
       <Box display='flex' flexDirection='row' justifyContent='flex-end'>
-        <div className="App">
+        <Box className="App">
           <Widget 
             title="Chat with your opponent"
             subtitle=''
             handleNewUserMessage = {this.handleNewUserMessage}
+            handleQuickButtonClicked = {this.handleQuickButtonClicked}
           />
-        </div>
-        <Box display="flex" flexDirection="column">
+        </Box>
+        <Box display="flex" flexDirection="column" justifyContent='center'>
           <GameInfo
             yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
             opponent={this.opponent !== null ? this.opponent.username : 'Anonymous'}
