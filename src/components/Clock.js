@@ -1,23 +1,19 @@
 import React from 'react';
 import Countdown from 'react-countdown-now';
 
-const clockStyle = {
-  fontSize: '30px',
-};
+export default class Clock extends React.Component {
+  render() {
+    const { refCallback, time } = this.props;
 
-function Clock({ time, color }) {
-  return (
-    <div style={clockStyle}>
+    return (
       <Countdown
-        key={color}
+        ref={refCallback}
         date={Date.now() + (time * 60000)}
         intervalDelay={3}
         zeroPadTime={2}
         autoStart={false}
         daysInHours
       />
-    </div>
-  );
+    );
+  }
 }
-
-export default Clock;
