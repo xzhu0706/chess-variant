@@ -13,6 +13,9 @@
         "categories": {
             "auth": {
                 "chessvariant878b0ed7": {}
+            },
+            "function": {
+                "AdminQueries6dd78331": {}
             }
         }
     },
@@ -29,7 +32,11 @@
         },
         "categories": {
             "auth": {
-                "chessvariant878b0ed7": {}
+                "chessvariant878b0ed7": {},
+                "userPoolGroups": {}
+            },
+            "function": {
+                "AdminQueries6dd78331": {}
             }
         }
     }

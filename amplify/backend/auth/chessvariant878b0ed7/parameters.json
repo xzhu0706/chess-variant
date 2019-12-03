@@ -45,6 +45,9 @@
         ]
     },
     "useDefault": "default",
-    "userPoolGroupList": [],
-    "dependsOn": []
+    "userPoolGroupList": [
+        "Admin"
+    ],
+    "dependsOn": [],
+    "adminQueryGroup": "Admin"
 }
