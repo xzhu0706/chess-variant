@@ -28,60 +28,13 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
     result
     winner
     createdAt
-  }
-}
-`;
-export const createUser = `mutation CreateUser($input: CreateUserInput!) {
-  createUser(input: $input) {
-    id
-    username
-    email
-    phoneNumber
-    pastGames {
+    messages {
       items {
         id
+        content
       }
       nextToken
     }
-    points
-    skillLevel
-    rank
-  }
-}
-`;
-export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
-  updateUser(input: $input) {
-    id
-    username
-    email
-    phoneNumber
-    pastGames {
-      items {
-        id
-      }
-      nextToken
-    }
-    points
-    skillLevel
-    rank
-  }
-}
-`;
-export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
-  deleteUser(input: $input) {
-    id
-    username
-    email
-    phoneNumber
-    pastGames {
-      items {
-        id
-      }
-      nextToken
-    }
-    points
-    skillLevel
-    rank
   }
 }
 `;
@@ -106,10 +59,14 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
       variant
       fen
       available
+      ended
       history
       result
       winner
       createdAt
+      messages {
+        nextToken
+      }
     }
     player {
       id
@@ -122,6 +79,7 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
       points
       skillLevel
       rank
+      createdAt
     }
   }
 }
@@ -152,6 +110,9 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
       result
       winner
       createdAt
+      messages {
+        nextToken
+      }
     }
     player {
       id
@@ -164,6 +125,7 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
       points
       skillLevel
       rank
+      createdAt
     }
   }
 }
@@ -194,6 +156,9 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
       result
       winner
       createdAt
+      messages {
+        nextToken
+      }
     }
     player {
       id
@@ -206,6 +171,7 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
       points
       skillLevel
       rank
+      createdAt
     }
   }
 }
@@ -237,6 +203,13 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
     result
     winner
     createdAt
+    messages {
+      items {
+        id
+        content
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -267,6 +240,13 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
     result
     winner
     createdAt
+    messages {
+      items {
+        id
+        content
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -296,6 +276,277 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
     history
     result
     winner
+    createdAt
+    messages {
+      items {
+        id
+        content
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const createMessage = `mutation CreateMessage($input: CreateMessageInput!) {
+  createMessage(input: $input) {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      players {
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+      messages {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!) {
+  updateMessage(input: $input) {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      players {
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+      messages {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!) {
+  deleteMessage(input: $input) {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      players {
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+      messages {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const createUser = `mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    id
+    username
+    email
+    phoneNumber
+    pastGames {
+      items {
+        id
+      }
+      nextToken
+    }
+    points
+    skillLevel
+    rank
+    createdAt
+  }
+}
+`;
+export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    id
+    username
+    email
+    phoneNumber
+    pastGames {
+      items {
+        id
+      }
+      nextToken
+    }
+    points
+    skillLevel
+    rank
+    createdAt
+  }
+}
+`;
+export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
+  deleteUser(input: $input) {
+    id
+    username
+    email
+    phoneNumber
+    pastGames {
+      items {
+        id
+      }
+      nextToken
+    }
+    points
+    skillLevel
+    rank
+    createdAt
+  }
+}
+`;
+export const createComplaint = `mutation CreateComplaint($input: CreateComplaintInput!) {
+  createComplaint(input: $input) {
+    id
+    user {
+      id
+      username
+    }
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+    }
+    createdAt
+  }
+}
+`;
+export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaintInput!) {
+  updateComplaint(input: $input) {
+    id
+    user {
+      id
+      username
+    }
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+    }
+    createdAt
+  }
+}
+`;
+export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaintInput!) {
+  deleteComplaint(input: $input) {
+    id
+    user {
+      id
+      username
+    }
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+    }
     createdAt
   }
 }

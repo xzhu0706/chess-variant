@@ -9,6 +9,7 @@ import Analysis from './pages/Analysis';
 import Pieces from './pages/Pieces';
 import './App.css';
 import NavBar from './components/NavBar';
+import AdminDashboard from './pages/AdminDashboard';
 
 class App extends Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class App extends Component {
           <Route path="/create" component={Create} />
           <Route path="/analysis" component={Analysis} />
           <Route path="/pieces" component={Pieces} />
+          <Route path="/admin" component={AdminDashboard} />
         </Switch>
       </Router>
     );
