@@ -7,6 +7,46 @@ export const getGame = `query GetGame($id: ID!) {
     players {
       items {
         id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
       }
       nextToken
     }
@@ -31,7 +71,38 @@ export const getGame = `query GetGame($id: ID!) {
     messages {
       items {
         id
+        author {
+          id
+          username
+        }
         content
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
       }
       nextToken
     }
@@ -47,6 +118,32 @@ export const listGames = `query ListGames(
     items {
       id
       players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
         nextToken
       }
       creator {
@@ -68,6 +165,27 @@ export const listGames = `query ListGames(
       winner
       createdAt
       messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
         nextToken
       }
     }
@@ -86,6 +204,32 @@ export const getMessage = `query GetMessage($id: ID!) {
     game {
       id
       players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
         nextToken
       }
       creator {
@@ -107,6 +251,27 @@ export const getMessage = `query GetMessage($id: ID!) {
       winner
       createdAt
       messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
         nextToken
       }
     }
@@ -128,6 +293,20 @@ export const listMessages = `query ListMessages(
       content
       game {
         id
+        players {
+          items {
+            id
+          }
+          nextToken
+        }
+        creator {
+          id
+          username
+        }
+        opponent {
+          id
+          username
+        }
         creatorOrientation
         time
         variant
@@ -138,6 +317,13 @@ export const listMessages = `query ListMessages(
         result
         winner
         createdAt
+        messages {
+          items {
+            id
+            content
+          }
+          nextToken
+        }
       }
     }
     nextToken
@@ -156,6 +342,32 @@ export const listUsers = `query ListUsers(
       email
       phoneNumber
       pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
         nextToken
       }
       points
@@ -176,6 +388,46 @@ export const getUser = `query GetUser($id: ID!) {
     pastGames {
       items {
         id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
       }
       nextToken
     }
@@ -206,6 +458,32 @@ export const getUserByUsername = `query GetUserByUsername(
       email
       phoneNumber
       pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
         nextToken
       }
       points
@@ -235,6 +513,32 @@ export const searchUsers = `query SearchUsers(
       email
       phoneNumber
       pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
         nextToken
       }
       points
@@ -267,6 +571,32 @@ export const getComplaint = `query GetComplaint($id: ID!) {
       email
       phoneNumber
       pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
         nextToken
       }
       points
@@ -302,6 +632,12 @@ export const listComplaints = `query ListComplaints(
         username
         email
         phoneNumber
+        pastGames {
+          items {
+            id
+          }
+          nextToken
+        }
         points
         skillLevel
         rank
