@@ -13,6 +13,8 @@ import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
 import './Game.css';
+import Button from 'react-bootstrap/Button';
+import Clock from '../components/Clock';
 // import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
@@ -24,6 +26,10 @@ import 'react-chat-widget/lib/styles.css';
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
 
 class Game extends Component {
+  clockRefWhite = null;
+
+  clockRefBlack = null;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -49,6 +55,12 @@ class Game extends Component {
     this.gameInfo = null;
     this.boardId = '';
     this.isViewer = false;
+    this.setClockRefWhite = this.setClockRefWhite.bind(this);
+    this.startWhite = this.startWhite.bind(this);
+    this.pauseWhite = this.pauseWhite.bind(this);
+    this.setClockRefBlack = this.setClockRefBlack.bind(this);
+    this.startBlack = this.startBlack.bind(this);
+    this.pauseBlack = this.pauseBlack.bind(this);
   }
 
   async componentDidMount() {
@@ -120,7 +132,9 @@ class Game extends Component {
       this.game.load(initialFen);
       yourTurn = this.game.turn() === this.orientation[0];
     }
-    this.setState({ fen: initialFen, yourTurn, turn: this.game.turn() });
+    this.setState({
+      fen: initialFen, yourTurn, turn: this.game.turn(), time: startTime,
+    });
     this.gameUpdateSubscription = API.graphql(graphqlOperation(
       subscriptions.onUpdateGameState, { id: gameId },
     )).subscribe({
@@ -309,6 +323,34 @@ class Game extends Component {
     ));
   }
 
+  startWhite() {
+    this.clockRefWhite.start();
+  }
+
+  pauseWhite() {
+    this.clockRefWhite.pause();
+  }
+
+  startBlack() {
+    this.clockRefBlack.start();
+  }
+
+  pauseBlack() {
+    this.clockRefBlack.pause();
+  }
+
+  setClockRefWhite(ref) {
+    // When the `Clock` (and subsequently `Countdown` mounts
+    // this will give us access to the API
+    this.clockRefWhite = ref;
+  }
+
+  setClockRefBlack(ref) {
+    // When the `Clock` (and subsequently `Countdown` mounts
+    // this will give us access to the API
+    this.clockRefBlack = ref;
+  }
+
   render() {
     const { state } = this;
     let players = '';
@@ -357,6 +399,12 @@ class Game extends Component {
                   currentMove={state.history.length - state.reverseHistory.length}
                 />
               </Box>
+              <Button onClick={this.startBlack}>Start Black Clock</Button>
+              <Button onClick={this.pauseBlack}>Pause Clock</Button>
+              <Clock refCallback={this.setClockRefBlack} time={state.time} />
+              <Button onClick={this.startWhite}>Start Clock</Button>
+              <Button onClick={this.pauseWhite}>Pause Clock</Button>
+              <Clock refCallback={this.setClockRefWhite} time={state.time} />
             </Box>
           </Grid>
         </Grid>
