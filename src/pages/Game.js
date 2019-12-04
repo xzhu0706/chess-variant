@@ -54,8 +54,6 @@ class Game extends Component {
     this.boardId = '';
     this.isViewer = false;
     this.currentUser = null;
-    this.widgetHasBeenLaunched = false;
-    this.initialMessages = [];
   }
 
   async componentDidMount() {
@@ -81,11 +79,15 @@ class Game extends Component {
         winner: this.gameInfo.winner,
       });
     }
+
     //Represents the count of new messages to display on the chat widget badge.
-    let messagesCount;
+    //local storage is used to keep the count, so that the correct number can be
+    //displayed in case the page gets reloaded.
+    let messagesCount = 0
     if(localStorage.getItem(gameId)){
       messagesCount = parseInt(localStorage.getItem(gameId))
     }
+
     // let currentGame = localStorage.getItem('currentGame');
     // if (currentGame && currentGame === this.gameId) {
     const user = await this.getUserInfo();
@@ -133,6 +135,7 @@ class Game extends Component {
       });
       this.setState({
         fen: this.game.fen(),
+        messagesCount
       });
       return;
     }
@@ -377,7 +380,7 @@ class Game extends Component {
     } else {
       players = `You vs ${this.opponent !== null ? this.opponent.username : 'Anonymous'}`;
     }
-    return (
+    return (      
       <Box key={this.gameId} display='flex' flexDirection='row' justifyContent='flex-start'>
         <Box style={{width: '30%'}}>
         <Launcher
@@ -390,7 +393,7 @@ class Game extends Component {
             messageList={this.state.messageList}
             isOpen = {this.state.isChatWidgetOpen}
             showEmoji = {false}
-            newMessagesCount = {parseInt(this.state.messagesCount)}
+            newMessagesCount = {this.state.messagesCount}
           />
         </Box>          
         <Box display="flex" flexDirection="column" justifyContent='center' marginRight='30px' >
