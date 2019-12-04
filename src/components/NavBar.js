@@ -175,7 +175,7 @@ class NavBar extends Component {
                   ? (
                     <span>
                       <li>
-                        <Link to="/account">
+                        <Link to={`/account/${username}`}>
                           Hello
                           {' '}
                           {username}

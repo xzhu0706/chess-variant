@@ -74,11 +74,10 @@ const AccountInfo = (props) => (
     <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg" thumbnail fluid />
     <ListGroup>
       <ListGroupItem variant="flush">{props.username}</ListGroupItem>
-      { props.isCurrentUser &&
-        <ListGroupItem>{props.email}</ListGroupItem>
-        &&
-        <ListGroupItem>{props.phone}</ListGroupItem>
-      }
+      { props.isCurrentUser
+        && <ListGroupItem>{props.email}</ListGroupItem> }
+      { props.isCurrentUser
+        && <ListGroupItem>{props.phone}</ListGroupItem> }
     </ListGroup>
   </div>
 );
