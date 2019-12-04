@@ -74,7 +74,9 @@ function PieceCustomize(props) {
             <input type="text" onChange={props.onChangeRepeatOffsets} />
           </label>
         </div>
-      </div>)
+        <div><a href="/tutorial">View tutorial</a></div>
+      </div>
+      )
       }
 
       <div className="move-diagram">

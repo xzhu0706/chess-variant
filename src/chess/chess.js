@@ -870,8 +870,8 @@ var Chess = function(fen, variant=0, customPieces={}) {
 
       const piece = board[i];
       const difference = i - square;
-      const index = difference + 119;
-
+      const index = -difference + 119; // oops!
+      
       if (ATTACKS[index] & (1 << SHIFTS[piece.type])) {
         if (piece.type === PAWN) {
           if (difference > 0) {
@@ -881,9 +881,9 @@ var Chess = function(fen, variant=0, customPieces={}) {
           }
           continue;
         }
-
+        
         /* if the difference is equal to one of the regular offsets */
-        if (PIECE_OFFSETS[piece.type].indexOf(difference) !== -1) {
+        if (PIECE_OFFSETS[piece.type].indexOf(-difference) !== -1) {
           return true;
         }
 
@@ -911,7 +911,9 @@ var Chess = function(fen, variant=0, customPieces={}) {
             intermediate += ray;
           }
       
-          if (!blocked) return true;
+          if (!blocked) {
+            return true;
+          }
         }
       }
     }

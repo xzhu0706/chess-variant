@@ -5,6 +5,7 @@ import Game from './pages/Game';
 import Account from './pages/Account';
 import Variants from './pages/Variants';
 import Create from './pages/Create';
+import Tutorial from './pages/Tutorial';
 import Analysis from './pages/Analysis';
 import Pieces from './pages/Pieces';
 import './App.css';
@@ -34,6 +35,7 @@ class App extends Component {
             )}
           />
           <Route path="/create" component={Create} />
+          <Route path="/tutorial" component={Tutorial} />
           <Route path="/analysis" component={Analysis} />
           <Route path="/pieces" component={Pieces} />
           <Route path="/admin" component={AdminDashboard} />
