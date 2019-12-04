@@ -49,13 +49,13 @@ var Chess = function(fen, variant=0, customPieces={}) {
   const QUEEN = 'q';
   const KING = 'k';
 
-  // new pieces
-  const MANN = 'm';
-  const FERZ = 'f';
-  const NIGHTRIDER = 'd';
-  const CENTAUR = 'c';
-  const EMPRESS = 'e';
-  const PRINCESS = 's';
+  // // new pieces
+  // const MANN = 'm';
+  // const FERZ = 'f';
+  // const NIGHTRIDER = 'd';
+  // const CENTAUR = 'c';
+  // const EMPRESS = 'e';
+  // const PRINCESS = 's';
 
   const SYMBOLS = 'pnbrqkPNBRQK' + 'mfdcesMFDCES'; // all possible pieces in a FEN string
 
@@ -72,6 +72,20 @@ var Chess = function(fen, variant=0, customPieces={}) {
     w: [-16, -32, -17, -15]
   };
 
+  let PIECE_OFFSETS = {
+    n: [-18, -33, -31, -14,  18, 33, 31,  14],
+    b: [],
+    r: [],
+    q: [],
+    k: [-17, -16, -15,   1,  17, 16, 15,  -1],
+    m: [-17, -16, -15,   1,  17, 16, 15,  -1],
+    f: [-17, -15,  17,  15],
+    d: [],
+    c: [],
+    e: [-18, -33, -31, -14,  18, 33, 31,  14],
+    s: [-18, -33, -31, -14,  18, 33, 31,  14],
+  };
+
   let PIECE_OFFSETS_REPEATING = {
     n: [],
     b: [-17, -15,  17,  15],
@@ -86,43 +100,7 @@ var Chess = function(fen, variant=0, customPieces={}) {
     s: [-17, -15,  17,  15],
   };
 
-  // add custom pieces to PIECE_OFFSETS_REPEATING
-  // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
-  for (let [key, value] of Object.entries(customPieces)) {
-    if (!(key in PIECE_OFFSETS_REPEATING)) {
-      PIECE_OFFSETS_REPEATING[key] = value[0];
-    }
-  }
-
-  let PIECE_OFFSETS = {
-    n: [-18, -33, -31, -14,  18, 33, 31,  14],
-    b: [],
-    r: [],
-    q: [],
-    k: [-17, -16, -15,   1,  17, 16, 15,  -1],
-    m: [-17, -16, -15,   1,  17, 16, 15,  -1],
-    f: [-17, -15,  17,  15],
-    d: [],
-    c: [-18, -33, -31, -14,  18, 33, 31,  14,
-        -17, -16, -15,   1,  17, 16, 15,  -1],
-    e: [-18, -33, -31, -14,  18, 33, 31,  14],
-    s: [-18, -33, -31, -14,  18, 33, 31,  14],
-  };
-
-  // add custom pieces to PIECE_OFFSETS
-  // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
-  for (const [key, value] of Object.entries(customPieces)) {
-    if (!(key in PIECE_OFFSETS)) {
-      PIECE_OFFSETS[key] = value[1];
-    }
-  }
-
-  const SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5 };
-
-  // add custom pieces to SHIFTS
-  for (const key of Object.keys(customPieces)) {
-    SHIFTS[key] = Object.keys(SHIFTS).length;
-  }
+  let SHIFTS = { p: 0, n: 1, b: 2, r: 3, q: 4, k: 5, m: 6, f: 7, d: 8, e: 9, s: 10 };
 
   // the ATTACKS array is a bit-mask of attacks based on a 6-bit string of the form kqrbnp.
   // For example:
@@ -130,41 +108,34 @@ var Chess = function(fen, variant=0, customPieces={}) {
   // kqrbnp = 000010 =  2 (only the knight can attack the center piece)
   // kqrbnp = 011000 = 24 (only the queen and rook can attack the center piece)
   let ATTACKS = [
-    20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20, 0,
-     0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
-     0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
-     0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
-     0, 0, 0, 0,20, 0, 0, 24,  0, 0,20, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0,20, 2, 24,  2,20, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0, 2,53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
-    24,24,24,24,24,24,56,  0, 56,24,24,24,24,24,24, 0,
-     0, 0, 0, 0, 0, 2,53, 56, 53, 2, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0,20, 2, 24,  2,20, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0,20, 0, 0, 24,  0, 0,20, 0, 0, 0, 0, 0,
-     0, 0, 0,20, 0, 0, 0, 24,  0, 0, 0,20, 0, 0, 0, 0,
-     0, 0,20, 0, 0, 0, 0, 24,  0, 0, 0, 0,20, 0, 0, 0,
-     0,20, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0,20, 0, 0,
-    20, 0, 0, 0, 0, 0, 0, 24,  0, 0, 0, 0, 0, 0,20,
+    1044,   0,   0,   0,   0,   0,   0, 536,   0,   0,   0,   0,   0,   0,1044,   0,
+       0,1044,   0,   0, 256,   0,   0, 536,   0,   0, 256,   0,   0,1044,   0,   0,
+       0,   0,1044,   0,   0,   0,   0, 536,   0,   0,   0,   0,1044,   0,   0,   0,
+       0,   0,   0,1044,   0, 256,   0, 536,   0, 256,   0,1044,   0,   0,   0,   0,
+       0, 256,   0,   0,1044,   0,   0, 536,   0,   0,1044,   0,   0, 256,   0,   0,
+       0,   0,   0, 256,   0,1044,1794, 536,1794,1044,   0, 256,   0,   0,   0,   0,
+       0,   0,   0,   0,   0,1794,1269, 632,1269,1794,   0,   0,   0,   0,   0,   0,
+     536, 536, 536, 536, 536, 536, 632,   0, 632, 536, 536, 536, 536, 536, 536,   0,
+       0,   0,   0,   0,   0,1794,1269, 632,1269,1794,   0,   0,   0,   0,   0,   0,
+       0,   0,   0, 256,   0,1044,1794, 536,1794,1044,   0, 256,   0,   0,   0,   0,
+       0, 256,   0,   0,1044,   0,   0, 536,   0,   0,1044,   0,   0, 256,   0,   0,
+       0,   0,   0,1044,   0, 256,   0, 536,   0, 256,   0,1044,   0,   0,   0,   0,
+       0,   0,1044,   0,   0,   0,   0, 536,   0,   0,   0,   0,1044,   0,   0,   0,
+       0,1044,   0,   0, 256,   0,   0, 536,   0,   0, 256,   0,   0,1044,   0,   0,
+       1044,0,   0,   0,   0,   0,   0, 536,   0,   0,   0,   0,   0,   0,1044,
   ];
 
-  // how to shift the board in order to make a move (?)
-  const RAYS = [
-     17,  0,  0,  0,  0,  0,  0, 16,  0,  0,  0,  0,  0,  0, 15, 0,
-      0, 17,  0,  0,  0,  0,  0, 16,  0,  0,  0,  0,  0, 15,  0, 0,
-      0,  0, 17,  0,  0,  0,  0, 16,  0,  0,  0,  0, 15,  0,  0, 0,
-      0,  0,  0, 17,  0,  0,  0, 16,  0,  0,  0, 15,  0,  0,  0, 0,
-      0,  0,  0,  0, 17,  0,  0, 16,  0,  0, 15,  0,  0,  0,  0, 0,
-      0,  0,  0,  0,  0, 17,  0, 16,  0, 15,  0,  0,  0,  0,  0, 0,
-      0,  0,  0,  0,  0,  0, 17, 16, 15,  0,  0,  0,  0,  0,  0, 0,
-      1,  1,  1,  1,  1,  1,  1,  0, -1, -1,  -1,-1, -1, -1, -1, 0,
-      0,  0,  0,  0,  0,  0,-15,-16,-17,  0,  0,  0,  0,  0,  0, 0,
-      0,  0,  0,  0,  0,-15,  0,-16,  0,-17,  0,  0,  0,  0,  0, 0,
-      0,  0,  0,  0,-15,  0,  0,-16,  0,  0,-17,  0,  0,  0,  0, 0,
-      0,  0,  0,-15,  0,  0,  0,-16,  0,  0,  0,-17,  0,  0,  0, 0,
-      0,  0,-15,  0,  0,  0,  0,-16,  0,  0,  0,  0,-17,  0,  0, 0,
-      0,-15,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,-17,  0, 0,
-    -15,  0,  0,  0,  0,  0,  0,-16,  0,  0,  0,  0,  0,  0,-17
-  ];
+  /* update PIECE_OFFSETS, PIECE_OFFSETS_REPEATING, SHIFTS, ATTACKS with custom pieces */
+  // customPieces is of the form { m: { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] } }
+  for (let [customPiece, customOffsets] of Object.entries(customPieces)) {
+    // copy over the offsets
+    PIECE_OFFSETS[customPiece] = customOffsets[0];
+    PIECE_OFFSETS_REPEATING[customPiece] = customOffsets[1];
+    // assign the new piece a unique index value
+    SHIFTS[customPiece] = Object.keys(SHIFTS).length;
+    // update ATTACKS so that the new piece can be recognized as an attacker (see attacked())
+    updateAttacks(ATTACKS, customOffsets, SHIFTS[customPiece]);
+  }
 
   const FLAGS = {
     NORMAL: 'n',
@@ -691,7 +662,11 @@ var Chess = function(fen, variant=0, customPieces={}) {
         }
       } else {
         for (let j = 0, len = PIECE_OFFSETS_REPEATING[piece.type].length; j < len; j++) {
-          const offset = PIECE_OFFSETS_REPEATING[piece.type][j];
+          // flip the offsets for the black pieces
+          const offset =
+            piece.color === 'w'?
+            PIECE_OFFSETS_REPEATING[piece.type][j] :
+            -PIECE_OFFSETS_REPEATING[piece.type][j];
           let square = i;
 
           // generate all moves in the direction of the offset
@@ -716,7 +691,11 @@ var Chess = function(fen, variant=0, customPieces={}) {
         }
 
         for (let j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
-          let square = i + PIECE_OFFSETS[piece.type][j];
+          const offset =
+            piece.color === 'w'?
+            PIECE_OFFSETS[piece.type][j] :
+            -PIECE_OFFSETS[piece.type][j];
+          let square = i + offset;
           if (square & 0x88) continue;
           if (board[square] == null) {
             if (variant !== GRID || valid_2x2_grid_move(i, square)) {
@@ -886,13 +865,13 @@ var Chess = function(fen, variant=0, customPieces={}) {
       /* if empty square or wrong color */
       if (board[i] == null || board[i].color !== color) continue;
 
-      /* if we're playing grid chess and it's not a valid, out-of-grid move, no attack can occur */
+      /* if we're playing grid chess and it's not a valid, out-of-grid move */
       if (variant === GRID && !valid_2x2_grid_move(i, square)) continue;
 
       const piece = board[i];
       const difference = i - square;
-      const index = difference + 119;
-
+      const index = -difference + 119; // oops!
+      
       if (ATTACKS[index] & (1 << SHIFTS[piece.type])) {
         if (piece.type === PAWN) {
           if (difference > 0) {
@@ -902,23 +881,44 @@ var Chess = function(fen, variant=0, customPieces={}) {
           }
           continue;
         }
-
-        /* if the piece is a knight or a king */
-        if (piece.type === 'n' || piece.type === 'k') return true;
-
-        const offset = RAYS[index];
-        let j = i + offset;
-
-        let blocked = false;
-        while (j !== square) {
-          if (board[j] != null) { blocked = true; break; }
-          j += offset;
+        
+        /* if the difference is equal to one of the regular offsets */
+        if (PIECE_OFFSETS[piece.type].indexOf(-difference) !== -1) {
+          return true;
         }
 
-        if (!blocked) return true;
+        // compute list of possible (repeating) offsets that produce the difference
+        // e.g. an attack from -6 units away could be due to an offset of -1, -2, -3 or -6
+        // e.g. an attack from -51 units away could be due to an offset of -51 or -17 (but not -1)
+        const derivedOffsets = offsetsFromAttack(difference, PIECE_OFFSETS_REPEATING[piece.type]);
+
+        // if none of the repeating offsets match this difference
+        if (derivedOffsets && derivedOffsets.length === 0) {
+          continue;
+        }
+
+        // one of the offsets can produce the difference, but
+        // now we need to check for a blocking piece that would invalidate the "attack".
+        // if there is no blocking piece for each offset, then the offset is validated -
+        // immediately return true.
+        for (const offset of derivedOffsets) {
+          const ray = -offset;
+          let intermediate = i + ray;
+      
+          let blocked = false;
+          while (intermediate !== square) {
+            if (board[intermediate] != null) { blocked = true; break; }
+            intermediate += ray;
+          }
+      
+          if (!blocked) {
+            return true;
+          }
+        }
       }
     }
 
+    // no square on the board contains a piece that attacks the given square
     return false;
   }
 
@@ -1876,54 +1876,79 @@ const valid_2x2_grid_move = (from, to) => {
   return !((from >> 5 === to >> 5) && ((from & 15) >> 1 === (to & 15) >> 1));
 };
 
-const moduloEuclid = (a, b) => {
-  let m = a % b;
-  if (m < 0) {
-    m = (b < 0) ? m - b : m + b;
+/* Given a repeating offset, return the list of 'actual' offsets
+between -119 and 119.
+Expected results:
+ -17 -> [-17, -34, -51, -68, -85, -102, -119]
+ +17 -> [+17, +34, +51, +68, +85, +102, +119]
+  -1 -> [ -1,  -2,  -3,  -4,  -5,   -6,   -7]
+  +1 -> [ +1,  +2,  +3,  +4,  +5,   +6,   +7]
+ -18 -> [-18, -36, -54]
+ +18 -> [+18, +36, +54]
+ -19 -> [-19, -38]
+ +19 -> [+19, +38]
+ -20 -> [-20]
+ +20 -> [+20]
+ -24 -> []
+ +24 -> []
+ -34 -> [-34, -68, -102]
+ +34 -> [+34, +68, +102]
+ -51 -> [-51, -102]
+ +51 -> [+51, +102]
+-119 -> [-119]
++119 -> [+119]
+*/
+function generateOffsets(offset) {
+  if (offset === 0) return [];
+  const row = offset+119 >>> 4; // gives row between 0 and 14
+  const col = offset+119 & 15; // gives col between 0 and 15
+  const reps = Math.floor(7 / Math.max(Math.abs(7 - (col)), Math.abs(7 - (row))));
+
+  let offsets = [];
+  for (let i = 1; i <= reps; i++) {
+    offsets.push(offset*i);
   }
-  return m;
+  return offsets;
 }
 
-// const updateAttacks = (ATTACKS, SHIFTS, customPieces) => {
-//   // customPieces is of the form { m: { 0: [ <repeating offsets> ], 1: [ <non-repeating offsets> ] } }
+function updateAttacks(ATTACKS, customPieceOffsets, shifts) {
+  // the input looks like this:
+  // { 0: [ <non-repeating offsets> ], 1: [ <repeating offsets> ] }
+  customPieceOffsets[0].forEach(off => {
+    const row = off+119 >>> 4; // gives row between 0 and 14
+    const col = off+119 & 15; // gives col between 0 and 15
+    const index = 16*row + col;
+    ATTACKS[index] |= 1 << shifts; // activate the bit of the custom piece
+  });
+  customPieceOffsets[1].forEach(off => {
+    const offsets = generateOffsets(off); // generate list of offsets derived from the repeating offset
+    offsets.forEach(off => { // for each of those offsets, activate the bit of the custom piece
+      const row = off+119 >>> 4;
+      const col = off+119 & 15;
+      const index = 16*row + col;
+      ATTACKS[index] |= 1 << shifts;
+    });
+  });
+  return ATTACKS;
+}
 
-//   for (const [key, value] of Object.entries(customPieces)) {
-//     // process repeating offsets
-//     value[0].forEach(offset => {
-//       if 
-//       const movementDirection = moduloEuclid(offset, 16) < 0 ? 'left' : 'right';
-//       let nextOffset = offset;
-//       if (nextOffset )
-//       let k = 119 - nextOffset;
-//       // keep updating ATTACKS array until you fall off the edge
-//       // top edge: simply check (k >= 0)
-//       // bottom edge: simply check (k < ATTACKS.length)
-//       // left edge, right edge: we use modulo for this, which calculates the horizontal offset
-//       while (k >= 0 &&
-//              k < ATTACKS.length &&
-//              (movementDirection === 'left' ?  )
-//              ) {
-//         ATTACKS[119 - nextOffset] |= 1 << SHIFTS[key];
-//         k -= offset;
-//       }
-//     });
-//     // process non-repeating offsets
-//     value[1].forEach(offset => {
-//       const k = 119 - offset;
-//       if (k >= 0 && k < ATTACKS.length) {
-//         ATTACKS[k] |= 1 << SHIFTS[key]; // toggle the bit that corresponds to the piece
-//       }
-//     });
-//   }
-
-//   return ATTACKS;
-// }
+// given a list of (repeating) offsets, compute the subset of offsets that can produce the given attack
+// e.g. an attack from +6 units away could be due to a repeating offset of +1, +2, +3 or +6
+// e.g. an attack from -51 units away could be due to a repeating offset of -51 or -17 (but not -1)
+function offsetsFromAttack(attack, repeatingOffsets) {
+  return repeatingOffsets.filter(offset => {
+    const generatedOffsets = generateOffsets(offset);
+    return (generatedOffsets.indexOf(attack) !== -1); // if the particular offset can create the given attack, return true
+  });
+}
 
 /* export Chess object if using node or any other CommonJS compatible
  * environment */
 if (typeof exports !== 'undefined') exports.Chess = Chess;
 if (typeof exports !== 'undefined') exports.valid_2x2_grid_move = valid_2x2_grid_move;
-// if (typeof exports !== 'undefined') exports.updateAttacks = updateAttacks;
+if (typeof exports !== 'undefined') exports.generateOffsets = generateOffsets;
+if (typeof exports !== 'undefined') exports.updateAttacks = updateAttacks;
+if (typeof exports !== 'undefined') exports.offsetsFromAttack = offsetsFromAttack;
 
 /* export Chess object for any RequireJS compatible environment */
 if (typeof define !== 'undefined') define( function () { return Chess;  });

@@ -1,0 +1,14 @@
+.game-data {
+    border: 0.15em solid rgb(0, 1, 59);
+    padding: 1.5%;
+    min-height: 2em;
+    width: inherit;
+    max-width: inherit;
+}
+
+.moves {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}

@@ -5,6 +5,49 @@ export const onCreateGame = `subscription OnCreateGame {
   onCreateGame {
     id
     players {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
       nextToken
     }
     creator {
@@ -26,6 +69,41 @@ export const onCreateGame = `subscription OnCreateGame {
     winner
     createdAt
     messages {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+      }
       nextToken
     }
   }
@@ -35,6 +113,49 @@ export const onUpdateGame = `subscription OnUpdateGame {
   onUpdateGame {
     id
     players {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
       nextToken
     }
     creator {
@@ -65,6 +186,49 @@ export const onDeleteGame = `subscription OnDeleteGame {
   onDeleteGame {
     id
     players {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
       nextToken
     }
     creator {
@@ -86,6 +250,41 @@ export const onDeleteGame = `subscription OnDeleteGame {
     winner
     createdAt
     messages {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+      }
       nextToken
     }
   }
@@ -95,6 +294,49 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
   onUpdateGameState(id: $id) {
     id
     players {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
       nextToken
     }
     creator {
@@ -116,7 +358,617 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
     winner
     createdAt
     messages {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+      }
       nextToken
+    }
+  }
+}
+`;
+export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping {
+  onCreatePlayerGameMapping {
+    id
+    game {
+      id
+      players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+      messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
+        nextToken
+      }
+    }
+    player {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+    }
+  }
+}
+`;
+export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping {
+  onUpdatePlayerGameMapping {
+    id
+    game {
+      id
+      players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+      messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
+        nextToken
+      }
+    }
+    player {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+    }
+  }
+}
+`;
+export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping {
+  onDeletePlayerGameMapping {
+    id
+    game {
+      id
+      players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+      messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
+        nextToken
+      }
+    }
+    player {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+    }
+  }
+}
+`;
+export const onCreateMessage = `subscription OnCreateMessage {
+  onCreateMessage {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+      messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onUpdateMessage = `subscription OnUpdateMessage {
+  onUpdateMessage {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+      messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onDeleteMessage = `subscription OnDeleteMessage {
+  onDeleteMessage {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+      messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
+        nextToken
+      }
     }
   }
 }
@@ -128,26 +980,114 @@ export const onCreateUser = `subscription OnCreateUser {
     email
     phoneNumber
     pastGames {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
       nextToken
     }
     points
     skillLevel
     rank
+    createdAt
   }
 }
 `;
-export const onUpdateUser = `subscription OnUpdateUser {
-  onUpdateUser {
+export const onUpdateUser = `subscription OnUpdateUser($id: String) {
+  onUpdateUser(id: $id) {
     id
     username
     email
     phoneNumber
     pastGames {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
       nextToken
     }
     points
     skillLevel
     rank
+    createdAt
   }
 }
 `;
@@ -158,95 +1098,226 @@ export const onDeleteUser = `subscription OnDeleteUser {
     email
     phoneNumber
     pastGames {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
       nextToken
     }
     points
     skillLevel
     rank
+    createdAt
   }
 }
 `;
-export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping {
-  onCreatePlayerGameMapping {
+export const onCreateComplaint = `subscription OnCreateComplaint {
+  onCreateComplaint {
     id
-    game {
+    user {
       id
-      creatorOrientation
-      time
-      variant
-      fen
-      available
-      ended
-      history
-      result
-      winner
-      createdAt
+      username
     }
-    player {
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
       id
       username
       email
       phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
       points
       skillLevel
       rank
+      createdAt
     }
+    createdAt
   }
 }
 `;
-export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping {
-  onUpdatePlayerGameMapping {
+export const onUpdateComplaint = `subscription OnUpdateComplaint {
+  onUpdateComplaint {
     id
-    game {
+    user {
       id
-      creatorOrientation
-      time
-      variant
-      fen
-      available
-      ended
-      history
-      result
-      winner
-      createdAt
+      username
     }
-    player {
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
       id
       username
       email
       phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
       points
       skillLevel
       rank
+      createdAt
     }
+    createdAt
   }
 }
 `;
-export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping {
-  onDeletePlayerGameMapping {
+export const onDeleteComplaint = `subscription OnDeleteComplaint {
+  onDeleteComplaint {
     id
-    game {
+    user {
       id
-      creatorOrientation
-      time
-      variant
-      fen
-      available
-      ended
-      history
-      result
-      winner
-      createdAt
+      username
     }
-    player {
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
       id
       username
       email
       phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
       points
       skillLevel
       rank
+      createdAt
     }
+    createdAt
   }
 }
 `;
