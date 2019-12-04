@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-// import * as queries from '../graphql/queries';
+import * as queries from '../graphql/queries';
 import * as customQueries from '../customGraphql/queries';
 import { Link } from 'react-router-dom';
 
@@ -19,9 +19,18 @@ export default class Account extends Component {
   async componentDidMount() {
     const user = await Auth.currentUserInfo();
     if (user) {
-      let userid = user.attributes.sub
-      let queryResult = await API.graphql(graphqlOperation(customQueries.getUserWithPastGames, { id: userid }));
-      this.setState({ user: queryResult.data.getUser })
+      // let userid = user.attributes.sub
+      // let queryResult = await API.graphql(graphqlOperation(customQueries.getUserWithPastGames, { id: userid }));
+      // this.setState({ user: queryResult.data.getUser })
+      const { username } = user;
+      const queryResult = await API.graphql(graphqlOperation(queries.getUserByUsername, { username }));
+      const userInfo = queryResult.data.getUserByUsername.items;
+      if (userInfo && userInfo[0]) {
+        console.log(userInfo, userInfo[0])
+        this.setState({
+          user: userInfo[0],
+        }, () => {console.log('user', this.state.user)})
+      }
     }
   }
 
@@ -95,7 +104,7 @@ const MatchHistory = (props) => {
       console.log(game)
       let row = <GameRow
         available={game.available ? "yes" : "no"}
-        opponent={game.opponent.username ? game.opponent.username : "anonymous"}
+        // opponent={game.opponent.username ? game.opponent.username : "anonymous"}
         variant={game.variant}
         time={game.time ? game.time : "N/A"}
         winner={game.winner ? game.winner : "N/A"}
