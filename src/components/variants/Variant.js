@@ -1,34 +1,43 @@
 import React from 'react';
+import { Container, Row } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-const Variant = (props) => {
+const Variant = ({ title, children }) => {
   const headingStyle = {
-      fontFamily: "Helvetica, Arial, sans-serif",
-      fontWeight: "bold",
-    };
-  
-    const bodyStyle = {
-      fontFamily: "Lucida Bright, Lucidabright, Lucida Serif, Lucida," +
-        "Bitstream Charter, Bitstream Vera Serif, DejaVu Serif, Century Schoolbook L," +
-        "serif",
-      fontSize: "100%",
-      marginBottom: "1rem"
-    };
+    fontFamily: 'Helvetica, Arial, sans-serif',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  };
+
+  const bodyStyle = {
+    fontFamily: 'Lucida Bright, Lucidabright, Lucida Serif, Lucida,'
+        + 'Bitstream Charter, Bitstream Vera Serif, DejaVu Serif, Century Schoolbook L,'
+        + 'serif',
+    fontSize: '100%',
+    marginBottom: '1rem',
+  };
 
   return (
-    <div>
-      <h1 className="text-center" style={headingStyle}>{props.title}</h1>
-      <div>
-        <h2 style={headingStyle}>Pieces</h2>
-        {props.piecesTable}
-      </div>
-      <div>
-        <h2 style={headingStyle}>Rules</h2>
-        <div style={bodyStyle}>
-          {props.children}
+    <Container>
+      <h1 style={headingStyle}>
+        Rules of
+        {' '}
+        {title}
+      </h1>
+      <Row xs={8}>
+        <div>
+          <div style={bodyStyle}>
+            {children}
+          </div>
         </div>
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
-}
+};
 
 export default Variant;
+
+Variant.propTypes = {
+  title: PropTypes.string.isRequired,
+  children: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.object])).isRequired,
+};

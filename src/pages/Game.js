@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+// import Paper from '@material-ui/core/Paper';
+// import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
+import { Widget } from 'react-chat-widget';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
@@ -13,7 +14,8 @@ import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
 import './Game.css';
-import Clock from '../components/Clock';
+//import Clock from '../components/Clock';
+// import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
 import { Widget, toggleWidget, addResponseMessage, addUserMessage } from 'react-chat-widget';
@@ -21,18 +23,22 @@ import 'react-chat-widget/lib/styles.css';
 import {Launcher} from 'react-chat-window'
 
 
+
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
 
 class Game extends Component {
+  clockRefWhite = null;
+
+  clockRefBlack = null;
+
   constructor(props) {
     super(props);
     this.state = {
       fen: '',
-      time: '',
+      time: 0,
       squareStyles: {},
       yourTurn: false,
       showGameResignationDialog: false,
-      gameResult: '',
       history: [],
       messageList: [],
       gameOver: false,
@@ -103,30 +109,31 @@ class Game extends Component {
     }
     console.log(this.orientation, userId, this.gameInfo.opponent.id, this.gameInfo.creator.id);
     let initialFen = '';
+    const startTime = parseInt(this.gameInfo.time, 10);
     let yourTurn = this.orientation === 'white';
     this.gameId = this.gameInfo.id;
     const { variant } = this.gameInfo;
     switch (variant) {
-      case Games.ANTICHESS:
-        this.game = new Chess(Games.STANDARD_FEN, 1);
-        initialFen = Games.STANDARD_FEN;
-        break;
-      case Games.GRID_CHESS:
-        this.game = new Chess(Games.STANDARD_FEN, 2);
-        initialFen = Games.STANDARD_FEN;
-        this.boardId = 'grid-board';
-        break;
-      case Games.EXTINCTION_CHESS:
-        this.game = new Chess(Games.STANDARD_FEN, 3);
-        initialFen = Games.STANDARD_FEN;
-        break;
-      case Games.STANDARD_CHESS:
-        this.game = new Chess();
-        initialFen = Games.STANDARD_FEN;
-        break;
-      default:
-        this.game = new Chess();
-        initialFen = Games.STANDARD_FEN;
+    case Games.ANTICHESS:
+      this.game = new Chess(Games.STANDARD_FEN, 1);
+      initialFen = Games.STANDARD_FEN;
+      break;
+    case Games.GRID_CHESS:
+      this.game = new Chess(Games.STANDARD_FEN, 2);
+      initialFen = Games.STANDARD_FEN;
+      this.boardId = 'grid-board';
+      break;
+    case Games.EXTINCTION_CHESS:
+      this.game = new Chess(Games.STANDARD_FEN, 3);
+      initialFen = Games.STANDARD_FEN;
+      break;
+    case Games.STANDARD_CHESS:
+      this.game = new Chess();
+      initialFen = Games.STANDARD_FEN;
+      break;
+    default:
+      this.game = new Chess();
+      initialFen = Games.STANDARD_FEN;
     }
     if (this.gameInfo.result) {
       // if a game was ended, play all the moves to the end
@@ -213,6 +220,7 @@ class Game extends Component {
     localStorage.removeItem(this.gameId)
     if(this.messageCreationSubscription)
       this.messageCreationSubscription.unsubscribe()
+
   }
 
   getUserInfo = async () => {
@@ -227,7 +235,16 @@ class Game extends Component {
     return userInfo;
   }
 
+  // chessboard.jsx method for responsive board sizing
+  calcWidth = (dimensions) => {
+    let customWidth = Math.min(dimensions.screenWidth, 600/640 * dimensions.screenHeight);
+    if (customWidth < 300) customWidth = 300;
+    return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
+  }
+
+  // chessboard.jsx method for defining what happens when user clicks a square
   onSquareClick = async (square) => {
+    if (!this.game) return;
     if (this.game.turn() !== this.orientation[0]) return;
     if (this.game.game_over() || this.gameInfo.ended) {
       return
@@ -239,14 +256,13 @@ class Game extends Component {
         const updateGameData = {};
         updateGameData.id = this.gameId;
         updateGameData.fen = this.game.fen();
-        let gameResult = ''
+        let gameResult = '';
         if (this.game.game_over()) {
           if (this.game.in_checkmate) {
-            gameResult = `CHECKMATE: YOU WIN!`
-          }
-          else gameResult = 'STALEMATE: TIE GAME!'
-          this.gameUpdateSubscription.unsubscribe()
-          updateGameData.ended = true
+            gameResult = 'CHECKMATE: YOU WIN!';
+          } else gameResult = 'STALEMATE: TIE GAME!';
+          this.gameUpdateSubscription.unsubscribe();
+          updateGameData.ended = true;
         }
         updateGameData.history = [...this.state.history, move.san];
         this.setState({
@@ -255,12 +271,14 @@ class Game extends Component {
           yourTurn: false,
           gameResult,
           history: [...this.state.history, move.san],
+          turn: this.game.turn(),
         });
         // end the game if necessary
         const result = this.updateGameResult();
         if (result) {
           updateGameData.result = result;
-          updateGameData.winner = this.game.turn();
+          updateGameData.winner = this.game.turn() === 'w' ? 'Black' : 'White';
+          updateGameData.ended = true;
           console.log('game end', this.game.turn(), result);
         }
         const updated = await API.graphql(graphqlOperation(
@@ -278,7 +296,7 @@ class Game extends Component {
       newSquareStyles[square] = { backgroundColor: Colors.BOARD_HIGHLIGHT_COLOR };
       validMoves.forEach((move) => {
         newSquareStyles[move.to] = {
-          background: `radial-gradient(circle, ${Colors.BOARD_HIGHLIGHT_COLOR} 18%, transparent 15%)`,
+          background: `radial-gradient(circle, ${Colors.BOARD_HIGHLIGHT_COLOR} 50%, transparent 20%)`,
           borderRadius: '50%',
         };
       });
@@ -287,8 +305,8 @@ class Game extends Component {
   }
 
   updateGameResult = () => {
-    if (this.game.game_over() || this.state.history.length >= 50) {
-      let result = 'fifty'; // fifty move rule
+    if (this.game.game_over()) {
+      let result;
       if (this.game.in_checkmate()) {
         result = 'checkmate';
       } else if (this.gameInfo.variant === Games.EXTINCTION_CHESS && this.game.extinguished()) {
@@ -299,6 +317,8 @@ class Game extends Component {
         result = 'insufficient';
       } else if (this.game.in_threefold_repetition()) {
         result = 'repetition';
+      } else {
+        result = 'fifty';
       }
       this.setState({
         gameOver: true,
@@ -306,7 +326,6 @@ class Game extends Component {
       });
       return result;
     }
-    /* (we will pass the value of this.state.gameResult to GameData) */
   }
 
   prevMove = () => {
@@ -315,9 +334,8 @@ class Game extends Component {
       this.game.undo();
       this.setState({
         fen: this.game.fen(),
-        reverseHistory,
-      }, () => console.log(this.game.fen(), this.state.fen));
-      console.log(this.game.history(), this.state.reverseHistory);
+        reverseHistory
+      }, () => console.log(this.game.history(), this.state.reverseHistory));
     }
   }
 
@@ -325,18 +343,27 @@ class Game extends Component {
     const reverseHistory = [...this.state.reverseHistory];
     if (reverseHistory.length > 0) {
       const move = reverseHistory.pop();
-      const newMove = this.game.move(move);
+      this.game.move(move);
       this.setState({
         fen: this.game.fen(),
-        reverseHistory,
-      }, () => console.log(this.game.fen(), this.state.fen));
-      console.log(move, newMove.san, this.game.history(), reverseHistory);
+        reverseHistory
+      }, () => console.log(this.game.history(), this.state.reverseHistory));
     }
   }
 
+  setClockRefWhite(ref) {
+    this.clockRefWhite = ref;
+  }
+
+  setClockRefBlack(ref) {
+    this.clockRefBlack = ref;
+  }
+
   leaveGame = () => {
-    let newGameState = {}
-    newGameState.id = this.gameId
+    // this should be called if a player resign
+    // should also include newGameState.result stating who resigned and who won
+    const newGameState = {};
+    newGameState.id = this.gameId;
     newGameState.ended = true;
     API.graphql(graphqlOperation(
       mutations.updateGameState, { input: newGameState },
@@ -425,8 +452,9 @@ class Game extends Component {
               currentMove={state.history !== null? state.history.length - state.reverseHistory.length : 0}
             />
         </Box>
+
       </Box>
-    )
+    );
   }
 }
 

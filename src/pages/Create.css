@@ -84,7 +84,12 @@
     background-image:url(../icons/pieces/fairy/bs.svg);
 }
 
-
+.white-joker {
+    background-image:url(../icons/white_joker.svg);
+}
+.black-joker {
+    background-image:url(../icons/black_joker.svg);
+}
 
 .piece-selector input:checked +.piece-card {
     border: 0.15em inset black;
@@ -96,10 +101,99 @@
     display: inline-block;
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
     width: 65px;
     height: 65px;
     filter: opacity(.4);
+    flex: 0 1 15%;
 }
 .piece-card:hover {
     filter: opacity(.85);
+}
+
+.piece-card.cursor, .piece-card.trash {
+    width: 50px;
+    height: 50px;
+    flex: 0 1 12%;
+}
+
+
+.board {
+    position: relative;
+}
+
+.title {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+.misc-section {
+    display: flex;
+    justify-content: center;
+    background-color: #fffe93;
+    padding-top: 0.5em;
+}
+.spares-section {
+    background-color: #fff;
+}
+.customize-section {
+    padding-bottom: 0em;
+}
+
+.piece-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.piece-selector {
+    display: flex;
+    flex-direction: column;
+}
+
+.piece-customize {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap:wrap;
+    text-align: center;
+}
+
+.offsets-form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+}
+
+.move-diagram {
+    display: inline-block;
+    position: relative;
+    background-image:
+    linear-gradient(45deg, #ffffff 25%, transparent 25%),
+    linear-gradient(-45deg, #ffffff 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ffffff 75%),
+    linear-gradient(-45deg, transparent 75%, #ffffff 75%);
+    background-size: 40px 40px;
+    background-color: #ddd;
+    background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+    width: 300px;
+    height: 300px; 
+}
+
+.move {
+    fill: #105801;
+}
+
+.moveRepeat {
+    fill: #fd4362;
+}
+
+@media only screen and (max-width: 400px) {
+    .move-diagram {
+        background-size: 30px 30px;
+        background-position: 0 0, 0 15px, 15px -15px, -15px 0px;
+        width: 225px;
+        height: 225px; 
+    }
 }

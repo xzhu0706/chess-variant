@@ -5,6 +5,49 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
   updateGameState(input: $input) {
     id
     players {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
       nextToken
     }
     creator {
@@ -26,53 +69,43 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
     winner
     createdAt
     messages {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+      }
       nextToken
     }
-  }
-}
-`;
-export const createUser = `mutation CreateUser($input: CreateUserInput!) {
-  createUser(input: $input) {
-    id
-    username
-    email
-    phoneNumber
-    pastGames {
-      nextToken
-    }
-    points
-    skillLevel
-    rank
-  }
-}
-`;
-export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
-  updateUser(input: $input) {
-    id
-    username
-    email
-    phoneNumber
-    pastGames {
-      nextToken
-    }
-    points
-    skillLevel
-    rank
-  }
-}
-`;
-export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
-  deleteUser(input: $input) {
-    id
-    username
-    email
-    phoneNumber
-    pastGames {
-      nextToken
-    }
-    points
-    skillLevel
-    rank
   }
 }
 `;
@@ -81,6 +114,43 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
     id
     game {
       id
+      players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
       creatorOrientation
       time
       variant
@@ -91,15 +161,69 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
       result
       winner
       createdAt
+      messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
+        nextToken
+      }
     }
     player {
       id
       username
       email
       phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
       points
       skillLevel
       rank
+      createdAt
     }
   }
 }
@@ -109,6 +233,43 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
     id
     game {
       id
+      players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
       creatorOrientation
       time
       variant
@@ -119,15 +280,69 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
       result
       winner
       createdAt
+      messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
+        nextToken
+      }
     }
     player {
       id
       username
       email
       phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
       points
       skillLevel
       rank
+      createdAt
     }
   }
 }
@@ -137,6 +352,43 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
     id
     game {
       id
+      players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
       creatorOrientation
       time
       variant
@@ -147,15 +399,69 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
       result
       winner
       createdAt
+      messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
+        nextToken
+      }
     }
     player {
       id
       username
       email
       phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
       points
       skillLevel
       rank
+      createdAt
     }
   }
 }
@@ -164,6 +470,50 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
   createGame(input: $input) {
     id
     players {
+
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
       nextToken
     }
     creator {
@@ -185,6 +535,41 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
     winner
     createdAt
     messages {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+      }
       nextToken
     }
   }
@@ -194,6 +579,49 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
   updateGame(input: $input) {
     id
     players {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
       nextToken
     }
     creator {
@@ -215,6 +643,41 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
     winner
     createdAt
     messages {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+      }
       nextToken
     }
   }
@@ -224,6 +687,49 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
   deleteGame(input: $input) {
     id
     players {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
       nextToken
     }
     creator {
@@ -245,6 +751,41 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
     winner
     createdAt
     messages {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+      }
       nextToken
     }
   }
@@ -260,6 +801,43 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
     content
     game {
       id
+      players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
       creatorOrientation
       time
       variant
@@ -270,6 +848,31 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
       result
       winner
       createdAt
+
+      messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
+        nextToken
+      }
     }
   }
 }
@@ -284,6 +887,43 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
     content
     game {
       id
+      players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
       creatorOrientation
       time
       variant
@@ -294,6 +934,30 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
       result
       winner
       createdAt
+      messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
+        nextToken
+      }
     }
   }
 }
@@ -308,6 +972,43 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
     content
     game {
       id
+      players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
       creatorOrientation
       time
       variant
@@ -318,7 +1019,379 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
       result
       winner
       createdAt
+      messages {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+        }
+        nextToken
+      }
     }
+  }
+}
+`;
+export const createUser = `mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    id
+    username
+    email
+    phoneNumber
+    pastGames {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
+      nextToken
+    }
+    points
+    skillLevel
+    rank
+    createdAt
+  }
+}
+`;
+export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    id
+    username
+    email
+    phoneNumber
+    pastGames {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
+      nextToken
+    }
+    points
+    skillLevel
+    rank
+    createdAt
+  }
+}
+`;
+export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
+  deleteUser(input: $input) {
+    id
+    username
+    email
+    phoneNumber
+    pastGames {
+      items {
+        id
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+        player {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+        }
+      }
+      nextToken
+    }
+    points
+    skillLevel
+    rank
+    createdAt
+  }
+}
+`;
+export const createComplaint = `mutation CreateComplaint($input: CreateComplaintInput!) {
+  createComplaint(input: $input) {
+    id
+    user {
+      id
+      username
+    }
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+    }
+    createdAt
+  }
+}
+`;
+export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaintInput!) {
+  updateComplaint(input: $input) {
+    id
+    user {
+      id
+      username
+    }
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+    }
+    createdAt
+  }
+}
+`;
+export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaintInput!) {
+  deleteComplaint(input: $input) {
+    id
+    user {
+      id
+      username
+    }
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+    }
+    createdAt
   }
 }
 `;
