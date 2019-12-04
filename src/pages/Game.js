@@ -16,22 +16,9 @@ import './Game.css';
 import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
-import { Widget, toggleWidget, addResponseMessage, addLinkSnippet, addUserMessage } from 'react-chat-widget';
+import { Widget, toggleWidget, addResponseMessage, addUserMessage } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
-import { Container, Button, lightColors, darkColors } from 'react-floating-action-button'
-import { IoIosAdd } from "react-icons/io";
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
-import "font-awesome/css/font-awesome.css";
-import { Fab, Action } from 'react-tiny-fab';
-import 'react-tiny-fab/dist/styles.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import 'react-tiny-fab/dist/styles.css';
-import { FaRegComments } from 'react-icons/fa';
-
-
-
-
-
+import {Launcher} from 'react-chat-window'
 
 
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
@@ -53,12 +40,15 @@ class Game extends Component {
       winner: '',
       reverseHistory: [],
       messagesCount: 0,
+      messageList: [],
+      isChatWidgetOpen: false,
     };
     this.game = null;
     this.opponent = null; // the opponent. null if user created or joined game anonymously
     this.gameId = null;
     this.orientation = '';
     this.gameUpdateSubscription = null;
+    this.messageCreationSubscription = null;
     this.moveFrom = null;
     this.gameInfo = null;
     this.boardId = '';
@@ -73,6 +63,16 @@ class Game extends Component {
     this.currentUser = await this._getUserInfo()
     const queryResult = await API.graphql(graphqlOperation(queries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame;
+    let initialMessages = this.gameInfo.messages.items
+    alert(JSON.stringify(initialMessages))
+    this.initialMessages.forEach((message) => {
+      let author = message.author.id === this.currentUser.id? 'me' : 'them'
+        return {
+          author: author,
+          type: 'text',
+          data: {text: message.content}
+        }
+    });
     if (this.gameInfo.history) {
       console.log('getting history from db', this.gameInfo);
       this.setState({
@@ -87,13 +87,6 @@ class Game extends Component {
     if(localStorage.getItem(gameId)){
       messagesCount = localStorage.getItem(gameId)
     }
-    const filter = {messageGameId: { eq: this.gameId },};
-    const limit = 100;
-    let query = await API.graphql(graphqlOperation(queries.listMessages, { limit, filter }));
-    if(query){
-      this.initialMessages = query.data.listMessages.items;
-    }
-
     // let currentGame = localStorage.getItem('currentGame');
     // if (currentGame && currentGame === this.gameId) {
     const user = await this.getUserInfo();
@@ -149,17 +142,24 @@ class Game extends Component {
       this.game.load(initialFen);
       yourTurn = this.game.turn() === this.orientation[0];
     }
-    this.setState({ fen: initialFen, yourTurn, messagesCount});
+    this.setState({ fen: initialFen, yourTurn, messagesCount, messageList: [...initialMessages]});
 
-    API.graphql(graphqlOperation(subscriptions.onCreateMessage)).subscribe({
+    this.messageCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateMessage)).subscribe({
       next: (messageData) => {
         const message = messageData.value.data.onCreateMessage
         const gameId = message.game.id;
         let authorId = message.author.id
         if(gameId === this.gameId && authorId !== this.currentUser.id){
-          addResponseMessage(message.content)
+          //addResponseMessage(message.content)
           let messagesCount = this.state.messagesCount + 1
-          this.setState({messagesCount})
+          this.setState({
+            messagesCount,
+            messageList: [...this.state.messageList, {
+              author: 'them',
+              type: 'text',
+              data: { text: message.content }
+            }]
+          })
           localStorage.setItem(this.gameId, messagesCount)
         }
       },
@@ -198,12 +198,17 @@ class Game extends Component {
       },
     });
   }
-
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.location.search === this.props.location.search
+  }
   componentWillUnmount() {
     if (this.gameUpdateSubscription)
       this.gameUpdateSubscription.unsubscribe()
     if (!this.game.game_over() && !this.gameInfo.ended)
       this.leaveGame()
+    localStorage.removeItem(this.gameId)
+    if(this.messageCreationSubscription)
+      this.messageCreationSubscription.unsubscribe()
   }
 
   getUserInfo = async () => {
@@ -338,8 +343,9 @@ class Game extends Component {
     let messageObject = {}
     messageObject.author = this.currentUser
     messageObject.messageGameId = this.gameId
-    messageObject.content = message
+    messageObject.content = message.data.text
     let createdMessage = await API.graphql(graphqlOperation(mutations.createMessage, {input: messageObject}));
+    this.setState({messageList: [...this.state.messageList, message]})
   }
 
   _getUserInfo = async () => {
@@ -356,12 +362,13 @@ class Game extends Component {
     return currentUser;
   }
 
-  handleToggle = (launcher) => {
-    toggleWidget()
-    this.setState({messages: 0})
+  handleToggle = () => {
+    //toggleWidget()
+    this.setState({isChatWidgetOpen: !this.state.isChatWidgetOpen})
+    this.setState({messagesCount: 0})
     localStorage.setItem(this.gameId, 0)
   }
-
+  
   render() {
     const { state } = this;
     let players = '';
@@ -370,14 +377,23 @@ class Game extends Component {
     } else {
       players = `You vs ${this.opponent !== null ? this.opponent.username : 'Anonymous'}`;
     }
-    this.initialMessages.forEach((message) => {
-      if(message.author.id == this.currentUser.id) addUserMessage(message.content)
-      else addResponseMessage(message.content)
-    });
     return (
-      <Box display='flex' flexDirection='row' justifyContent='flex-start'>
+      <Box key={this.gameId} display='flex' flexDirection='row' justifyContent='flex-start'>
         <Box style={{width: '30%'}}>
-          <Widget
+        <Launcher
+          agentProfile={{
+            teamName: 'react-chat-window',
+            imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
+          }}
+            onMessageWasSent={this.handleNewUserMessage}
+            handleClick = {this.handleToggle}
+            messageList={this.state.messageList}
+            isOpen = {this.state.isChatWidgetOpen}
+            showEmoji = {false}
+            newMessagesCount = {parseInt(this.state.messagesCount)}
+          />
+        {/*<Widget
+            handleNewUserMessage = {this.handleNewUserMessage}
             badge = {this.state.messagesCount}
           />
           <span onClick = {this.handleToggle} style={{
@@ -392,7 +408,7 @@ class Game extends Component {
               zIndex: '10'
               }}
             >
-          </span>
+            </span>*/}
         </Box>          
         <Box display="flex" flexDirection="column" justifyContent='center' marginRight='30px' >
           <GameInfo
@@ -420,7 +436,7 @@ class Game extends Component {
               winner={state.winner}
               prevMove={this.prevMove}
               nextMove={this.nextMove}
-              currentMove={state.history.length - state.reverseHistory.length}
+              currentMove={state.history !== null? state.history.length - state.reverseHistory.length : 0}
             />
         </Box>
       </Box>

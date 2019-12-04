@@ -60,6 +60,14 @@ export const getGame = `query GetGame($id: ID!) {
     winner
     createdAt
     messages {
+      items {
+        id
+        author{
+          id
+          username
+        }
+        content
+      }
       nextToken
     }
   }
@@ -120,7 +128,9 @@ export const listMessages = `query ListMessages(
   listMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      author
       content
+      game
     }
     nextToken
   }
