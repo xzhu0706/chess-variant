@@ -61,13 +61,17 @@ class NavBar extends Component {
   }
 
   async componentDidMount() {
-    const user = await Auth.currentUserPoolUser();
-    if (user) {
-      const groups = user.signInUserSession.idToken.payload['cognito:groups'];
-      this.setState({
-        username: user.username,
-        isAdmin: groups && groups[0] === 'Admin',
-      });
+    try {
+      const user = await Auth.currentUserPoolUser();
+      if (user) {
+        const groups = user.signInUserSession.idToken.payload['cognito:groups'];
+        this.setState({
+          username: user.username,
+          isAdmin: groups && groups[0] === 'Admin',
+        });
+      }
+    } catch (e) {
+      console.log(e);
     }
   }
 
