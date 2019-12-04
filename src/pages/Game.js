@@ -64,8 +64,7 @@ class Game extends Component {
     const queryResult = await API.graphql(graphqlOperation(queries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame;
     let initialMessages = this.gameInfo.messages.items
-    alert(JSON.stringify(initialMessages))
-    this.initialMessages.forEach((message) => {
+    initialMessages = initialMessages.map((message) => {
       let author = message.author.id === this.currentUser.id? 'me' : 'them'
         return {
           author: author,
@@ -85,7 +84,7 @@ class Game extends Component {
     //Represents the count of new messages to display on the chat widget badge.
     let messagesCount;
     if(localStorage.getItem(gameId)){
-      messagesCount = localStorage.getItem(gameId)
+      messagesCount = parseInt(localStorage.getItem(gameId))
     }
     // let currentGame = localStorage.getItem('currentGame');
     // if (currentGame && currentGame === this.gameId) {
@@ -151,7 +150,8 @@ class Game extends Component {
         let authorId = message.author.id
         if(gameId === this.gameId && authorId !== this.currentUser.id){
           //addResponseMessage(message.content)
-          let messagesCount = this.state.messagesCount + 1
+          let widgetOpen = this.state.isChatWidgetOpen
+          let messagesCount = widgetOpen? 0 : this.state.messagesCount + 1
           this.setState({
             messagesCount,
             messageList: [...this.state.messageList, {
@@ -160,7 +160,8 @@ class Game extends Component {
               data: { text: message.content }
             }]
           })
-          localStorage.setItem(this.gameId, messagesCount)
+          if(!widgetOpen)
+            localStorage.setItem(this.gameId, messagesCount)
         }
       },
     });
