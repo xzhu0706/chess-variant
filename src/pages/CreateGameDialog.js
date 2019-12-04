@@ -30,7 +30,11 @@ class CreateGameDialog extends Component {
 
     setMinutesPerSide = (e) => {
         this.setState({ minutesPerSide: e.target.value });
-        console.log(e.target.value);
+    }
+
+    setOpponent = (e,val) => {
+            this.setState({ opponent: {"id": {"S":val.id},"username":{"S":val.username}}});
+            console.log({"id": {"S":val.id},"username":{"S":val.username}})
     }
 
     handleSearch = async (e) => {
@@ -87,7 +91,7 @@ class CreateGameDialog extends Component {
                                     getOptionLabel={(option) => option.username}
                                     noOptionsText="No Opponent Selected"
                                     options={searchResults}
-                                    // onChange={this.linkToUser}
+                                    onChange={this.setOpponent}
                                     onInputChange={this.handleSearch}
                                     renderInput={(params) => (
                                     <TextField
