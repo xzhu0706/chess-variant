@@ -28,7 +28,7 @@ export default class Account extends Component {
     if (userInfo && userInfo[0]) {
       this.setState({
         user: userInfo[0],
-        isCurrentUser: currentUser.username === username,
+        isCurrentUser: currentUser && currentUser.username === username,
       }, () => {console.log('user', this.state.user)});
     }
   }
