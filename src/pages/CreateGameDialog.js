@@ -33,8 +33,9 @@ class CreateGameDialog extends Component {
     }
 
     setOpponent = (e,val) => {
-            this.setState({ opponent: {"id": {"S":val.id},"username":{"S":val.username}}});
-            console.log({"id": {"S":val.id},"username":{"S":val.username}})
+            if(val){
+                this.setState({ opponent: {"id": val.id,"username": val.username}});
+            }
     }
 
     handleSearch = async (e) => {
@@ -54,7 +55,6 @@ class CreateGameDialog extends Component {
           this.setState({
             searchResults: queryResult.data.listUsers.items,
           });
-          console.log(queryResult.data.listUsers.items);
         }
       }
 
@@ -124,7 +124,7 @@ class CreateGameDialog extends Component {
                         <Button
                             style={{ marginRight: '20px', padding: '20px', color: 'black' }}
                             variant="contained"
-                            onClick={(gameInfo, event) => this.props.createGame(event, { creatorOrientation: 'white', variant: this.state.variant, time: this.state.minutesPerSide })}
+                            onClick={(gameInfo, event) => this.props.createGame(event, { creatorOrientation: 'white', variant: this.state.variant, time: this.state.minutesPerSide, opponent: this.state.opponent })}
                             id="btnwhite"
                         >
                             WHITE
@@ -132,7 +132,7 @@ class CreateGameDialog extends Component {
                         <Button
                             style={{ padding: '20px', backgroundColor: '#333333', color: 'white' }}
                             variant="contained"
-                            onClick={(event) => this.props.createGame(event, { creatorOrientation: 'black', variant: this.state.variant, time: this.state.minutesPerSide })}
+                            onClick={(event) => this.props.createGame(event, { creatorOrientation: 'black', variant: this.state.variant, time: this.state.minutesPerSide, opponent: this.state.opponent })}
                             id="btnblack"
                         >
                             BLACK

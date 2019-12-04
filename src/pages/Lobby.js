@@ -43,6 +43,16 @@ const lobbyColumns = [
     },
   },
   {
+    title: 'Opponent',
+    field: 'opponent',
+    cellStyle: {
+      backgroundColor: '#FFF',
+      fontFamily: 'AppleSDGothicNeo-SemiBold, verdana',
+      fontSize: '16px',
+      color: '#333333',
+    },
+  },
+  {
     title: 'Skill Level',
     field: 'skillLevel',
     cellStyle: {
@@ -251,8 +261,9 @@ class Lobby extends Component {
     const skillLevel = game.skillLevel || 'n/a';
     const timing = game.time;
     const gameId = game.id;
+    const opponent = game.opponent ? game.opponent.username : 'n/a';
     return {
-      creator, player, skillLevel, timing, variant, gameId,
+      creator, player, skillLevel, timing, variant, gameId,opponent
     };
   }
 
@@ -275,6 +286,7 @@ class Lobby extends Component {
         };
       }
     });
+    console.log("ROW DATA",rowData)
     if (joinGameInput.opponent.id === rowData.creator.id) {
       this.showJoiningOwnGameDialog();
       return;
