@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 
@@ -62,37 +63,42 @@ class CreateGameDialog extends Component {
                 <DialogTitle id="form-dialog-title">Create a game</DialogTitle>
                 <DialogContent>
                     <FormControl style={{ minWidth: 120 }}>
-                        <InputLabel htmlFor="select-variant">Game Type</InputLabel>
-                        <select
-                            id="select-variant"
-                            data-testid="select-variant"
-                            value={this.state.variant}
-                            onChange={this.setVariant}
-                        >
-                            <option value="Standard">Standard</option>
-                            <option value="Antichess">Antichess</option>
-                            <option value="Gridchess">Grid chess</option>
-                            <option value="Extinction">Extinction chess</option>
-                        </select>
-                        <br />
-
-                        <Autocomplete
-                            className="d-inline-block"
-                            id="search-bar"
-                            style={{ width: 250 }}
-                            getOptionLabel={(option) => option.username}
-                            noOptionsText="No user found"
-                            options={searchResults}
-                            onChange={this.linkToUser}
-                            onInputChange={this.handleSearch}
-                            renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                label="Search a User"
-                                fullWidth
-                            />
-                            )}
-                         />
+                        <Grid container spacing={3}>
+                            <Grid item xs={6}>
+                                <InputLabel htmlFor="select-variant">Game Type</InputLabel>
+                                <select
+                                    id="select-variant"
+                                    data-testid="select-variant"
+                                    value={this.state.variant}
+                                    onChange={this.setVariant}
+                                >
+                                    <option value="Standard">Standard</option>
+                                    <option value="Antichess">Antichess</option>
+                                    <option value="Gridchess">Grid chess</option>
+                                    <option value="Extinction">Extinction chess</option>
+                                </select>
+                                <br />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Autocomplete
+                                    className="d-inline-block"
+                                    id="search-bar"
+                                    style={{ width: 250 }}
+                                    getOptionLabel={(option) => option.username}
+                                    noOptionsText="No Opponent Selected"
+                                    options={searchResults}
+                                    // onChange={this.linkToUser}
+                                    onInputChange={this.handleSearch}
+                                    renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Select an Opponent"
+                                        fullWidth
+                                    />
+                                    )}
+                                />
+                            </Grid>
+                         </Grid>
                     </FormControl>
                     <div style={{ width: '100%', marginTop: '15px' }}>
 
