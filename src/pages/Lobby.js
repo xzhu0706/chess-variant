@@ -270,9 +270,8 @@ class Lobby extends Component {
   joinGame = async (event, rowData) => {
     let userInfo;
     const joinGameInput = {};
-    const { gameId } = rowData;
+    const { gameId,opponent} = rowData;
     await this.getUserInfo().then((user) => {
-      console.log(typeof (user), user);
       if (typeof (user) === 'object') {
         userInfo = { ...user };
         joinGameInput.opponent = {
@@ -286,11 +285,28 @@ class Lobby extends Component {
         };
       }
     });
-    console.log("ROW DATA",rowData)
+
+    // Wrong user trying to join invite only game
+    if(opponent != "n/a"){
+      // guest user
+      if(joinGameInput.opponent.username === 'anonymous'){
+        this.showJoiningOwnGameDialog();
+        return;
+      }
+      // wrong user
+      if(userInfo.username != opponent){
+        this.showJoiningOwnGameDialog();
+        return;
+      }
+    }
+
+
     if (joinGameInput.opponent.id === rowData.creator.id) {
       this.showJoiningOwnGameDialog();
       return;
     }
+
+
     joinGameInput.available = false;
     joinGameInput.id = gameId;
     console.log('join game input', joinGameInput)
@@ -362,13 +378,14 @@ class Lobby extends Component {
           open={this.state.showJoiningOwnGameDialog}
           onClose={this.closeJoiningOwnGameDialog}
         >
-          <DialogTitle id="alert-dialog-title">Sorry, you can't play against yourself!</DialogTitle>
+          <DialogTitle id="alert-dialog-title">Invalid Opponent</DialogTitle>
           <DialogActions>
             <Button onClick={this.closeJoiningOwnGameDialog} color="primary">
               Alright
             </Button>
           </DialogActions>
         </Dialog>
+
         <div style={{ width: '100%' }}>
           <MaterialTable
             onRowClick = {(event, rowData) => this.joinGame(event, rowData)}
