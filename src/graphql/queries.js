@@ -472,6 +472,14 @@ export const getUserByUsername = `query GetUserByUsername(
             result
             winner
             createdAt
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
           }
           player {
             id

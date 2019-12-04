@@ -6,10 +6,13 @@ import styled from 'styled-components'; // https://www.styled-components.com/
 import { FaBars, FaTimes } from 'react-icons/fa';
 import Button from '@material-ui/core/Button';
 import Image from 'react-bootstrap/Image';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Dialog from '@material-ui/core/Dialog';
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
+import * as queries from '../graphql/queries';
 
 import awsconfig from '../aws-exports';
 
@@ -58,13 +61,17 @@ class NavBar extends Component {
   }
 
   async componentDidMount() {
-    const user = await Auth.currentUserPoolUser();
-    if (user) {
-      const groups = user.signInUserSession.idToken.payload['cognito:groups'];
-      this.setState({
-        username: user.username,
-        isAdmin: groups && groups[0] === 'Admin',
-      });
+    try {
+      const user = await Auth.currentUserPoolUser();
+      if (user) {
+        const groups = user.signInUserSession.idToken.payload['cognito:groups'];
+        this.setState({
+          username: user.username,
+          isAdmin: groups && groups[0] === 'Admin',
+        });
+      }
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -101,12 +108,41 @@ class NavBar extends Component {
     });
   }
 
+  handleSearch = async (e) => {
+    // clear the search results each time the search input is updated
+    this.setState({
+      searchResults: [],
+    });
+    const input = e.target.value;
+    // start searching after 2 characters input
+    if (input.length > 2) {
+      const filter = {
+        username: {
+          contains: input,
+        },
+      };
+      const queryResult = await API.graphql(graphqlOperation(queries.listUsers, { filter }));
+      this.setState({
+        searchResults: queryResult.data.listUsers.items,
+      });
+      console.log(queryResult.data.listUsers.items);
+    }
+  }
+
+  linkToUser = (e, val) => {
+    if (val) {
+      this.props.history.push(`/account/${val.username}`);
+    }
+  }
+
   render() {
     const imgStyle = {
       width: '2em',
       height: '2em',
     };
-    const { username, showAuth, isAdmin } = this.state;
+    const {
+      username, showAuth, isAdmin, searchResults,
+    } = this.state;
     const {
       handleShowAuth, handleCloseAuth, handleAuthStateChange, handleSignOut,
     } = this;
@@ -143,7 +179,7 @@ class NavBar extends Component {
                   ? (
                     <span>
                       <li>
-                        <Link to="/account">
+                        <Link to={`/account/${username}`}>
                           Hello
                           {' '}
                           {username}
@@ -179,6 +215,25 @@ class NavBar extends Component {
                       </Button>
                     </li>
                   )}
+                <li>
+                  <Autocomplete
+                    className="d-inline-block"
+                    id="search-bar"
+                    style={{ width: 250 }}
+                    getOptionLabel={(option) => option.username}
+                    noOptionsText="No user found"
+                    options={searchResults}
+                    onChange={this.linkToUser}
+                    onInputChange={this.handleSearch}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Search a User"
+                        fullWidth
+                      />
+                    )}
+                  />
+                </li>
               </ul>
             </Menu>
           )}
