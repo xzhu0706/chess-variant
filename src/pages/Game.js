@@ -6,7 +6,6 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
-import { Widget } from 'react-chat-widget';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
@@ -48,6 +47,7 @@ class Game extends Component {
       messagesCount: 0,
       messageList: [],
       isChatWidgetOpen: false,
+      turn: '',
     };
     this.game = null;
     this.opponent = null; // the opponent. null if user created or joined game anonymously
@@ -151,8 +151,7 @@ class Game extends Component {
       this.game.load(initialFen);
       yourTurn = this.game.turn() === this.orientation[0];
     }
-    this.setState({ fen: initialFen, yourTurn, messagesCount, messageList: [...initialMessages]});
-
+    this.setState({ fen: initialFen, yourTurn, turn: this.game.turn(). messagesCount, messageList: [...initialMessages]});
     this.messageCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateMessage)).subscribe({
       next: (messageData) => {
         const message = messageData.value.data.onCreateMessage
@@ -203,7 +202,7 @@ class Game extends Component {
             this.gameUpdateSubscription.unsubscribe()
             yourTurn = false
           }
-          this.setState({ fen: gameState.fen, yourTurn, gameResult, history: gameState.history });
+          this.setState({ fen: gameState.fen, yourTurn, turn: this.game.turn(), gameResult, history: gameState.history });
 
         }
       },
@@ -441,8 +440,9 @@ class Game extends Component {
             />
           </div>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent='center' width='30%'>
+        <Box display="flex" flexDirection="column" justifyContent='center' width='50%'>
             <GameData style={{ width: '100%' }}
+              turn={state.turn}
               history={state.history}
               fen={state.fen}
               gameResult={state.gameResult}
