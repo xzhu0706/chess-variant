@@ -61,7 +61,7 @@ const Profile = (props) => (
         />
       </Col>
       <Col sm={{ span: 7 }} >
-        <MatchHistory history={props.history} />
+        <MatchHistory history={props.history} currentUser={props.username} />
       </Col>
       
     </Row>
@@ -106,10 +106,18 @@ const MatchHistory = (props) => {
   if (games !== "Loading..") {
     while (index < games.length) {
       let game = games[index].game
-      console.log(game)
+      console.log(game);
+      let opponent = '';
+      if (!game.available) {
+        if (game.opponent.username === props.currentUser) {
+          opponent = game.creator.username;
+        } else {
+          opponent = game.opponent.username;
+        }
+      }
       let row = <GameRow
         available={game.available ? "yes" : "no"}
-        // opponent={game.opponent.username ? game.opponent.username : "anonymous"}
+        opponent={opponent}
         variant={game.variant}
         time={game.time ? game.time : "N/A"}
         winner={game.winner ? game.winner : "N/A"}
