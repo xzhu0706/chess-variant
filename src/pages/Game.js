@@ -64,6 +64,8 @@ class Game extends Component {
     this.boardId = '';
     this.isViewer = false;
     this.currentUser = null;
+    this.widgetHasBeenLaunched = false;
+    this.initialMessages = [];
   }
 
   async componentDidMount() {
@@ -80,10 +82,18 @@ class Game extends Component {
         winner: this.gameInfo.winner,
       });
     }
+    //Represents the count of new messages to display on the chat widget badge.
     let messagesCount;
     if(localStorage.getItem(gameId)){
       messagesCount = localStorage.getItem(gameId)
     }
+    const filter = {messageGameId: { eq: this.gameId },};
+    const limit = 100;
+    let query = await API.graphql(graphqlOperation(queries.listMessages, { limit, filter }));
+    if(query){
+      this.initialMessages = query.data.listMessages.items;
+    }
+
     // let currentGame = localStorage.getItem('currentGame');
     // if (currentGame && currentGame === this.gameId) {
     const user = await this.getUserInfo();
@@ -360,6 +370,10 @@ class Game extends Component {
     } else {
       players = `You vs ${this.opponent !== null ? this.opponent.username : 'Anonymous'}`;
     }
+    this.initialMessages.forEach((message) => {
+      if(message.author.id == this.currentUser.id) addUserMessage(message.content)
+      else addResponseMessage(message.content)
+    });
     return (
       <Box display='flex' flexDirection='row' justifyContent='flex-start'>
         <Box style={{width: '30%'}}>

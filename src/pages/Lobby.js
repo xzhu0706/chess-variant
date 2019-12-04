@@ -130,7 +130,7 @@ class Lobby extends Component {
 
     this.gameCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateGame)).subscribe({
       next: (gameData) => {
-        const game = gameData.value.data.onCreateGame; 
+        const game = gameData.value.data.onCreateGame;
         const gameId = game.id;
         this.gamesData[gameId] = game;
         const row = this.constructRowFromGameData(game);
@@ -309,7 +309,6 @@ class Lobby extends Component {
       userInfo = { ...user };
     }).catch(async (e) => {
       await Auth.currentCredentials().then((credential) => {
-        alert(JSON.stringify(credential.identityId))
         userInfo = credential.identityId.split(':')[1];
       });
     });
@@ -390,5 +389,4 @@ class Lobby extends Component {
     );
   }
 }
-
 export default Lobby;
