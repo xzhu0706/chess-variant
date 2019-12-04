@@ -27,7 +27,12 @@ class App extends Component {
           <Route path="/" exact component={Home} />
           <Route path="/game/:id" component={Game} />
           <Route path="/variants" component={Variants} />
-          <Route path="/account/:username" component={Account} />
+          <Route
+            path="/account/:username"
+            render={(props) => (
+              <Account key={props.match.params.username} {...props} />
+            )}
+          />
           <Route path="/create" component={Create} />
           <Route path="/analysis" component={Analysis} />
           <Route path="/pieces" component={Pieces} />
