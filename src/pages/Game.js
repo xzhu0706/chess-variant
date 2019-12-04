@@ -345,7 +345,7 @@ class Game extends Component {
     messageObject.author = this.currentUser
     messageObject.messageGameId = this.gameId
     messageObject.content = message.data.text
-    let createdMessage = await API.graphql(graphqlOperation(mutations.createMessage, {input: messageObject}));
+    API.graphql(graphqlOperation(mutations.createMessage, {input: messageObject}));
     this.setState({messageList: [...this.state.messageList, message]})
   }
 
@@ -363,8 +363,7 @@ class Game extends Component {
     return currentUser;
   }
 
-  handleToggle = () => {
-    //toggleWidget()
+  toggleWidget = () => {
     this.setState({isChatWidgetOpen: !this.state.isChatWidgetOpen})
     this.setState({messagesCount: 0})
     localStorage.setItem(this.gameId, 0)
@@ -383,33 +382,16 @@ class Game extends Component {
         <Box style={{width: '30%'}}>
         <Launcher
           agentProfile={{
-            teamName: 'react-chat-window',
-            imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
+            teamName: 'Chat with your opponent',
+            imageUrl: ''
           }}
             onMessageWasSent={this.handleNewUserMessage}
-            handleClick = {this.handleToggle}
+            handleClick = {this.toggleWidget}
             messageList={this.state.messageList}
             isOpen = {this.state.isChatWidgetOpen}
             showEmoji = {false}
             newMessagesCount = {parseInt(this.state.messagesCount)}
           />
-        {/*<Widget
-            handleNewUserMessage = {this.handleNewUserMessage}
-            badge = {this.state.messagesCount}
-          />
-          <span onClick = {this.handleToggle} style={{
-              height: '60px', 
-              width: '60px',
-              position: 'relative',
-              float: 'right',
-              marginRight: '52px',
-              marginTop: '129%',
-              backgroundColor: 'black',
-              opacity: '0',
-              zIndex: '10'
-              }}
-            >
-            </span>*/}
         </Box>          
         <Box display="flex" flexDirection="column" justifyContent='center' marginRight='30px' >
           <GameInfo
