@@ -81,6 +81,7 @@ class AdminDashboard extends Component {
     this.nextTokenAdmin = '';
     this.adminUsers = [];
     this.listUsersLimit = 60;
+    this.updatedUserIndex = '';
   }
 
   async componentDidMount() {
@@ -183,6 +184,12 @@ class AdminDashboard extends Component {
         },
       };
       const result = await API.post(apiName, path, myInit);
+      // if success, call listAdmins to get updated Admin group
+      const admins = await this.listAdmins(60);
+      admins.Users.forEach((admin) => {
+        this.adminUsers.push(admin.Username);
+      });
+      this.retrieveUpdatedUser(username);
       return result.message;
     } catch (e) {
       console.log(e);
@@ -203,11 +210,48 @@ class AdminDashboard extends Component {
         },
       };
       const result = await API.post(apiName, path, myInit);
+      this.retrieveUpdatedUser(username);
       return result.message;
     } catch (e) {
       console.log(e);
       return e;
     }
+  }
+
+  getUser = async (username) => {
+    try {
+      const path = '/getUser';
+      const myInit = {
+        queryStringParameters: {
+          username,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`,
+        },
+      };
+      const result = await API.get(apiName, path, myInit);
+      return result;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  }
+
+  retrieveUpdatedUser = async (username) => {
+    const updatedUser = await this.getUser(username);
+    // clean up the returned result so that it can go through genreateUserRows function
+    console.log('updated', updatedUser)
+    updatedUser.Attributes = updatedUser.UserAttributes;
+    const updatedUserRow = this.generateUserRows([updatedUser]);
+    const users = [...this.state.users];
+    users[this.updatedUserIndex] = updatedUserRow[0];
+    this.setState({
+      users,
+    }, () => {console.log(this.state.users)});
+    // this.setState((prevState) => ({
+    //   users: [...prevState.users, ...moreUserRows],
+    // }));
   }
 
   handleJumpPage = async () => {
@@ -227,9 +271,10 @@ class AdminDashboard extends Component {
     }
     if (window.confirm('Are you sure you wish to promote this user to Admin?')) {
       const result = await this.addToAdminGroup(rowData.username);
+      const { users } = this.state;
+      this.updatedUserIndex = users.indexOf(rowData);
       alert(result);
     }
-    // TODO retrieve the single updated user and update its data in the table
   }
 
   handleDisableUser = async (event, rowData) => {
@@ -242,9 +287,10 @@ class AdminDashboard extends Component {
     }
     if (window.confirm('Are you sure you wish to disable this user?')) {
       const result = await this.updateUserStatus(rowData.username, false);
+      const { users } = this.state;
+      this.updatedUserIndex = users.indexOf(rowData);
       alert(result);
     }
-    // TODO retrieve the single updated user and update its data in the table
   }
 
   render() {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-// import * as queries from '../graphql/queries';
-import * as customQueries from '../customGraphql/queries';
+import * as queries from '../graphql/queries';
+// import * as customQueries from '../customGraphql/queries';
 import { Link } from 'react-router-dom';
 
 
@@ -14,25 +14,35 @@ export default class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isCurrentUser: false,
     };
   }
+
   async componentDidMount() {
-    const user = await Auth.currentUserInfo();
-    if (user) {
-      let userid = user.attributes.sub
-      let queryResult = await API.graphql(graphqlOperation(customQueries.getUserWithPastGames, { id: userid }));
-      this.setState({ user: queryResult.data.getUser })
+    const username = this.props.match.params.username;
+    const currentUser = await Auth.currentUserInfo();
+    const queryResult = await API.graphql(graphqlOperation(
+      queries.getUserByUsername, { username },
+    ));
+    const userInfo = queryResult.data.getUserByUsername.items;
+    if (userInfo && userInfo[0]) {
+      this.setState({
+        user: userInfo[0],
+        isCurrentUser: currentUser && currentUser.username === username,
+      }, () => {console.log('user', this.state.user)});
     }
   }
 
   render() {
+    const { user, isCurrentUser } = this.state;
     return (
       <Container>
         <Profile
-          username={this.state.user ? this.state.user.username : 'Loading..'}
-          email={this.state.user ? this.state.user.email : 'Loading..'}
-          phone={this.state.user ? this.state.user.phoneNumber : 'Loading..'}
-          history={this.state.user ? this.state.user.pastGames.items : 'Loading..'}
+          username={user ? user.username : 'Loading..'}
+          email={user ? user.email : 'Loading..'}
+          phone={user ? user.phoneNumber : 'Loading..'}
+          history={user ? user.pastGames.items : 'Loading..'}
+          isCurrentUser={isCurrentUser}
         />
       </Container>
     );
@@ -47,10 +57,11 @@ const Profile = (props) => (
           username={props.username}
           email={props.email}
           phone={props.phone}
+          isCurrentUser={props.isCurrentUser}
         />
       </Col>
       <Col sm={{ span: 7 }} >
-        <MatchHistory history={props.history} />
+        <MatchHistory history={props.history} currentUser={props.username} />
       </Col>
       
     </Row>
@@ -63,8 +74,10 @@ const AccountInfo = (props) => (
     <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg" thumbnail fluid />
     <ListGroup>
       <ListGroupItem variant="flush">{props.username}</ListGroupItem>
-      <ListGroupItem>{props.email}</ListGroupItem>
-      <ListGroupItem>{props.phone}</ListGroupItem>
+      { props.isCurrentUser
+        && <ListGroupItem>{props.email}</ListGroupItem> }
+      { props.isCurrentUser
+        && <ListGroupItem>{props.phone}</ListGroupItem> }
     </ListGroup>
   </div>
 );
@@ -92,10 +105,18 @@ const MatchHistory = (props) => {
   if (games !== "Loading..") {
     while (index < games.length) {
       let game = games[index].game
-      console.log(game)
+      console.log(game);
+      let opponent = '';
+      if (!game.available) {
+        if (game.opponent.username === props.currentUser) {
+          opponent = game.creator.username;
+        } else {
+          opponent = game.opponent.username;
+        }
+      }
       let row = <GameRow
         available={game.available ? "yes" : "no"}
-        opponent={game.opponent.username ? game.opponent.username : "anonymous"}
+        opponent={opponent}
         variant={game.variant}
         time={game.time ? game.time : "N/A"}
         winner={game.winner ? game.winner : "N/A"}

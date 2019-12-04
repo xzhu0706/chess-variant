@@ -370,16 +370,18 @@ class Game extends Component {
                 variant={this.gameInfo !== null ? this.gameInfo.variant : ''}
                 gameResult={state.gameResult}
               />
-              <div id={this.boardId}>
-                <Chessboard
-                  position={state.fen}
-                  lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
-                  darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
-                  orientation={this.orientation}
-                  squareStyles={state.squareStyles}
-                  onSquareClick={this.onSquareClick}
-                  calcWidth={this.calcWidth}
-                />
+              <div style={{ textAlign: 'center' }}>
+                <div id={this.boardId} style={{ display: 'inline-block' }}>
+                  <Chessboard
+                    position={state.fen}
+                    lightSquareStyle={{ backgroundColor: Colors.LIGHT_SQUARE }}
+                    darkSquareStyle={{ backgroundColor: Colors.DARK_SQUARE }}
+                    orientation={this.orientation}
+                    squareStyles={state.squareStyles}
+                    onSquareClick={this.onSquareClick}
+                    calcWidth={this.calcWidth}
+                  />
+                </div>
               </div>
               <Box maxWidth="540px">
                 <GameData

@@ -35,12 +35,12 @@ class Tutorial extends React.Component {
               <p>
                 The rook has repeating offsets of -1, -16, 1 and 16. Repeating offsets stop repeating on the first square that is occupied by a piece.
                 <br/>
-                <Button size="small" variant="outlined" onClick={() => this.handleClick([],[-1,1,16,-16])}>rook</Button>
+                <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([],[-1,1,16,-16])}>rook</Button>
               </p>
               <p>
                 If we double these offsets we get a rook that can step two squares at a time. Click play below to test it.
                 <br/>
-                <Button size="small" variant="outlined" onClick={() => this.handleClick([],[-2,2,32,-32])}>modified rook</Button>
+                <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([],[-2,2,32,-32])}>modified rook</Button>
               </p>
               <div>
                 <CustomPlayOption fen={'4k3/8/8/8/2R1P3/8/8/4K3 w - - 0 1'} customPiece={{ 'r': { 0: [], 1: [-2,2,-32,32] } }}/>
@@ -51,14 +51,14 @@ class Tutorial extends React.Component {
               <p>
                 The knight has regular offsets of -18, -33, -31, -14, 18, 33, 31 and 14.
                 <br/>
-                <Button size="small" variant="outlined" onClick={() => this.handleClick([-18, -33, -31, -14, 18, 33, 31, 14], [])}>knight</Button>
+                <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([-18, -33, -31, -14, 18, 33, 31, 14], [])}>knight</Button>
               </p>
               <p>
                 The nightrider assumes the regular offsets of the knight as repeating offsets.
                 It can jump any number of steps in each direction given by its offsets, but other pieces can block the movement.
                 Click play below to test it.
                 <br/>
-                <Button size="small" variant="outlined" onClick={() => this.handleClick([], [-18, -33, -31, -14, 18, 33, 31, 14])}>nightrider</Button>
+                <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([], [-18, -33, -31, -14, 18, 33, 31, 14])}>nightrider</Button>
               </p>
               <div>
                 <CustomPlayOption fen={'8/8/7k/8/5P2/8/1D6/K7 w - - 0 1'} />

@@ -27,10 +27,15 @@ class App extends Component {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/game/:id" component={Game} />
-          <Route path="/variants" exact component={Variants} />
-          <Route path="/tutorial" component={Tutorial} />
-          <Route path="/account" component={Account} />
+          <Route path="/variants" component={Variants} />
+          <Route
+            path="/account/:username"
+            render={(props) => (
+              <Account key={props.match.params.username} {...props} />
+            )}
+          />
           <Route path="/create" component={Create} />
+          <Route path="/tutorial" component={Tutorial} />
           <Route path="/analysis" component={Analysis} />
           <Route path="/pieces" component={Pieces} />
           <Route path="/admin" component={AdminDashboard} />
