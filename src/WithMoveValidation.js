@@ -27,6 +27,7 @@ class HumanVsHuman extends Component {
   state = {
     fen: this.props.fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
     history: [],
+    reverseHistory: [],
     squareStyles: {}, // custom square styles
     fromSquare: '', // most recently clicked square (empty if a move was just made)
     turn: '',
@@ -80,6 +81,29 @@ class HumanVsHuman extends Component {
       fromSquare: '',
       squareStyles: {}
     });
+  }
+
+  prevMove = () => {
+    if (this.game.history().length > 0) {
+      const reverseHistory = [...this.state.reverseHistory, this.game.history().pop()];
+      this.game.undo();
+      this.setState({
+        fen: this.game.fen(),
+        reverseHistory
+      }, () => console.log(this.game.history(), this.state.reverseHistory));
+    }
+  }
+
+  nextMove = () => {
+    const reverseHistory = [...this.state.reverseHistory];
+    if (reverseHistory.length > 0) {
+      const move = reverseHistory.pop();
+      this.game.move(move);
+      this.setState({
+        fen: this.game.fen(),
+        reverseHistory
+      }, () => console.log(this.game.history(), this.state.reverseHistory));
+    }
   }
 
   // adjust board size according to window size
@@ -243,11 +267,12 @@ class HumanVsHuman extends Component {
   };
 
   render() {
-    const { fen, history, turn, gameResult, squareStyles, orientation } = this.state;
+    const { fen, history, reverseHistory, turn, gameResult, squareStyles, orientation } = this.state;
     return this.props.children({
       squareStyles,
       fen,
       history,
+      reverseHistory,
       turn,
       gameResult,
       onSquareClick: this.onSquareClick,
@@ -256,6 +281,8 @@ class HumanVsHuman extends Component {
       flipOrientation: this.flipOrientation,
       resetBoard: this.resetBoard,
       clearBoard: this.clearBoard,
+      prevMove: this.prevMove,
+      nextMove: this.nextMove,
       orientation
     });
   }
@@ -271,6 +298,7 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
           squareStyles,
           fen,
           history,
+          reverseHistory,
           turn,
           gameResult,
           onSquareClick,
@@ -279,6 +307,8 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
           flipOrientation,
           resetBoard,
           clearBoard,
+          prevMove,
+          nextMove,
           orientation
         }) => {
           // redefine calcWidth() if smallBoard arg is true
@@ -443,7 +473,15 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
           const gameData =
             showData ? (
               <div className="p-1">
-                <GameData variant={variant} history={history} turn={turn} gameResult={gameResult} />
+                <GameData
+                  variant={variant}
+                  history={history}
+                  turn={turn}
+                  gameResult={gameResult}
+                  prevMove={prevMove}
+                  nextMove={nextMove}
+                  currentMove={history.length - reverseHistory.length}
+                />
               </div>
             ) :
             null;
