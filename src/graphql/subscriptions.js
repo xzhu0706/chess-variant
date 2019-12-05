@@ -177,6 +177,42 @@ export const onUpdateGame = `subscription OnUpdateGame {
     winner
     createdAt
     messages {
+
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        game {
+          id
+          players {
+            nextToken
+          }
+          creator {
+            id
+            username
+          }
+          opponent {
+            id
+            username
+          }
+          creatorOrientation
+          time
+          variant
+          fen
+          available
+          ended
+          history
+          result
+          winner
+          createdAt
+          messages {
+            nextToken
+          }
+        }
+      }
       nextToken
     }
   }
@@ -766,6 +802,43 @@ export const onCreateMessage = `subscription OnCreateMessage {
     content
     game {
       id
+      players {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      creator {
+        id
+        username
+      }
+      opponent {
+        id
+        username
+      }
       creatorOrientation
       time
       variant
@@ -1323,4 +1396,3 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
   }
 }
 `;
-

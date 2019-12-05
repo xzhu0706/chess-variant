@@ -2,9 +2,11 @@ import React from 'react';
 import './GameData.css'
 
 function GameData({ variant, turn, gameResult, history, prevMove, nextMove, winner, currentMove }) {
-  let game_state = `${turn === 'w' ? 'White' : 'Black'}'s turn`;
-
-  if (gameResult === 'checkmate') {
+  let game_state = '';
+  if (!gameResult) {
+    game_state = `${turn === 'w' ? 'White' : 'Black'}'s turn`;
+  } 
+  else if (gameResult === 'checkmate') {
     if (!winner) {
       winner = turn === 'w' ? 'Black' : 'White' // the person whose turn it is LOSES
     }
