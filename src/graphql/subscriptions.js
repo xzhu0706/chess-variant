@@ -755,6 +755,7 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
   }
 }
 `;
+
 export const onCreateMessage = `subscription OnCreateMessage {
   onCreateMessage {
     id
@@ -803,6 +804,7 @@ export const onCreateMessage = `subscription OnCreateMessage {
   }
 }
 `;
+
 export const onUpdateMessage = `subscription OnUpdateMessage {
   onUpdateMessage {
     id
@@ -1321,75 +1323,4 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
   }
 }
 `;
-export const onCreateMessage = `subscription OnCreateMessage {
-  onCreateMessage {
-    id
-    author {
-      id
-      username
-    }
-    content
-    game {
-      id
-      creatorOrientation
-      time
-      variant
-      fen
-      available
-      ended
-      history
-      result
-      winner
-      createdAt
-    }
-  }
-}
-`;
-export const onUpdateMessage = `subscription OnUpdateMessage {
-  onUpdateMessage {
-    id
-    author {
-      id
-      username
-    }
-    content
-    game {
-      id
-      creatorOrientation
-      time
-      variant
-      fen
-      available
-      ended
-      history
-      result
-      winner
-      createdAt
-    }
-  }
-}
-`;
-export const onDeleteMessage = `subscription OnDeleteMessage {
-  onDeleteMessage {
-    id
-    author {
-      id
-      username
-    }
-    content
-    game {
-      id
-      creatorOrientation
-      time
-      variant
-      fen
-      available
-      ended
-      history
-      result
-      winner
-      createdAt
-    }
-  }
-}
-`;
+

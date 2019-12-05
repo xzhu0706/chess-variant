@@ -18,7 +18,6 @@ import './Game.css';
 // import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
-import { Widget, toggleWidget, addResponseMessage, addUserMessage } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 import {Launcher} from 'react-chat-window'
 
@@ -44,13 +43,10 @@ class Game extends Component {
       gameResult: '',
       winner: '',
       reverseHistory: [],
-<<<<<<< HEAD
       messagesCount: 0,
       messageList: [],
       isChatWidgetOpen: false,
-=======
       turn: '',
->>>>>>> upstream/master
     };
     this.game = null;
     this.opponent = null; // the opponent. null if user created or joined game anonymously
@@ -160,7 +156,6 @@ class Game extends Component {
       this.game.load(initialFen);
       yourTurn = this.game.turn() === this.orientation[0];
     }
-<<<<<<< HEAD
     this.setState({ fen: initialFen, yourTurn, messagesCount, messageList: [...initialMessages]});
 
     this.messageCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateMessage)).subscribe({
@@ -186,11 +181,9 @@ class Game extends Component {
       },
     });
 
-=======
     this.setState({
       fen: initialFen, yourTurn, turn: this.game.turn(), time: startTime,
     });
->>>>>>> upstream/master
     this.gameUpdateSubscription = API.graphql(graphqlOperation(
       subscriptions.onUpdateGameState, { id: gameId },
     )).subscribe({
@@ -198,7 +191,6 @@ class Game extends Component {
         const gameState = gameData.value.data.onUpdateGameState;
         if (this.gameInfo.id === gameState.id) {
           this.game.load(gameState.fen);
-<<<<<<< HEAD
           this.gameInfo.ended = gameState.ended
           let yourTurn = this.game.turn() === this.orientation[0];
           let gameResult
@@ -221,35 +213,6 @@ class Game extends Component {
           }
           this.setState({ fen: gameState.fen, yourTurn, gameResult, history: gameState.history });
 
-=======
-          this.gameInfo.ended = gameState.ended;
-          const yourTurn = this.game.turn() === this.orientation[0];
-          // let gameResult
-          // if (gameState.ended === true) {
-          //   if (this.game.game_over()) {
-          //     //checkmate or stalemate
-          //     if (this.game.in_checkmate) {
-          //       //let winner = this.game.turn() === 'w'? "Black" : "White"
-          //       gameResult = `CHECKMATE: YOU LOSE!`
-          //     }
-          //     // else the game ended in stalemate.
-          //     else gameResult = 'STALEMATE: TIE GAME!'
-          //   }
-          //   else {
-          //     //Player on the other end left the game.
-          //     alert('The other player has left the game')
-          //   }
-          //   this.gameUpdateSubscription.unsubscribe()
-          //   yourTurn = false
-          // }
-          this.setState({
-            fen: gameState.fen,
-            yourTurn,
-            gameResult: gameState.result,
-            history: gameState.history,
-            turn: this.game.turn(),
-          });
->>>>>>> upstream/master
         }
       },
     });
@@ -258,7 +221,6 @@ class Game extends Component {
     return nextProps.location.search === this.props.location.search
   }
   componentWillUnmount() {
-<<<<<<< HEAD
     if (this.gameUpdateSubscription)
       this.gameUpdateSubscription.unsubscribe()
     if (!this.game.game_over() && !this.gameInfo.ended)
@@ -266,11 +228,6 @@ class Game extends Component {
     localStorage.removeItem(this.gameId)
     if(this.messageCreationSubscription)
       this.messageCreationSubscription.unsubscribe()
-=======
-    if (this.gameUpdateSubscription) { this.gameUpdateSubscription.unsubscribe(); }
-    // if (!this.game.game_over() && !this.gameInfo.ended)
-    //   this.leaveGame()
->>>>>>> upstream/master
   }
 
   getUserInfo = async () => {
@@ -297,12 +254,7 @@ class Game extends Component {
     if (!this.game) return;
     if (this.game.turn() !== this.orientation[0]) return;
     if (this.game.game_over() || this.gameInfo.ended) {
-<<<<<<< HEAD
       return
-=======
-      alert('GAME OVER');
-      return;
->>>>>>> upstream/master
     }
     const piece = this.game.get(square);
     if (this.moveFrom !== null) {
