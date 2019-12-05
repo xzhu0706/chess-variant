@@ -61,24 +61,22 @@ function PieceCustomize(props) {
     <div className="piece-customize">
       { props.hideInput ?
       null : (
-      <div style={{ margin: '0.25em' }}>
+      <div className="move-input">
         <div>
           <label>
-            <div title="knight-like offsets">non-repeating offsets:</div>
+            <div title="Exact moves">Exact offsets:</div>
             <input type="text" onChange={props.onChangeOffsets} />
           </label>
         </div>
         <div>
           <label>
-            <div title="rook-like/bishop-like offsets">repeating offsets:</div>
+            <div title="Moves that repeat in a given direction">Repeating offsets:</div>
             <input type="text" onChange={props.onChangeRepeatOffsets} />
           </label>
         </div>
-        <div><a href="/tutorial">View tutorial</a></div>
+        <div><a href="/tutorial">View customization tutorial</a></div>
       </div>
-      )
-      }
-
+      )}
       <div className="move-diagram">
         <svg width="100%" height="100%">
           <rect x="48%" y="48%" width="4%" height="4%"/>

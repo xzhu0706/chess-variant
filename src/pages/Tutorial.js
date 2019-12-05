@@ -22,7 +22,7 @@ class Tutorial extends React.Component {
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
-        <h1>Customizing Moves</h1>
+        <h1>Move Customization</h1>
         <div style={{ display: 'inline-block', textAlign: 'left', maxWidth: 500}}>
           <PieceCustomize
             offsets={this.state.offsets}
@@ -30,15 +30,15 @@ class Tutorial extends React.Component {
             hideInput={true}
           />
           <div style={{ padding: '0.5em' }}>
-            Chess pieces have two types of move offsets: regular offsets and repeating offsets, which recur in a particular direction.
-            <div>
-              <p>
-                The rook has repeating offsets of -1, -16, 1 and 16. Repeating offsets stop repeating on the first square that is occupied by a piece.
+            Chess pieces have two types of move offsets: exact offsets, which generate exact moves, and repeating offsets, which generate moves that can recur in a particular direction.
+            <div style={{ marginTop: '0.25em' }}>
+              <div>
+                For example, the rook has the repeating offsets -1, -16, 1 and 16. Repeating offsets stop repeating on a square that is occupied by a piece.
                 <br/>
                 <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([],[-1,1,16,-16])}>rook</Button>
-              </p>
+              </div>
               <p>
-                If we double these offsets we get a rook that can step two squares at a time. Click play below to test it.
+                A rook that can move two steps at a time would have the repeating offsets -2, -32, 2 and 32. Click play below to test it.
                 <br/>
                 <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([],[-2,2,32,-32])}>modified rook</Button>
               </p>
@@ -49,13 +49,13 @@ class Tutorial extends React.Component {
             <hr/>
             <div>
               <p>
-                The knight has regular offsets of -18, -33, -31, -14, 18, 33, 31 and 14.
+                The knight has the exact offsets -18, -33, -31, -14, 18, 33, 31 and 14.
                 <br/>
                 <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([-18, -33, -31, -14, 18, 33, 31, 14], [])}>knight</Button>
               </p>
               <p>
-                The nightrider assumes the regular offsets of the knight as repeating offsets.
-                It can jump any number of steps in each direction given by its offsets, but other pieces can block the movement.
+                The nightrider has the exact offsets of the knight as repeating offsets.
+                It can move like a knight any number of steps in each direction, although other pieces on the board can limit the range of movement.
                 Click play below to test it.
                 <br/>
                 <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([], [-18, -33, -31, -14, 18, 33, 31, 14])}>nightrider</Button>

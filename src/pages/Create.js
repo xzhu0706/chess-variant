@@ -57,21 +57,25 @@ class Create extends React.Component {
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
-        <div id='board' style={{ display: 'inline-block', position: 'relative', border: '0.15em dotted pink' }}>
+        <div id='board' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', position: 'relative', }}>
           {/* render the board */}
-          <div style={{ display: 'inline-block' }}>
+          <div>
             {Board('rnbqkbnr/pppppppp/8/8/8/4P3/PPPP1PPP/RNBQKBNR b KQkq - 0 1', 0, false, false, this.state.editMode, this.state.icon, this.customPiece())}
           </div>
 
           {/* render spare pieces component that calls handleIconChange() when one of its icons is selected */}
-          <SparePieces handleChange={this.handleIconChange} />
-          <PieceCustomize
-            offsets={this.state.offsets}
-            repeatOffsets={this.state.repeatOffsets}
-            onChangeOffsets={this.handleOffsetsChange}
-            onChangeRepeatOffsets={this.handleRepeatOffsetsChange}
-          />
-          <div style={{ margin: '0.25em' }}><Link to="/pieces">Go to glossary of pieces</Link></div>
+          <div>
+            <div>
+              Select one of the options below to edit the board.
+            </div>
+            <SparePieces handleChange={this.handleIconChange} />
+            <PieceCustomize
+              offsets={this.state.offsets}
+              repeatOffsets={this.state.repeatOffsets}
+              onChangeOffsets={this.handleOffsetsChange}
+              onChangeRepeatOffsets={this.handleRepeatOffsetsChange}
+            />
+          </div>
           </div>
       </div>
     );

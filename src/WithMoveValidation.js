@@ -108,7 +108,8 @@ class HumanVsHuman extends Component {
 
   // adjust board size according to window size
   calcWidth = (dimensions) => {
-    let customWidth = Math.min(540/640 * dimensions.screenWidth, 540/640 * dimensions.screenHeight);
+    let customWidth = Math.min(540/640 * dimensions.screenWidth, 600/640 * dimensions.screenHeight);
+    if (customWidth < 300) customWidth = 300;
     return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
   }
 
@@ -314,7 +315,8 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
           // redefine calcWidth() if smallBoard arg is true
           if (smallBoard) {
             calcWidth = (dimensions) => {
-              let customWidth = Math.min(384/460 * dimensions.screenWidth, 384/460 * dimensions.screenHeight);
+              let customWidth = Math.min(384/460 * dimensions.screenWidth, 430/460 * dimensions.screenHeight);
+              if (customWidth < 215) customWidth = 215;
               return (dimensions.screenWidth < 460 || dimensions.screenHeight < 460) ? customWidth : 384;
             }
           }
