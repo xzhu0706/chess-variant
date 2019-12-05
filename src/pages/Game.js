@@ -3,7 +3,7 @@ import { API, graphqlOperation, Auth } from 'aws-amplify';
 import Box from '@material-ui/core/Box';
 // import Paper from '@material-ui/core/Paper';
 // import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+// import Grid from '@material-ui/core/Grid';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
 import * as mutations from '../graphql/mutations';
@@ -13,7 +13,6 @@ import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
 import './Game.css';
-//import Clock from '../components/Clock';
 // import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
@@ -39,8 +38,6 @@ class Game extends Component {
       yourTurn: false,
       showGameResignationDialog: false,
       history: [],
-      messageList: [],
-      gameOver: false,
       gameResult: '',
       winner: '',
       reverseHistory: [],
@@ -64,52 +61,47 @@ class Game extends Component {
 
   async componentDidMount() {
     const gameId = this.props.match.params.id;
-    this.currentUser = await this._getUserInfo()
+    this.currentUser = await this.getUserInfo();
     const queryResult = await API.graphql(graphqlOperation(queries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame;
-    let initialMessages = this.gameInfo.messages.items
+    let initialMessages = this.gameInfo.messages.items;
     initialMessages = initialMessages.map((message) => {
-      let author = message.author.id === this.currentUser.id? 'me' : 'them'
-        return {
-          author: author,
-          type: 'text',
-          data: {text: message.content}
-        }
+      const author = message.author.id === this.currentUser.id ? 'me' : 'them';
+      return {
+        author,
+        type: 'text',
+        data: { text: message.content },
+      };
     });
-    if (this.gameInfo.history) {
-      console.log('getting history from db', this.gameInfo);
-      this.setState({
-        history: [...this.gameInfo.history],
-        gameOver: !!this.gameInfo.result,
-        gameResult: this.gameInfo.result,
-        winner: this.gameInfo.winner,
-      });
+
+    // Represents the count of new messages to display on the chat widget badge.
+    // local storage is used to keep the count, so that the correct number can be
+    // displayed in case the page gets reloaded.
+    let messagesCount = 0;
+    if (localStorage.getItem(gameId)) {
+      messagesCount = parseInt(localStorage.getItem(gameId));
     }
 
-    //Represents the count of new messages to display on the chat widget badge.
-    //local storage is used to keep the count, so that the correct number can be
-    //displayed in case the page gets reloaded.
-    let messagesCount = 0
-    if(localStorage.getItem(gameId)){
-      messagesCount = parseInt(localStorage.getItem(gameId))
-    }
+    this.setState({
+      history: this.gameInfo.history ? [...this.gameInfo.history] : [],
+      gameResult: this.gameInfo.result,
+      winner: this.gameInfo.winner,
+      messagesCount,
+      messageList: [...initialMessages],
+    });
 
-    // let currentGame = localStorage.getItem('currentGame');
-    // if (currentGame && currentGame === this.gameId) {
-    const user = await this.getUserInfo();
-    const userId = typeof (user) === 'object' ? user.attributes.sub : user;
-    if (this.gameInfo.creator.id === userId) {
+    if (this.gameInfo.creator.id === this.currentUser.id) {
       this.orientation = this.gameInfo.creatorOrientation;
       this.opponent = this.gameInfo.opponent;
-    } else if (this.gameInfo.opponent.id === userId) {
+    } else if (this.gameInfo.opponent.id === this.currentUser.id) {
       this.orientation = this.gameInfo.creatorOrientation === 'white' ? 'black' : 'white';
       this.opponent = this.gameInfo.creator;
     } else {
       this.isViewer = true;
     }
-    console.log(this.orientation, userId, this.gameInfo.opponent.id, this.gameInfo.creator.id);
+
     let initialFen = '';
-    const startTime = parseInt(this.gameInfo.time, 10);
+    // const startTime = parseInt(this.gameInfo.time, 10);
     let yourTurn = this.orientation === 'white';
     this.gameId = this.gameInfo.id;
     const { variant } = this.gameInfo;
@@ -142,7 +134,6 @@ class Game extends Component {
       });
       this.setState({
         fen: this.game.fen(),
-        messagesCount
       });
       return;
     }
@@ -151,26 +142,31 @@ class Game extends Component {
       this.game.load(initialFen);
       yourTurn = this.game.turn() === this.orientation[0];
     }
-    this.setState({ fen: initialFen, yourTurn, turn: this.game.turn(). messagesCount, messageList: [...initialMessages]});
+    this.setState({
+      fen: initialFen,
+      yourTurn,
+      turn: this.game.turn(),
+    });
     this.messageCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateMessage)).subscribe({
       next: (messageData) => {
-        const message = messageData.value.data.onCreateMessage
+        const message = messageData.value.data.onCreateMessage;
         const gameId = message.game.id;
-        let authorId = message.author.id
-        if(gameId === this.gameId && authorId !== this.currentUser.id){
-          //addResponseMessage(message.content)
-          let widgetOpen = this.state.isChatWidgetOpen
-          let messagesCount = widgetOpen? 0 : this.state.messagesCount + 1
+        const authorId = message.author.id;
+        if (gameId === this.gameId && authorId !== this.currentUser.id) {
+          // addResponseMessage(message.content)
+          const widgetOpen = this.state.isChatWidgetOpen;
+          const messagesCount = widgetOpen ? 0 : this.state.messagesCount + 1;
           this.setState({
             messagesCount,
             messageList: [...this.state.messageList, {
               author: 'them',
               type: 'text',
-              data: { text: message.content }
-            }]
-          })
-          if(!widgetOpen)
-            localStorage.setItem(this.gameId, messagesCount)
+              data: { text: message.content },
+            }],
+          });
+          if (!widgetOpen) {
+            localStorage.setItem(this.gameId, messagesCount);
+          }
         }
       },
     });
@@ -182,63 +178,55 @@ class Game extends Component {
         const gameState = gameData.value.data.onUpdateGameState;
         if (this.gameInfo.id === gameState.id) {
           this.game.load(gameState.fen);
-          this.gameInfo.ended = gameState.ended
-          let yourTurn = this.game.turn() === this.orientation[0];
-          let gameResult
-          if (gameState.ended === true) {
-            if (this.game.game_over()) {
-              //checkmate or stalemate
-              if (this.game.in_checkmate) {
-                //let winner = this.game.turn() === 'w'? "Black" : "White"
-                gameResult = `CHECKMATE: YOU LOSE!`
-              }
-              // else the game ended in stalemate.
-              else gameResult = 'STALEMATE: TIE GAME!'
-            }
-            else {
-              //Player on the other end left the game.
-              alert('The other player has left the game!')
-            }
-            this.gameUpdateSubscription.unsubscribe()
-            yourTurn = false
-          }
-          this.setState({ fen: gameState.fen, yourTurn, turn: this.game.turn(), gameResult, history: gameState.history });
-
+          this.gameInfo.ended = gameState.ended;
+          const yourTurn = !this.isViewer && !gameState.ended && this.game.turn() === this.orientation[0];
+          // let gameResult;
+          // let winner;
+          // if (gameState.ended === true) {
+          //   if (this.game.game_over()) {
+          //     if (this.game.in_checkmate) {
+          //       // checkmate or stalemate
+          //       winner = this.game.turn() === 'w' ? 'Black' : 'White';
+          //       gameResult = 'CHECKMATE: YOU LOSE!';
+          //     } else {
+          //       // else the game ended in stalemate.
+          //       gameResult = 'STALEMATE: TIE GAME!';
+          //     }
+          //   } else {
+          //     // Player on the other end left the game.
+          //     alert('The other player has left the game!')
+          //   }
+          //   this.gameUpdateSubscription.unsubscribe();
+          //   yourTurn = false;
+          // }
+          this.setState({
+            fen: gameState.fen,
+            yourTurn,
+            turn: this.game.turn(),
+            gameResult: gameState.result,
+            history: gameState.history,
+            winner: gameState.winner,
+          });
         }
       },
     });
   }
+
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.location.search === this.props.location.search
   }
+
   componentWillUnmount() {
-    if (this.gameUpdateSubscription)
-      this.gameUpdateSubscription.unsubscribe()
-    if (!this.game.game_over() && !this.gameInfo.ended)
-      this.leaveGame()
-    localStorage.removeItem(this.gameId)
-    if(this.messageCreationSubscription)
-      this.messageCreationSubscription.unsubscribe()
-
-  }
-
-  getUserInfo = async () => {
-    let userInfo;
-    await Auth.currentAuthenticatedUser().then((user) => {
-      userInfo = { ...user };
-    }).catch(async (e) => {
-      await Auth.currentCredentials().then((credential) => {
-        userInfo = credential.identityId.split(':')[1];
-      });
-    });
-    return userInfo;
-  }
-
-  // chessboard.jsx method for responsive board sizing
-  calcWidth = (dimensions) => {
-    let customWidth = Math.min(dimensions.screenWidth, 600/640 * dimensions.screenHeight);
-    if (customWidth < 300) customWidth = 300;
-    return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
+    if (this.gameUpdateSubscription) {
+      this.gameUpdateSubscription.unsubscribe();
+    }
+    if (!this.game.game_over() && !this.gameInfo.ended) {
+      this.leaveGame();
+    }
+    localStorage.removeItem(this.gameId);
+    if (this.messageCreationSubscription) {
+      this.messageCreationSubscription.unsubscribe();
+    }
   }
 
   // chessboard.jsx method for defining what happens when user clicks a square
@@ -246,7 +234,7 @@ class Game extends Component {
     if (!this.game) return;
     if (this.game.turn() !== this.orientation[0]) return;
     if (this.game.game_over() || this.gameInfo.ended) {
-      return
+      return;
     }
     const piece = this.game.get(square);
     if (this.moveFrom !== null) {
@@ -255,15 +243,23 @@ class Game extends Component {
         const updateGameData = {};
         updateGameData.id = this.gameId;
         updateGameData.fen = this.game.fen();
-        let gameResult = '';
-        if (this.game.game_over()) {
-          if (this.game.in_checkmate) {
-            gameResult = 'CHECKMATE: YOU WIN!';
-          } else gameResult = 'STALEMATE: TIE GAME!';
-          this.gameUpdateSubscription.unsubscribe();
-          updateGameData.ended = true;
-        }
+        // let gameResult = '';
+        // if (this.game.game_over()) {
+        //   if (this.game.in_checkmate) {
+        //     gameResult = 'CHECKMATE: YOU WIN!';
+        //   } else gameResult = 'STALEMATE: TIE GAME!';
+        //   this.gameUpdateSubscription.unsubscribe();
+        //   updateGameData.ended = true;
+        // }
         updateGameData.history = [...this.state.history, move.san];
+        // end the game if necessary
+        const gameResult = this.updateGameResult();
+        if (gameResult) {
+          updateGameData.result = gameResult;
+          updateGameData.winner = this.game.turn() === 'w' ? 'Black' : 'White';
+          updateGameData.ended = true;
+          console.log('game end', this.game.turn(), gameResult);
+        }
         this.setState({
           fen: this.game.fen(),
           squareStyles: {},
@@ -272,18 +268,9 @@ class Game extends Component {
           history: [...this.state.history, move.san],
           turn: this.game.turn(),
         });
-        // end the game if necessary
-        const result = this.updateGameResult();
-        if (result) {
-          updateGameData.result = result;
-          updateGameData.winner = this.game.turn() === 'w' ? 'Black' : 'White';
-          updateGameData.ended = true;
-          console.log('game end', this.game.turn(), result);
-        }
-        const updated = await API.graphql(graphqlOperation(
+        await API.graphql(graphqlOperation(
           mutations.updateGameState, { input: updateGameData },
         ));
-        console.log('moved', updated, move.san, this.state.history, updateGameData);
         this.moveFrom = null;
         return;
       }
@@ -301,6 +288,37 @@ class Game extends Component {
       });
     }
     this.setState({ squareStyles: newSquareStyles });
+  }
+
+  setClockRefWhite(ref) {
+    this.clockRefWhite = ref;
+  }
+
+  setClockRefBlack(ref) {
+    this.clockRefBlack = ref;
+  }
+
+  prevMove = () => {
+    if (this.game.history().length > 0) {
+      const reverseHistory = [...this.state.reverseHistory, this.game.history().pop()];
+      this.game.undo();
+      this.setState({
+        fen: this.game.fen(),
+        reverseHistory,
+      });
+    }
+  }
+
+  nextMove = () => {
+    const reverseHistory = [...this.state.reverseHistory];
+    if (reverseHistory.length > 0) {
+      const move = reverseHistory.pop();
+      this.game.move(move);
+      this.setState({
+        fen: this.game.fen(),
+        reverseHistory,
+      });
+    }
   }
 
   updateGameResult = () => {
@@ -325,79 +343,59 @@ class Game extends Component {
       });
       return result;
     }
+    return '';
   }
 
-  prevMove = () => {
-    if (this.game.history().length > 0) {
-      const reverseHistory = [...this.state.reverseHistory, this.game.history().pop()];
-      this.game.undo();
-      this.setState({
-        fen: this.game.fen(),
-        reverseHistory
-      }, () => console.log(this.game.history(), this.state.reverseHistory));
-    }
-  }
-
-  nextMove = () => {
-    const reverseHistory = [...this.state.reverseHistory];
-    if (reverseHistory.length > 0) {
-      const move = reverseHistory.pop();
-      this.game.move(move);
-      this.setState({
-        fen: this.game.fen(),
-        reverseHistory
-      }, () => console.log(this.game.history(), this.state.reverseHistory));
-    }
-  }
-
-  setClockRefWhite(ref) {
-    this.clockRefWhite = ref;
-  }
-
-  setClockRefBlack(ref) {
-    this.clockRefBlack = ref;
+  // chessboard.jsx method for responsive board sizing
+  calcWidth = (dimensions) => {
+    let customWidth = Math.min(dimensions.screenWidth, 600/640 * dimensions.screenHeight);
+    if (customWidth < 300) customWidth = 300;
+    return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
   }
 
   leaveGame = () => {
     // this should be called if a player resign
     // should also include newGameState.result stating who resigned and who won
     const newGameState = {};
+    const winner = this.orientation === 'white' ? 'Black' : 'White';
+    const loser = winner === 'White' ? 'Black' : 'White';
     newGameState.id = this.gameId;
     newGameState.ended = true;
+    newGameState.result = `${loser} left the game, ${winner} wins`;
     API.graphql(graphqlOperation(
       mutations.updateGameState, { input: newGameState },
     ));
   }
 
   handleNewUserMessage = async (message) => {
-    let messageObject = {}
-    messageObject.author = this.currentUser
-    messageObject.messageGameId = this.gameId
-    messageObject.content = message.data.text
-    API.graphql(graphqlOperation(mutations.createMessage, {input: messageObject}));
-    this.setState({messageList: [...this.state.messageList, message]})
+    const messageObject = {};
+    messageObject.author = this.currentUser;
+    messageObject.messageGameId = this.gameId;
+    messageObject.content = message.data.text;
+    API.graphql(graphqlOperation(mutations.createMessage, { input: messageObject }));
+    this.setState({ messageList: [...this.state.messageList, message] });
   }
 
-  _getUserInfo = async () => {
-    let currentUser = {};
+  getUserInfo = async () => {
+    const currentUser = {};
     await Auth.currentAuthenticatedUser().then((user) => {
-      currentUser.id = user.attributes.sub
-      currentUser.username = user.username
+      currentUser.id = user.attributes.sub;
+      currentUser.username = user.username;
     }).catch(async (e) => {
       await Auth.currentCredentials().then((credential) => {
-          currentUser.id = credential.identityId.split(':')[1];
-          currentUser.username = 'anonymous'
+        currentUser.id = credential.identityId.split(':')[1];
+        currentUser.username = 'anonymous';
       });
     });
     return currentUser;
   }
 
   toggleWidget = () => {
-    this.setState({isChatWidgetOpen: !this.state.isChatWidgetOpen})
-    this.setState({messagesCount: 0})
-    localStorage.setItem(this.gameId, 0)
+    this.setState({ isChatWidgetOpen: !this.state.isChatWidgetOpen });
+    this.setState({ messagesCount: 0 });
+    localStorage.setItem(this.gameId, 0);
   }
-  
+
   render() {
     const { state } = this;
     let players = '';
@@ -406,28 +404,27 @@ class Game extends Component {
     } else {
       players = `You vs ${this.opponent !== null ? this.opponent.username : 'Anonymous'}`;
     }
-    return (      
-      <Box key={this.gameId} display='flex' flexDirection='row' justifyContent='flex-start'>
-        <Box style={{width: '30%'}}>
-        <Launcher
-          agentProfile={{
-            teamName: 'Chat with your opponent',
-            imageUrl: ''
-          }}
+    return (
+      <Box key={this.gameId} display="flex" flexDirection="row" justifyContent="flex-start">
+        <Box style={{ width: '30%' }}>
+          <Launcher
+            agentProfile={{
+              teamName: 'Chat with your opponent',
+              imageUrl: '',
+            }}
             onMessageWasSent={this.handleNewUserMessage}
-            handleClick = {this.toggleWidget}
-            messageList={this.state.messageList}
-            isOpen = {this.state.isChatWidgetOpen}
-            showEmoji = {false}
-            newMessagesCount = {this.state.messagesCount}
+            handleClick={this.toggleWidget}
+            messageList={state.messageList}
+            isOpen={state.isChatWidgetOpen}
+            showEmoji={false}
+            newMessagesCount={state.messagesCount}
           />
-        </Box>          
-        <Box display="flex" flexDirection="column" justifyContent='center' marginRight='30px' >
+        </Box>
+        <Box display="flex" flexDirection="column" justifyContent="center" marginRight="30px">
           <GameInfo
             yourTurn={state.yourTurn === true ? YOUR_TURN_MESSAGE : ''}
-            opponent={this.opponent !== null ? this.opponent.username : 'Anonymous'}
+            players={players}
             variant={this.gameInfo !== null ? this.gameInfo.variant : ''}
-            gameResult={this.state.gameResult}
           />
           <div id={this.boardId}>
             <Chessboard
@@ -437,22 +434,23 @@ class Game extends Component {
               orientation={this.orientation}
               squareStyles={state.squareStyles}
               onSquareClick={this.onSquareClick}
+              calcWidth={this.calcWidth}
             />
           </div>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent='center' width='50%'>
-            <GameData style={{ width: '100%' }}
-              turn={state.turn}
-              history={state.history}
-              fen={state.fen}
-              gameResult={state.gameResult}
-              winner={state.winner}
-              prevMove={this.prevMove}
-              nextMove={this.nextMove}
-              currentMove={state.history !== null? state.history.length - state.reverseHistory.length : 0}
-            />
+        <Box display="flex" flexDirection="column" justifyContent="center" width="50%">
+          <GameData
+            style={{ width: '100%' }}
+            turn={state.turn}
+            history={state.history}
+            fen={state.fen}
+            gameResult={state.gameResult}
+            winner={state.winner}
+            prevMove={this.prevMove}
+            nextMove={this.nextMove}
+            currentMove={state.history !== null ? state.history.length - state.reverseHistory.length : 0}
+          />
         </Box>
-
       </Box>
     );
   }
