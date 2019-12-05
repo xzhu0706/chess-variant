@@ -470,6 +470,7 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
   createGame(input: $input) {
     id
     players {
+
       items {
         id
         game {
@@ -847,6 +848,7 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
       result
       winner
       createdAt
+
       messages {
         items {
           id

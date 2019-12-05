@@ -177,6 +177,7 @@ export const onUpdateGame = `subscription OnUpdateGame {
     winner
     createdAt
     messages {
+
       items {
         id
         author {
@@ -753,6 +754,7 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
       username
       email
       phoneNumber
+
       pastGames {
         items {
           id
@@ -1390,6 +1392,78 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
       createdAt
     }
     createdAt
+  }
+}
+`;
+export const onCreateMessage = `subscription OnCreateMessage {
+  onCreateMessage {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+    }
+  }
+}
+`;
+export const onUpdateMessage = `subscription OnUpdateMessage {
+  onUpdateMessage {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+    }
+  }
+}
+`;
+export const onDeleteMessage = `subscription OnDeleteMessage {
+  onDeleteMessage {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+    }
   }
 }
 `;

@@ -613,6 +613,17 @@ export const getComplaint = `query GetComplaint($id: ID!) {
       createdAt
     }
     createdAt
+    messages {
+      items {
+        id
+        author{
+          id
+          username
+        }
+        content
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -652,6 +663,46 @@ export const listComplaints = `query ListComplaints(
         createdAt
       }
       createdAt
+    }
+    nextToken
+  }
+}
+`;
+export const getMessage = `query GetMessage($id: ID!) {
+  getMessage(id: $id) {
+    id
+    author {
+      id
+      username
+    }
+    content
+    game {
+      id
+      creatorOrientation
+      time
+      variant
+      fen
+      available
+      ended
+      history
+      result
+      winner
+      createdAt
+    }
+  }
+}
+`;
+export const listMessages = `query ListMessages(
+  $filter: ModelMessageFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      author
+      content
+      game
     }
     nextToken
   }
