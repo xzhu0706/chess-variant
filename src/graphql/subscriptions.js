@@ -177,6 +177,7 @@ export const onUpdateGame = `subscription OnUpdateGame {
     winner
     createdAt
     messages {
+
       items {
         id
         author {
@@ -753,6 +754,7 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
       username
       email
       phoneNumber
+
       pastGames {
         items {
           id

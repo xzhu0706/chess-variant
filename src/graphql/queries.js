@@ -613,6 +613,17 @@ export const getComplaint = `query GetComplaint($id: ID!) {
       createdAt
     }
     createdAt
+    messages {
+      items {
+        id
+        author{
+          id
+          username
+        }
+        content
+      }
+      nextToken
+    }
   }
 }
 `;
