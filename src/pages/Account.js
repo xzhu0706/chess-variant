@@ -3,8 +3,6 @@ import { Auth, API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 // import * as customQueries from '../customGraphql/queries';
 import { Link } from 'react-router-dom';
-
-
 import {
   Container, Row, Col, Image, ListGroup, ListGroupItem, Table,
 } from 'react-bootstrap';
@@ -63,14 +61,12 @@ const Profile = (props) => (
       <Col sm={{ span: 7 }} >
         <MatchHistory history={props.history} currentUser={props.username} />
       </Col>
-      
     </Row>
   </div>
 );
 
 const AccountInfo = (props) => (
   <div>
-
     <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg" thumbnail fluid />
     <ListGroup>
       <ListGroupItem variant="flush">{props.username}</ListGroupItem>
@@ -83,21 +79,17 @@ const AccountInfo = (props) => (
 );
 
 const GameRow = (props) => {
-
   return <tr>
-    <td>{props.available}</td>
+    <td><Link to={`/game/${props.id}`}>Link</Link></td>
     <td>{props.opponent}</td>
     <td>{props.variant}</td>
     <td>{props.time}</td>
     <td>{props.winner}</td>
     <td>{props.result}</td>
-    <td>{props.fen}</td>
-    <td><Link to={`/game/${props.id}`}>Link</Link></td>
   </tr>
 }
 
 const MatchHistory = (props) => {
-
   // get row elements
   let index = 0;
   let games = props.history
@@ -113,18 +105,16 @@ const MatchHistory = (props) => {
         } else {
           opponent = game.opponent.username;
         }
+        let row = <GameRow
+          opponent={opponent}
+          variant={game.variant}
+          time={game.time ? game.time : "N/A"}
+          winner={game.winner ? game.winner : "N/A"}
+          result={game.result ? game.result : "N/A"}
+          id={game.id}
+        />
+        gamesList.push(row)
       }
-      let row = <GameRow
-        available={game.available ? "yes" : "no"}
-        opponent={opponent}
-        variant={game.variant}
-        time={game.time ? game.time : "N/A"}
-        winner={game.winner ? game.winner : "N/A"}
-        result={game.result ? game.result : "N/A"}
-        fen={game.fen}
-        id={game.id}
-      />
-      gamesList.push(row)
       index++;
     }
   }
@@ -134,13 +124,12 @@ const MatchHistory = (props) => {
     <Table striped bordered responsive>
       <thead>
         <tr>
-          <td>Available</td>
+          <td>Page</td>
           <td>Opponent</td>
           <td>Variant</td>
           <td>Time</td>
           <td>Winner</td>
           <td>Result</td>
-          <td>Fen</td>
         </tr>
       </thead>
       <tbody>

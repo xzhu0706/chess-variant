@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Board from '../WithMoveValidation';
 import SparePieces from '../components/customization/SparePieces.js';
 import PieceCustomize from '../components/customization/PieceCustomize.js';
