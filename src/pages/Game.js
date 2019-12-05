@@ -100,50 +100,34 @@ class Game extends Component {
       this.isViewer = true;
     }
 
-    let initialFen = '';
     // const startTime = parseInt(this.gameInfo.time, 10);
-    let yourTurn = this.orientation === 'white';
     this.gameId = this.gameInfo.id;
     const { variant } = this.gameInfo;
     switch (variant) {
     case Games.ANTICHESS:
       this.game = new Chess(Games.STANDARD_FEN, 1);
-      initialFen = Games.STANDARD_FEN;
       break;
     case Games.GRID_CHESS:
       this.game = new Chess(Games.STANDARD_FEN, 2);
-      initialFen = Games.STANDARD_FEN;
       this.boardId = 'grid-board';
       break;
     case Games.EXTINCTION_CHESS:
       this.game = new Chess(Games.STANDARD_FEN, 3);
-      initialFen = Games.STANDARD_FEN;
       break;
     case Games.STANDARD_CHESS:
       this.game = new Chess();
-      initialFen = Games.STANDARD_FEN;
       break;
     default:
       this.game = new Chess();
-      initialFen = Games.STANDARD_FEN;
     }
-    if (this.gameInfo.result) {
-      // if a game was ended, play all the moves to the end
+    const yourTurn = !this.gameInfo.ended && this.game.turn() === this.orientation[0];
+    if (this.gameInfo.history) {
       this.gameInfo.history.forEach((move) => {
         this.game.move(move);
       });
-      this.setState({
-        fen: this.game.fen(),
-      });
-      return;
-    }
-    if (this.gameInfo.fen !== 'init') {
-      initialFen = this.gameInfo.fen;
-      this.game.load(initialFen);
-      yourTurn = this.game.turn() === this.orientation[0];
     }
     this.setState({
-      fen: initialFen,
+      fen: this.game.fen(),
       yourTurn,
       turn: this.game.turn(),
     });
@@ -177,7 +161,9 @@ class Game extends Component {
       next: (gameData) => {
         const gameState = gameData.value.data.onUpdateGameState;
         if (this.gameInfo.id === gameState.id) {
-          this.game.load(gameState.fen);
+          if (gameState.history.length > this.state.history.length) {
+            this.game.move(gameState.history[gameState.history.length - 1]);
+          }
           this.gameInfo.ended = gameState.ended;
           const yourTurn = !this.isViewer && !gameState.ended && this.game.turn() === this.orientation[0];
           // let gameResult;
@@ -200,7 +186,7 @@ class Game extends Component {
           //   yourTurn = false;
           // }
           this.setState({
-            fen: gameState.fen,
+            fen: this.game.fen(),
             yourTurn,
             turn: this.game.turn(),
             gameResult: gameState.result,
@@ -255,8 +241,12 @@ class Game extends Component {
         // end the game if necessary
         const gameResult = this.updateGameResult();
         if (gameResult) {
+          const draw = ['repetition', 'stalemate', 'insufficient', 'fifty'];
           updateGameData.result = gameResult;
-          updateGameData.winner = this.game.turn() === 'w' ? 'Black' : 'White';
+          if (!draw.includes(gameResult)) {
+            // update winner if game result is not a draw
+            updateGameData.winner = this.game.turn() === 'w' ? 'Black' : 'White';
+          }
           updateGameData.ended = true;
           console.log('game end', this.game.turn(), gameResult);
         }
