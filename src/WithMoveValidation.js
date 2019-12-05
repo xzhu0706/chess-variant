@@ -498,8 +498,8 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                       boxShadow: '0 2px 3px rgba(0, 0, 0, 0.5)',
                   }}
                   pieces={customPieces}
-                  lightSquareStyle={{ backgroundColor: '#ffffff' }}
-                  darkSquareStyle={{ backgroundColor: '#65cae8' }}
+                  lightSquareStyle={{ backgroundColor: '#DABC9A' }}
+                  darkSquareStyle={{ backgroundColor: '#5A5D39' }}
                   squareStyles={squareStyles}
                   onSquareClick={onSquareClick}
                   onSquareRightClick={onSquareRightClick}
