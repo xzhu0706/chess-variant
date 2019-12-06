@@ -37,6 +37,8 @@ function GameData({ variant, turn, gameResult, history, prevMove, nextMove, winn
   }
   else if (gameResult === 'fifty') {
     game_state = `Draw (fifty-move rule)`;
+  } else {
+    game_state = gameResult;
   }
   const mystyle = {
     fontSize: "1.4em",
