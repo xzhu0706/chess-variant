@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
+import { Prompt } from 'react-router';
 import Box from '@material-ui/core/Box';
 // import Paper from '@material-ui/core/Paper';
 // import Typography from '@material-ui/core/Typography';
@@ -19,7 +20,7 @@ import GameInfo from '../components/GameInfo';
 import { Widget, toggleWidget, addResponseMessage, addUserMessage } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 import {Launcher} from 'react-chat-window'
-
+import awsconfig from '../aws-exports';
 
 
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
@@ -47,7 +48,7 @@ class Game extends Component {
       turn: '',
     };
     this.game = null;
-    this.opponent = null; // the opponent. null if user created or joined game anonymously
+    this.opponent = null;
     this.gameId = null;
     this.orientation = '';
     this.gameUpdateSubscription = null;
@@ -57,6 +58,9 @@ class Game extends Component {
     this.boardId = '';
     this.isViewer = false;
     this.currentUser = null;
+    // adding listener for reloading or exiting page since component will not be unmount
+    // component only will be unmount if go to other pages in our site
+    this.addedLeaveGameListener = false;
   }
 
   async componentDidMount() {
@@ -131,6 +135,13 @@ class Game extends Component {
       yourTurn,
       turn: this.game.turn(),
     });
+
+    if (!this.gameInfo.ended && !this.isViewer) {
+      window.addEventListener('beforeunload', this.handleLeavePage);
+      window.addEventListener('unload', this.leaveGame);
+      this.addedLeaveGameListener = true;
+    }
+
     this.messageCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateMessage)).subscribe({
       next: (messageData) => {
         const message = messageData.value.data.onCreateMessage;
@@ -161,11 +172,11 @@ class Game extends Component {
       next: (gameData) => {
         const gameState = gameData.value.data.onUpdateGameState;
         if (this.gameInfo.id === gameState.id) {
-          if (gameState.history.length > this.state.history.length) {
+          if (gameState.history && (gameState.history.length > this.state.history.length)) {
             this.game.move(gameState.history[gameState.history.length - 1]);
           }
           this.gameInfo.ended = gameState.ended;
-          const yourTurn = !this.isViewer && !gameState.ended && this.game.turn() === this.orientation[0];
+          const yourTurn = !gameState.ended && this.game.turn() === this.orientation[0];
           // let gameResult;
           // let winner;
           // if (gameState.ended === true) {
@@ -185,6 +196,10 @@ class Game extends Component {
           //   this.gameUpdateSubscription.unsubscribe();
           //   yourTurn = false;
           // }
+          if (gameState.gameResult && this.addedLeaveGameListener) {
+            window.removeEventListener('beforeunload', this.handleLeavePage);
+            window.removeEventListener('unload', this.leaveGame);
+          }
           this.setState({
             fen: this.game.fen(),
             yourTurn,
@@ -198,6 +213,12 @@ class Game extends Component {
     });
   }
 
+  handleLeavePage = (e) => {
+    const confirmationMessage = 'Are you sure you want to leave the game?';
+    e.returnValue = confirmationMessage;     // Gecko, Trident, Chrome 34+
+    return confirmationMessage;              // Gecko, WebKit, Chrome <34
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.location.search === this.props.location.search
   }
@@ -208,6 +229,10 @@ class Game extends Component {
     }
     if (!this.game.game_over() && !this.gameInfo.ended) {
       this.leaveGame();
+    }
+    if (this.addedLeaveGameListener) {
+      window.removeEventListener('beforeunload', this.handleLeavePage);
+      window.removeEventListener('unload', this.leaveGame);
     }
     localStorage.removeItem(this.gameId);
     if (this.messageCreationSubscription) {
@@ -352,9 +377,20 @@ class Game extends Component {
     newGameState.id = this.gameId;
     newGameState.ended = true;
     newGameState.result = `${loser} left the game, ${winner} wins`;
-    API.graphql(graphqlOperation(
-      mutations.updateGameState, { input: newGameState },
-    ));
+    // API.graphql(graphqlOperation(
+    //   mutations.updateGameState, { input: newGameState },
+    // ));
+    // using xhr request manually because graphql operation is asynchrounous, which cannot finish on page unload
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', awsconfig.aws_appsync_graphqlEndpoint, false);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('x-api-key', awsconfig.aws_appsync_apiKey);
+    xhr.send(JSON.stringify({
+      query: mutations.updateGameState,
+      variables: {
+        input: newGameState,
+      },
+    }));
   }
 
   handleNewUserMessage = async (message) => {
@@ -396,6 +432,10 @@ class Game extends Component {
     }
     return (
       <Box key={this.gameId} display="flex" flexDirection="row" justifyContent="flex-start">
+        <Prompt
+          when={!state.gameResult}
+          message="Are you sure you want to leave?"
+        />
         <Box style={{ width: '30%' }}>
           <Launcher
             agentProfile={{
