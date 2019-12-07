@@ -25,9 +25,10 @@ class App extends Component {
       <Router>
         <NavBar />
         <Switch>
-          <Route path="/" exact component={Home} />
+          <Route path="/" exact component={DiscussionBoard} />
           <Route path="/game/:id" component={Game} />
           <Route path="/variants" component={Variants} />
+          <Route path="/home" component={Home} />
           <Route
             path="/account/:username"
             render={(props) => (
