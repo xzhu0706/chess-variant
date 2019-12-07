@@ -126,11 +126,16 @@ class Game extends Component {
         this.game.move(move);
       });
     }
-    
+    this.setState({
+      fen: this.game.fen(),
+      yourTurn,
+      turn: this.game.turn(),
+    });
     this.messageCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateMessage)).subscribe({
       next: (messageData) => {
         const message = messageData.value.data.onCreateMessage;
         const gameId = message.game.id;
+        const authorId = message.author.id;
         if (gameId === this.gameId && authorId !== this.currentUser.id) {
           // addResponseMessage(message.content)
           const widgetOpen = this.state.isChatWidgetOpen;
@@ -423,7 +428,7 @@ class Game extends Component {
             />
           </div>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent="center" width="50%">
+        <Box display="flex" flexDirection="column" justifyContent="center" width="30%">
           <GameData
             style={{ width: '100%' }}
             turn={state.turn}

@@ -63,6 +63,14 @@ type Message @model{
   game: Game @connection(name: "GameMessages")
 }
 
+type Post @model{
+  id: ID!
+  author: PlayerInfo!
+  title: String!
+  content: String!
+  createdAt: AWSDateTime!
+}
+
 type PlayerInfo {
   id: ID!
   username: String!
