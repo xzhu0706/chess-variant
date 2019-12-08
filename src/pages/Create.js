@@ -61,14 +61,11 @@ class Create extends React.Component {
           <div>
             {Board('rnbqkbnr/pppppppp/8/8/8/4P3/PPPP1PPP/RNBQKBNR b KQkq - 0 1', 0, false, false, this.state.editMode, this.state.icon, this.customPiece())}
           </div>
-
-          {/* render spare pieces component that calls handleIconChange() when one of its icons is selected */}
+          {/* render controlled inputs */}
           <div>
-            <div>
-              Select one of the options below to edit the board.
-            </div>
             <SparePieces handleChange={this.handleIconChange} />
-            <div><a href="/tutorial">View customization tutorial</a></div>
+            <div><a href="/pieces">View current fairy pieces</a></div>
+            <div><a href="/tutorial">View the customization tutorial</a></div>
             <PieceCustomize
               offsets={this.state.offsets}
               repeatOffsets={this.state.repeatOffsets}

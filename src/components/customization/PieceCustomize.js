@@ -65,13 +65,13 @@ function PieceCustomize(props) {
       <div className="move-input">
         <TextField
           label="Exact offsets"
-          helperText="Moves to an exact square"
+          helperText="Movement to an exact square"
           variant="outlined"
           onChange={props.onChangeOffsets}
         />
         <TextField
           label="Repeating offsets"
-          helperText="Moves in a particular direction"
+          helperText="Movement in a particular direction"
           variant="outlined"
           onChange={props.onChangeRepeatOffsets}
         />

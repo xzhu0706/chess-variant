@@ -10,7 +10,7 @@ import ws from "../icons/pieces/fairy/ws.svg"; // "princess" (knight/bishop comb
 const Pieces = () => {
   return (
     <div style={{ textAlign: 'center' }}>
-      <h1>Glossary of Pieces</h1>
+      <h1>Fairy Pieces</h1>
       <table className="pieces-table">
         <tbody>
           <tr>

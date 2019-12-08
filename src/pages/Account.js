@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 // import * as customQueries from '../customGraphql/queries';
-import { Link } from 'react-router-dom';
+import { 
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom';
 import {
   Container, Row, Col, Image, ListGroup, ListGroupItem, Table,
 } from 'react-bootstrap';
-
+import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
 
 export default class Account extends Component {
   constructor(props) {
@@ -40,6 +45,7 @@ export default class Account extends Component {
           email={user ? user.email : 'Loading..'}
           phone={user ? user.phoneNumber : 'Loading..'}
           history={user ? user.pastGames.items : 'Loading..'}
+          variants={user ? user.variants.items : 'Loading..'} // this.state.user.variants.items[0].name
           isCurrentUser={isCurrentUser}
         />
       </Container>
@@ -59,11 +65,38 @@ const Profile = (props) => (
         />
       </Col>
       <Col sm={{ span: 7 }} >
+        {props.username !== 'Loading..' ? (
+          <VariantHistory variants={props.variants}/>
+        ) : null}
         <MatchHistory history={props.history} currentUser={props.username} />
       </Col>
     </Row>
   </div>
 );
+
+const VariantHistory = (props) => {
+  let variantsList = [];
+  const variants = props.variants;
+  if (variants) {
+    variants.forEach(variant => {
+      const { id, name, startFen, customPiece } = variant;
+      variantsList.push(
+      <div key={id}>
+        <div style={{ fontWeight: 'bold' }}>{name}</div>
+        {startFen}<br/>
+        {customPiece}<br/>
+        <DeleteForeverTwoToneIcon className={props.icon} /><br/><br/>
+      </div>);
+    });
+  }
+
+  return (
+    <div>
+      <h2>Your Variants</h2>
+      {variantsList}
+    </div>
+  );
+}
 
 const AccountInfo = (props) => (
   <div>
@@ -106,6 +139,7 @@ const MatchHistory = (props) => {
           opponent = game.opponent.username;
         }
         let row = <GameRow
+          key={game.id}
           opponent={opponent}
           variant={game.variant}
           time={game.time ? game.time : "N/A"}

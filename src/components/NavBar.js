@@ -163,16 +163,13 @@ class NavBar extends Component {
                   <Link to="/">Home</Link>
                 </li>
                 <li>
-                  <Link to="/variants">Browse Variants</Link>
+                  <Link to="/variants">List of Variants</Link>
                 </li>
                 <li>
                   <Link to="/">Leaderboard</Link>
                 </li>
                 <li>
-                  <Link to="/create">Create a Variant</Link>
-                </li>
-                <li>
-                  <Link to="/pieces">Glossary of Pieces</Link>
+                  <Link to="/create">Create</Link>
                 </li>
 
                 {username
@@ -210,6 +207,7 @@ class NavBar extends Component {
                         variant="outlined"
                         startIcon={<AccountCircle />}
                         onClick={handleShowAuth}
+                        color="primary"
                       >
                         SIGN IN
                       </Button>
