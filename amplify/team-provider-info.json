@@ -1,24 +1,4 @@
 {
-    "xzhu": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-chessvariants-xzhu-221154-authRole",
-            "UnauthRoleArn": "arn:aws:iam::990932120713:role/amplify-chessvariants-xzhu-221154-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::990932120713:role/amplify-chessvariants-xzhu-221154-authRole",
-            "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-chessvariants-xzhu-221154-deployment",
-            "UnauthRoleName": "amplify-chessvariants-xzhu-221154-unauthRole",
-            "StackName": "amplify-chessvariants-xzhu-221154",
-            "StackId": "arn:aws:cloudformation:us-east-1:990932120713:stack/amplify-chessvariants-xzhu-221154/abbef1e0-0c0c-11ea-ba8c-0aa554d91bcc"
-        },
-        "categories": {
-            "auth": {
-                "chessvariant878b0ed7": {}
-            },
-            "function": {
-                "AdminQueries6dd78331": {}
-            }
-        }
-    },
     "develop": {
         "awscloudformation": {
             "AuthRoleName": "amplify-chessvariants-develop-221534-authRole",
@@ -54,6 +34,50 @@
         },
         "categories": {
             "auth": {
+                "chessvariant878b0ed7": {}
+            }
+        }
+    },
+    "xzhudev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-chess-variant-xzhudev-02730-authRole",
+            "UnauthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-xzhudev-02730-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-xzhudev-02730-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-chess-variant-xzhudev-02730-deployment",
+            "UnauthRoleName": "amplify-chess-variant-xzhudev-02730-unauthRole",
+            "StackName": "amplify-chess-variant-xzhudev-02730",
+            "StackId": "arn:aws:cloudformation:us-east-1:990932120713:stack/amplify-chess-variant-xzhudev-02730/1952b150-17e9-11ea-8037-12c1d85cca19"
+        },
+        "categories": {
+            "auth": {
+                "chessvariant878b0ed7": {},
+                "userPoolGroups": {}
+            },
+            "function": {
+                "AdminQueries6dd78331": {},
+                "chessvariant878b0ed7": {}
+            }
+        }
+    },
+    "xzhuu": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-chess-variant-xzhuu-221157-authRole",
+            "UnauthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-xzhuu-221157-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::990932120713:role/amplify-chess-variant-xzhuu-221157-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-chess-variant-xzhuu-221157-deployment",
+            "UnauthRoleName": "amplify-chess-variant-xzhuu-221157-unauthRole",
+            "StackName": "amplify-chess-variant-xzhuu-221157",
+            "StackId": "arn:aws:cloudformation:us-east-1:990932120713:stack/amplify-chess-variant-xzhuu-221157/53d3af30-189f-11ea-8c44-12b6a099270b"
+        },
+        "categories": {
+            "auth": {
+                "chessvariant878b0ed7": {},
+                "userPoolGroups": {}
+            },
+            "function": {
+                "AdminQueries6dd78331": {},
                 "chessvariant878b0ed7": {}
             }
         }

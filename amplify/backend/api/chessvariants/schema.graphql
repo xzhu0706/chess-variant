@@ -1,7 +1,7 @@
-type User @model @searchable 
+type User @model
   @key(name: "byUsername", fields: ["username"], queryField: "getUserByUsername")
   @auth(rules: [
-    { allow: owner, ownerField: "id", operations: [read, update] },
+    { allow: owner, ownerField: "username", operations: [read, update] },
     { allow: groups, groups: ["Admin"] },
     { allow: public, operations: [read] },
 ]) {
@@ -9,26 +9,65 @@ type User @model @searchable
   username: String!
   email: String!
   phoneNumber: String!
-  pastGames: [PlayerGameMapping] @connection(name: "userPlayer")
+  pastGames: [PlayerGameMapping] @connection(name: "userPlayer", sortField: "createdAt")
+  variants: [CustomizedVariant] @connection(name: "userVariant", sortField: "createdAt")
+  comments: [Comment] @connection(name: "userComment", sortField: "createdAt")
   points: Int
   skillLevel: String
   rank: Int
   createdAt: String
 }
 
-type Complaint @model @auth(
+type Complaint @model
+@auth(
   rules: [
     { allow: public, operations: [create] },
     { allow: groups, groups: ["Admin"] }
   ]
 ) {
   id: ID!
-  user: PlayerInfo
-  reportedUser: PlayerInfo
+  user: User
+  reportedUser: User
   gameLink: String
   content: String!
   processed: Boolean!
   processedBy: User
+  result: String
+  createdAt: String
+  updatedAt: String
+}
+
+type CustomizedVariant @model
+@auth(
+  rules: [
+    { allow: owner, ownerField: "creator", operations: [read, update] }
+    { allow: public, operations: [read, create] }
+    { allow: groups, groups: ["Admin"] }
+  ]
+) {
+  id: ID!
+  name: String!
+  creator: User! @connection(name: "userVariant")
+  baseVariant: String
+  startFen: String!
+  customPiece: String
+  submitted: Boolean!
+  approved: Boolean!
+  comments: [Comment] @connection(name: "variantComment")
+  createdAt: String
+}
+
+type Comment @model
+@auth(
+  rules: [
+    { allow: public, operations: [read, create] }
+    { allow: groups, groups: ["Admin"] }
+  ]
+) {
+  id: ID!
+  user: User! @connection(name: "userComment")
+  content: String!
+  variant: CustomizedVariant @connection(name: "variantComment")
   createdAt: String
 }
 
@@ -36,9 +75,11 @@ type PlayerGameMapping @model(queries: null) {
   id: ID!
   game: Game! @connection(name: "playerGame")
   player: User! @connection(name: "userPlayer")
+  createdAt: String
 }
 
-type Game @model(subscriptions: null) @auth(rules: [{ allow: public }]) {
+type Game @model(subscriptions: null)
+  @auth(rules: [{ allow: public, operations: [create, update, read]}]) {
   id: ID!
   players: [PlayerGameMapping] @connection(name: "playerGame") # for registered users only
   creator: PlayerInfo!
@@ -53,14 +94,15 @@ type Game @model(subscriptions: null) @auth(rules: [{ allow: public }]) {
   result: String
   winner: String
   createdAt: String
-  messages: [Message] @connection(name: "GameMessages")
+  messages: [Message] @connection(name: "GameMessages", sortField: "createdAt")
 }
 
-type Message @model{
+type Message @model {
   id: ID!
   author: PlayerInfo
   content: String!
   game: Game @connection(name: "GameMessages")
+  createdAt: String
 }
 
 type PlayerInfo {

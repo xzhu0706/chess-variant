@@ -56,6 +56,9 @@
                             "userPoolConfig": {
                                 "userPoolId": "authchessvariant878b0ed7"
                             }
+                        },
+                        {
+                            "authenticationType": "AWS_IAM"
                         }
                     ],
                     "defaultAuthentication": {

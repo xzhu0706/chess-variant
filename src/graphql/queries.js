@@ -34,6 +34,7 @@ export const getGame = `query GetGame($id: ID!) {
             nextToken
           }
         }
+        createdAt
         player {
           id
           username
@@ -46,6 +47,12 @@ export const getGame = `query GetGame($id: ID!) {
           skillLevel
           rank
           createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
         }
       }
       nextToken
@@ -103,6 +110,7 @@ export const getGame = `query GetGame($id: ID!) {
             nextToken
           }
         }
+        createdAt
       }
       nextToken
     }
@@ -133,6 +141,7 @@ export const listGames = `query ListGames(
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -185,6 +194,7 @@ export const listGames = `query ListGames(
             winner
             createdAt
           }
+          createdAt
         }
         nextToken
       }
@@ -219,6 +229,7 @@ export const getMessage = `query GetMessage($id: ID!) {
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -271,10 +282,12 @@ export const getMessage = `query GetMessage($id: ID!) {
             winner
             createdAt
           }
+          createdAt
         }
         nextToken
       }
     }
+    createdAt
   }
 }
 `;
@@ -296,6 +309,7 @@ export const listMessages = `query ListMessages(
         players {
           items {
             id
+            createdAt
           }
           nextToken
         }
@@ -321,10 +335,12 @@ export const listMessages = `query ListMessages(
           items {
             id
             content
+            createdAt
           }
           nextToken
         }
       }
+      createdAt
     }
     nextToken
   }
@@ -357,6 +373,7 @@ export const listUsers = `query ListUsers(
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -374,6 +391,60 @@ export const listUsers = `query ListUsers(
       skillLevel
       rank
       createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+        }
+        nextToken
+      }
     }
     nextToken
   }
@@ -415,6 +486,7 @@ export const getUser = `query GetUser($id: ID!) {
             nextToken
           }
         }
+        createdAt
         player {
           id
           username
@@ -427,6 +499,12 @@ export const getUser = `query GetUser($id: ID!) {
           skillLevel
           rank
           createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
         }
       }
       nextToken
@@ -435,6 +513,96 @@ export const getUser = `query GetUser($id: ID!) {
     skillLevel
     rank
     createdAt
+    variants {
+      items {
+        id
+        name
+        baseVariant
+        startFen
+        customPiece
+        submitted
+        approved
+        createdAt
+        creator {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
+      }
+      nextToken
+    }
+    comments {
+      items {
+        id
+        content
+        createdAt
+        user {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        variant {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -457,7 +625,7 @@ export const getUserByUsername = `query GetUserByUsername(
       username
       email
       phoneNumber
-      pastGames {
+      pastGames(sortDirection: DESC) {
         items {
           id
           game {
@@ -481,6 +649,7 @@ export const getUserByUsername = `query GetUserByUsername(
               username
             }
           }
+          createdAt
           player {
             id
             username
@@ -498,24 +667,69 @@ export const getUserByUsername = `query GetUserByUsername(
       skillLevel
       rank
       createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+        }
+        nextToken
+      }
     }
     nextToken
   }
 }
 `;
-export const searchUsers = `query SearchUsers(
-  $filter: SearchableUserFilterInput
-  $sort: SearchableUserSortInput
-  $limit: Int
-  $nextToken: String
-) {
-  searchUsers(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-  ) {
-    items {
+export const getComplaint = `query GetComplaint($id: ID!) {
+  getComplaint(id: $id) {
+    id
+    user {
       id
       username
       email
@@ -536,6 +750,7 @@ export const searchUsers = `query SearchUsers(
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -553,22 +768,154 @@ export const searchUsers = `query SearchUsers(
       skillLevel
       rank
       createdAt
-    }
-    nextToken
-    total
-  }
-}
-`;
-export const getComplaint = `query GetComplaint($id: ID!) {
-  getComplaint(id: $id) {
-    id
-    user {
-      id
-      username
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+        }
+        nextToken
+      }
     }
     reportedUser {
       id
       username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+        }
+        nextToken
+      }
     }
     gameLink
     content
@@ -594,6 +941,7 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -611,19 +959,64 @@ export const getComplaint = `query GetComplaint($id: ID!) {
       skillLevel
       rank
       createdAt
-    }
-    createdAt
-    messages {
-      items {
-        id
-        author{
+      variants {
+        items {
           id
-          username
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
         }
-        content
+        nextToken
       }
-      nextToken
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+        }
+        nextToken
+      }
     }
+    result
+    createdAt
+    updatedAt
   }
 }
 `;
@@ -638,10 +1031,78 @@ export const listComplaints = `query ListComplaints(
       user {
         id
         username
+        email
+        phoneNumber
+        pastGames {
+          items {
+            id
+            createdAt
+          }
+          nextToken
+        }
+        points
+        skillLevel
+        rank
+        createdAt
+        variants {
+          items {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+          nextToken
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
       }
       reportedUser {
         id
         username
+        email
+        phoneNumber
+        pastGames {
+          items {
+            id
+            createdAt
+          }
+          nextToken
+        }
+        points
+        skillLevel
+        rank
+        createdAt
+        variants {
+          items {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+          nextToken
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
       }
       gameLink
       content
@@ -654,6 +1115,7 @@ export const listComplaints = `query ListComplaints(
         pastGames {
           items {
             id
+            createdAt
           }
           nextToken
         }
@@ -661,8 +1123,546 @@ export const listComplaints = `query ListComplaints(
         skillLevel
         rank
         createdAt
+        variants {
+          items {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+          nextToken
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
       }
+      result
       createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+`;
+export const listCustomizedVariants = `query ListCustomizedVariants(
+  $filter: ModelCustomizedVariantFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listCustomizedVariants(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      name
+      baseVariant
+      startFen
+      customPiece
+      submitted
+      approved
+      createdAt
+      creator {
+        id
+        username
+        email
+        phoneNumber
+        pastGames {
+          items {
+            id
+            createdAt
+          }
+          nextToken
+        }
+        points
+        skillLevel
+        rank
+        createdAt
+        variants {
+          items {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+          nextToken
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+        }
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getCustomizedVariant = `query GetCustomizedVariant($id: ID!) {
+  getCustomizedVariant(id: $id) {
+    id
+    name
+    baseVariant
+    startFen
+    customPiece
+    submitted
+    approved
+    createdAt
+    creator {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+        }
+        nextToken
+      }
+    }
+    comments {
+      items {
+        id
+        content
+        createdAt
+        user {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        variant {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const getComment = `query GetComment($id: ID!) {
+  getComment(id: $id) {
+    id
+    content
+    createdAt
+    user {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+        }
+        nextToken
+      }
+    }
+    variant {
+      id
+      name
+      baseVariant
+      startFen
+      customPiece
+      submitted
+      approved
+      createdAt
+      creator {
+        id
+        username
+        email
+        phoneNumber
+        pastGames {
+          items {
+            id
+            createdAt
+          }
+          nextToken
+        }
+        points
+        skillLevel
+        rank
+        createdAt
+        variants {
+          items {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+          nextToken
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const listComments = `query ListComments(
+  $filter: ModelCommentFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      content
+      createdAt
+      user {
+        id
+        username
+        email
+        phoneNumber
+        pastGames {
+          items {
+            id
+            createdAt
+          }
+          nextToken
+        }
+        points
+        skillLevel
+        rank
+        createdAt
+        variants {
+          items {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+          }
+          nextToken
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
+      }
+      variant {
+        id
+        name
+        baseVariant
+        startFen
+        customPiece
+        submitted
+        approved
+        createdAt
+        creator {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
+      }
     }
     nextToken
   }
