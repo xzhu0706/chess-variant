@@ -68,6 +68,7 @@ class Create extends React.Component {
               Select one of the options below to edit the board.
             </div>
             <SparePieces handleChange={this.handleIconChange} />
+            <div><a href="/tutorial">View customization tutorial</a></div>
             <PieceCustomize
               offsets={this.state.offsets}
               repeatOffsets={this.state.repeatOffsets}

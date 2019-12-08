@@ -161,6 +161,7 @@
 .move-input {
     order: 1;
     margin: 0.25em;
+    padding-bottom: 0.5em;
 }
 
 .move-diagram {

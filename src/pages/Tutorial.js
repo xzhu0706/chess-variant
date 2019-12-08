@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import PieceCustomize from '../components/customization/PieceCustomize';
 import CustomPlayOption from '../components/customization/CustomPlayOption';
+import './Tutorial.css';
 
 class Tutorial extends React.Component {
   constructor(props) {
@@ -24,11 +25,50 @@ class Tutorial extends React.Component {
       <div style={{ textAlign: 'center' }}>
         <h1>Move Customization</h1>
         <div style={{ display: 'inline-block', textAlign: 'left', maxWidth: 500}}>
+          <div style={{ margin: '1em' }} className="tutorial">
+            <table>
+              <tr>
+                <td>&#8945;</td>
+                <td>&#8942;</td>
+                <td>&#8942;</td>
+                <td>&#8942;</td>
+                <td>&#8944;</td>
+              </tr>
+              <tr>
+                <td>&#x2026;</td>
+                <td>-17</td>
+                <td>-16</td>
+                <td>-15</td>
+                <td>&#x2026;</td>
+              </tr>
+              <tr>
+                <td>&#x2026;</td>
+                <td>-1</td>
+                <td>0</td>
+                <td>+1</td>
+                <td>&#x2026;</td>
+              </tr>
+              <tr>
+                <td>&#x2026;</td>
+                <td>+15</td>
+                <td>+16</td>
+                <td>+17</td>
+                <td>&#x2026;</td>
+              </tr>
+              <tr>
+                <td>&#8944;</td>
+                <td>&#8942;</td>
+                <td>&#8942;</td>
+                <td>&#8942;</td>
+                <td>&#8945;</td>
+              </tr>
+            </table>
+          </div>
           <PieceCustomize
             offsets={this.state.offsets}
             repeatOffsets={this.state.repeatOffsets}
             hideInput={true}
-          />
+          />        
           <div style={{ padding: '0.5em' }}>
             Chess pieces have two types of move offsets: exact offsets, which generate exact moves, and repeating offsets, which generate moves that can recur in a particular direction.
             <div style={{ marginTop: '0.25em' }}>

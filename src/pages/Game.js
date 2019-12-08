@@ -17,7 +17,7 @@ import './Game.css';
 // import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
-import { Widget, toggleWidget, addResponseMessage, addUserMessage } from 'react-chat-widget';
+//import { Widget, toggleWidget, addResponseMessage, addUserMessage } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 import {Launcher} from 'react-chat-window'
 import awsconfig from '../aws-exports';

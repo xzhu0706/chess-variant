@@ -1,4 +1,5 @@
 import React from 'react';
+import TextField from '@material-ui/core/TextField'
 
 /* user-defined offsets plus a move diagram */
 
@@ -62,19 +63,18 @@ function PieceCustomize(props) {
       { props.hideInput ?
       null : (
       <div className="move-input">
-        <div>
-          <label>
-            <div title="Exact moves">Exact offsets:</div>
-            <input type="text" onChange={props.onChangeOffsets} />
-          </label>
-        </div>
-        <div>
-          <label>
-            <div title="Moves that repeat in a given direction">Repeating offsets:</div>
-            <input type="text" onChange={props.onChangeRepeatOffsets} />
-          </label>
-        </div>
-        <div><a href="/tutorial">View customization tutorial</a></div>
+        <TextField
+          label="Exact offsets"
+          helperText="Moves to an exact square"
+          variant="outlined"
+          onChange={props.onChangeOffsets}
+        />
+        <TextField
+          label="Repeating offsets"
+          helperText="Moves in a particular direction"
+          variant="outlined"
+          onChange={props.onChangeRepeatOffsets}
+        />
       </div>
       )}
       <div className="move-diagram">
