@@ -2,12 +2,7 @@ import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 // import * as customQueries from '../customGraphql/queries';
-import { 
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Container, Row, Col, Image, ListGroup, ListGroupItem, Table,
 } from 'react-bootstrap';
@@ -82,7 +77,7 @@ const VariantHistory = (props) => {
       const { id, name, startFen, customPiece } = variant;
       variantsList.push(
       <div key={id}>
-        <div style={{ fontWeight: 'bold' }}>{name}</div>
+        <div style={{ fontWeight: 'bold' }}><Link to={`/pages/${id}`}>{name}</Link></div>
         {startFen}<br/>
         {customPiece}<br/>
         <DeleteForeverTwoToneIcon className={props.icon} /><br/><br/>

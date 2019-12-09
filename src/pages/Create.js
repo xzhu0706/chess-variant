@@ -73,7 +73,7 @@ class Create extends React.Component {
               onChangeRepeatOffsets={this.handleRepeatOffsetsChange}
             />
           </div>
-          </div>
+        </div>
       </div>
     );
   }
