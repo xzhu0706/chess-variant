@@ -1,8 +1,11 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Board from '../WithMoveValidation';
 import SparePieces from '../components/customization/SparePieces.js';
 import PieceCustomize from '../components/customization/PieceCustomize.js';
 import Button from '@material-ui/core/Button'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 // import TextField from '@material-ui/core/TextField'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
@@ -65,18 +68,29 @@ class Create extends React.Component {
     const { startFen } = this.state;
     const customPiece = JSON.stringify(this.customPiece());
     const creator = await Auth.currentUserInfo();
-    const creatorUsername = creator.username;
-    // console.log("variant name: " + name)
-    // console.log("variant startFen: " + startFen)
-    // console.log("variant customPiece: " + JSON.stringify(customPiece))
-    // console.log("variant creator: " + creatorUsername)
+    if (!creator) return; // replace this with notification that user needs to be logged in?
+    const creatorId = creator.attributes.sub;
 
+    // return if name input is empty or is just whitespaces
+    if (!name.replace(/\s/g, '')) {
+      const saved = document.getElementById('saved');
+      ReactDOM.render(<span style={{ color: 'red' }}><ErrorOutlineIcon className={this.props.icon}/> Empty name! </span>, saved);
+      return;
+    }
 
-    console.log({ name, startFen, customPiece, creator: creatorUsername });
-    const customVariant = await API.graphql(graphqlOperation(
-      mutations.createCustomizedVariant, { name, startFen, customPiece, creator: creatorUsername }));
-    const variantData = customVariant.data.createCustomizedVariant;
-    console.log('variantData ', variantData)
+    const customVariant = await API.graphql(graphqlOperation(mutations.createCustomizedVariant, {
+      input: {
+        approved: false, submitted: false, name, startFen, customPiece, customizedVariantCreatorId: creatorId
+      } 
+    }));
+    if (customVariant) {
+      const saved = document.getElementById('saved');
+      ReactDOM.render(<CheckCircleOutlineIcon style={{ color: 'green' }} className={this.props.icon}/>, saved);
+    }
+    else {
+      const saved = document.getElementById('saved');
+      ReactDOM.render(<ErrorOutlineIcon className={this.props.icon}/>, saved);
+    }
   }
 
   // callback that we will pass to Board (not ideal...)
@@ -96,7 +110,6 @@ class Create extends React.Component {
             <div style={{
             textAlign: 'left',
             padding: '0.75em',
-            margin: '0.5em',
             backgroundColor:'#e5e5e6',
             maxWidth: '540px',
             margin: 'auto',
@@ -104,9 +117,10 @@ class Create extends React.Component {
               <form onSubmit={this.handleSubmit}>
                 <input type="text" placeholder="Your variant name" ref={input => this._name = input} />
                 <Button onClick={this.handleSubmit}>Save as Variant</Button>
+                <span id="saved"></span>
               </form>
-              <div>Exact offsets: {this.state.offsets.join(', ')}</div>
-              <div>Regular offsets: {this.state.repeatOffsets.join(', ')}</div>
+              <div>Exact offsets: {this.state.offsets.length !== 0 ? this.state.offsets.join(', ') : 'N/A'}</div>
+              <div>Regular offsets: {this.state.repeatOffsets.length !== 0 ? this.state.repeatOffsets.join(', ') : 'N/A'}</div>
             </div>
           </div>
           {/* render controlled inputs */}
