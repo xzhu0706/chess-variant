@@ -1,8 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
-import './Create.css';
 import PieceCustomize from '../components/customization/PieceCustomize';
+import CustomPlayOption from '../components/customization/CustomPlayOption';
+import wj from "../icons/white_joker.svg";
+
 
 export default class UserVariant extends React.Component {
   constructor(props) {
@@ -39,12 +42,31 @@ export default class UserVariant extends React.Component {
       creator && startFen ? (
         <div style={{ textAlign: 'center' }}>
           <div style={{ display: 'inline-block', textAlign: 'left' }}>
-            {creator}<br />
+          <span style={{ fontWeight: 'bold' }}>Variant name: </span>
             {name}<br />
-            {startFen}<br /> 
-            {JSON.stringify(customPiece)}
-            
-            <PieceCustomize offsets={customPiece['c'][0]} repeatOffsets={customPiece['c'][1]} hideInput={true} />
+            <span style={{ fontWeight: 'bold' }}>Creator: </span>
+            <Link to={`/account/${creator}`}>{creator}</Link><br />
+            <span style={{ fontWeight: 'bold' }}>Custom piece:</span>
+            <table className="pieces-table">
+              <tbody>
+                <tr>
+                  <th className="pieces-header">id</th>
+                  <th className="pieces-header">piece</th>
+                  <th className="pieces-header">name</th>
+                </tr>
+                <tr>
+                  <td className=".pieces-data">c</td>
+                  <td className=".pieces-data"><img src={wj} width="45" height="45" alt="joker" /></td>
+                  <td className=".pieces-data">joker</td>
+                </tr>
+                <tr>
+                <td colSpan='3'>
+                  <PieceCustomize offsets={customPiece['c'][0]} repeatOffsets={customPiece['c'][1]} hideInput={true} />
+                </td>
+                </tr>
+              </tbody>
+            </table>
+            <CustomPlayOption fen={startFen} customPiece={customPiece} />
             <hr/>
             <div>
               comment section
