@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
 import './CommentBox.css'
 
@@ -58,21 +58,58 @@ class CommentBox extends React.Component {
 }
 
 class CommentForm extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      author: '',
+      text: '',
+    };
+
+    this.handleCommentChange = this.handleCommentChange.bind(this);
+  }
+
+  async componentDidMount() {
+    const author = await Auth.currentUserInfo();
+    if (!author) return;
+    // save the currently logged-in user as this.state.author
+    this.setState({
+      author: author.username
+    });
+  }
+
+  handleCommentChange(event) {
+    this.setState({
+      text: event.target.value
+    });
+  }
+
+  handleSubmit(event) { 
+    event.preventDefault();
+    //alert('this doesn\'t do anything yet');
+    // this.props.handleComment
+    console.log('handleComment parameters', this.state.author, this.state.text)
+  }
+
+
   render() {
     return (
       <form className="comment-form" onSubmit={this.handleSubmit.bind(this)}>
         <div style={{ fontStyle: 'italic', padding: '0.25rem 0' }}>
-          <TextField multiline={true} rows="6" placeholder="Comment" required ref={input => this._text = input}></TextField>
+          <TextField
+            style={{ width: '92.5%', backgroundColor: '#fcfcfc' }}
+            multiline={true}
+            rows="8"
+            placeholder="Comment"
+            required
+            onChange={this.handleCommentChange}
+          />
         </div>
-        <Button type="submit" variant="contained" color="primary">Post</Button>
+        <button className="comment-button" type="submit">Post Comment</button>
       </form>
     );
   }
-  
-  handleSubmit(event) { 
-    event.preventDefault();
-    alert('this doesn\'t do anything yet');
-  }
+
 }
 
 class Comment extends React.Component {
