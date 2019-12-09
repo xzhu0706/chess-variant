@@ -72,6 +72,9 @@ class HumanVsHuman extends Component {
       fromSquare: '',
       squareStyles: {}
     });
+    if (this.props.handleFenChange) {
+      this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
+    };
   }
 
   resetBoard = () => {
@@ -81,6 +84,9 @@ class HumanVsHuman extends Component {
       fromSquare: '',
       squareStyles: {}
     });
+    if (this.props.handleFenChange) {
+      this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
+    };
   }
 
   prevMove = () => {
@@ -216,6 +222,9 @@ class HumanVsHuman extends Component {
             this.setState({
               fen: this.game.fen()
             });
+            if (this.props.handleFenChange) {
+              this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
+            };
           }
         }
         else { // place the selected spare piece on the selected square if the selected square is empty
@@ -225,6 +234,9 @@ class HumanVsHuman extends Component {
           this.setState({
             fen: this.game.fen()
           });
+          if (this.props.handleFenChange) {
+            this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
+          };
         }
       }
       else {
@@ -253,6 +265,10 @@ class HumanVsHuman extends Component {
           fen: this.game.fen(),
           fromSquare: '',
         });
+
+        if (this.props.handleFenChange) {
+          this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
+        };
       }
     }
   };
@@ -289,11 +305,11 @@ class HumanVsHuman extends Component {
   }
 }
 
-export default function WithMoveValidation(start_fen, variant=0, showData=true, smallBoard=false, editMode=false, sparePiece, customPiece) {
+export default function WithMoveValidation(start_fen, variant=0, showData=true, smallBoard=false, editMode=false, sparePiece, customPiece, handleFenChange) {
   let boardId = variant === 2 ? "grid-board" : "false"; // if variant isn't grid chess, boardId will be set to false
   return (
     <div style={smallBoard ? { maxWidth: '384px' } : { maxWidth: '540px' } }>
-      <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece} customPiece={customPiece}>
+      <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece} customPiece={customPiece} handleFenChange={handleFenChange}>
         { /* HumanVsHuman calls the following function as this.props.children() in its render() method */ }
         {({
           squareStyles,

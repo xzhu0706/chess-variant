@@ -3,7 +3,9 @@ import Board from '../WithMoveValidation';
 import SparePieces from '../components/customization/SparePieces.js';
 import PieceCustomize from '../components/customization/PieceCustomize.js';
 import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
+// import TextField from '@material-ui/core/TextField'
+import { Auth, API, graphqlOperation } from 'aws-amplify';
+import * as mutations from '../graphql/mutations';
 import './Create.css';
 
 /* /create page that contains
@@ -16,14 +18,16 @@ class Create extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editMode: true,
       icon: 'cursor',
+      startFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
       offsets: [],
       repeatOffsets: []
     };
     this.handleIconChange = this.handleIconChange.bind(this);
     this.handleRepeatOffsetsChange = this.handleRepeatOffsetsChange.bind(this);
     this.handleOffsetsChange = this.handleOffsetsChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFenChange = this.handleFenChange.bind(this);
   }
 
   handleIconChange(event) {
@@ -55,19 +59,54 @@ class Create extends React.Component {
     return { 'c': { '0': this.state.offsets, '1': this.state.repeatOffsets } };
   }
 
+  async handleSubmit(event) {
+    event.preventDefault();
+    const name = this._name.value;
+    const { startFen } = this.state;
+    const customPiece = JSON.stringify(this.customPiece());
+    const creator = await Auth.currentUserInfo();
+    const creatorUsername = creator.username;
+    // console.log("variant name: " + name)
+    // console.log("variant startFen: " + startFen)
+    // console.log("variant customPiece: " + JSON.stringify(customPiece))
+    // console.log("variant creator: " + creatorUsername)
+
+
+    console.log({ name, startFen, customPiece, creator: creatorUsername });
+    const customVariant = await API.graphql(graphqlOperation(
+      mutations.createCustomizedVariant, { name, startFen, customPiece, creator: creatorUsername }));
+    const variantData = customVariant.data.createCustomizedVariant;
+    console.log('variantData ', variantData)
+  }
+
+  // callback that we will pass to Board (not ideal...)
+  handleFenChange(startFen) {
+    this.setState({
+      startFen
+    });
+  }
+
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
         <div id='board' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', position: 'relative', }}>
           {/* render the board */}
           <div>
-            {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, this.state.editMode, this.state.icon, this.customPiece())}
-            <div style={{ textAlign: 'left', padding: '0.75em', backgroundColor: '#d3d3d6', border: '0.2em solid black' }}>
-              <TextField defaultValue="Untitled" label="Name"></TextField><br/>
-              <TextField disabled label="Exact offsets" value={this.state.offsets}></TextField><br/>
-              <TextField disabled label="Repeating offsets" value={this.state.repeatOffsets}></TextField><br/>
-              <br/>
-              <Button variant="contained" color="primary" onClick={() => {}}>Save as variant</Button>
+            {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, true, this.state.icon, this.customPiece(), this.handleFenChange)}
+            <div style={{
+            textAlign: 'left',
+            padding: '0.75em',
+            margin: '0.5em',
+            backgroundColor:'#e5e5e6',
+            maxWidth: '540px',
+            margin: 'auto',
+            border: '0.2em solid black' }}>
+              <form onSubmit={this.handleSubmit}>
+                <input type="text" placeholder="Your variant name" ref={input => this._name = input} />
+                <Button onClick={this.handleSubmit}>Save as Variant</Button>
+              </form>
+              <div>Exact offsets: {this.state.offsets.join(', ')}</div>
+              <div>Regular offsets: {this.state.repeatOffsets.join(', ')}</div>
             </div>
           </div>
           {/* render controlled inputs */}
