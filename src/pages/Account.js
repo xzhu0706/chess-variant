@@ -85,9 +85,11 @@ const VariantHistory = (props) => {
   }
 
   return (
-    <div>
+    <div style={{ paddingBottom: '1em' }}>
       <h2>Your Variants</h2>
-      {variantsList}
+      {variantsList.length !== 0 ?
+      variantsList :
+      <span>No variants yet.</span>}
     </div>
   );
 }

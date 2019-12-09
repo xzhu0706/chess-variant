@@ -5,7 +5,7 @@ import * as queries from '../graphql/queries';
 import PieceCustomize from '../components/customization/PieceCustomize';
 import CustomPlayOption from '../components/customization/CustomPlayOption';
 import wj from "../icons/white_joker.svg";
-
+import CommentBox from "../components/CommentBox";
 
 export default class UserVariant extends React.Component {
   constructor(props) {
@@ -41,8 +41,8 @@ export default class UserVariant extends React.Component {
     return (
       creator && startFen ? (
         <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'inline-block', textAlign: 'left' }}>
-          <span style={{ fontWeight: 'bold' }}>Variant name: </span>
+          <div style={{ display: 'inline-block', textAlign: 'center' }}>
+            <span style={{ fontWeight: 'bold' }}>Variant name: </span>
             {name}<br />
             <span style={{ fontWeight: 'bold' }}>Creator: </span>
             <Link to={`/account/${creator}`}>{creator}</Link><br />
@@ -69,7 +69,7 @@ export default class UserVariant extends React.Component {
             <CustomPlayOption fen={startFen} customPiece={customPiece} />
             <hr/>
             <div>
-              comment section
+              <CommentBox id={this.props.match.params.vid} />
             </div>
           </div>
         </div>)

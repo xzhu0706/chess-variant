@@ -1,0 +1,16 @@
+.comment-box {
+    max-width: 45rem;
+    padding: 1.5rem 2rem;
+    color: #010624;
+    background-color: #efefef;
+}
+
+.comment-form {
+    margin-bottom: 3rem;
+    border: 0.15em solid black;
+    padding: 1rem;
+}
+
+.comment {
+    border-top: 0.15em solid black;
+}
