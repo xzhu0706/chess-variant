@@ -2,6 +2,8 @@ import React from 'react';
 import Board from '../WithMoveValidation';
 import SparePieces from '../components/customization/SparePieces.js';
 import PieceCustomize from '../components/customization/PieceCustomize.js';
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 import './Create.css';
 
 /* /create page that contains
@@ -59,7 +61,14 @@ class Create extends React.Component {
         <div id='board' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', position: 'relative', }}>
           {/* render the board */}
           <div>
-            {Board('rnbqkbnr/pppppppp/8/8/8/4P3/PPPP1PPP/RNBQKBNR b KQkq - 0 1', 0, false, false, this.state.editMode, this.state.icon, this.customPiece())}
+            {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, this.state.editMode, this.state.icon, this.customPiece())}
+            <div style={{ textAlign: 'left', padding: '0.75em', backgroundColor: '#d3d3d6', border: '0.2em solid black' }}>
+              <TextField defaultValue="Untitled" label="Name"></TextField><br/>
+              <TextField disabled label="Exact offsets" value={this.state.offsets}></TextField><br/>
+              <TextField disabled label="Repeating offsets" value={this.state.repeatOffsets}></TextField><br/>
+              <br/>
+              <Button variant="contained" color="primary" onClick={() => {}}>Save as variant</Button>
+            </div>
           </div>
           {/* render controlled inputs */}
           <div>

@@ -74,12 +74,11 @@ const VariantHistory = (props) => {
   const variants = props.variants;
   if (variants) {
     variants.forEach(variant => {
-      const { id, name, startFen, customPiece } = variant;
+      const { id, name, createdAt } = variant;
       variantsList.push(
       <div key={id}>
         <div style={{ fontWeight: 'bold' }}><Link to={`/pages/${id}`}>{name}</Link></div>
-        {startFen}<br/>
-        {customPiece}<br/>
+        Created: {createdAt.slice(0,10)} {createdAt.slice(11,19)}<br/>
         <DeleteForeverTwoToneIcon className={props.icon} /><br/><br/>
       </div>);
     });
