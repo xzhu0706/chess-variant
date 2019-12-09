@@ -1,25 +1,22 @@
 import React, {Component} from 'react';
-import { Card, Avatar, CardContent, Typography } from '@material-ui/core';
+import { ListItem, Box, ListItemAvatar, Avatar, CardContent, Typography } from '@material-ui/core';
 
 class PostCard extends Component{
 
     render(){
         return (
-            <Card>
-                <Typography variant='h2' color='textPrimary' component='h2'>
-                    {this.props.title}
+            <Box display='flex' flexDirection='column' style={{border:'1px solid lightGray', borderRadius: '4px'}}>
+                <Typography style={{margin: '10px 0 0 10px'}} variant='h5' color='textPrimary' component='h5'>
+                        {this.props.title}
                 </Typography>
-                <CardHeader
-                    avatar = {
-                        <Avatar>D</Avatar>
-                    } 
-                    title = {this.props.author}
-                />
-                <CardContent>
-                    <Typography variant='body2' color='textSecondary' component='p'>
+                    <ListItemAvatar>
+                        <Avatar alt="Cindy Baker" src="">D</Avatar>
+                    </ListItemAvatar>
+                <Typography variant='body2' color='textSecondary' component='p'>
                         {this.props.content}
-                    </Typography>
-                </CardContent>
-            </Card>
+                </Typography>
+            </Box>
         )}
 }
+
+export default PostCard
