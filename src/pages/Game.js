@@ -7,9 +7,12 @@ import Box from '@material-ui/core/Box';
 // import Grid from '@material-ui/core/Grid';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
-import * as mutations from '../graphql/mutations';
-import * as queries from '../graphql/queries';
-import * as subscriptions from '../graphql/subscriptions';
+// import * as mutations from '../graphql/mutations';
+// import * as queries from '../graphql/queries';
+import * as customQueries from '../customGraphql/queries';
+import * as customMutations from '../customGraphql/mutations';
+import * as customSubscriptions from '../customGraphql/subscriptions';
+// import * as subscriptions from '../graphql/subscriptions';
 import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
@@ -66,8 +69,9 @@ class Game extends Component {
   async componentDidMount() {
     const gameId = this.props.match.params.id;
     this.currentUser = await this.getUserInfo();
-    const queryResult = await API.graphql(graphqlOperation(queries.getGame, { id: gameId }));
+    const queryResult = await API.graphql(graphqlOperation(customQueries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame;
+    console.log(this.gameInfo.ended)
     let initialMessages = this.gameInfo.messages.items;
     initialMessages = initialMessages.map((message) => {
       const author = message.author.id === this.currentUser.id ? 'me' : 'them';
@@ -142,7 +146,7 @@ class Game extends Component {
       this.addedLeaveGameListener = true;
     }
 
-    this.messageCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateMessage)).subscribe({
+    this.messageCreationSubscription = API.graphql(graphqlOperation(customSubscriptions.onCreateMessage)).subscribe({
       next: (messageData) => {
         const message = messageData.value.data.onCreateMessage;
         const gameId = message.game.id;
@@ -167,7 +171,7 @@ class Game extends Component {
     });
 
     this.gameUpdateSubscription = API.graphql(graphqlOperation(
-      subscriptions.onUpdateGameState, { id: gameId },
+      customSubscriptions.onUpdateGameState, { id: gameId },
     )).subscribe({
       next: (gameData) => {
         const gameState = gameData.value.data.onUpdateGameState;
@@ -284,7 +288,7 @@ class Game extends Component {
           turn: this.game.turn(),
         });
         await API.graphql(graphqlOperation(
-          mutations.updateGameState, { input: updateGameData },
+          customMutations.updateGameState, { input: updateGameData },
         ));
         this.moveFrom = null;
         return;
@@ -386,7 +390,7 @@ class Game extends Component {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('x-api-key', awsconfig.aws_appsync_apiKey);
     xhr.send(JSON.stringify({
-      query: mutations.updateGameState,
+      query: customMutations.updateGameState,
       variables: {
         input: newGameState,
       },
@@ -398,7 +402,7 @@ class Game extends Component {
     messageObject.author = this.currentUser;
     messageObject.messageGameId = this.gameId;
     messageObject.content = message.data.text;
-    API.graphql(graphqlOperation(mutations.createMessage, { input: messageObject }));
+    API.graphql(graphqlOperation(customMutations.createMessage, { input: messageObject }));
     this.setState({ messageList: [...this.state.messageList, message] });
   }
 

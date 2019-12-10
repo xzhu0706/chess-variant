@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Amplify, { Auth, API } from 'aws-amplify';
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
+import { createUser } from '../graphql/mutations';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PropTypes from 'prop-types';
@@ -116,6 +117,8 @@ class AdminDashboard extends Component {
       userInfo.enableStatus = user.Enabled ? activeTag : inactiveTag;
       if (this.adminUsers.includes(userInfo.username)) {
         userInfo.admin = adminTag;
+      } else {
+        userInfo.admin = false;
       }
       return userInfo;
     });
@@ -170,9 +173,9 @@ class AdminDashboard extends Component {
     }
   }
 
-  addToAdminGroup = async (username) => {
+  updateToAdminGroup = async (username, add = true) => {
     try {
-      const path = '/addUserToGroup';
+      const path = add ? '/addUserToGroup' : '/removeUserFromGroup';
       const myInit = {
         body: {
           username,
@@ -186,6 +189,7 @@ class AdminDashboard extends Component {
       const result = await API.post(apiName, path, myInit);
       // if success, call listAdmins to get updated Admin group
       const admins = await this.listAdmins(60);
+      this.adminUsers = [];
       admins.Users.forEach((admin) => {
         this.adminUsers.push(admin.Username);
       });
@@ -265,32 +269,51 @@ class AdminDashboard extends Component {
     }
   }
 
-  handlePromoteToAdmin = async (event, rowData) => {
+  handleUpdateAdmin = async (event, rowData) => {
+    let result;
     if (rowData.admin) {
-      return;
+      if (window.confirm('Are you sure you wish to demote this admin user?')) {
+        result = await this.updateToAdminGroup(rowData.username, false);
+      }
+    } else if (window.confirm('Are you sure you wish to promote this user to Admin?')) {
+      result = await this.updateToAdminGroup(rowData.username, true);
     }
-    if (window.confirm('Are you sure you wish to promote this user to Admin?')) {
-      const result = await this.addToAdminGroup(rowData.username);
-      const { users } = this.state;
-      this.updatedUserIndex = users.indexOf(rowData);
-      alert(result);
-    }
+    const { users } = this.state;
+    this.updatedUserIndex = users.indexOf(rowData);
+    alert(result);
   }
 
-  handleDisableUser = async (event, rowData) => {
+  // addToUserTable = async (event, rowData) => {
+  //   const userData = {};
+  //   userData.id = rowData.sub;
+  //   userData.username = rowData.username;
+  //   userData.email = rowData.email;
+  //   userData.phoneNumber = rowData.phone_number;
+  //   const user = await Auth.currentCredentials();
+  //   try {
+  //     const res = await API.graphql({
+  //       query: createUser,
+  //       variables: { input: userData },
+  //       authMode: 'AMAZON_COGNITO_USER_POOLS',
+  //     });
+  //     console.log(user, res);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
+
+  handleUpdateUserStatus = async (event, rowData) => {
+    let result;
     if (!rowData.enabled) {
       if (window.confirm('Are you sure you wish to enable this user?')) {
-        const result = await this.updateUserStatus(rowData.username, true);
-        alert(result);
+        result = await this.updateUserStatus(rowData.username, true);
       }
-      return;
+    } else if (window.confirm('Are you sure you wish to disable this user?')) {
+      result = await this.updateUserStatus(rowData.username, false);
     }
-    if (window.confirm('Are you sure you wish to disable this user?')) {
-      const result = await this.updateUserStatus(rowData.username, false);
-      const { users } = this.state;
-      this.updatedUserIndex = users.indexOf(rowData);
-      alert(result);
-    }
+    const { users } = this.state;
+    this.updatedUserIndex = users.indexOf(rowData);
+    alert(result);
   }
 
   render() {
@@ -324,18 +347,18 @@ class AdminDashboard extends Component {
                   <PersonPin
                     color={
                       !rowData.admin
-                        ? 'inherit'
-                        : 'disabled'
+                        ? 'primary'
+                        : 'secondary'
                     }
                   />
                 ),
-                tooltip: 'Promote to Admin',
-                onClick: this.handlePromoteToAdmin,
+                tooltip: !rowData.admin ? 'Promote to Admin' : 'Demote the admin',
+                onClick: this.handleUpdateAdmin,
               }),
               (rowData) => ({
                 icon: rowData.enabled ? 'toggle_on' : 'toggle_off',
                 tooltip: rowData.enabled ? 'Disable User' : 'Enable User',
-                onClick: this.handleDisableUser,
+                onClick: this.handleUpdateUserStatus,
               }),
             ]}
           />

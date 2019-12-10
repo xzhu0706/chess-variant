@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-// import * as customQueries from '../customGraphql/queries';
+// import * as queries from '../graphql/queries';
+import * as customQueries from '../customGraphql/queries';
 import { Link } from 'react-router-dom';
 import {
   Container, Row, Col, Image, ListGroup, ListGroupItem, Table,
 } from 'react-bootstrap';
-import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
 import PropTypes from 'prop-types';
-import * as queries from '../graphql/queries';
+// import * as queries from '../graphql/queries';
 
 class Account extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class Account extends Component {
     const { username } = this.props.match.params;
     const currentUser = await Auth.currentUserInfo();
     const queryResult = await API.graphql(graphqlOperation(
-      queries.getUserByUsername, { username },
+      customQueries.getUserByUsername, { username },
     ));
     const userInfo = queryResult.data.getUserByUsername.items;
     if (userInfo && userInfo[0]) {
@@ -38,8 +38,6 @@ class Account extends Component {
       <Container>
         <Profile
           username={user ? user.username : 'Loading..'}
-          email={user ? user.email : 'Loading..'}
-          phone={user ? user.phoneNumber : 'Loading..'}
           history={user ? user.pastGames.items : 'Loading..'}
           variants={user ? user.variants.items : 'Loading..'} // this.state.user.variants.items[0].name
           isCurrentUser={isCurrentUser}
@@ -50,16 +48,13 @@ class Account extends Component {
 }
 
 const Profile = ({
-  username, email, phone, isCurrentUser, history, variants,
+  username, history, variants,
 }) => (
   <div>
     <Row>
       <Col sm={{ span: 4, offset: 1 }}>
         <AccountInfo
           username={username}
-          email={email}
-          phone={phone}
-          isCurrentUser={isCurrentUser}
         />
       </Col>
       <Col sm={{ span: 7 }}>
@@ -81,14 +76,12 @@ const VariantHistory = (props) => {
       variantsList.push(
         <div key={id}>
           <div style={{ fontWeight: 'bold' }}><Link to={`/pages/${id}`}>{name}</Link></div>
-        Created:
+        Created At:
           {' '}
           {createdAt.slice(0, 10)}
+          {' '}
           {createdAt.slice(11, 19)}
-          <br />
-          <DeleteForeverTwoToneIcon className={props.icon} />
-          <br />
-          <br />
+          <hr />
         </div>,
       );
     });
@@ -96,7 +89,7 @@ const VariantHistory = (props) => {
 
   return (
     <div style={{ paddingBottom: '1em' }}>
-      <h2>Your Variants</h2>
+      <h2>Created Variants</h2>
       {variantsList.length !== 0
         ? variantsList
         : <span>No variants yet.</span>}
@@ -105,16 +98,12 @@ const VariantHistory = (props) => {
 };
 
 const AccountInfo = ({
-  username, isCurrentUser, email, phone,
+  username,
 }) => (
   <div>
     <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg" thumbnail fluid />
     <ListGroup>
       <ListGroupItem variant="flush">{username}</ListGroupItem>
-      { isCurrentUser
-        && <ListGroupItem>{email}</ListGroupItem> }
-      { isCurrentUser
-        && <ListGroupItem>{phone}</ListGroupItem> }
     </ListGroup>
   </div>
 );
@@ -169,7 +158,6 @@ const MatchHistory = ({ history, currentUser }) => {
           time={game.time ? game.time : 'N/A'}
           winner={game.winner ? game.winner : 'N/A'}
           result={game.result ? game.result : 'N/A'}
-          fen={game.fen}
           id={game.id}
         />
       );
@@ -190,7 +178,6 @@ const MatchHistory = ({ history, currentUser }) => {
             <td>Time</td>
             <td>Winner</td>
             <td>Result</td>
-            <td>Fen</td>
           </tr>
         </thead>
         <tbody>
@@ -205,21 +192,14 @@ export default Account;
 
 AccountInfo.defaultProps = {
   username: [],
-  isCurrentUser: [],
 };
 
 AccountInfo.propTypes = {
   username: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  isCurrentUser: PropTypes.bool,
-  email: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired,
 };
 
 Profile.propTypes = {
   username: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
-  isCurrentUser: PropTypes.bool.isRequired,
-  email: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired,
   variants: PropTypes.string.isRequired,
   history: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
 };
