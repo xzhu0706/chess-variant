@@ -40,7 +40,7 @@ type Complaint @model
 type CustomizedVariant @model
 @auth(
   rules: [
-    { allow: owner, ownerField: "creator", operations: [read, update] }
+    { allow: owner, ownerField: "creator", operations: [read, update, delete] }
     { allow: public, operations: [read, create] }
     { allow: groups, groups: ["Admin"] }
   ]
@@ -60,7 +60,7 @@ type CustomizedVariant @model
 type Comment @model
 @auth(
   rules: [
-    { allow: public, operations: [read, create] }
+    { allow: public, operations: [read, create, delete] }
     { allow: groups, groups: ["Admin"] }
   ]
 ) {
