@@ -28,7 +28,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router style={{backgroundColor: 'blue'}}>
+      <Router style={{background: 'blue'}}>
         <NavBar />
         <hr style={{height: '2px', backgroundColor: 'blue'}}/>
         <Sidebar />

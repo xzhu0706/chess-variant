@@ -14,7 +14,7 @@ class PostCard extends Component{
 
     render(){
         return (
-            <Box display='flex' flexDirection='column' style={{marginBottom: '10px', border:'1px solid lightGray', borderRadius: '4px'}}>
+            <Box display='flex' flexDirection='column' bgColor= 'white' style={{backgroundColor: 'white', marginBottom: '10px', border:'1px solid lightGray', borderRadius: '4px'}}>
                 <Typography style={{fontWeight: 'bold', margin: '10px 0 0 10px'}} variant='h5' color='textPrimary' component='h5'>
                         {this.props.title}
                 </Typography>
