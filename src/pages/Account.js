@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-// import * as queries from '../graphql/queries';
+import * as customMutations from '../customGraphql/mutations';
 import * as customQueries from '../customGraphql/queries';
 import { Link } from 'react-router-dom';
 import {
   Container, Row, Col, Image, ListGroup, ListGroupItem, Table,
 } from 'react-bootstrap';
+import ProfileActionMenu from '../components/ProfileActionMenu';
+import ReportUserForm from '../components/ReportUserForm';
 import PropTypes from 'prop-types';
 // import * as queries from '../graphql/queries';
 
@@ -13,8 +15,13 @@ class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: null,
       isCurrentUser: false,
+      anchorEl: null,
+      showReportUserDialog: false,
+      currentUser: null,
     };
+    this.anchorEl = null;
   }
 
   async componentDidMount() {
@@ -28,14 +35,85 @@ class Account extends Component {
       this.setState({
         user: userInfo[0],
         isCurrentUser: currentUser && currentUser.username === username,
-      }, () => { console.log('user', this.state.user); });
+        currentUser,
+      });
+    }
+  }
+
+  handleOpenMenu = (event) => {
+    this.anchorEl = event.currentTarget;
+    this.setState({
+      anchorEl: event.currentTarget,
+    });
+  };
+
+  handleCloseMenu = () => {
+    this.anchorEl = null;
+    this.setState({
+      anchorEl: null,
+    });
+  };
+
+  handleReportUser = async (content) => {
+    const { currentUser, user } = this.state;
+    try {
+      const complaintInput = {};
+      complaintInput.content = content.reason;
+      complaintInput.complaintUserId = currentUser.attributes.sub;
+      complaintInput.complaintReportedUserId = user.id;
+      complaintInput.processed = false;
+      if (content.link) {
+        complaintInput.gameLink = content.link;
+      }
+      await API.graphql(graphqlOperation(customMutations.createComplaint, { input: complaintInput }));
+      alert('We have received your input! Thank you for using our site.');
+      this.setState({
+        showReportUserDialog: false,
+      });
+    } catch (e) {
+      console.log(e);
+      alert('Something went wrong, please try again.');
+    }
+  }
+
+  handleClickAction = (e) => {
+    const action = e.nativeEvent.target.outerText;
+    const { currentUser } = this.state;
+    this.handleCloseMenu();
+    if (!currentUser) {
+      alert('Please log in first');
+      return;
+    }
+    if (action === 'Report') {
+      this.setState({
+        showReportUserDialog: true,
+      });
     }
   }
 
   render() {
-    const { user, isCurrentUser } = this.state;
+    const {
+      user, isCurrentUser, anchorEl, showReportUserDialog,
+    } = this.state;
+    const options = [];
+    if (!isCurrentUser) {
+      options.push('Report');
+    }
     return (
       <Container>
+        <ReportUserForm
+          showDialog={showReportUserDialog}
+          closeDialog={() => this.setState({ showReportUserDialog: false })}
+          reportedUser={user ? user.username : ''}
+          handleSubmit={this.handleReportUser}
+        />
+        <ProfileActionMenu
+          options={options}
+          anchorEl={anchorEl}
+          handleOpenMenu={this.handleOpenMenu}
+          handleCloseMenu={this.handleCloseMenu}
+          handleClickAction={this.handleClickAction}
+        />
         <Profile
           username={user ? user.username : 'Loading..'}
           history={user ? user.pastGames.items : 'Loading..'}
@@ -90,6 +168,7 @@ const VariantHistory = (props) => {
   return (
     <div style={{ paddingBottom: '1em' }}>
       <h2>Created Variants</h2>
+      <hr />
       {variantsList.length !== 0
         ? variantsList
         : <span>No variants yet.</span>}
