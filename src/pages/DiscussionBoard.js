@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {List, Container} from '@material-ui/core';
+import {List, Container, Box} from '@material-ui/core';
 import PostCard from '../components/PostCard';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
@@ -22,12 +22,14 @@ class DiscussionBoard extends Component{
             return (<PostCard author={author} title={title} content={content} />)
         } )
         return (
-            <Container style={{marginLeft: '20%', width: '60%', marginTop: '70px'}}>
-                <Fab color="primary" aria-label="edit">
+            <Box display='flex' flexDirection='column' style={{marginLeft: '20%', width: '60%', marginTop: '70px'}}>
+                <Box display='flex' flexDirection='row' justifyContent='flex-end'>
+                <Fab style={{float: 'right'}}color="primary" aria-label="edit">
                     <EditIcon />
                 </Fab>
-                <List>{postCards}</List>
-            </Container>
+                </Box>
+                <List style={{marginTop: '10px'}}>{postCards}</List>
+            </Box>
         )
     }
 }
