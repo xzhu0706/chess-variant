@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import PieceCustomize from '../components/customization/PieceCustomize';
-import CustomPlayOption from '../components/customization/CustomPlayOption';
 import wj from "../icons/white_joker.svg";
 import CommentBox from "../components/CommentBox";
+import Board from '../WithMoveValidation';
 
 export default class UserVariant extends React.Component {
   constructor(props) {
@@ -44,40 +44,44 @@ export default class UserVariant extends React.Component {
     const { creator, name, startFen, customPiece } = this.state;
     return (
       creator && startFen ? (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'inline-block', textAlign: 'center' }}>
-            <span style={{ fontWeight: 'bold' }}>Variant name: </span>
-            {name}<br />
-            <span style={{ fontWeight: 'bold' }}>Creator: </span>
-            <Link to={`/account/${creator}`}>{creator}</Link><br />
-            <span style={{ fontWeight: 'bold' }}>Custom piece:</span>
-            <table className="pieces-table">
-              <tbody>
-                <tr>
-                  <th className="pieces-header">id</th>
-                  <th className="pieces-header">piece</th>
-                  <th className="pieces-header">name</th>
-                </tr>
-                <tr>
-                  <td className=".pieces-data">c</td>
-                  <td className=".pieces-data"><img src={wj} width="45" height="45" alt="joker" /></td>
-                  <td className=".pieces-data">joker</td>
-                </tr>
-                <tr>
-                <td colSpan='3'>
-                  <PieceCustomize offsets={customPiece['c'][0]} repeatOffsets={customPiece['c'][1]} hideInput={true} />
-                </td>
-                </tr>
-              </tbody>
-            </table>
-            <CustomPlayOption fen={startFen} customPiece={customPiece} />
-            <hr/>
-            <div>
-              <CommentBox id={this.props.match.params.vid} variant={this.props.match.params.vid} />
+        <div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <div style={{ margin: '0.5rem 1% 1% 0' }}>
+                {Board(startFen, 0, true, false, false, undefined, customPiece)}
+              </div>
+              <div>
+                <span style={{ fontWeight: 'bold' }}>Variant name: </span>
+                {name}<br />
+                <span style={{ fontWeight: 'bold' }}>Creator: </span>
+                <Link to={`/account/${creator}`}>{creator}</Link><br />
+                <span style={{ fontWeight: 'bold' }}>Custom piece:</span>
+                <table className="pieces-table">
+                  <tbody>
+                    <tr>
+                      <th className="pieces-header">id</th>
+                      <th className="pieces-header">piece</th>
+                      <th className="pieces-header">name</th>
+                    </tr>
+                    <tr>
+                      <td className=".pieces-data">c</td>
+                      <td className=".pieces-data"><img src={wj} width="45" height="45" alt="joker" /></td>
+                      <td className=".pieces-data">joker (custom)</td>
+                    </tr>
+                    <tr>
+                    <td colSpan='3'>
+                      <PieceCustomize offsets={customPiece['c'][0]} repeatOffsets={customPiece['c'][1]} hideInput={true} />
+                    </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>)
-        : null
+          <div style={{ width: '100%', height: '100%' }}>
+            <CommentBox id={this.props.match.params.vid} variant={this.props.match.params.vid} />
+          </div>
+        </div>) : null
     );
   }
 }

@@ -128,7 +128,7 @@ class CommentForm extends React.Component {
       <form className="comment-form" onSubmit={this.handleSubmit.bind(this)}>
         <div style={{ fontStyle: 'italic', padding: '0.25rem 0' }}>
           <TextField
-            style={{ width: '92.5%', backgroundColor: '#fcfcfc' }}
+            className="comment-field"
             multiline={true}
             rows="8"
             placeholder="Comment"
@@ -144,16 +144,18 @@ class CommentForm extends React.Component {
 
 class Comment extends React.Component {
   render() {
+    const { author, content, createdAt } = this.props;
     return (
       <div className='comment'>
-        <p>{this.props.author} ({this.props.createdAt.slice(0,10)} {this.props.createdAt.slice(11,19)})</p>
-        <p>{this.props.content}</p>
+        <p>{author} ({createdAt.slice(0,10)} {createdAt.slice(11,19)})</p>
+        <p>{content}</p>
           <Link to='/#' onClick={this.deleteComment}>
-            <DeleteForeverTwoToneIcon style={{ color: '#708070' }} className={this.props.icon} />
+            <DeleteForeverTwoToneIcon style={{ color: '#708070' }} />
           </Link>
       </div>
     );
   }
+
   async deleteComment(event) {
     event.preventDefault();
     //alert('this doesn\'t do anything yet');
