@@ -3,6 +3,12 @@ import { ListItemText, Box, ListItemAvatar, Avatar, CardContent, Typography } fr
 import IconButton from '@material-ui/core/IconButton';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import Icon from '@material-ui/core/Icon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee, faRegComment } from '@fortawesome/free-solid-svg-icons'
+import { FaRegComment } from "react-icons/fa";
+import { FaRegThumbsUp } from "react-icons/fa";
+
 
 class PostCard extends Component{
 
@@ -26,11 +32,11 @@ class PostCard extends Component{
                 </Typography>
                 <Box display='flex' flexDirection='row' justifyContent='flex-start' style={{marginLeft: '10px'}}>
                 <IconButton aria-label="delete" disabled color="primary">
-                    <ThumbUpIcon />
+                    <FaRegThumbsUp style={{fontSize: 21}}/>
                     <Typography style={{marginLeft: '5px'}}variant='caption'>100</Typography>
                 </IconButton>
-                <IconButton style={{marginLeft: '0px'}} aria-label="delete" disabled color="primary">
-                    <ChatBubbleOutlineIcon />
+                <IconButton aria-label="delete" disabled color="primary">
+                    <FaRegComment style={{fontSize: 22}}/>
                     <Typography style={{marginLeft: '5px'}}variant='caption'>{'  50'}</Typography>
                 </IconButton>
                 </Box>
