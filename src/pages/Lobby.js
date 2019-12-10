@@ -288,14 +288,14 @@ class Lobby extends Component {
     });
 
     // Wrong user trying to join invite only game
-    if(opponent != "n/a"){
+    if(opponent !== "n/a"){
       // guest user
       if(joinGameInput.opponent.username === 'anonymous'){
         this.showJoiningOwnGameDialog();
         return;
       }
       // wrong user
-      if(userInfo.username != opponent){
+      if(userInfo.username !== opponent){
         this.showJoiningOwnGameDialog();
         return;
       }
