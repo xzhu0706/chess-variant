@@ -30,6 +30,7 @@ class App extends Component {
     return (
       <Router style={{backgroundColor: 'blue'}}>
         <NavBar />
+        <hr style={{height: '2px', backgroundColor: 'blue'}}/>
         <Sidebar />
         <Switch>
           <Route path="/" exact component={DiscussionBoard} />

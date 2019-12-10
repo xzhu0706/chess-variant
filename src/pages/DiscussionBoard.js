@@ -19,9 +19,9 @@ class DiscussionBoard extends Component{
             return (<PostCard author={author} title={title} content={content} />)
         } )
         return (
-                <Container style={{width: '70%'}}>
-                    <List>{postCards}</List>
-                </Container>
+            <Container style={{marginLeft: '25%', width: '60%', marginTop: '70px'}}>
+                <List>{postCards}</List>
+            </Container>
         )
     }
 }
