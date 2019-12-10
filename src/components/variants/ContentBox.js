@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 
 const Container = styled.div`
@@ -16,21 +17,34 @@ const Container = styled.div`
   }
 `;
 
-const ContentBox = (props) => {
-  return (
-    <Container>
-      <Row className="justify-content-md-center">
-        <Col xs="auto">
-          <div>
-            {props.board}
-          </div>
-        </Col>
-        <Col xs="auto" xl="6" style={props.style}>
-          {props.children}
-        </Col>
-      </Row>
-    </Container>
-  );
-};
+const ContentBox = ({ board, style, children }) => (
+  <Container>
+    <Row className="justify-content-md-center">
+      <Col xs="auto">
+        <div>
+          {board}
+        </div>
+      </Col>
+      <Col xs="auto" xl="6" style={style}>
+        {children}
+      </Col>
+    </Row>
+  </Container>
+);
 
 export default ContentBox;
+
+ContentBox.defaultProps = {
+  style: [],
+  children: [],
+};
+
+ContentBox.propTypes = {
+  board: PropTypes.objectOf(PropTypes.oneOfType(
+    [PropTypes.string, PropTypes.symbol, PropTypes.object],
+  )).isRequired,
+  style: PropTypes.arrayOf(PropTypes.string),
+  children: PropTypes.oneOfType(
+    [PropTypes.string, PropTypes.object, PropTypes.array],
+  ),
+};

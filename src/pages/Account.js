@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import * as queries from '../graphql/queries';
 // import * as customQueries from '../customGraphql/queries';
 import { Link } from 'react-router-dom';
 import {
   Container, Row, Col, Image, ListGroup, ListGroupItem, Table,
 } from 'react-bootstrap';
 import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
+import PropTypes from 'prop-types';
+import * as queries from '../graphql/queries';
 
-export default class Account extends Component {
+class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,7 +18,7 @@ export default class Account extends Component {
   }
 
   async componentDidMount() {
-    const username = this.props.match.params.username;
+    const { username } = this.props.match.params;
     const currentUser = await Auth.currentUserInfo();
     const queryResult = await API.graphql(graphqlOperation(
       queries.getUserByUsername, { username },
@@ -27,7 +28,7 @@ export default class Account extends Component {
       this.setState({
         user: userInfo[0],
         isCurrentUser: currentUser && currentUser.username === username,
-      }, () => {console.log('user', this.state.user)});
+      }, () => { console.log('user', this.state.user); });
     }
   }
 
@@ -48,123 +49,191 @@ export default class Account extends Component {
   }
 }
 
-const Profile = (props) => (
+const Profile = ({
+  username, email, phone, isCurrentUser, history, variants,
+}) => (
   <div>
     <Row>
       <Col sm={{ span: 4, offset: 1 }}>
         <AccountInfo
-          username={props.username}
-          email={props.email}
-          phone={props.phone}
-          isCurrentUser={props.isCurrentUser}
+          username={username}
+          email={email}
+          phone={phone}
+          isCurrentUser={isCurrentUser}
         />
       </Col>
-      <Col sm={{ span: 7 }} >
-        {props.username !== 'Loading..' ? (
-          <VariantHistory variants={props.variants}/>
+      <Col sm={{ span: 7 }}>
+        {username !== 'Loading..' ? (
+          <VariantHistory variants={variants} />
         ) : null}
-        <MatchHistory history={props.history} currentUser={props.username} />
+        <MatchHistory history={history} currentUser={username} />
       </Col>
     </Row>
   </div>
 );
 
 const VariantHistory = (props) => {
-  let variantsList = [];
-  const variants = props.variants;
+  const variantsList = [];
+  const { variants } = props;
   if (variants) {
-    variants.forEach(variant => {
+    variants.forEach((variant) => {
       const { id, name, createdAt } = variant;
       variantsList.push(
-      <div key={id}>
-        <div style={{ fontWeight: 'bold' }}><Link to={`/pages/${id}`}>{name}</Link></div>
-        Created: {createdAt.slice(0,10)} {createdAt.slice(11,19)}<br/>
-        <DeleteForeverTwoToneIcon className={props.icon} /><br/><br/>
-      </div>);
+        <div key={id}>
+          <div style={{ fontWeight: 'bold' }}><Link to={`/pages/${id}`}>{name}</Link></div>
+        Created:
+          {' '}
+          {createdAt.slice(0, 10)}
+          {createdAt.slice(11, 19)}
+          <br />
+          <DeleteForeverTwoToneIcon className={props.icon} />
+          <br />
+          <br />
+        </div>,
+      );
     });
   }
 
   return (
     <div style={{ paddingBottom: '1em' }}>
       <h2>Your Variants</h2>
-      {variantsList.length !== 0 ?
-      variantsList :
-      <span>No variants yet.</span>}
+      {variantsList.length !== 0
+        ? variantsList
+        : <span>No variants yet.</span>}
     </div>
   );
-}
+};
 
-const AccountInfo = (props) => (
+const AccountInfo = ({
+  username, isCurrentUser, email, phone,
+}) => (
   <div>
     <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg" thumbnail fluid />
     <ListGroup>
-      <ListGroupItem variant="flush">{props.username}</ListGroupItem>
-      { props.isCurrentUser
-        && <ListGroupItem>{props.email}</ListGroupItem> }
-      { props.isCurrentUser
-        && <ListGroupItem>{props.phone}</ListGroupItem> }
+      <ListGroupItem variant="flush">{username}</ListGroupItem>
+      { isCurrentUser
+        && <ListGroupItem>{email}</ListGroupItem> }
+      { isCurrentUser
+        && <ListGroupItem>{phone}</ListGroupItem> }
     </ListGroup>
   </div>
 );
 
-const GameRow = (props) => {
-  return <tr>
-    <td><Link to={`/game/${props.id}`}>Link</Link></td>
-    <td>{props.opponent}</td>
-    <td>{props.variant}</td>
-    <td>{props.time}</td>
-    <td>{props.winner}</td>
-    <td>{props.result}</td>
+const GameRow = ({
+  id, opponent, variant, time, winner, result,
+}) => (
+  <tr>
+    <td><Link to={`/game/${id}`}>Link</Link></td>
+    <td>{opponent}</td>
+    <td>{variant}</td>
+    <td>{time}</td>
+    <td>{winner}</td>
+    <td>{result}</td>
   </tr>
-}
+);
 
-const MatchHistory = (props) => {
+const MatchHistory = ({ history, currentUser }) => {
   // get row elements
   let index = 0;
-  let games = props.history
-  let gamesList = []
-  if (games !== "Loading..") {
+  const games = history;
+  const gamesList = [];
+  if (games !== 'Loading..') {
     while (index < games.length) {
-      let game = games[index].game
+      const { game } = games[index];
       console.log(game);
       let opponent = '';
       if (!game.available) {
-        if (game.opponent.username === props.currentUser) {
+        if (game.opponent.username === currentUser) {
           opponent = game.creator.username;
         } else {
           opponent = game.opponent.username;
         }
-        let row = <GameRow
-          key={game.id}
+        const row = (
+          <GameRow
+            key={game.id}
+            opponent={opponent}
+            variant={game.variant}
+            time={game.time ? game.time : 'N/A'}
+            winner={game.winner ? game.winner : 'N/A'}
+            result={game.result ? game.result : 'N/A'}
+            id={game.id}
+          />
+        );
+        gamesList.push(row);
+      }
+      const row = (
+        <GameRow
+          available={game.available ? 'yes' : 'no'}
           opponent={opponent}
           variant={game.variant}
-          time={game.time ? game.time : "N/A"}
-          winner={game.winner ? game.winner : "N/A"}
-          result={game.result ? game.result : "N/A"}
+          time={game.time ? game.time : 'N/A'}
+          winner={game.winner ? game.winner : 'N/A'}
+          result={game.result ? game.result : 'N/A'}
+          fen={game.fen}
           id={game.id}
         />
-        gamesList.push(row)
-      }
-      index++;
+      );
+      gamesList.push(row);
+      index += 1;
     }
   }
 
-  return <div>
-    <h2>Match History</h2>
-    <Table striped bordered responsive>
-      <thead>
-        <tr>
-          <td>Page</td>
-          <td>Opponent</td>
-          <td>Variant</td>
-          <td>Time</td>
-          <td>Winner</td>
-          <td>Result</td>
-        </tr>
-      </thead>
-      <tbody>
-        {gamesList}
-      </tbody>
-    </Table>
-  </div>;
+  return (
+    <div>
+      <h2>Match History</h2>
+      <Table striped bordered responsive>
+        <thead>
+          <tr>
+            <td>Available</td>
+            <td>Opponent</td>
+            <td>Variant</td>
+            <td>Time</td>
+            <td>Winner</td>
+            <td>Result</td>
+            <td>Fen</td>
+          </tr>
+        </thead>
+        <tbody>
+          {gamesList}
+        </tbody>
+      </Table>
+    </div>
+  );
+};
+
+export default Account;
+
+AccountInfo.defaultProps = {
+  username: [],
+  isCurrentUser: [],
+};
+
+AccountInfo.propTypes = {
+  username: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  isCurrentUser: PropTypes.bool,
+  email: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
+};
+
+Profile.propTypes = {
+  username: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
+  isCurrentUser: PropTypes.bool.isRequired,
+  email: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
+  variants: PropTypes.string.isRequired,
+  history: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
+};
+
+GameRow.propTypes = {
+  opponent: PropTypes.string.isRequired,
+  variant: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+  winner: PropTypes.string.isRequired,
+  result: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+};
+
+MatchHistory.propTypes = {
+  history: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
+  currentUser: PropTypes.string.isRequired,
 };
