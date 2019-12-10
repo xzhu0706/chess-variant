@@ -4,7 +4,7 @@ describe('Commenting on variant pages (/pages/<variantID>)', () => {
   test('Post a comment on a variant page', async () => {
     const browser = await puppeteer.launch({
       headless: false,
-      slowMo: 25,
+      slowMo: 20,
     });
     const page = await browser.newPage();
 
