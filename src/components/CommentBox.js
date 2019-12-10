@@ -22,33 +22,39 @@ class CommentBox extends React.Component {
         queries.getCustomizedVariant, { id: this.props.variant },
       ));
       const comments = queryResult.data.getCustomizedVariant.comments;
-      console.log('comments.items', comments.items);
+      const formatted = comments.items.map(comment => {
+        const { id, content, createdAt } = comment; 
+        return { id, content, createdAt };
+      });
+      this.setState({
+        comments: formatted
+      });
     } catch(error) {
-      throw new Error("error getting variant data");
+      throw new Error("error getting comment data");
     }
   }
 
-  async handleComment(authorId, authorName, text) {
+  async handleComment(authorId, authorName, content) {
     // if user is not logged in, authorId is expected to be blank
     if (!authorId) {
-      alert("Please log in first.");
+      alert("Please log in to comment.");
       return;
     }
 
-    const newComment = await API.graphql(graphqlOperation(mutations.createComment, {
+    const storedComment = await API.graphql(graphqlOperation(mutations.createComment, {
       input: {
-        content: text,
+        content,
         commentUserId: authorId,
         commentVariantId: this.props.variant
       } 
     }));
-    const commentId = newComment.data.createComment.id;
-    const createdAt = newComment.data.createComment.createdAt;
+    const commentId = storedComment.data.createComment.id;
+    const createdAt = storedComment.data.createComment.createdAt;
 
     const comment = {
       id: commentId,
       author: authorName,
-      text,
+      content,
       createdAt
     };
 
@@ -63,8 +69,8 @@ class CommentBox extends React.Component {
         <Comment 
           key={comment.id}
           author={comment.author} 
-          text={comment.text}
-          createdAt="just now"
+          content={comment.content}
+          createdAt={comment.createdAt}
         />
       ); 
     });
@@ -93,7 +99,7 @@ class CommentForm extends React.Component {
     this.state = {
       authorId: '',
       authorName: '',
-      text: '',
+      content: '',
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -111,17 +117,17 @@ class CommentForm extends React.Component {
     // 
   }
 
-  // keep track of user comment input in this.state.text
+  // keep track of user comment input in this.state.content
   handleCommentChange(event) {
     this.setState({
-      text: event.target.value
+      content: event.target.value
     });
   }
 
   // store comment when user submits comment
   handleSubmit(event) { 
     event.preventDefault();
-    this.props.handleComment(this.state.authorId, this.state.authorName, this.state.text)
+    this.props.handleComment(this.state.authorId, this.state.authorName, this.state.content)
   }
 
   render() {
@@ -149,8 +155,8 @@ class Comment extends React.Component {
   render() {
     return (
       <div className='comment'>
-        <p>{this.props.author}</p>
-        <p>{this.props.text}</p>
+        <p>{this.props.author} ({this.props.createdAt.slice(0,10)} {this.props.createdAt.slice(11,19)})</p>
+        <p>{this.props.content}</p>
           <Link to='/#' onClick={this.deleteComment}>
             <DeleteForeverTwoToneIcon style={{ color: '#708070' }} className={this.props.icon} />
           </Link>
