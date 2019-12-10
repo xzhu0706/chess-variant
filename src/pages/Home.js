@@ -11,14 +11,14 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showDialog: false,
+      // showDialog: false,
     };
   }
 
   render() {
     return (
       <div>
-        <Lobby history={this.props.history} />
+        <Lobby history={this.history} />
 
         <h1 className="text-center" style={{ fontFamily: 'AppleSDGothicNeo-Bold' }}>Popular Variants</h1>
         <Row>
