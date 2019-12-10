@@ -6,7 +6,7 @@ class Sidebar extends Component {
 
     render() {
         return (
-            <List position='fixed' style={{backgroundColor: 'blue', width: '25%', height: '100%'}}>
+            <List style={{position:'fixed', backgroundColor: 'blue', width: '25%', height: '100%'}}>
                 <ListItem>
                     <ListItemAvatar>
                         <Avatar alt="" src=""/>
