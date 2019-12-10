@@ -13,6 +13,9 @@ import Dialog from '@material-ui/core/Dialog';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
 import * as queries from '../graphql/queries';
+import SearchIcon from '@material-ui/icons/Search';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 
 
 import awsconfig from '../aws-exports';
@@ -156,19 +159,29 @@ class NavBar extends Component {
               </Navbar.Brand>
               <Nav className='mr-auto'>
                 <Autocomplete
-                  className="d-inline-block"
-                  id="search-bar"
-                  style={{ width: '350px' }}
+                  
+                  style={{ width: '450px', height: '50px' }}
                   getOptionLabel={(option) => option.username}
                   noOptionsText="No user found"
                   options={searchResults}
-                  onChange={this.linkToUser}e
+                  onChange={this.linkToUser}
                   onInputChange={this.handleSearch}
                   renderInput={(params) => (
                     <TextField
+                      style={{maxHeight: '30px'}}
+                      id="margin-dense"
+                      margin='dense'
+                      variant="outlined"
                       {...params}
-                      label="Search a User"
+                      defaultValue="Search a User"
                       fullWidth
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchIcon />
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                   )}
                 />
