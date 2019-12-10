@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../graphql/queries';
+import * as mutations from '../graphql/mutations';
 import TextField from '@material-ui/core/TextField';
 import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
 import './CommentBox.css'
@@ -10,32 +12,59 @@ class CommentBox extends React.Component {
     super(props);
 
     this.state = {
-      comments: [
-        { id: 1, author: "abc", text: "Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. " },
-        { id: 2, author: "def", text: "Hello."},
-        { id: 3, author: "ghi", text: ""}
-      ]
+      comments: []
     };
   }
   
-  handleComment(author, text) {
+  async componentDidMount() {
+    try {
+      const queryResult = await API.graphql(graphqlOperation(
+        queries.getCustomizedVariant, { id: this.props.variant },
+      ));
+      const comments = queryResult.data.getCustomizedVariant.comments;
+      console.log('comments.items', comments.items);
+    } catch(error) {
+      throw new Error("error getting variant data");
+    }
+  }
+
+  async handleComment(authorId, authorName, text) {
+    // if user is not logged in, authorId is expected to be blank
+    if (!authorId) {
+      alert("Please log in first.");
+      return;
+    }
+
+    const newComment = await API.graphql(graphqlOperation(mutations.createComment, {
+      input: {
+        content: text,
+        commentUserId: authorId,
+        commentVariantId: this.props.variant
+      } 
+    }));
+    const commentId = newComment.data.createComment.id;
+    const createdAt = newComment.data.createComment.createdAt;
+
     const comment = {
-      // id: 
-      // author: 
-      // text: 
+      id: commentId,
+      author: authorName,
+      text,
+      createdAt
     };
+
     this.setState({
-      comments: [...this.state.comments, [comment]]
+      comments: [...this.state.comments, comment]
     });
   }
   
-  formatComments() {    
-    return this.state.comments.map(comment => { 
+  formatComments() {
+    return this.state.comments.map(comment => {
       return (
         <Comment 
           key={comment.id}
           author={comment.author} 
-          text={comment.text} 
+          text={comment.text}
+          createdAt="just now"
         />
       ); 
     });
@@ -62,37 +91,41 @@ class CommentForm extends React.Component {
     super(props);
 
     this.state = {
-      author: '',
+      authorId: '',
+      authorName: '',
       text: '',
     };
 
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCommentChange = this.handleCommentChange.bind(this);
   }
 
   async componentDidMount() {
+    // get currently logged in user when comment form mounts
     const author = await Auth.currentUserInfo();
-    if (!author) return;
-    // save the currently logged-in user as this.state.author
+    if (!author) return;    
     this.setState({
-      author: author.username
+      authorId: author.attributes.sub,
+      authorName: author.username
     });
+    // 
   }
 
+  // keep track of user comment input in this.state.text
   handleCommentChange(event) {
     this.setState({
       text: event.target.value
     });
   }
 
+  // store comment when user submits comment
   handleSubmit(event) { 
     event.preventDefault();
-    //alert('this doesn\'t do anything yet');
-    // this.props.handleComment
-    console.log('handleComment parameters', this.state.author, this.state.text)
+    this.props.handleComment(this.state.authorId, this.state.authorName, this.state.text)
   }
 
-
   render() {
+    /* render controlled comment form */
     return (
       <form className="comment-form" onSubmit={this.handleSubmit.bind(this)}>
         <div style={{ fontStyle: 'italic', padding: '0.25rem 0' }}>

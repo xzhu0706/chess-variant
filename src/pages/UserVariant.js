@@ -21,18 +21,22 @@ export default class UserVariant extends React.Component {
   async componentDidMount() {
     const vid = this.props.match.params.vid;
 
-    const queryResult = await API.graphql(graphqlOperation(
-      queries.getCustomizedVariant, { id: vid },
-    ));
-    const variant = queryResult.data.getCustomizedVariant;
-    if (variant) {
-      const { creator, name, startFen, customPiece } = variant;
-      this.setState({
-        creator: creator.username,
-        name,
-        startFen,
-        customPiece: JSON.parse(customPiece)
-      });
+    try {
+      const queryResult = await API.graphql(graphqlOperation(
+        queries.getCustomizedVariant, { id: vid },
+      ));
+      const variant = queryResult.data.getCustomizedVariant;
+      if (variant) {
+        const { creator, name, startFen, customPiece } = variant;
+        this.setState({
+          creator: creator.username,
+          name,
+          startFen,
+          customPiece: JSON.parse(customPiece)
+        });
+      }
+    } catch(error) {
+      throw new Error("error getting variant data");
     }
   }
 
@@ -69,7 +73,7 @@ export default class UserVariant extends React.Component {
             <CustomPlayOption fen={startFen} customPiece={customPiece} />
             <hr/>
             <div>
-              <CommentBox id={this.props.match.params.vid} />
+              <CommentBox id={this.props.match.params.vid} variant={this.props.match.params.vid} />
             </div>
           </div>
         </div>)
