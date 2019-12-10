@@ -15,6 +15,7 @@ import { Authenticator, Greetings } from 'aws-amplify-react';
 import * as queries from '../graphql/queries';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Input from '@material-ui/core/Input';
 
 
 
@@ -159,26 +160,22 @@ class NavBar extends Component {
               </Navbar.Brand>
               <Nav className='mr-auto'>
                 <Autocomplete
-                  
-                  style={{ width: '450px', height: '50px' }}
+                  style={{ width: '600px', height: '50px' }}
                   getOptionLabel={(option) => option.username}
                   noOptionsText="No user found"
                   options={searchResults}
+                  freeSolo={true}
                   onChange={this.linkToUser}
                   onInputChange={this.handleSearch}
                   renderInput={(params) => (
                     <TextField
-                      style={{maxHeight: '30px'}}
-                      id="margin-dense"
-                      margin='dense'
-                      variant="outlined"
-                      {...params}
-                      defaultValue="Search a User"
+                      id="input-with-icon-textfield"
+                      label="TextField"
                       fullWidth
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
-                            <SearchIcon />
+                            <AccountCircle />
                           </InputAdornment>
                         ),
                       }}
