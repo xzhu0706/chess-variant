@@ -1303,6 +1303,16 @@ describe("offsetsFromAttack() test: given a list of (repeating) offsets, return 
     const attack = -54;
     expect(mychessjs.offsetsFromAttack(attack, allOffsets)).toEqual([-54, -18]);
   });
+
+  test("an attack from -96 units away can be produced by offsets [-96, -48, -32, -16]", () => {
+    const attack = -96;
+    expect(mychessjs.offsetsFromAttack(attack, allOffsets)).toEqual([-96, -48, -32, -16]);
+  });
+
+  test("an attack from +96 units away can be produced by offsets [16, 32, 48, 96]", () => {
+    const attack = 96;
+    expect(mychessjs.offsetsFromAttack(attack, allOffsets)).toEqual([16, 32, 48, 96]);
+  });
 });
 
 describe("games with custom pieces", () => {

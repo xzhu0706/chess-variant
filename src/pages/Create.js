@@ -1,8 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import ReactDOM from 'react-dom';
 import Board from '../WithMoveValidation';
 import SparePieces from '../components/customization/SparePieces.js';
 import PieceCustomize from '../components/customization/PieceCustomize.js';
+import Button from '@material-ui/core/Button'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+// import TextField from '@material-ui/core/TextField'
+import { Auth, API, graphqlOperation } from 'aws-amplify';
+import * as mutations from '../graphql/mutations';
 import './Create.css';
 
 /* /create page that contains
@@ -15,14 +21,16 @@ class Create extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editMode: true,
       icon: 'cursor',
+      startFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
       offsets: [],
       repeatOffsets: []
     };
     this.handleIconChange = this.handleIconChange.bind(this);
     this.handleRepeatOffsetsChange = this.handleRepeatOffsetsChange.bind(this);
     this.handleOffsetsChange = this.handleOffsetsChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFenChange = this.handleFenChange.bind(this);
   }
 
   handleIconChange(event) {
@@ -54,25 +62,83 @@ class Create extends React.Component {
     return { 'c': { '0': this.state.offsets, '1': this.state.repeatOffsets } };
   }
 
+  async handleSubmit(event) {
+    event.preventDefault();
+    const name = this._name.value;
+    const { startFen } = this.state;
+    const customPiece = JSON.stringify(this.customPiece());
+    const creator = await Auth.currentUserInfo();
+    if (!creator) {
+      alert("Please log in to save a variant.");
+      return;
+    }
+    const creatorId = creator.attributes.sub;
+
+    // return if name input is empty or is just whitespaces
+    if (!name.replace(/\s/g, '')) {
+      const saved = document.getElementById('saved');
+      ReactDOM.render(<span style={{ color: 'red' }}><ErrorOutlineIcon className={this.props.icon}/> Empty name! </span>, saved);
+      return;
+    }
+
+    const customVariant = await API.graphql(graphqlOperation(mutations.createCustomizedVariant, {
+      input: {
+        approved: false, submitted: false, name, startFen, customPiece, customizedVariantCreatorId: creatorId
+      } 
+    }));
+    if (customVariant) {
+      const saved = document.getElementById('saved');
+      ReactDOM.render(<CheckCircleOutlineIcon style={{ color: 'green' }} className={this.props.icon}/>, saved);
+    }
+    else {
+      const saved = document.getElementById('saved');
+      ReactDOM.render(<ErrorOutlineIcon className={this.props.icon}/>, saved);
+    }
+  }
+
+  // callback that we will pass to Board (not ideal...)
+  handleFenChange(startFen) {
+    this.setState({
+      startFen
+    });
+  }
+
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
-        <div id='board' style={{ display: 'inline-block', position: 'relative', border: '0.15em dotted pink' }}>
+        <div id='board' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', position: 'relative', }}>
           {/* render the board */}
-          <div style={{ display: 'inline-block' }}>
-            {Board('rnbqkbnr/pppppppp/8/8/8/4P3/PPPP1PPP/RNBQKBNR b KQkq - 0 1', 0, false, false, this.state.editMode, this.state.icon, this.customPiece())}
+          <div>
+            {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, true, this.state.icon, this.customPiece(), this.handleFenChange)}
+            <div style={{
+            textAlign: 'left',
+            padding: '0.75em',
+            backgroundColor:'#e5e5e6',
+            maxWidth: '540px',
+            margin: 'auto',
+            border: '0.2em solid black' }}>
+              <form onSubmit={this.handleSubmit}>
+                <input type="text" placeholder="Your variant name" ref={input => this._name = input} />
+                <Button type="submit">Save as Variant</Button>
+                <span id="saved"></span>
+              </form>
+              <div>Exact offsets: {this.state.offsets.length !== 0 ? this.state.offsets.join(', ') : 'N/A'}</div>
+              <div>Regular offsets: {this.state.repeatOffsets.length !== 0 ? this.state.repeatOffsets.join(', ') : 'N/A'}</div>
+            </div>
           </div>
-
-          {/* render spare pieces component that calls handleIconChange() when one of its icons is selected */}
-          <SparePieces handleChange={this.handleIconChange} />
-          <PieceCustomize
-            offsets={this.state.offsets}
-            repeatOffsets={this.state.repeatOffsets}
-            onChangeOffsets={this.handleOffsetsChange}
-            onChangeRepeatOffsets={this.handleRepeatOffsetsChange}
-          />
-          <div style={{ margin: '0.25em' }}><Link to="/pieces">Go to glossary of pieces</Link></div>
+          {/* render controlled inputs */}
+          <div>
+            <SparePieces handleChange={this.handleIconChange} />
+            <div><a href="/pieces">View current fairy pieces</a></div>
+            <div><a href="/tutorial">View the customization tutorial</a></div>
+            <PieceCustomize
+              offsets={this.state.offsets}
+              repeatOffsets={this.state.repeatOffsets}
+              onChangeOffsets={this.handleOffsetsChange}
+              onChangeRepeatOffsets={this.handleRepeatOffsetsChange}
+            />
           </div>
+        </div>
       </div>
     );
   }
