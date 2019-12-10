@@ -23,8 +23,8 @@ class CommentBox extends React.Component {
       ));
       const comments = queryResult.data.getCustomizedVariant.comments;
       const formatted = comments.items.map(comment => {
-        const { id, content, createdAt } = comment; 
-        return { id, content, createdAt };
+        const { id, content, createdAt, user } = comment; 
+        return { id, author: user.username, content, createdAt };
       });
       this.setState({
         comments: formatted
@@ -35,7 +35,7 @@ class CommentBox extends React.Component {
   }
 
   async handleComment(authorId, authorName, content) {
-    // if user is not logged in, authorId is expected to be blank
+    // note that if user is not logged in, authorId is expected to be blank
     if (!authorId) {
       alert("Please log in to comment.");
       return;
@@ -163,9 +163,16 @@ class Comment extends React.Component {
       </div>
     );
   }
-  deleteComment(event) {
+  async deleteComment(event) {
     event.preventDefault();
-    alert('this doesn\'t do anything yet');
+    //alert('this doesn\'t do anything yet');
+    if (window.confirm('Are you sure you want to delete this comment?')) {
+      // const deletedComment = await API.graphql(graphqlOperation(mutations.deleteComment, {
+      //   input: {
+      //     id: "0f015e25-e15a-4127-b911-f0a60fcac74c"
+      //   } 
+      // }));
+    }
   }
 }
 

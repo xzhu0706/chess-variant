@@ -68,7 +68,10 @@ class Create extends React.Component {
     const { startFen } = this.state;
     const customPiece = JSON.stringify(this.customPiece());
     const creator = await Auth.currentUserInfo();
-    if (!creator) return; // replace this with notification that user needs to be logged in?
+    if (!creator) {
+      alert("Please log in to save a variant.");
+      return;
+    }
     const creatorId = creator.attributes.sub;
 
     // return if name input is empty or is just whitespaces
@@ -116,7 +119,7 @@ class Create extends React.Component {
             border: '0.2em solid black' }}>
               <form onSubmit={this.handleSubmit}>
                 <input type="text" placeholder="Your variant name" ref={input => this._name = input} />
-                <Button onClick={this.handleSubmit}>Save as Variant</Button>
+                <Button type="submit">Save as Variant</Button>
                 <span id="saved"></span>
               </form>
               <div>Exact offsets: {this.state.offsets.length !== 0 ? this.state.offsets.join(', ') : 'N/A'}</div>
