@@ -50,7 +50,7 @@ class CustomPlayOption extends React.Component {
       <div>
         <div id="play-err"> </div>
         <Button variant="contained" color="primary" onClick={() => this.play()}>
-          Play
+          Analyse
         </Button>
         <input
           value={this.props.fen}

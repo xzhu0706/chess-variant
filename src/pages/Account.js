@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 // import * as customQueries from '../customGraphql/queries';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import {
   Container, Row, Col, Image, ListGroup, ListGroupItem, Table,
 } from 'react-bootstrap';
+import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
+import PropTypes from 'prop-types';
 import * as queries from '../graphql/queries';
-// import Game from './Game';
-
 
 class Account extends Component {
   constructor(props) {
@@ -42,6 +41,7 @@ class Account extends Component {
           email={user ? user.email : 'Loading..'}
           phone={user ? user.phoneNumber : 'Loading..'}
           history={user ? user.pastGames.items : 'Loading..'}
+          variants={user ? user.variants.items : 'Loading..'} // this.state.user.variants.items[0].name
           isCurrentUser={isCurrentUser}
         />
       </Container>
@@ -50,7 +50,7 @@ class Account extends Component {
 }
 
 const Profile = ({
-  username, email, phone, isCurrentUser, history,
+  username, email, phone, isCurrentUser, history, variants,
 }) => (
   <div>
     <Row>
@@ -63,18 +63,51 @@ const Profile = ({
         />
       </Col>
       <Col sm={{ span: 7 }}>
+        {username !== 'Loading..' ? (
+          <VariantHistory variants={variants} />
+        ) : null}
         <MatchHistory history={history} currentUser={username} />
       </Col>
-
     </Row>
   </div>
 );
+
+const VariantHistory = (props) => {
+  const variantsList = [];
+  const { variants } = props;
+  if (variants) {
+    variants.forEach((variant) => {
+      const { id, name, createdAt } = variant;
+      variantsList.push(
+        <div key={id}>
+          <div style={{ fontWeight: 'bold' }}><Link to={`/pages/${id}`}>{name}</Link></div>
+        Created:
+          {' '}
+          {createdAt.slice(0, 10)}
+          {createdAt.slice(11, 19)}
+          <br />
+          <DeleteForeverTwoToneIcon className={props.icon} />
+          <br />
+          <br />
+        </div>,
+      );
+    });
+  }
+
+  return (
+    <div style={{ paddingBottom: '1em' }}>
+      <h2>Your Variants</h2>
+      {variantsList.length !== 0
+        ? variantsList
+        : <span>No variants yet.</span>}
+    </div>
+  );
+};
 
 const AccountInfo = ({
   username, isCurrentUser, email, phone,
 }) => (
   <div>
-
     <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg" thumbnail fluid />
     <ListGroup>
       <ListGroupItem variant="flush">{username}</ListGroupItem>
@@ -87,17 +120,15 @@ const AccountInfo = ({
 );
 
 const GameRow = ({
-  available, opponent, variant, time, winner, result, fen, id,
+  id, opponent, variant, time, winner, result,
 }) => (
   <tr>
-    <td>{available}</td>
+    <td><Link to={`/game/${id}`}>Link</Link></td>
     <td>{opponent}</td>
     <td>{variant}</td>
     <td>{time}</td>
     <td>{winner}</td>
     <td>{result}</td>
-    <td>{fen}</td>
-    <td><Link to={`/game/${id}`}>Link</Link></td>
   </tr>
 );
 
@@ -117,6 +148,18 @@ const MatchHistory = ({ history, currentUser }) => {
         } else {
           opponent = game.opponent.username;
         }
+        const row = (
+          <GameRow
+            key={game.id}
+            opponent={opponent}
+            variant={game.variant}
+            time={game.time ? game.time : 'N/A'}
+            winner={game.winner ? game.winner : 'N/A'}
+            result={game.result ? game.result : 'N/A'}
+            id={game.id}
+          />
+        );
+        gamesList.push(row);
       }
       const row = (
         <GameRow
@@ -177,17 +220,16 @@ Profile.propTypes = {
   isCurrentUser: PropTypes.bool.isRequired,
   email: PropTypes.string.isRequired,
   phone: PropTypes.string.isRequired,
+  variants: PropTypes.string.isRequired,
   history: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
 };
 
 GameRow.propTypes = {
-  available: PropTypes.string.isRequired,
   opponent: PropTypes.string.isRequired,
   variant: PropTypes.string.isRequired,
   time: PropTypes.string.isRequired,
   winner: PropTypes.string.isRequired,
   result: PropTypes.string.isRequired,
-  fen: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
 };
 

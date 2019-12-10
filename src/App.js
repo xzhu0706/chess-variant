@@ -7,6 +7,7 @@ import Variants from './pages/Variants';
 import Create from './pages/Create';
 import Tutorial from './pages/Tutorial';
 import Analysis from './pages/Analysis';
+import UserVariant from './pages/UserVariant';
 import Pieces from './pages/Pieces';
 import './App.css';
 import NavBar from './components/NavBar';
@@ -33,6 +34,10 @@ class App extends Component {
             render={(props) => (
               <Account key={props.match.params.username} {...props} />
             )}
+          />
+          <Route
+            path="/pages/:vid"
+            render={(props) => <UserVariant {...props} />}
           />
           <Route path="/create" component={Create} />
           <Route path="/tutorial" component={Tutorial} />

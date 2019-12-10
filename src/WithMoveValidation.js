@@ -72,6 +72,9 @@ class HumanVsHuman extends Component {
       fromSquare: '',
       squareStyles: {}
     });
+    if (this.props.handleFenChange) {
+      this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
+    };
   }
 
   resetBoard = () => {
@@ -81,6 +84,9 @@ class HumanVsHuman extends Component {
       fromSquare: '',
       squareStyles: {}
     });
+    if (this.props.handleFenChange) {
+      this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
+    };
   }
 
   prevMove = () => {
@@ -108,7 +114,8 @@ class HumanVsHuman extends Component {
 
   // adjust board size according to window size
   calcWidth = (dimensions) => {
-    let customWidth = Math.min(540/640 * dimensions.screenWidth, 540/640 * dimensions.screenHeight);
+    let customWidth = Math.min(540/640 * dimensions.screenWidth, 600/640 * dimensions.screenHeight);
+    if (customWidth < 300) customWidth = 300;
     return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
   }
 
@@ -215,6 +222,9 @@ class HumanVsHuman extends Component {
             this.setState({
               fen: this.game.fen()
             });
+            if (this.props.handleFenChange) {
+              this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
+            };
           }
         }
         else { // place the selected spare piece on the selected square if the selected square is empty
@@ -224,6 +234,9 @@ class HumanVsHuman extends Component {
           this.setState({
             fen: this.game.fen()
           });
+          if (this.props.handleFenChange) {
+            this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
+          };
         }
       }
       else {
@@ -252,6 +265,10 @@ class HumanVsHuman extends Component {
           fen: this.game.fen(),
           fromSquare: '',
         });
+
+        if (this.props.handleFenChange) {
+          this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
+        };
       }
     }
   };
@@ -288,11 +305,11 @@ class HumanVsHuman extends Component {
   }
 }
 
-export default function WithMoveValidation(start_fen, variant=0, showData=true, smallBoard=false, editMode=false, sparePiece, customPiece) {
+export default function WithMoveValidation(start_fen, variant=0, showData=true, smallBoard=false, editMode=false, sparePiece, customPiece, handleFenChange) {
   let boardId = variant === 2 ? "grid-board" : "false"; // if variant isn't grid chess, boardId will be set to false
   return (
     <div style={smallBoard ? { maxWidth: '384px' } : { maxWidth: '540px' } }>
-      <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece} customPiece={customPiece}>
+      <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece} customPiece={customPiece} handleFenChange={handleFenChange}>
         { /* HumanVsHuman calls the following function as this.props.children() in its render() method */ }
         {({
           squareStyles,
@@ -314,7 +331,8 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
           // redefine calcWidth() if smallBoard arg is true
           if (smallBoard) {
             calcWidth = (dimensions) => {
-              let customWidth = Math.min(384/460 * dimensions.screenWidth, 384/460 * dimensions.screenHeight);
+              let customWidth = Math.min(384/460 * dimensions.screenWidth, 430/460 * dimensions.screenHeight);
+              if (customWidth < 215) customWidth = 215;
               return (dimensions.screenWidth < 460 || dimensions.screenHeight < 460) ? customWidth : 384;
             }
           }
@@ -498,7 +516,7 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                       boxShadow: '0 2px 3px rgba(0, 0, 0, 0.5)',
                   }}
                   pieces={customPieces}
-                  lightSquareStyle={{ backgroundColor: '#ffffff' }}
+                  lightSquareStyle={{ backgroundColor: '#f7f7f7' }}
                   darkSquareStyle={{ backgroundColor: '#65cae8' }}
                   squareStyles={squareStyles}
                   onSquareClick={onSquareClick}
