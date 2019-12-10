@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { Navbar } from 'react-bootstrap';
+import { Navbar, Nav, NavLink } from 'react-bootstrap';
 import ResponsiveMenu from 'react-responsive-navbar';
 import styled from 'styled-components'; // https://www.styled-components.com/
 import { FaBars, FaTimes } from 'react-icons/fa';
@@ -20,7 +20,7 @@ import awsconfig from '../aws-exports';
 Amplify.configure(awsconfig);
 
 const Menu = styled.div`
-  border: 2px solid black;
+  border: 0px solid black;
   margin: 1em 2em;
 
   ul {
@@ -149,96 +149,54 @@ class NavBar extends Component {
     } = this;
     return (
       <div>
-        <ResponsiveMenu
-          menuOpenButton={<FaBars size={40} color="YellowGreen" />}
-          menuCloseButton={<FaTimes size={40} color="YellowGreen" />}
-          changeMenuOn="820px"
-          menu={(
-            <Menu>
+            <Navbar fixed='top'>
               <Navbar.Brand style={{ fontFamily: 'chalkduster' }}>
                 <Image src={require('../icons/pieces/standard/wr.svg')} alt="Chess Piece" style={imgStyle} fluid />
                 <Link to="/" style={{ color: '#333333', fontSize: '28px' }}>Chess Variants</Link>
               </Navbar.Brand>
-              <ul>
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-                <li>
-                  <Link to="/variants">Browse Variants</Link>
-                </li>
-                <li>
-                  <Link to="/">Leaderboard</Link>
-                </li>
-                <li>
-                  <Link to="/create">Create a Variant</Link>
-                </li>
-                <li>
-                  <Link to="/pieces">Glossary of Pieces</Link>
-                </li>
-
+              <Nav className='mr-auto'>
+                <Autocomplete
+                  className="d-inline-block"
+                  id="search-bar"
+                  style={{ width: '50%' }}
+                  getOptionLabel={(option) => option.username}
+                  noOptionsText="No user found"
+                  options={searchResults}
+                  onChange={this.linkToUser}e
+                  onInputChange={this.handleSearch}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Search a User"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Nav>
                 {username
                   ? (
-                    <span>
-                      <li>
-                        <Link to={`/account/${username}`}>
-                          Hello
-                          {' '}
-                          {username}
-                        </Link>
-                      </li>
-                      {isAdmin && (
-                        <li>
-                          <Link to="/admin">
-                            Admin
-                          </Link>
-                        </li>
+                    <Nav>
+                      <Nav.Link href=''>hello</Nav.Link>
+                      {isAdmin && ( 
+                        <Nav.Link href="/admin">Admin</Nav.Link>
                       )}
-                      <li>
-                        <Button
-                          onClick={handleSignOut}
-                          data-testid="logout-button"
-                        >
-                        Sign Out
-                        </Button>
-                      </li>
-                    </span>
-                  )
+                      <Button
+                        onClick={handleSignOut}
+                        data-testid="logout-button"
+                      >Sign Out</Button>
+                    </Nav>
+                    )
                   : (
-                    <li>
                       <Button
                         data-testid="login-button"
                         style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: '35px' }}
                         variant="outlined"
                         startIcon={<AccountCircle />}
                         onClick={handleShowAuth}
-                      >
-                        SIGN IN
-                      </Button>
-                    </li>
-                  )}
-                <li>
-                  <Autocomplete
-                    className="d-inline-block"
-                    id="search-bar"
-                    style={{ width: 250 }}
-                    getOptionLabel={(option) => option.username}
-                    noOptionsText="No user found"
-                    options={searchResults}
-                    onChange={this.linkToUser}
-                    onInputChange={this.handleSearch}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Search a User"
-                        fullWidth
-                      />
-                    )}
-                  />
-                </li>
-              </ul>
-            </Menu>
-          )}
-        />
+                      >SIGN IN</Button>
+                  )
+                }
+              </Navbar>
 
         <Dialog onClose={handleCloseAuth} aria-labelledby="simple-dialog-title" open={showAuth}>
           <Authenticator
