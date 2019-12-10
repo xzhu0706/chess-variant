@@ -150,18 +150,6 @@ const MatchHistory = ({ history, currentUser }) => {
         );
         gamesList.push(row);
       }
-      const row = (
-        <GameRow
-          available={game.available ? 'yes' : 'no'}
-          opponent={opponent}
-          variant={game.variant}
-          time={game.time ? game.time : 'N/A'}
-          winner={game.winner ? game.winner : 'N/A'}
-          result={game.result ? game.result : 'N/A'}
-          id={game.id}
-        />
-      );
-      gamesList.push(row);
       index += 1;
     }
   }
@@ -172,7 +160,7 @@ const MatchHistory = ({ history, currentUser }) => {
       <Table striped bordered responsive>
         <thead>
           <tr>
-            <td>Available</td>
+            <td>Page</td>
             <td>Opponent</td>
             <td>Variant</td>
             <td>Time</td>
