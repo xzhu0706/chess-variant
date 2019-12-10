@@ -9,11 +9,14 @@ class PostCard extends Component{
                 <Typography style={{margin: '10px 0 0 10px'}} variant='h5' color='textPrimary' component='h5'>
                         {this.props.title}
                 </Typography>
-                    <Box style={{marginLeft: '10px'}}display='flex' flexDirection='row'>
-                        <ListItemAvatar>
-                            <Avatar alt="Cindy Baker" src="">D</Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary='Daouda Gueye'/>
+                    <Box style={{marginLeft: '10px'}}display='flex' flexDirection='row' justifyContent='flex-start'>
+                        <Avatar alt="Cindy Baker" src="">D</Avatar>
+                        <Box style={{marginLeft: '5px'}}display='flex' flexDirection='column' alignItems='flex-start' alignContent='flex-start'>
+                            <Typography align='left' variant='h6'>Daouda Gueye</Typography>
+                            <div style={{marginTop: '-12px'}}>
+                                <Typography variant='caption'>2h</Typography>
+                            </div>
+                        </Box>
                     </Box>
                 <Typography style={{margin: '10px 10px 10px 10px'}}variant='body2' color='textSecondary' component='p'>
                         {this.props.content}
