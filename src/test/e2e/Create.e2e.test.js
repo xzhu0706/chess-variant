@@ -4,7 +4,7 @@ describe('Variant creation on /create page', () => {
     test('User can successfully save a variant', async () => {
       const browser = await puppeteer.launch({
         headless: false,
-        slowMo: 40,
+        slowMo: 30,
       });
       const page = await browser.newPage();
 

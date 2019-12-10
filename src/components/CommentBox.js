@@ -35,12 +35,6 @@ class CommentBox extends React.Component {
   }
 
   async handleComment(authorId, authorName, content) {
-    // note that if user is not logged in, authorId is expected to be blank
-    if (!authorId) {
-      alert("Please log in to comment.");
-      return;
-    }
-
     const storedComment = await API.graphql(graphqlOperation(mutations.createComment, {
       input: {
         content,
@@ -97,8 +91,6 @@ class CommentForm extends React.Component {
     super(props);
 
     this.state = {
-      authorId: '',
-      authorName: '',
       content: '',
     };
 
@@ -106,18 +98,7 @@ class CommentForm extends React.Component {
     this.handleCommentChange = this.handleCommentChange.bind(this);
   }
 
-  async componentDidMount() {
-    // get currently logged in user when comment form mounts
-    const author = await Auth.currentUserInfo();
-    if (!author) return;    
-    this.setState({
-      authorId: author.attributes.sub,
-      authorName: author.username
-    });
-    // 
-  }
-
-  // keep track of user comment input in this.state.content
+  // update this.state.content with user input
   handleCommentChange(event) {
     this.setState({
       content: event.target.value
@@ -125,9 +106,16 @@ class CommentForm extends React.Component {
   }
 
   // store comment when user submits comment
-  handleSubmit(event) { 
+  async handleSubmit(event) { 
     event.preventDefault();
-    this.props.handleComment(this.state.authorId, this.state.authorName, this.state.content)
+    // get currently logged in user
+    const author = await Auth.currentUserInfo();
+    if (!author) {
+      alert("Please log in to comment.");
+      return;
+    }
+    // pass user details and content to callback
+    this.props.handleComment(author.attributes.sub, author.username, this.state.content)
   }
 
   render() {
@@ -148,7 +136,6 @@ class CommentForm extends React.Component {
       </form>
     );
   }
-
 }
 
 class Comment extends React.Component {
