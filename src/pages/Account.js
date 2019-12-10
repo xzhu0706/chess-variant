@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import * as queries from '../graphql/queries';
-// import * as customQueries from '../customGraphql/queries';
+// import * as queries from '../graphql/queries';
+import * as customQueries from '../customGraphql/queries';
 import { Link } from 'react-router-dom';
 import {
   Container, Row, Col, Image, ListGroup, ListGroupItem, Table,
@@ -20,7 +20,7 @@ export default class Account extends Component {
     const username = this.props.match.params.username;
     const currentUser = await Auth.currentUserInfo();
     const queryResult = await API.graphql(graphqlOperation(
-      queries.getUserByUsername, { username },
+      customQueries.getUserByUsername, { username },
     ));
     const userInfo = queryResult.data.getUserByUsername.items;
     if (userInfo && userInfo[0]) {
@@ -37,8 +37,6 @@ export default class Account extends Component {
       <Container>
         <Profile
           username={user ? user.username : 'Loading..'}
-          email={user ? user.email : 'Loading..'}
-          phone={user ? user.phoneNumber : 'Loading..'}
           history={user ? user.pastGames.items : 'Loading..'}
           variants={user ? user.variants.items : 'Loading..'} // this.state.user.variants.items[0].name
           isCurrentUser={isCurrentUser}
@@ -54,8 +52,6 @@ const Profile = (props) => (
       <Col sm={{ span: 4, offset: 1 }}>
         <AccountInfo
           username={props.username}
-          email={props.email}
-          phone={props.phone}
           isCurrentUser={props.isCurrentUser}
         />
       </Col>
@@ -99,10 +95,6 @@ const AccountInfo = (props) => (
     <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg" thumbnail fluid />
     <ListGroup>
       <ListGroupItem variant="flush">{props.username}</ListGroupItem>
-      { props.isCurrentUser
-        && <ListGroupItem>{props.email}</ListGroupItem> }
-      { props.isCurrentUser
-        && <ListGroupItem>{props.phone}</ListGroupItem> }
     </ListGroup>
   </div>
 );

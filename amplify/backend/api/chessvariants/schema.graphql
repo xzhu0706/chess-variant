@@ -7,10 +7,10 @@ type User @model
 ]) {
   id: ID!
   username: String!
-  email: String!
-  phoneNumber: String!
+  email: String
+  phoneNumber: String
   pastGames: [PlayerGameMapping] @connection(name: "userPlayer", sortField: "createdAt")
-  variants: [CustomizedVariant] @connection(name: "userVariant", sortField: "createdAt")
+  variants: [CustomizedVariant] @connection(name: "userVariant", sortField: "updatedAt")
   comments: [Comment] @connection(name: "userComment", sortField: "createdAt")
   points: Int
   skillLevel: String
@@ -53,8 +53,9 @@ type CustomizedVariant @model
   customPiece: String
   submitted: Boolean!
   approved: Boolean!
-  comments: [Comment] @connection(name: "variantComment")
+  comments: [Comment] @connection(name: "variantComment", sortField: "createdAt")
   createdAt: String
+  updatedAt: String
 }
 
 type Comment @model

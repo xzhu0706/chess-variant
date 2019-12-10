@@ -13,6 +13,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
 import * as queries from '../graphql/queries';
+import * as customQueries from '../customGraphql/queries';
 
 import awsconfig from '../aws-exports';
 
@@ -121,7 +122,7 @@ class NavBar extends Component {
           contains: input,
         },
       };
-      const queryResult = await API.graphql(graphqlOperation(queries.listUsers, { filter }));
+      const queryResult = await API.graphql(graphqlOperation(customQueries.listUsers, { filter }));
       this.setState({
         searchResults: queryResult.data.listUsers.items,
       });

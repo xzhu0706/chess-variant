@@ -18,9 +18,11 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Button from '@material-ui/core/Button';
-import * as subscriptions from '../graphql/subscriptions';
+// import * as subscriptions from '../graphql/subscriptions';
+import * as customSubscriptions from '../customGraphql/subscriptions';
 // import * as queries from '../graphql/queries';
-import * as mutations from '../graphql/mutations';
+// import * as mutations from '../graphql/mutations';
+import * as customMutations from '../customGraphql/mutations';
 import { Auth } from 'aws-amplify';
 import CreateGameDialog from './CreateGameDialog';
 import Dialog from '@material-ui/core/Dialog';
@@ -121,7 +123,7 @@ class Lobby extends Component {
   }
 
   async componentDidMount() {
-    const limit = 100; // temporary solution
+    const limit = 1000; // temporary solution
     const filter = {
       available: { eq: true },
     };
@@ -138,7 +140,7 @@ class Lobby extends Component {
       this.setState({ games });
     }
 
-    this.gameCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateGame)).subscribe({
+    this.gameCreationSubscription = API.graphql(graphqlOperation(customSubscriptions.onCreateGame)).subscribe({
       next: (gameData) => {
         const game = gameData.value.data.onCreateGame;
         const gameId = game.id;
@@ -160,7 +162,7 @@ class Lobby extends Component {
       },
     });*/
 
-    this.gameUpdateSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateGame)).subscribe({
+    this.gameUpdateSubscription = API.graphql(graphqlOperation(customSubscriptions.onUpdateGame)).subscribe({
       next: (gameData) => {
         console.log('joined game', gameData.value.data);
         let game = gameData.value.data.onUpdateGame
@@ -219,7 +221,7 @@ class Lobby extends Component {
     // if (currentGame) {
     //    API.graphql(graphqlOperation(mutations.deleteGame, { input: {id: currentGame }}))
     // }
-    const createNewGame = await API.graphql(graphqlOperation(mutations.createGame, { input: newGame }));
+    const createNewGame = await API.graphql(graphqlOperation(customMutations.createGame, { input: newGame }));
     const newGameData = createNewGame.data.createGame;
     localStorage.setItem(CURRENT_GAME, newGameData.id);
     if (userInfo) {
@@ -229,7 +231,7 @@ class Lobby extends Component {
         playerGameMappingPlayerId: userInfo.attributes.sub,
       };
       const newPlayerGameMapping = await API.graphql(
-        graphqlOperation(mutations.createPlayerGameMapping, { input: playerGameMappingInput }),
+        graphqlOperation(customMutations.createPlayerGameMapping, { input: playerGameMappingInput }),
       );
       // testing output
       const queryResult2 = await API.graphql(
@@ -310,10 +312,8 @@ class Lobby extends Component {
 
     joinGameInput.available = false;
     joinGameInput.id = gameId;
-    console.log('join game input', joinGameInput)
-    const joinGame = await API.graphql(graphqlOperation(mutations.updateGame, { input: joinGameInput }));
+    const joinGame = await API.graphql(graphqlOperation(customMutations.updateGame, { input: joinGameInput }));
     const joinedGameData = joinGame.data.updateGame;
-    console.log('updated join game', joinedGameData);
     if (userInfo) {
       // if user is logged in, create playerGameMapping
       try {
@@ -322,7 +322,7 @@ class Lobby extends Component {
           playerGameMappingPlayerId: userInfo.attributes.sub,
         };
         const newPlayerGameMapping = await API.graphql(
-          graphqlOperation(mutations.createPlayerGameMapping, { input: playerGameMappingInput }),
+          graphqlOperation(customMutations.createPlayerGameMapping, { input: playerGameMappingInput }),
         );
         console.log('joined mapping', newPlayerGameMapping);
       } catch (e) {
