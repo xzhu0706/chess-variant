@@ -34,10 +34,10 @@ class Tutorial extends React.Component {
             />
           </div>
           <div style={{ width: '26rem', padding: '0.5em', textAlign: 'left' }}>
-            Chess pieces have two types of move offsets: exact offsets, which generate exact moves, and repeating offsets, which generate moves that can recur in a particular direction.
+            Chess pieces have two types of move offsets: exact offsets, which generate instantaneous moves, and repeating offsets, which generate moves that can recur in a particular direction.
             <div>
               <div style={paragraphStyle}>
-                For example, the rook has the repeating offsets -1, -16, 1 and 16. Repeating offsets stop repeating on a square that is occupied by a piece.
+                For example, the rook has the repeating offsets -1, -16, 1 and 16. Repeating offsets are limited by any pieces in the movement path.
                 <br/>
                 <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([],[-1,1,16,-16])}>rook</Button>
               </div>
@@ -58,8 +58,8 @@ class Tutorial extends React.Component {
                 <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([-18, -33, -31, -14, 18, 33, 31, 14], [])}>knight</Button>
               </p>
               <p>
-                The nightrider has the exact offsets of the knight as repeating offsets.
-                It can move like a knight any number of steps in each direction, although other pieces on the board can limit the range of movement.
+                The nightrider has the same offsets of the knight, but they are repeating.
+                In other words it can move like a knight any number of steps in each direction but its movement is limited by other pieces on the board.
                 Click play below to test it.
                 <br/>
                 <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([], [-18, -33, -31, -14, 18, 33, 31, 14])}>nightrider</Button>

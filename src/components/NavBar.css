@@ -1,0 +1,32 @@
+.site-menu {
+  margin: 1em;
+}
+
+.site-menu ul {
+  padding: 0;
+}
+
+.site-menu li { 
+  display: inline;
+  list-style-type: none;
+  margin-left: 2rem;
+}
+
+.site-menu a {
+  font-size: 18px;
+  color: black;
+}
+
+.site-menu a:hover {
+  color: DodgerBlue;
+}
+
+@media (max-width: 820px) {
+  .site-menu {
+    padding: 10px 10px;
+  }
+  .site-menu li {
+    display: block;
+    margin-left: 0;
+  }
+}

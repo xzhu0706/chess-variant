@@ -46,15 +46,21 @@ export default class UserVariant extends React.Component {
       creator && startFen ? (
         <div>
           <div style={{ textAlign: 'center' }}>
+            <div>
+              <div>
+                <span style={{ fontWeight: 'bold' }}>Variant name: </span>
+                {name}
+              </div>
+              <div>
+                <span style={{ fontWeight: 'bold' }}>Creator: </span>
+                <Link to={`/account/${creator}`}>{creator}</Link>
+              </div>
+            </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               <div style={{ margin: '0.5rem 1% 1% 0' }}>
                 {Board(startFen, 0, true, false, false, undefined, customPiece)}
               </div>
               <div>
-                <span style={{ fontWeight: 'bold' }}>Variant name: </span>
-                {name}<br />
-                <span style={{ fontWeight: 'bold' }}>Creator: </span>
-                <Link to={`/account/${creator}`}>{creator}</Link><br />
                 <span style={{ fontWeight: 'bold' }}>Custom piece:</span>
                 <table className="pieces-table">
                   <tbody>

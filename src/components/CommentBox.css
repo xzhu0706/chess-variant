@@ -25,7 +25,6 @@
     padding: 0.75rem;
     background-color: #06b0ff;
     color: #eee
-    
 }
 
 .comment-button:hover {
@@ -36,8 +35,7 @@
     background-color: #19aefa;
     box-shadow: 0 3px #666;
     transform: translateY(4px);
-  }
-
+}
 
 .comment {
     border-top: 0.13em solid black;

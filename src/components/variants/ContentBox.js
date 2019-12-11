@@ -1,24 +1,16 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import styled from 'styled-components';
 
-
-const Container = styled.div`
-  background-color: #fcf9f7;
-  border: 1px solid black;
-  width: 97%;
-  padding: 2%;
-  margin: 5px;
-
-  @media (max-width: 600px) {
-    margin: 12px auto;
-    color: black;
-  }
-`;
+const _style = {
+  backgroundColor: '#eee',
+  width: '97%',
+  padding: '0.75rem',
+  borderBottom: '1px solid black',
+};
 
 const ContentBox = (props) => {
   return (
-    <Container>
+    <div style={_style}>
       <Row className="justify-content-md-center">
         <Col xs="auto">
           <div>
@@ -29,7 +21,7 @@ const ContentBox = (props) => {
           {props.children}
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 };
 
