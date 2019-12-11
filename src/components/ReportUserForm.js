@@ -44,7 +44,7 @@ export default function ReportUserForm({
         <span><strong>User: </strong></span>
         {reportedUser}
         <TextField
-                  inputProps={{ 'data-testid': 'reason' }}
+          inputProps={{ 'data-testid': 'reason' }}
           variant="outlined"
           rows="4"
           multiline
@@ -58,7 +58,7 @@ export default function ReportUserForm({
           helperText="Please describe the reason why you want to report this user."
         />
         <TextField
-                  inputProps={{ 'data-testid': 'link' }}
+          inputProps={{ 'data-testid': 'link' }}
           variant="outlined"
           margin="normal"
           label="Link"

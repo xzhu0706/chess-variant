@@ -15,6 +15,7 @@ export default function ProfileActionMenu({
         aria-controls="long-menu"
         aria-haspopup="true"
         onClick={handleOpenMenu}
+        data-testid='menu-icon'
       >
         <MoreVertIcon />
       </IconButton>
@@ -25,7 +26,7 @@ export default function ProfileActionMenu({
         onClose={handleCloseMenu}
       >
         {options.map((option) => (
-          <MenuItem key={option} onClick={handleClickAction}>
+          <MenuItem key={option} onClick={handleClickAction} data-testid={option}>
             {option}
           </MenuItem>
         ))}
