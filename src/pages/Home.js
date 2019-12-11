@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
 // import { API, graphqlOperation } from 'aws-amplify';
+import PropTypes from 'prop-types';
 import Lobby from './Lobby';
 import PopularVariants from '../components/PopularVariants';
 import AntiChess from '../Images/AntiChess.png';
@@ -16,7 +17,7 @@ class Home extends Component {
   }
 
   render() {
-    const { history } = this.history;
+    const { history } = this.props;
     return (
       <div className="text-center">
         <Lobby history={history} />
@@ -36,3 +37,11 @@ class Home extends Component {
 }
 
 export default Home;
+
+Home.defaultProps = {
+  history: undefined,
+};
+
+Home.propTypes = {
+  history: PropTypes.oneOfType([PropTypes.object]),
+};
