@@ -13,6 +13,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
 import * as queries from '../graphql/queries';
+import * as customQueries from '../customGraphql/queries';
 
 import awsconfig from '../aws-exports';
 
@@ -121,7 +122,7 @@ class NavBar extends Component {
           contains: input,
         },
       };
-      const queryResult = await API.graphql(graphqlOperation(queries.listUsers, { filter }));
+      const queryResult = await API.graphql(graphqlOperation(customQueries.listUsers, { filter }));
       this.setState({
         searchResults: queryResult.data.listUsers.items,
       });
@@ -163,16 +164,13 @@ class NavBar extends Component {
                   <Link to="/">Home</Link>
                 </li>
                 <li>
-                  <Link to="/variants">Browse Variants</Link>
+                  <Link to="/variants">List of Variants</Link>
                 </li>
                 <li>
                   <Link to="/">Leaderboard</Link>
                 </li>
                 <li>
-                  <Link to="/create">Create a Variant</Link>
-                </li>
-                <li>
-                  <Link to="/pieces">Glossary of Pieces</Link>
+                  <Link to="/create">Create</Link>
                 </li>
 
                 {username
@@ -210,6 +208,7 @@ class NavBar extends Component {
                         variant="outlined"
                         startIcon={<AccountCircle />}
                         onClick={handleShowAuth}
+                        color="primary"
                       >
                         SIGN IN
                       </Button>

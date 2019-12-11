@@ -396,6 +396,8 @@ describe("attacked() unit testing", () => {
 
   test("In standard chess, a custom piece with a non-repeating offset x that is positioned -x squares " +
   "from the opponent's king is putting the opponent in check", () => {
+    let customPiece = { 'c': { 0: [-96], 1: [] } };
+    let standardGame = mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/4P3/PPPPCPPP/RNBQKBNR b KQkq - 0 1", 0, customPiece);
     // +------------------------+
     // 8 | r  n  b  q  k  b  n  r |
     // 7 | p  p  p  p  p  p  p  p |
@@ -407,9 +409,6 @@ describe("attacked() unit testing", () => {
     // 1 | R  N  B  Q  K  B  N  R |
     //   +------------------------+
     //     a  b  c  d  e  f  g  h
-
-    let customPiece = { 'c': { 0: [-96], 1: [] } };
-    let standardGame = mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/4P3/PPPPCPPP/RNBQKBNR b KQkq - 0 1", 0, customPiece);
     expect(standardGame.attacked('w', 4)).toBe(true);
 
     customPiece = { 'c': { 0: [-51], 1: [] } };
@@ -422,6 +421,24 @@ describe("attacked() unit testing", () => {
     // 4 | .  .  .  .  .  .  .  . |
     // 3 | .  .  .  .  P  .  .  . |
     // 2 | P  P  P  P  .  P  P  P |
+    // 1 | R  N  B  Q  K  B  N  R |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
+    expect(standardGame.attacked('w', 4)).toBe(true);
+  });
+
+  test("In standard chess, a custom piece with a repeating offset -32 that is positioned -96 squares " +
+  "from the opponent's king is checking the opponent (if there are no interceding pieces)", () => {
+    let customPiece = { 'c': { 0: [], 1: [-32] } };
+    let standardGame = mychessjs.Chess("rnbqkbnr/pppppppp/8/8/8/4P3/PPPPCPPP/RNB1KBNR b KQkq - 0 1", 0, customPiece);
+    // +------------------------+
+    // 8 | r  n  b  q  k  b  n  r |
+    // 7 | p  p  p  p  p  p  p  p |
+    // 6 | .  .  .  .  .  .  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  P  .  .  . |
+    // 2 | P  P  P  P  C  P  P  P |
     // 1 | R  N  B  Q  K  B  N  R |
     //   +------------------------+
     //     a  b  c  d  e  f  g  h

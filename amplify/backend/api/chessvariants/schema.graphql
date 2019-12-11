@@ -7,10 +7,10 @@ type User @model
 ]) {
   id: ID!
   username: String!
-  email: String!
-  phoneNumber: String!
+  email: String
+  phoneNumber: String
   pastGames: [PlayerGameMapping] @connection(name: "userPlayer", sortField: "createdAt")
-  variants: [CustomizedVariant] @connection(name: "userVariant", sortField: "createdAt")
+  variants: [CustomizedVariant] @connection(name: "userVariant", sortField: "updatedAt")
   comments: [Comment] @connection(name: "userComment", sortField: "createdAt")
   points: Int
   skillLevel: String
@@ -26,12 +26,12 @@ type Complaint @model
   ]
 ) {
   id: ID!
-  user: User
-  reportedUser: User
+  user: User @connection
+  reportedUser: User @connection
   gameLink: String
   content: String!
   processed: Boolean!
-  processedBy: User
+  processedBy: User @connection
   result: String
   createdAt: String
   updatedAt: String
@@ -40,7 +40,7 @@ type Complaint @model
 type CustomizedVariant @model
 @auth(
   rules: [
-    { allow: owner, ownerField: "creator", operations: [read, update] }
+    { allow: owner, ownerField: "creator", operations: [read, update, delete] }
     { allow: public, operations: [read, create] }
     { allow: groups, groups: ["Admin"] }
   ]
@@ -53,14 +53,15 @@ type CustomizedVariant @model
   customPiece: String
   submitted: Boolean!
   approved: Boolean!
-  comments: [Comment] @connection(name: "variantComment")
+  comments: [Comment] @connection(name: "variantComment", sortField: "createdAt")
   createdAt: String
+  updatedAt: String
 }
 
 type Comment @model
 @auth(
   rules: [
-    { allow: public, operations: [read, create] }
+    { allow: public, operations: [read, create, delete] }
     { allow: groups, groups: ["Admin"] }
   ]
 ) {

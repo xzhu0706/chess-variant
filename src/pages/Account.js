@@ -1,47 +1,123 @@
 import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-// import * as customQueries from '../customGraphql/queries';
+import * as customMutations from '../customGraphql/mutations';
+import * as customQueries from '../customGraphql/queries';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import {
   Container, Row, Col, Image, ListGroup, ListGroupItem, Table,
 } from 'react-bootstrap';
-import * as queries from '../graphql/queries';
-// import Game from './Game';
-
+import ProfileActionMenu from '../components/ProfileActionMenu';
+import ReportUserForm from '../components/ReportUserForm';
+import PropTypes from 'prop-types';
+// import * as queries from '../graphql/queries';
 
 class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: null,
       isCurrentUser: false,
+      anchorEl: null,
+      showReportUserDialog: false,
+      currentUser: null,
     };
+    this.anchorEl = null;
   }
 
   async componentDidMount() {
     const { username } = this.props.match.params;
     const currentUser = await Auth.currentUserInfo();
     const queryResult = await API.graphql(graphqlOperation(
-      queries.getUserByUsername, { username },
+      customQueries.getUserByUsername, { username },
     ));
     const userInfo = queryResult.data.getUserByUsername.items;
     if (userInfo && userInfo[0]) {
       this.setState({
         user: userInfo[0],
         isCurrentUser: currentUser && currentUser.username === username,
-      }, () => { console.log('user', this.state.user); });
+        currentUser,
+      });
+    }
+  }
+
+  handleOpenMenu = (event) => {
+    this.anchorEl = event.currentTarget;
+    this.setState({
+      anchorEl: event.currentTarget,
+    });
+  };
+
+  handleCloseMenu = () => {
+    this.anchorEl = null;
+    this.setState({
+      anchorEl: null,
+    });
+  };
+
+  handleReportUser = async (content) => {
+    const { currentUser, user } = this.state;
+    try {
+      const complaintInput = {};
+      complaintInput.content = content.reason;
+      complaintInput.complaintUserId = currentUser.attributes.sub;
+      complaintInput.complaintReportedUserId = user.id;
+      complaintInput.processed = false;
+      if (content.link) {
+        complaintInput.gameLink = content.link;
+      }
+      await API.graphql(graphqlOperation(customMutations.createComplaint, { input: complaintInput }));
+      alert('We have received your input! Thank you for using our site.');
+      this.setState({
+        showReportUserDialog: false,
+      });
+    } catch (e) {
+      console.log(e);
+      alert('Something went wrong, please try again.');
+    }
+  }
+
+  handleClickAction = (e) => {
+    const action = e.nativeEvent.target.outerText;
+    const { currentUser } = this.state;
+    this.handleCloseMenu();
+    if (!currentUser) {
+      alert('Please log in first');
+      return;
+    }
+    if (action === 'Report') {
+      this.setState({
+        showReportUserDialog: true,
+      });
     }
   }
 
   render() {
-    const { user, isCurrentUser } = this.state;
+    const {
+      user, isCurrentUser, anchorEl, showReportUserDialog,
+    } = this.state;
+    const options = [];
+    if (!isCurrentUser) {
+      options.push('Report');
+    }
     return (
       <Container>
+        <ReportUserForm
+          showDialog={showReportUserDialog}
+          closeDialog={() => this.setState({ showReportUserDialog: false })}
+          reportedUser={user ? user.username : ''}
+          handleSubmit={this.handleReportUser}
+        />
+        <ProfileActionMenu
+          options={options}
+          anchorEl={anchorEl}
+          handleOpenMenu={this.handleOpenMenu}
+          handleCloseMenu={this.handleCloseMenu}
+          handleClickAction={this.handleClickAction}
+        />
         <Profile
           username={user ? user.username : 'Loading..'}
-          email={user ? user.email : 'Loading..'}
-          phone={user ? user.phoneNumber : 'Loading..'}
           history={user ? user.pastGames.items : 'Loading..'}
+          variants={user ? user.variants.items : 'Loading..'} // this.state.user.variants.items[0].name
           isCurrentUser={isCurrentUser}
         />
       </Container>
@@ -50,54 +126,77 @@ class Account extends Component {
 }
 
 const Profile = ({
-  username, email, phone, isCurrentUser, history,
+  username, history, variants,
 }) => (
   <div>
     <Row>
       <Col sm={{ span: 4, offset: 1 }}>
         <AccountInfo
           username={username}
-          email={email}
-          phone={phone}
-          isCurrentUser={isCurrentUser}
         />
       </Col>
       <Col sm={{ span: 7 }}>
+        {username !== 'Loading..' ? (
+          <VariantHistory variants={variants} />
+        ) : null}
         <MatchHistory history={history} currentUser={username} />
       </Col>
-
     </Row>
   </div>
 );
 
+const VariantHistory = (props) => {
+  const variantsList = [];
+  const { variants } = props;
+  if (variants) {
+    variants.forEach((variant) => {
+      const { id, name, createdAt } = variant;
+      variantsList.push(
+        <div key={id}>
+          <div style={{ fontWeight: 'bold' }}><Link to={`/pages/${id}`}>{name}</Link></div>
+        Created At:
+          {' '}
+          {createdAt.slice(0, 10)}
+          {' '}
+          {createdAt.slice(11, 19)}
+          <hr />
+        </div>,
+      );
+    });
+  }
+
+  return (
+    <div style={{ paddingBottom: '1em' }}>
+      <h2>Created Variants</h2>
+      <hr />
+      {variantsList.length !== 0
+        ? variantsList
+        : <span>No variants yet.</span>}
+    </div>
+  );
+};
+
 const AccountInfo = ({
-  username, isCurrentUser, email, phone,
+  username,
 }) => (
   <div>
-
     <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg" thumbnail fluid />
     <ListGroup>
       <ListGroupItem variant="flush">{username}</ListGroupItem>
-      { isCurrentUser
-        && <ListGroupItem>{email}</ListGroupItem> }
-      { isCurrentUser
-        && <ListGroupItem>{phone}</ListGroupItem> }
     </ListGroup>
   </div>
 );
 
 const GameRow = ({
-  available, opponent, variant, time, winner, result, fen, id,
+  id, opponent, variant, time, winner, result,
 }) => (
   <tr>
-    <td>{available}</td>
+    <td><Link to={`/game/${id}`}>Link</Link></td>
     <td>{opponent}</td>
     <td>{variant}</td>
     <td>{time}</td>
     <td>{winner}</td>
     <td>{result}</td>
-    <td>{fen}</td>
-    <td><Link to={`/game/${id}`}>Link</Link></td>
   </tr>
 );
 
@@ -117,20 +216,19 @@ const MatchHistory = ({ history, currentUser }) => {
         } else {
           opponent = game.opponent.username;
         }
+        const row = (
+          <GameRow
+            key={game.id}
+            opponent={opponent}
+            variant={game.variant}
+            time={game.time ? game.time : 'N/A'}
+            winner={game.winner ? game.winner : 'N/A'}
+            result={game.result ? game.result : 'N/A'}
+            id={game.id}
+          />
+        );
+        gamesList.push(row);
       }
-      const row = (
-        <GameRow
-          available={game.available ? 'yes' : 'no'}
-          opponent={opponent}
-          variant={game.variant}
-          time={game.time ? game.time : 'N/A'}
-          winner={game.winner ? game.winner : 'N/A'}
-          result={game.result ? game.result : 'N/A'}
-          fen={game.fen}
-          id={game.id}
-        />
-      );
-      gamesList.push(row);
       index += 1;
     }
   }
@@ -141,13 +239,12 @@ const MatchHistory = ({ history, currentUser }) => {
       <Table striped bordered responsive>
         <thead>
           <tr>
-            <td>Available</td>
+            <td>Page</td>
             <td>Opponent</td>
             <td>Variant</td>
             <td>Time</td>
             <td>Winner</td>
             <td>Result</td>
-            <td>Fen</td>
           </tr>
         </thead>
         <tbody>
@@ -162,32 +259,24 @@ export default Account;
 
 AccountInfo.defaultProps = {
   username: [],
-  isCurrentUser: [],
 };
 
 AccountInfo.propTypes = {
   username: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  isCurrentUser: PropTypes.bool,
-  email: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired,
 };
 
 Profile.propTypes = {
   username: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
-  isCurrentUser: PropTypes.bool.isRequired,
-  email: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired,
+  variants: PropTypes.string.isRequired,
   history: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
 };
 
 GameRow.propTypes = {
-  available: PropTypes.string.isRequired,
   opponent: PropTypes.string.isRequired,
   variant: PropTypes.string.isRequired,
   time: PropTypes.string.isRequired,
   winner: PropTypes.string.isRequired,
   result: PropTypes.string.isRequired,
-  fen: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
 };
 
