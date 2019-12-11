@@ -15,7 +15,7 @@ export default function ProfileActionMenu({
         aria-controls="long-menu"
         aria-haspopup="true"
         onClick={handleOpenMenu}
-        data-testid='menu-icon'
+        data-testid="menu-icon"
       >
         <MoreVertIcon />
       </IconButton>
@@ -35,10 +35,14 @@ export default function ProfileActionMenu({
   );
 }
 
+ProfileActionMenu.defaultProps = {
+  anchorEl: null,
+};
+
 ProfileActionMenu.propTypes = {
   options: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   handleOpenMenu: PropTypes.func.isRequired,
   handleCloseMenu: PropTypes.func.isRequired,
   handleClickAction: PropTypes.func.isRequired,
-  anchorEl: PropTypes.node.isRequired,
+  anchorEl: PropTypes.node,
 };

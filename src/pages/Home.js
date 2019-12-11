@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
 // import { API, graphqlOperation } from 'aws-amplify';
+import PropTypes from 'prop-types';
 import Lobby from './Lobby';
 import PopularVariants from '../components/PopularVariants';
 import AntiChess from '../Images/AntiChess.png';
@@ -16,9 +17,10 @@ class Home extends Component {
   }
 
   render() {
+    const { history } = this.props;
     return (
       <div className="text-center">
-        <Lobby history={this.props.history} />
+        <Lobby history={history} />
 
         <h1 style={{ fontFamily: 'AppleSDGothicNeo-Bold' }}>Featured Variants</h1>
         <Row className="justify-content-md-center">
@@ -35,3 +37,11 @@ class Home extends Component {
 }
 
 export default Home;
+
+Home.defaultProps = {
+  history: undefined,
+};
+
+Home.propTypes = {
+  history: PropTypes.oneOfType([PropTypes.object]),
+};
