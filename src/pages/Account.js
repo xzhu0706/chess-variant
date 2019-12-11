@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import * as customMutations from '../customGraphql/mutations';
-import * as customQueries from '../customGraphql/queries';
 import { Link } from 'react-router-dom';
 import {
   Container, Row, Col, Image, ListGroup, ListGroupItem, Table,
 } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import * as customMutations from '../customGraphql/mutations';
+import * as customQueries from '../customGraphql/queries';
 import ProfileActionMenu from '../components/ProfileActionMenu';
 import ReportUserForm from '../components/ReportUserForm';
-import PropTypes from 'prop-types';
 // import * as queries from '../graphql/queries';
 
 class Account extends Component {
@@ -267,7 +267,7 @@ AccountInfo.propTypes = {
 
 Profile.propTypes = {
   username: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
-  variants: PropTypes.string.isRequired,
+  variants: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   history: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
 };
 
