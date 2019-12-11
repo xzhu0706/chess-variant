@@ -1,3 +1,5 @@
+Live Demo: http://chess-variant-20191210113159-hostingbucket-develop.s3-website-us-east-1.amazonaws.com/
+
 ## How to install and demo on your computer
 
 1. `cd` to the directory with the project files.
