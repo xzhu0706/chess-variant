@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
+import * as customMutations from '../customGraphql/mutations';
 import TextField from '@material-ui/core/TextField';
+import Avatar from '@material-ui/core/Avatar';
 import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
 import './CommentBox.css'
 
@@ -12,12 +14,14 @@ class CommentBox extends React.Component {
     super(props);
 
     this.state = {
-      comments: []
+      comments: [],
+      isAdmin: false,
     };
   }
   
   async componentDidMount() {
     try {
+      this.checkAdmin();
       const queryResult = await API.graphql(graphqlOperation(
         queries.getCustomizedVariant, { id: this.props.variant },
       ));
@@ -31,6 +35,18 @@ class CommentBox extends React.Component {
       });
     } catch(error) {
       throw new Error("error getting comment data");
+    }
+  }
+
+  checkAdmin = async () => {
+    try {
+      const currentUser = await Auth.currentUserPoolUser();
+      const groups = currentUser.signInUserSession.idToken.payload['cognito:groups'];
+      this.setState({
+        isAdmin: groups && groups[0] === 'Admin',
+      });
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -60,15 +76,47 @@ class CommentBox extends React.Component {
       throw new Error("error saving comment");
     }
   }
+
+  deleteComment = async (event, id) => {
+    event.preventDefault();
+    if (window.confirm('Are you sure you want to delete this comment?')) {
+      try {
+        const deletedComment = await API.graphql({
+          query: customMutations.deleteComment,
+          variables: {
+            input: {
+              id,
+            },
+          },
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        });
+        if (deletedComment) {
+          this.setState((prevState) => {
+            const comments = [...prevState.comments];
+            const deletedIndex = comments.findIndex(c => c.id === id)
+            comments.splice(deletedIndex, 1);
+            return { ...prevState, comments };
+          });
+        }
+      } catch (e) {
+        console.log(e);
+        alert('Something went wrong.');
+      }
+    }
+  }
   
   formatComments() {
     return this.state.comments.map(comment => {
+      console.log(comment)
       return (
         <Comment 
           key={comment.id}
-          author={comment.author} 
+          id={comment.id}
+          author={comment.author}
           content={comment.content}
           createdAt={comment.createdAt}
+          isAdmin={this.state.isAdmin}
+          deleteComment={this.deleteComment}
         />
       ); 
     });
@@ -144,28 +192,29 @@ class CommentForm extends React.Component {
 
 class Comment extends React.Component {
   render() {
-    const { author, content, createdAt } = this.props;
+    const { id, author, content, createdAt, isAdmin, deleteComment } = this.props;
     return (
-      <div className='comment'>
-        <p>{author} ({createdAt.slice(0,10)} {createdAt.slice(11,19)})</p>
-        <p>{content}</p>
-          <Link to='/#' onClick={this.deleteComment}>
-            <DeleteForeverTwoToneIcon style={{ color: '#708070' }} />
+      <div className="comment row">
+        <div className="col-2">
+          <Link to={`/account/${author}`}>
+            <Avatar
+              className="text-center"
+              src="https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
+            />
+            <span>{author}</span>
           </Link>
+        </div>
+        <div className="col-10">
+          {isAdmin && (
+            <a href="#" className="float-right">
+              <DeleteForeverTwoToneIcon onClick={(e) => deleteComment(e, id)} style={{ color: '#708070' }} />
+            </a>
+          )}
+          <p>{content}</p>
+          <span className="float-right text-muted">{createdAt.slice(0,10)} {createdAt.slice(11,19)}</span>
+        </div>
       </div>
     );
-  }
-
-  async deleteComment(event) {
-    event.preventDefault();
-    //alert('this doesn\'t do anything yet');
-    if (window.confirm('Are you sure you want to delete this comment?')) {
-      // const deletedComment = await API.graphql(graphqlOperation(mutations.deleteComment, {
-      //   input: {
-      //     id: "0f015e25-e15a-4127-b911-f0a60fcac74c"
-      //   } 
-      // }));
-    }
   }
 }
 

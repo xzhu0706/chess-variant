@@ -131,3 +131,16 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
   }
 }
 `;
+
+export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!) {
+  deleteComment(input: $input) {
+    id
+    content
+    createdAt
+    user {
+      id
+      username
+    }
+  }
+}
+`;
