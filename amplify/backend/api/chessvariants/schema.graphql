@@ -26,12 +26,12 @@ type Complaint @model
   ]
 ) {
   id: ID!
-  user: User
-  reportedUser: User
+  user: User @connection
+  reportedUser: User @connection
   gameLink: String
   content: String!
   processed: Boolean!
-  processedBy: User
+  processedBy: User @connection
   result: String
   createdAt: String
   updatedAt: String

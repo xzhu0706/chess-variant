@@ -82,3 +82,52 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
   }
 }
 `;
+
+export const createComplaint = `mutation CreateComplaint($input: CreateComplaintInput!) {
+  createComplaint(input: $input) {
+    id
+    user {
+      id
+      username
+    }
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+  }
+}
+`;
+
+export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaintInput!) {
+  deleteComplaint(input: $input) {
+    id
+  }
+}
+`;
+
+export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaintInput!) {
+  updateComplaint(input: $input) {
+    id
+    user {
+      id
+      username
+    }
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
+      id
+      username
+    }
+    result
+    createdAt
+    updatedAt
+  }
+}
+`;
