@@ -11,7 +11,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Dialog from '@material-ui/core/Dialog';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
-import * as queries from '../graphql/queries';
+//import * as queries from '../graphql/queries';
 import './NavBar.css';
 import * as customQueries from '../customGraphql/queries';
 
