@@ -441,6 +441,8 @@ class AdminDashboard extends Component {
       });
       const updatedComplaint = queryResult.data.updateComplaint;
       if (updatedComplaint && updatedComplaint.result === newData.result) {
+        newData.processedBy = updatedComplaint.processedBy;
+        newData.processed = 'Yes';
         this.setState((prevState) => {
           const complaints = [...prevState.complaints];
           complaints.splice(oldData.tableData.id, 1, newData);

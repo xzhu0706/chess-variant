@@ -11,24 +11,24 @@ describe('Commenting on variant pages (/pages/<variantID>)', () => {
     page.emulate({
       viewport: {
         width: 1000,
-        height: 1000
+        height: 1000,
       },
-      userAgent: ''
+      userAgent: '',
     });
 
     const puppeteerUsername = 'username';
     const puppeteerPassword = 'password';
 
     await page.goto(
-      'http://localhost:3000/pages/d1b8ab83-a2f2-448b-8955-06d8ef9afc43' // replace with live url
+      'http://chess-variant-20191210113159-hostingbucket-develop.s3-website-us-east-1.amazonaws.com/pages/d1b8ab83-a2f2-448b-8955-06d8ef9afc43',
     );
 
     // login first
-    await page.click('button[data-testid="login-button"]')
-    await page.click('input[name="username"]')
-    await page.type('input[name="username"]', puppeteerUsername)
-    await page.click('input[name="password"]')
-    await page.type('input[name="password"]', puppeteerPassword)
+    await page.click('button[data-testid="login-button"]');
+    await page.click('input[name="username"]');
+    await page.type('input[name="username"]', puppeteerUsername);
+    await page.click('input[name="password"]');
+    await page.type('input[name="password"]', puppeteerPassword);
     await page.click('button[data-test="sign-in-sign-in-button"]');
 
     await page.click('.comment-form textarea');
@@ -36,5 +36,5 @@ describe('Commenting on variant pages (/pages/<variantID>)', () => {
     await page.click('.comment-button');
 
     await browser.close();
-  }, 9999);
+  }, 20000);
 });
