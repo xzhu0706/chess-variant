@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { createUser } from '../graphql/mutations';
+import { listComplaints } from '../customGraphql/queries';
+import { deleteComplaint } from '../customGraphql/mutations';
+import { Link } from 'react-router-dom';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PropTypes from 'prop-types';
@@ -9,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import MaterialTable from 'material-table';
 import Chip from '@material-ui/core/Chip';
+import ToolTip from '@material-ui/core/ToolTip';
 import PersonPin from '@material-ui/icons/PersonPin';
 import awsconfig from '../aws-exports';
 
@@ -27,6 +31,19 @@ const userColumns = [
   { title: 'Phone Number', field: 'phone_number' },
   { title: 'Phone Number Verified', field: 'phone_number_verified' },
   { title: '', field: 'enabled' },
+];
+
+const complaintColumns = [
+  { title: 'Processed', field: 'processed' },
+  { title: 'ID', field: 'id', editable: 'never' },
+  { title: 'Description', field: 'content' },
+  { title: 'Link', field: 'link' },
+  { title: 'User', field: 'user' },
+  { title: 'Reported User', field: 'reportedUser' },
+  { title: 'Created Date', field: 'createdAt' },
+  { title: 'Updated Date', field: 'updatedAt' },
+  { title: 'Result', field: 'result' },
+  { title: 'Processed By', field: 'proccesedBy' },
 ];
 
 const adminTag = (
@@ -76,6 +93,7 @@ class AdminDashboard extends Component {
     super(props);
     this.state = {
       users: [],
+      complaints: [],
       tabIndex: 0,
     };
     this.nextToken = '';
@@ -96,6 +114,58 @@ class AdminDashboard extends Component {
     this.setState({
       users: userRows,
     }, () => console.log(this.state));
+    this.fetchComplaints();
+  }
+
+  fetchComplaints = async () => {
+    const queryResult = await API.graphql({
+      query: listComplaints,
+      variables: { limit: 1000 },
+      authMode: 'AMAZON_COGNITO_USER_POOLS',
+    });
+    const complaints = queryResult.data.listComplaints.items;
+    this.setState({
+      complaints: this.generateComplaintRows(complaints),
+    });
+  }
+
+  generateComplaintRows = (complaints) => {
+    const rows = complaints.map((complaint) => {
+      const complaintInfo = { ...complaint };
+      if (complaint.user) {
+        complaintInfo.user = (
+          <Link to={`/account/${complaint.user.username}`}>
+            {complaint.user.username}
+          </Link>
+        );
+      }
+      if (complaint.reportedUser) {
+        complaintInfo.reportedUser = (
+          <Link to={`/account/${complaint.reportedUser.username}`}>
+            {complaint.reportedUser.username}
+          </Link>
+        );
+      }
+      if (complaint.processedBy) {
+        complaintInfo.processedBy = (
+          <Link to={`/account/${complaint.processedBy.username}`}>
+            {complaint.processedBy.username}
+          </Link>
+        );
+      }
+      if (complaint.gameLink) {
+        complaintInfo.link = (
+          <ToolTip title={complaint.gameLink}>
+            <a rel="noopener noreferrer" href={complaint.gameLink} target="_blank">
+              Link
+            </a>
+          </ToolTip>
+        );
+      }
+      complaintInfo.processed = complaintInfo.processed ? 'Yes' : 'No';
+      return complaintInfo;
+    });
+    return rows;
   }
 
   handleChangeTabIndex = (e, newVal) => {
@@ -316,8 +386,32 @@ class AdminDashboard extends Component {
     alert(result);
   }
 
+  handleDeleteComplaint = async (oldData) => {
+    try {
+      const deletedComplaint = await API.graphql({
+        query: deleteComplaint,
+        variables: {
+          input: {
+            id: oldData.id,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      });
+      if (deletedComplaint) {
+        this.setState((prevState) => {
+          const complaints = [...prevState.complaints];
+          complaints.splice(oldData.tableData.id, 1);
+          return { ...prevState, complaints };
+        });
+      }
+    } catch (e) {
+      console.log(e);
+      alert('Something went wrong.');
+    }
+  }
+
   render() {
-    const { users, tabIndex } = this.state;
+    const { users, complaints, tabIndex } = this.state;
     return (
       <div>
         <Tabs
@@ -364,7 +458,30 @@ class AdminDashboard extends Component {
           />
         </TabPanel>
         <TabPanel value={tabIndex} index={1}>
-          Complaints
+          <MaterialTable
+            columns={complaintColumns}
+            data={complaints}
+            title="Complaints"
+            maxWidth="md"
+            options={{
+              pageSize: 10,
+              pageSizeOptions: [10, 20, 30, 50],
+              showFirstLastPageButtons: false,
+              cellStyle: { verticalAlign: 'top' },
+            }}
+            editable={{
+              onRowDelete: (oldData) =>
+                new Promise((resolve) => {
+                  setTimeout(() => {
+                    resolve();
+                    this.handleDeleteComplaint(oldData);
+                  }, 1000);
+                }),
+            }}
+            actions={[
+
+            ]}
+          />
         </TabPanel>
       </div>
     );

@@ -99,3 +99,10 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
   }
 }
 `;
+
+export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaintInput!) {
+  deleteComplaint(input: $input) {
+    id
+  }
+}
+`;

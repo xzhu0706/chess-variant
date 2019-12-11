@@ -215,3 +215,37 @@ export const listGames = `query ListGames(
   }
 }
 `;
+
+export const listComplaints = `query ListComplaints(
+  $filter: ModelComplaintFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listComplaints(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      user {
+        id
+        username
+        email
+      }
+      reportedUser {
+        id
+        username
+        email
+      }
+      gameLink
+      content
+      processed
+      processedBy {
+        id
+        username
+      }
+      result
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+`;
