@@ -2,9 +2,12 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import PropTypes from 'prop-types';
 import * as Colors from '../Constants/Colors';
 
-function GameInfo({ yourTurn, variant, gameResult, players }) {
+function GameInfo({
+  yourTurn, variant, gameResult, players,
+}) {
   return (
     <Box>
       <Paper style={{ border: '1px solid #D3D3D3', marginBottom: '2px' }}>
@@ -27,3 +30,14 @@ function GameInfo({ yourTurn, variant, gameResult, players }) {
   );
 }
 export default GameInfo;
+
+GameInfo.defaultProps = {
+  gameResult: [],
+};
+
+GameInfo.propTypes = {
+  yourTurn: PropTypes.string.isRequired,
+  variant: PropTypes.string.isRequired,
+  gameResult: PropTypes.arrayOf(PropTypes.array),
+  players: PropTypes.string.isRequired,
+};

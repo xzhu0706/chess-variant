@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import Amplify, { Auth, API } from 'aws-amplify';
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
+import { createUser } from '../graphql/mutations';
+import { listComplaints } from '../customGraphql/queries';
+import { deleteComplaint, updateComplaint } from '../customGraphql/mutations';
+import { Link } from 'react-router-dom';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PropTypes from 'prop-types';
@@ -8,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import MaterialTable from 'material-table';
 import Chip from '@material-ui/core/Chip';
+import ToolTip from '@material-ui/core/ToolTip';
 import PersonPin from '@material-ui/icons/PersonPin';
 import awsconfig from '../aws-exports';
 
@@ -26,6 +31,62 @@ const userColumns = [
   { title: 'Phone Number', field: 'phone_number' },
   { title: 'Phone Number Verified', field: 'phone_number_verified' },
   { title: '', field: 'enabled' },
+];
+
+const complaintColumns = [
+  { title: 'Processed', field: 'processed', editable: 'never' },
+  { title: 'Result', field: 'result' },
+  // { title: 'ID', field: 'id', editable: 'never' },
+  { title: 'Description', field: 'content', editable: 'never' },
+  {
+    title: 'Link',
+    field: 'link',
+    render: (rowData) => (rowData.link ? (
+      <ToolTip title={rowData.link}>
+        <a rel="noopener noreferrer" href={rowData.link} target="_blank">
+          Link
+        </a>
+      </ToolTip>
+    )
+      : ''
+    ),
+    editable: 'never',
+  },
+  {
+    title: 'User',
+    field: 'user',
+    render: (rowData) => (rowData.user && rowData.user.username ? (
+      <Link to={`/account/${rowData.user.username}`}>
+        {rowData.user.username}
+      </Link>
+    )
+      : ''),
+    editable: 'never',
+  },
+  {
+    title: 'Reported User',
+    field: 'reportedUser',
+    render: (rowData) => (rowData.reportedUser && rowData.reportedUser.username ? (
+      <Link to={`/account/${rowData.reportedUser.username}`}>
+        {rowData.reportedUser.username}
+      </Link>
+    )
+      : ''),
+    editable: 'never',
+  },
+  { title: 'Created Date', field: 'createdAt', editable: 'never' },
+  { title: 'Updated Date', field: 'updatedAt', editable: 'never' },
+  {
+    title: 'Processed By',
+    field: 'proccesedBy',
+    render: (rowData) => (rowData.processedBy && rowData.processedBy.username ? (
+      <Link to={`/account/${rowData.processedBy.username}`}>
+        {rowData.processedBy.username}
+      </Link>
+    )
+      : ''),
+    editable: 'never',
+  },
 ];
 
 const adminTag = (
@@ -75,6 +136,7 @@ class AdminDashboard extends Component {
     super(props);
     this.state = {
       users: [],
+      complaints: [],
       tabIndex: 0,
     };
     this.nextToken = '';
@@ -95,6 +157,29 @@ class AdminDashboard extends Component {
     this.setState({
       users: userRows,
     }, () => console.log(this.state));
+    this.fetchComplaints();
+  }
+
+  fetchComplaints = async () => {
+    const queryResult = await API.graphql({
+      query: listComplaints,
+      variables: { limit: 1000 },
+      authMode: 'AMAZON_COGNITO_USER_POOLS',
+    });
+    const complaints = queryResult.data.listComplaints.items;
+    this.setState({
+      complaints: this.generateComplaintRows(complaints),
+    });
+  }
+
+  generateComplaintRows = (complaints) => {
+    const rows = complaints.map((complaint) => {
+      const complaintInfo = { ...complaint };
+      complaintInfo.link = complaint.gameLink;
+      complaintInfo.processed = complaintInfo.processed ? 'Yes' : 'No';
+      return complaintInfo;
+    });
+    return rows;
   }
 
   handleChangeTabIndex = (e, newVal) => {
@@ -116,6 +201,8 @@ class AdminDashboard extends Component {
       userInfo.enableStatus = user.Enabled ? activeTag : inactiveTag;
       if (this.adminUsers.includes(userInfo.username)) {
         userInfo.admin = adminTag;
+      } else {
+        userInfo.admin = false;
       }
       return userInfo;
     });
@@ -170,9 +257,9 @@ class AdminDashboard extends Component {
     }
   }
 
-  addToAdminGroup = async (username) => {
+  updateToAdminGroup = async (username, add = true) => {
     try {
-      const path = '/addUserToGroup';
+      const path = add ? '/addUserToGroup' : '/removeUserFromGroup';
       const myInit = {
         body: {
           username,
@@ -186,6 +273,7 @@ class AdminDashboard extends Component {
       const result = await API.post(apiName, path, myInit);
       // if success, call listAdmins to get updated Admin group
       const admins = await this.listAdmins(60);
+      this.adminUsers = [];
       admins.Users.forEach((admin) => {
         this.adminUsers.push(admin.Username);
       });
@@ -265,36 +353,108 @@ class AdminDashboard extends Component {
     }
   }
 
-  handlePromoteToAdmin = async (event, rowData) => {
+  handleUpdateAdmin = async (event, rowData) => {
+    let result;
     if (rowData.admin) {
-      return;
+      if (window.confirm('Are you sure you wish to demote this admin user?')) {
+        result = await this.updateToAdminGroup(rowData.username, false);
+      }
+    } else if (window.confirm('Are you sure you wish to promote this user to Admin?')) {
+      result = await this.updateToAdminGroup(rowData.username, true);
     }
-    if (window.confirm('Are you sure you wish to promote this user to Admin?')) {
-      const result = await this.addToAdminGroup(rowData.username);
-      const { users } = this.state;
-      this.updatedUserIndex = users.indexOf(rowData);
-      alert(result);
+    const { users } = this.state;
+    this.updatedUserIndex = users.indexOf(rowData);
+    alert(result);
+  }
+
+  // addToUserTable = async (event, rowData) => {
+  //   const userData = {};
+  //   userData.id = rowData.sub;
+  //   userData.username = rowData.username;
+  //   userData.email = rowData.email;
+  //   userData.phoneNumber = rowData.phone_number;
+  //   const user = await Auth.currentCredentials();
+  //   try {
+  //     const res = await API.graphql({
+  //       query: createUser,
+  //       variables: { input: userData },
+  //       authMode: 'AMAZON_COGNITO_USER_POOLS',
+  //     });
+  //     console.log(user, res);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
+
+  handleUpdateUserStatus = async (event, rowData) => {
+    let result;
+    if (!rowData.enabled) {
+      if (window.confirm('Are you sure you wish to enable this user?')) {
+        result = await this.updateUserStatus(rowData.username, true);
+      }
+    } else if (window.confirm('Are you sure you wish to disable this user?')) {
+      result = await this.updateUserStatus(rowData.username, false);
+    }
+    const { users } = this.state;
+    this.updatedUserIndex = users.indexOf(rowData);
+    alert(result);
+  }
+
+  handleDeleteComplaint = async (oldData) => {
+    try {
+      const deletedComplaint = await API.graphql({
+        query: deleteComplaint,
+        variables: {
+          input: {
+            id: oldData.id,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      });
+      if (deletedComplaint) {
+        this.setState((prevState) => {
+          const complaints = [...prevState.complaints];
+          complaints.splice(oldData.tableData.id, 1);
+          return { ...prevState, complaints };
+        });
+      }
+    } catch (e) {
+      console.log(e);
+      alert('Something went wrong.');
     }
   }
 
-  handleDisableUser = async (event, rowData) => {
-    if (!rowData.enabled) {
-      if (window.confirm('Are you sure you wish to enable this user?')) {
-        const result = await this.updateUserStatus(rowData.username, true);
-        alert(result);
+  handleUpdateComplaint = async (newData, oldData) => {
+    try {
+      const admin = await Auth.currentUserInfo();
+      const queryResult = await API.graphql({
+        query: updateComplaint,
+        variables: {
+          input: {
+            id: newData.id,
+            processed: true,
+            complaintProcessedById: admin.attributes.sub,
+            result: newData.result,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      });
+      const updatedComplaint = queryResult.data.updateComplaint;
+      if (updatedComplaint && updatedComplaint.result === newData.result) {
+        this.setState((prevState) => {
+          const complaints = [...prevState.complaints];
+          complaints.splice(oldData.tableData.id, 1, newData);
+          return { ...prevState, complaints };
+        });
       }
-      return;
-    }
-    if (window.confirm('Are you sure you wish to disable this user?')) {
-      const result = await this.updateUserStatus(rowData.username, false);
-      const { users } = this.state;
-      this.updatedUserIndex = users.indexOf(rowData);
-      alert(result);
+    } catch (e) {
+      console.log(e);
+      alert('Something went wrong.');
     }
   }
 
   render() {
-    const { users, tabIndex } = this.state;
+    const { users, complaints, tabIndex } = this.state;
     return (
       <div>
         <Tabs
@@ -324,24 +484,54 @@ class AdminDashboard extends Component {
                   <PersonPin
                     color={
                       !rowData.admin
-                        ? 'inherit'
-                        : 'disabled'
+                        ? 'primary'
+                        : 'secondary'
                     }
                   />
                 ),
-                tooltip: 'Promote to Admin',
-                onClick: this.handlePromoteToAdmin,
+                tooltip: !rowData.admin ? 'Promote to Admin' : 'Demote the admin',
+                onClick: this.handleUpdateAdmin,
               }),
               (rowData) => ({
                 icon: rowData.enabled ? 'toggle_on' : 'toggle_off',
                 tooltip: rowData.enabled ? 'Disable User' : 'Enable User',
-                onClick: this.handleDisableUser,
+                onClick: this.handleUpdateUserStatus,
               }),
             ]}
           />
         </TabPanel>
         <TabPanel value={tabIndex} index={1}>
-          Complaints
+          <MaterialTable
+            columns={complaintColumns}
+            data={complaints}
+            title="Complaints"
+            maxWidth="md"
+            options={{
+              pageSize: 10,
+              pageSizeOptions: [10, 20, 30, 50],
+              showFirstLastPageButtons: false,
+              cellStyle: { verticalAlign: 'top' },
+            }}
+            editable={{
+              onRowUpdate: (newData, oldData) =>
+                new Promise((resolve) => {
+                  setTimeout(() => {
+                    this.handleUpdateComplaint(newData, oldData);
+                    resolve();
+                  }, 1000);
+                }),
+              onRowDelete: (oldData) =>
+                new Promise((resolve) => {
+                  setTimeout(() => {
+                    resolve();
+                    this.handleDeleteComplaint(oldData);
+                  }, 1000);
+                }),
+            }}
+            actions={[
+
+            ]}
+          />
         </TabPanel>
       </div>
     );

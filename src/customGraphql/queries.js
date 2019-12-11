@@ -1,5 +1,88 @@
 /* eslint-disable */
 
+export const getUserByUsername = `query GetUserByUsername(
+  $username: String
+  $sortDirection: ModelSortDirection
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  getUserByUsername(
+    username: $username
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      username
+      pastGames(sortDirection: DESC) {
+        items {
+          game {
+            id
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            history
+            result
+            winner
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants(sortDirection: DESC) {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
+
+export const listUsers = `query ListUsers(
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      username
+      points
+      skillLevel
+      rank
+    }
+    nextToken
+  }
+}
+`;
+
 // Get explicit past games objects while getting user info
 export const getUserWithPastGames = `query GetUser($id: ID!) {
 	getUser(id: $id) {
@@ -69,6 +152,7 @@ export const getGame = `query GetGame($id: ID!) {
       username
     }
     creatorOrientation
+    ended
     time
     variant
     fen
@@ -76,6 +160,19 @@ export const getGame = `query GetGame($id: ID!) {
     history
     result
     winner
+    createdAt
+    messages {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        createdAt
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -105,10 +202,48 @@ export const listGames = `query ListGames(
         id
         username
       }
+      opponent {
+        id
+        username
+      }
       creatorOrientation
       time
       variant
       available
+    }
+    nextToken
+  }
+}
+`;
+
+export const listComplaints = `query ListComplaints(
+  $filter: ModelComplaintFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listComplaints(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      user {
+        id
+        username
+        email
+      }
+      reportedUser {
+        id
+        username
+        email
+      }
+      gameLink
+      content
+      processed
+      processedBy {
+        id
+        username
+      }
+      result
+      createdAt
+      updatedAt
     }
     nextToken
   }

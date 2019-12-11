@@ -594,6 +594,7 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -634,6 +635,7 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -771,6 +773,7 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -811,6 +814,7 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -948,6 +952,7 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -988,6 +993,7 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -1333,6 +1339,7 @@ export const onCreateUser = `subscription OnCreateUser {
         submitted
         approved
         createdAt
+        updatedAt
         creator {
           id
           username
@@ -1396,6 +1403,7 @@ export const onCreateUser = `subscription OnCreateUser {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1489,6 +1497,7 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
         submitted
         approved
         createdAt
+        updatedAt
         creator {
           id
           username
@@ -1552,6 +1561,7 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1645,6 +1655,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
         submitted
         approved
         createdAt
+        updatedAt
         creator {
           id
           username
@@ -1708,6 +1719,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1780,6 +1792,7 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1820,6 +1833,7 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -1874,6 +1888,7 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1914,6 +1929,7 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -1971,6 +1987,7 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2011,6 +2028,7 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -2074,6 +2092,7 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2114,6 +2133,7 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -2168,6 +2188,7 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2208,6 +2229,7 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -2265,6 +2287,7 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2305,6 +2328,7 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -2368,6 +2392,7 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2408,6 +2433,7 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -2462,6 +2488,7 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2502,6 +2529,7 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -2559,6 +2587,7 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2599,6 +2628,7 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -2620,6 +2650,7 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
     submitted
     approved
     createdAt
+    updatedAt
     creator {
       id
       username
@@ -2669,6 +2700,7 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2709,6 +2741,7 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -2747,6 +2780,7 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2777,6 +2811,7 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
     submitted
     approved
     createdAt
+    updatedAt
     creator {
       id
       username
@@ -2826,6 +2861,7 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2866,6 +2902,7 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -2904,6 +2941,7 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2924,8 +2962,8 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
   }
 }
 `;
-export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant {
-  onDeleteCustomizedVariant {
+export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant($creator: String) {
+  onDeleteCustomizedVariant(creator: $creator) {
     id
     name
     baseVariant
@@ -2934,6 +2972,7 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
     submitted
     approved
     createdAt
+    updatedAt
     creator {
       id
       username
@@ -2983,6 +3022,7 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3023,6 +3063,7 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -3061,6 +3102,7 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3135,6 +3177,7 @@ export const onCreateComment = `subscription OnCreateComment {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3175,6 +3218,7 @@ export const onCreateComment = `subscription OnCreateComment {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -3189,6 +3233,7 @@ export const onCreateComment = `subscription OnCreateComment {
       submitted
       approved
       createdAt
+      updatedAt
       creator {
         id
         username
@@ -3215,6 +3260,7 @@ export const onCreateComment = `subscription OnCreateComment {
             submitted
             approved
             createdAt
+            updatedAt
           }
           nextToken
         }
@@ -3251,6 +3297,7 @@ export const onCreateComment = `subscription OnCreateComment {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -3313,6 +3360,7 @@ export const onUpdateComment = `subscription OnUpdateComment {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3353,6 +3401,7 @@ export const onUpdateComment = `subscription OnUpdateComment {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -3367,6 +3416,7 @@ export const onUpdateComment = `subscription OnUpdateComment {
       submitted
       approved
       createdAt
+      updatedAt
       creator {
         id
         username
@@ -3393,6 +3443,7 @@ export const onUpdateComment = `subscription OnUpdateComment {
             submitted
             approved
             createdAt
+            updatedAt
           }
           nextToken
         }
@@ -3429,6 +3480,7 @@ export const onUpdateComment = `subscription OnUpdateComment {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -3491,6 +3543,7 @@ export const onDeleteComment = `subscription OnDeleteComment {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3531,6 +3584,7 @@ export const onDeleteComment = `subscription OnDeleteComment {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
@@ -3545,6 +3599,7 @@ export const onDeleteComment = `subscription OnDeleteComment {
       submitted
       approved
       createdAt
+      updatedAt
       creator {
         id
         username
@@ -3571,6 +3626,7 @@ export const onDeleteComment = `subscription OnDeleteComment {
             submitted
             approved
             createdAt
+            updatedAt
           }
           nextToken
         }
@@ -3607,6 +3663,7 @@ export const onDeleteComment = `subscription OnDeleteComment {
             submitted
             approved
             createdAt
+            updatedAt
           }
         }
         nextToken
