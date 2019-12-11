@@ -15,7 +15,7 @@ export default function ProfileActionMenu({
         aria-controls="long-menu"
         aria-haspopup="true"
         onClick={handleOpenMenu}
-        data-testid='menu-icon'
+        data-testid="menu-icon"
       >
         <MoreVertIcon />
       </IconButton>
