@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { func, string } from 'prop-types';
+import { func, string, bool } from 'prop-types';
 import {
   Dialog,
   TextField,
@@ -44,6 +44,7 @@ export default function ReportUserForm({
         <span><strong>User: </strong></span>
         {reportedUser}
         <TextField
+                  inputProps={{ 'data-testid': 'reason' }}
           variant="outlined"
           rows="4"
           multiline
@@ -57,6 +58,7 @@ export default function ReportUserForm({
           helperText="Please describe the reason why you want to report this user."
         />
         <TextField
+                  inputProps={{ 'data-testid': 'link' }}
           variant="outlined"
           margin="normal"
           label="Link"
@@ -68,15 +70,15 @@ export default function ReportUserForm({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeDialog} color="primary" variant="outlined">Cancel</Button>
-        <Button onClick={onSubmit} color="primary" variant="contained">Submit</Button>
+        <Button onClick={closeDialog} color="primary" variant="outlined" data-testid="cancel-btn">Cancel</Button>
+        <Button onClick={onSubmit} color="primary" variant="contained" data-testid="submit-btn">Submit</Button>
       </DialogActions>
     </Dialog>
   );
 }
 
 ReportUserForm.propTypes = {
-  showDialog: func.isRequired,
+  showDialog: bool.isRequired,
   closeDialog: func.isRequired,
   reportedUser: string.isRequired,
   handleSubmit: func.isRequired,
