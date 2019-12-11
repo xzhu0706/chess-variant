@@ -1,40 +1,37 @@
 import React, {Component} from 'react';
-import {List, ListItemAvatar, Avatar, ListItemText, ListItem} from '@material-ui/core';
+import {List, ListItemAvatar, Avatar, ListItemText, ListItem, ListItemIcon} from '@material-ui/core';
+import { AiFillHome } from "react-icons/ai";
+import { FaChessBoard } from "react-icons/fa";
+import { GiChessRook } from "react-icons/gi";
+import { FaBook } from "react-icons/fa";
+import { FaGlobe } from "react-icons/fa";
+
+
 
 
 class Sidebar extends Component {
 
     render() {
         return (
-            <List style={{marginTop: '30px', position:'fixed', backgroundColor: 'white', width: '20%', height: '100%'}}>
+            <List style={{marginTop: '30px', border: '1px solid lightGray', marginLeft: '1px', position:'fixed', backgroundColor: 'white', width: '20%', height: '100%'}}>
                 <ListItem>
-                    <ListItemAvatar>
-                        <Avatar alt="" src=""/>
-                    </ListItemAvatar>
+                    <ListItemIcon><AiFillHome style={{fontSize: 24}}/></ListItemIcon>
                     <ListItemText primary="Home"/>
                 </ListItem>
                 <ListItem>
-                    <ListItemAvatar>
-                        <Avatar alt="" src=""/>
-                    </ListItemAvatar>
+                    <ListItemIcon><GiChessRook style={{fontSize: 24}}/></ListItemIcon>
                     <ListItemText primary="Play"/>
                 </ListItem>
                 <ListItem>
-                    <ListItemAvatar>
-                        <Avatar alt="" src=""/>
-                    </ListItemAvatar>
+                    <ListItemIcon><FaGlobe style={{fontSize: 24}}/></ListItemIcon>
                     <ListItemText primary="Browse Variants"/>
                 </ListItem>
                 <ListItem>
-                    <ListItemAvatar>
-                        <Avatar alt="" src=""/>
-                    </ListItemAvatar>
+                    <ListItemIcon><FaChessBoard style={{fontSize: 23}}/></ListItemIcon>
                     <ListItemText primary="Create a Variant"/>
                 </ListItem>
                 <ListItem>
-                    <ListItemAvatar>
-                        <Avatar alt="" src=""/>
-                    </ListItemAvatar>
+                    <ListItemIcon><FaBook style={{fontSize: 23}}/></ListItemIcon>
                     <ListItemText primary="Glossary of Pieces"/>
                 </ListItem>
             </List>

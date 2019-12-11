@@ -21,11 +21,11 @@ class NewPost extends Component {
                         multiline={true}
                         rows = {1}
                         rowsMax={Infinity}
-                        placeholder="Start writing here." 
+                        placeholder="  Start writing here." 
                         inputProps={{ 'aria-label': 'naked' }}
                     />
                 <Box display='flex' flexDirection='row' justifyContent='flex-end' alignItems='center' 
-                    style={{margin: '10px 10px 10px 10px', backgroundColor: 'white', height: '50px'}}>
+                    style={{margin: '10px 10px 5px 10px', backgroundColor: 'white', height: '50px'}}>
                     <Button variant="contained" color="primary">Submit</Button>
                 </Box>
             </Box>

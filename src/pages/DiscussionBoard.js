@@ -38,7 +38,7 @@ class DiscussionBoard extends Component{
             return (<PostCard author={author} title={title} content={content} />)
         } )
         return (
-            <Box display='flex' flexDirection='column' style={{backgroundColor: '#F0F0F0', marginLeft: '21%', width: '60%', marginTop: '70px'}}>
+            <Box display='flex' flexDirection='column' style={{backgroundColor: '#F0F0F0', marginLeft: '21%', width: '55%', marginTop: '70px'}}>
                 <NewPost />
                 <List style={{marginTop: '10px'}}>{postCards}</List>
                 <Drawer anchor="bottom" open={this.state.isDrawerOpen} onClose={this.toggleDrawer}>
