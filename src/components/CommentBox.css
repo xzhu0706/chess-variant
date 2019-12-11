@@ -1,6 +1,7 @@
 .comment-box {
-    max-width: 45rem;
+    max-width: 56rem;
     padding: 1.5rem 2rem;
+    margin: auto;
     color: #010624;
     background-color: #ededed;
 }
@@ -8,6 +9,11 @@
 .comment-form {
     margin-bottom: 3rem;
     padding: 1rem;
+}
+
+.comment-field {
+    width: 97.5%;
+    background-color: #fcfcfc;
 }
 
 .comment-button {
@@ -19,7 +25,6 @@
     padding: 0.75rem;
     background-color: #06b0ff;
     color: #eee
-    
 }
 
 .comment-button:hover {
@@ -30,8 +35,7 @@
     background-color: #19aefa;
     box-shadow: 0 3px #666;
     transform: translateY(4px);
-  }
-
+}
 
 .comment {
     border-top: 0.13em solid black;

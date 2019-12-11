@@ -21,59 +21,23 @@ class Tutorial extends React.Component {
   }
 
   render() {
+    const paragraphStyle = { marginTop: '1rem' };
     return (
       <div style={{ textAlign: 'center' }}>
-        <h1>Move Customization</h1>
-        <div style={{ display: 'inline-block', textAlign: 'left', maxWidth: 500}}>
+        <h1>Customization Tutorial</h1>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
           <div style={{ margin: '1em' }} className="tutorial">
-            <table>
-              <tr>
-                <td>&#8945;</td>
-                <td>&#8942;</td>
-                <td>&#8942;</td>
-                <td>&#8942;</td>
-                <td>&#8944;</td>
-              </tr>
-              <tr>
-                <td>&#x2026;</td>
-                <td>-17</td>
-                <td>-16</td>
-                <td>-15</td>
-                <td>&#x2026;</td>
-              </tr>
-              <tr>
-                <td>&#x2026;</td>
-                <td>-1</td>
-                <td>0</td>
-                <td>+1</td>
-                <td>&#x2026;</td>
-              </tr>
-              <tr>
-                <td>&#x2026;</td>
-                <td>+15</td>
-                <td>+16</td>
-                <td>+17</td>
-                <td>&#x2026;</td>
-              </tr>
-              <tr>
-                <td>&#8944;</td>
-                <td>&#8942;</td>
-                <td>&#8942;</td>
-                <td>&#8942;</td>
-                <td>&#8945;</td>
-              </tr>
-            </table>
+            <PieceCustomize
+              offsets={this.state.offsets}
+              repeatOffsets={this.state.repeatOffsets}
+              hideInput={true}
+            />
           </div>
-          <PieceCustomize
-            offsets={this.state.offsets}
-            repeatOffsets={this.state.repeatOffsets}
-            hideInput={true}
-          />        
-          <div style={{ padding: '0.5em' }}>
-            Chess pieces have two types of move offsets: exact offsets, which generate exact moves, and repeating offsets, which generate moves that can recur in a particular direction.
-            <div style={{ marginTop: '0.25em' }}>
-              <div>
-                For example, the rook has the repeating offsets -1, -16, 1 and 16. Repeating offsets stop repeating on a square that is occupied by a piece.
+          <div style={{ width: '26rem', padding: '0.5em', textAlign: 'left' }}>
+            Chess pieces have two types of move offsets: exact offsets, which generate instantaneous moves, and repeating offsets, which generate moves that can recur in a particular direction.
+            <div>
+              <div style={paragraphStyle}>
+                For example, the rook has the repeating offsets -1, -16, 1 and 16. Repeating offsets are limited by any pieces in the movement path.
                 <br/>
                 <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([],[-1,1,16,-16])}>rook</Button>
               </div>
@@ -88,14 +52,14 @@ class Tutorial extends React.Component {
             </div>
             <hr/>
             <div>
-              <p>
+              <p style={paragraphStyle}>
                 The knight has the exact offsets -18, -33, -31, -14, 18, 33, 31 and 14.
                 <br/>
                 <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([-18, -33, -31, -14, 18, 33, 31, 14], [])}>knight</Button>
               </p>
               <p>
-                The nightrider has the exact offsets of the knight as repeating offsets.
-                It can move like a knight any number of steps in each direction, although other pieces on the board can limit the range of movement.
+                The nightrider has the same offsets of the knight, but they are repeating.
+                In other words it can move like a knight any number of steps in each direction but its movement is limited by other pieces on the board.
                 Click play below to test it.
                 <br/>
                 <Button size="small" color="secondary" variant="outlined" onClick={() => this.handleClick([], [-18, -33, -31, -14, 18, 33, 31, 14])}>nightrider</Button>
