@@ -16,9 +16,10 @@ class Home extends Component {
   }
 
   render() {
+    const { history } = this.history;
     return (
       <div className="text-center">
-        <Lobby history={this.props.history} />
+        <Lobby history={history} />
 
         <h1 style={{ fontFamily: 'AppleSDGothicNeo-Bold' }}>Featured Variants</h1>
         <Row className="justify-content-md-center">
