@@ -106,3 +106,28 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
   }
 }
 `;
+
+export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaintInput!) {
+  updateComplaint(input: $input) {
+    id
+    user {
+      id
+      username
+    }
+    reportedUser {
+      id
+      username
+    }
+    gameLink
+    content
+    processed
+    processedBy {
+      id
+      username
+    }
+    result
+    createdAt
+    updatedAt
+  }
+}
+`;

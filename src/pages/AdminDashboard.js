@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { createUser } from '../graphql/mutations';
 import { listComplaints } from '../customGraphql/queries';
-import { deleteComplaint } from '../customGraphql/mutations';
+import { deleteComplaint, updateComplaint } from '../customGraphql/mutations';
 import { Link } from 'react-router-dom';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -34,16 +34,59 @@ const userColumns = [
 ];
 
 const complaintColumns = [
-  { title: 'Processed', field: 'processed' },
-  { title: 'ID', field: 'id', editable: 'never' },
-  { title: 'Description', field: 'content' },
-  { title: 'Link', field: 'link' },
-  { title: 'User', field: 'user' },
-  { title: 'Reported User', field: 'reportedUser' },
-  { title: 'Created Date', field: 'createdAt' },
-  { title: 'Updated Date', field: 'updatedAt' },
+  { title: 'Processed', field: 'processed', editable: 'never' },
   { title: 'Result', field: 'result' },
-  { title: 'Processed By', field: 'proccesedBy' },
+  // { title: 'ID', field: 'id', editable: 'never' },
+  { title: 'Description', field: 'content', editable: 'never' },
+  {
+    title: 'Link',
+    field: 'link',
+    render: (rowData) => (rowData.link ? (
+      <ToolTip title={rowData.link}>
+        <a rel="noopener noreferrer" href={rowData.link} target="_blank">
+          Link
+        </a>
+      </ToolTip>
+    )
+      : ''
+    ),
+    editable: 'never',
+  },
+  {
+    title: 'User',
+    field: 'user',
+    render: (rowData) => (rowData.user && rowData.user.username ? (
+      <Link to={`/account/${rowData.user.username}`}>
+        {rowData.user.username}
+      </Link>
+    )
+      : ''),
+    editable: 'never',
+  },
+  {
+    title: 'Reported User',
+    field: 'reportedUser',
+    render: (rowData) => (rowData.reportedUser && rowData.reportedUser.username ? (
+      <Link to={`/account/${rowData.reportedUser.username}`}>
+        {rowData.reportedUser.username}
+      </Link>
+    )
+      : ''),
+    editable: 'never',
+  },
+  { title: 'Created Date', field: 'createdAt', editable: 'never' },
+  { title: 'Updated Date', field: 'updatedAt', editable: 'never' },
+  {
+    title: 'Processed By',
+    field: 'proccesedBy',
+    render: (rowData) => (rowData.processedBy && rowData.processedBy.username ? (
+      <Link to={`/account/${rowData.processedBy.username}`}>
+        {rowData.processedBy.username}
+      </Link>
+    )
+      : ''),
+    editable: 'never',
+  },
 ];
 
 const adminTag = (
@@ -132,36 +175,7 @@ class AdminDashboard extends Component {
   generateComplaintRows = (complaints) => {
     const rows = complaints.map((complaint) => {
       const complaintInfo = { ...complaint };
-      if (complaint.user) {
-        complaintInfo.user = (
-          <Link to={`/account/${complaint.user.username}`}>
-            {complaint.user.username}
-          </Link>
-        );
-      }
-      if (complaint.reportedUser) {
-        complaintInfo.reportedUser = (
-          <Link to={`/account/${complaint.reportedUser.username}`}>
-            {complaint.reportedUser.username}
-          </Link>
-        );
-      }
-      if (complaint.processedBy) {
-        complaintInfo.processedBy = (
-          <Link to={`/account/${complaint.processedBy.username}`}>
-            {complaint.processedBy.username}
-          </Link>
-        );
-      }
-      if (complaint.gameLink) {
-        complaintInfo.link = (
-          <ToolTip title={complaint.gameLink}>
-            <a rel="noopener noreferrer" href={complaint.gameLink} target="_blank">
-              Link
-            </a>
-          </ToolTip>
-        );
-      }
+      complaintInfo.link = complaint.gameLink;
       complaintInfo.processed = complaintInfo.processed ? 'Yes' : 'No';
       return complaintInfo;
     });
@@ -410,6 +424,35 @@ class AdminDashboard extends Component {
     }
   }
 
+  handleUpdateComplaint = async (newData, oldData) => {
+    try {
+      const admin = await Auth.currentUserInfo();
+      const queryResult = await API.graphql({
+        query: updateComplaint,
+        variables: {
+          input: {
+            id: newData.id,
+            processed: true,
+            complaintProcessedById: admin.attributes.sub,
+            result: newData.result,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      });
+      const updatedComplaint = queryResult.data.updateComplaint;
+      if (updatedComplaint && updatedComplaint.result === newData.result) {
+        this.setState((prevState) => {
+          const complaints = [...prevState.complaints];
+          complaints.splice(oldData.tableData.id, 1, newData);
+          return { ...prevState, complaints };
+        });
+      }
+    } catch (e) {
+      console.log(e);
+      alert('Something went wrong.');
+    }
+  }
+
   render() {
     const { users, complaints, tabIndex } = this.state;
     return (
@@ -470,6 +513,13 @@ class AdminDashboard extends Component {
               cellStyle: { verticalAlign: 'top' },
             }}
             editable={{
+              onRowUpdate: (newData, oldData) =>
+                new Promise((resolve) => {
+                  setTimeout(() => {
+                    this.handleUpdateComplaint(newData, oldData);
+                    resolve();
+                  }, 1000);
+                }),
               onRowDelete: (oldData) =>
                 new Promise((resolve) => {
                   setTimeout(() => {
