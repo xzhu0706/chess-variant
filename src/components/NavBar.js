@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Navbar } from 'react-bootstrap';
 import ResponsiveMenu from 'react-responsive-navbar';
-import styled from 'styled-components'; // https://www.styled-components.com/
 import { FaBars, FaTimes } from 'react-icons/fa';
 import Button from '@material-ui/core/Button';
 import Image from 'react-bootstrap/Image';
@@ -12,44 +11,13 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Dialog from '@material-ui/core/Dialog';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
-import * as queries from '../graphql/queries';
+//import * as queries from '../graphql/queries';
+import './NavBar.css';
 import * as customQueries from '../customGraphql/queries';
 
 import awsconfig from '../aws-exports';
 
 Amplify.configure(awsconfig);
-
-const Menu = styled.div`
-  border: 2px solid black;
-  margin: 1em 2em;
-
-  ul {
-    padding: 0;
-  }
-
-  li { 
-    display: inline;
-    list-style-type: none;
-    margin-left: 25px;
-  }
-
-  a {
-    font-size: 18px;
-    color: Black;
-
-    &:hover {
-      color: DodgerBlue;
-    }
-  }
-
-  @media (max-width: 820px) {
-    padding: 10px 10px;
-    li {
-      display: block;
-      margin-left: 0;
-    }
-  }
-`;
 
 class NavBar extends Component {
   constructor(props) {
@@ -110,10 +78,11 @@ class NavBar extends Component {
   }
 
   handleSearch = async (e) => {
+    // not necessary because you overwrite searchResults anyway
     // clear the search results each time the search input is updated
-    this.setState({
-      searchResults: [],
-    });
+    // this.setState({
+    //   searchResults: [],
+    // });
     const input = e.target.value;
     // start searching after 2 characters input
     if (input.length > 2) {
@@ -126,7 +95,6 @@ class NavBar extends Component {
       this.setState({
         searchResults: queryResult.data.listUsers.items,
       });
-      console.log(queryResult.data.listUsers.items);
     }
   }
 
@@ -150,14 +118,14 @@ class NavBar extends Component {
     return (
       <div>
         <ResponsiveMenu
-          menuOpenButton={<FaBars size={40} color="YellowGreen" />}
-          menuCloseButton={<FaTimes size={40} color="YellowGreen" />}
+          menuOpenButton={<FaBars size={45} style={{ marginBottom: '1rem' }} />}
+          menuCloseButton={<FaTimes size={45} />}
           changeMenuOn="820px"
           menu={(
-            <Menu>
-              <Navbar.Brand style={{ fontFamily: 'chalkduster' }}>
-                <Image src={require('../icons/pieces/standard/wr.svg')} alt="Chess Piece" style={imgStyle} fluid />
-                <Link to="/" style={{ color: '#333333', fontSize: '28px' }}>Chess Variants</Link>
+            <div className="site-menu">
+              <Navbar.Brand style={{ fontFamily: 'chalkduster', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
+                <Image src={'https://upload.wikimedia.org/wikipedia/commons/d/d9/Chess_pWlt26.svg'} alt="Chess Piece" style={imgStyle} fluid />
+                <Link to="/" style={{ fontSize: '25px' }}>Chess Variants</Link>
               </Navbar.Brand>
               <ul>
                 <li>
@@ -167,12 +135,11 @@ class NavBar extends Component {
                   <Link to="/variants">List of Variants</Link>
                 </li>
                 <li>
-                  <Link to="/">Leaderboard</Link>
-                </li>
-                <li>
                   <Link to="/create">Create</Link>
                 </li>
-
+                <li>
+                  <Link to="/about">About</Link>
+                </li>
                 {username
                   ? (
                     <span>
@@ -234,7 +201,7 @@ class NavBar extends Component {
                   />
                 </li>
               </ul>
-            </Menu>
+            </div>
           )}
         />
 
