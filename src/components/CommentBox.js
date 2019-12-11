@@ -35,26 +35,30 @@ class CommentBox extends React.Component {
   }
 
   async handleComment(authorId, authorName, content) {
-    const storedComment = await API.graphql(graphqlOperation(mutations.createComment, {
-      input: {
+    try {
+      const storedComment = await API.graphql(graphqlOperation(mutations.createComment, {
+        input: {
+          content,
+          commentUserId: authorId,
+          commentVariantId: this.props.variant
+        } 
+      }));
+      const commentId = storedComment.data.createComment.id;
+      const createdAt = storedComment.data.createComment.createdAt;
+
+      const comment = {
+        id: commentId,
+        author: authorName,
         content,
-        commentUserId: authorId,
-        commentVariantId: this.props.variant
-      } 
-    }));
-    const commentId = storedComment.data.createComment.id;
-    const createdAt = storedComment.data.createComment.createdAt;
+        createdAt
+      };
 
-    const comment = {
-      id: commentId,
-      author: authorName,
-      content,
-      createdAt
-    };
-
-    this.setState({
-      comments: [...this.state.comments, comment]
-    });
+      this.setState({
+        comments: [...this.state.comments, comment]
+      });
+    } catch {
+      throw new Error("error saving comment");
+    }
   }
   
   formatComments() {
@@ -95,11 +99,11 @@ class CommentForm extends React.Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCommentChange = this.handleCommentChange.bind(this);
+    this.handleContentChange = this.handleContentChange.bind(this);
   }
 
   // update this.state.content with user input
-  handleCommentChange(event) {
+  handleContentChange(event) {
     this.setState({
       content: event.target.value
     });
@@ -124,12 +128,12 @@ class CommentForm extends React.Component {
       <form className="comment-form" onSubmit={this.handleSubmit.bind(this)}>
         <div style={{ fontStyle: 'italic', padding: '0.25rem 0' }}>
           <TextField
-            style={{ width: '92.5%', backgroundColor: '#fcfcfc' }}
+            className="comment-field"
             multiline={true}
             rows="8"
             placeholder="Comment"
             required
-            onChange={this.handleCommentChange}
+            onChange={this.handleContentChange}
           />
         </div>
         <button className="comment-button" type="submit">Post Comment</button>
@@ -140,16 +144,18 @@ class CommentForm extends React.Component {
 
 class Comment extends React.Component {
   render() {
+    const { author, content, createdAt } = this.props;
     return (
       <div className='comment'>
-        <p>{this.props.author} ({this.props.createdAt.slice(0,10)} {this.props.createdAt.slice(11,19)})</p>
-        <p>{this.props.content}</p>
+        <p>{author} ({createdAt.slice(0,10)} {createdAt.slice(11,19)})</p>
+        <p>{content}</p>
           <Link to='/#' onClick={this.deleteComment}>
-            <DeleteForeverTwoToneIcon style={{ color: '#708070' }} className={this.props.icon} />
+            <DeleteForeverTwoToneIcon style={{ color: '#708070' }} />
           </Link>
       </div>
     );
   }
+
   async deleteComment(event) {
     event.preventDefault();
     //alert('this doesn\'t do anything yet');

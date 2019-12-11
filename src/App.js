@@ -12,6 +12,7 @@ import Pieces from './pages/Pieces';
 import './App.css';
 import NavBar from './components/NavBar';
 import AdminDashboard from './pages/AdminDashboard';
+import About from './pages/About';
 
 class App extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ class App extends Component {
           <Route path="/analysis" component={Analysis} />
           <Route path="/pieces" component={Pieces} />
           <Route path="/admin" component={AdminDashboard} />
+          <Route path="/about" component={About} />
         </Switch>
       </Router>
     );

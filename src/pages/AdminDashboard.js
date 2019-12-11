@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
-import { createUser } from '../graphql/mutations';
+import Amplify, { Auth, API } from 'aws-amplify';
+//import { createUser } from '../graphql/mutations';
 import { listComplaints } from '../customGraphql/queries';
 import { deleteComplaint, updateComplaint } from '../customGraphql/mutations';
 import { Link } from 'react-router-dom';
@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import MaterialTable from 'material-table';
 import Chip from '@material-ui/core/Chip';
-import ToolTip from '@material-ui/core/ToolTip';
+import ToolTip from '@material-ui/core/Tooltip';
 import PersonPin from '@material-ui/icons/PersonPin';
 import awsconfig from '../aws-exports';
 

@@ -17,12 +17,14 @@ import './Create.css';
 (c) customization,
 */
 
+const START_FEN = '4k3/8/8/8/8/8/8/4K3 w - - 0 1';
+
 class Create extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       icon: 'cursor',
-      startFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      startFen: START_FEN,
       offsets: [],
       repeatOffsets: []
     };
@@ -109,7 +111,7 @@ class Create extends React.Component {
         <div id='board' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', position: 'relative', }}>
           {/* render the board */}
           <div>
-            {Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 0, false, false, true, this.state.icon, this.customPiece(), this.handleFenChange)}
+            {Board(START_FEN, 0, false, false, true, this.state.icon, this.customPiece(), this.handleFenChange)}
             <div style={{
             textAlign: 'left',
             padding: '0.75em',

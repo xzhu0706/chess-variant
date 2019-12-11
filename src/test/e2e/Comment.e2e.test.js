@@ -4,7 +4,7 @@ describe('Commenting on variant pages (/pages/<variantID>)', () => {
   test('Post a comment on a variant page', async () => {
     const browser = await puppeteer.launch({
       headless: false,
-      slowMo: 25,
+      slowMo: 20,
     });
     const page = await browser.newPage();
 
@@ -20,7 +20,7 @@ describe('Commenting on variant pages (/pages/<variantID>)', () => {
     const puppeteerPassword = 'password';
 
     await page.goto(
-      'http://localhost:3000/pages/faea414b-1c91-49d8-ae5e-7b7fc1aae213' // replace with live url
+      'http://localhost:3000/pages/d1b8ab83-a2f2-448b-8955-06d8ef9afc43' // replace with live url
     );
 
     // login first
