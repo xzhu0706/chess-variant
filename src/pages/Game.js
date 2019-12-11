@@ -2,17 +2,11 @@ import React, { Component } from 'react';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { Prompt } from 'react-router';
 import Box from '@material-ui/core/Box';
-// import Paper from '@material-ui/core/Paper';
-// import Typography from '@material-ui/core/Typography';
-// import Grid from '@material-ui/core/Grid';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
-// import * as mutations from '../graphql/mutations';
-// import * as queries from '../graphql/queries';
 import * as customQueries from '../customGraphql/queries';
 import * as customMutations from '../customGraphql/mutations';
 import * as customSubscriptions from '../customGraphql/subscriptions';
-// import * as subscriptions from '../graphql/subscriptions';
 import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
@@ -20,9 +14,7 @@ import './Game.css';
 // import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
-//import { Widget, toggleWidget, addResponseMessage, addUserMessage } from 'react-chat-widget';
-import 'react-chat-widget/lib/styles.css';
-import {Launcher} from 'react-chat-window'
+import { Launcher } from 'react-chat-window';
 import awsconfig from '../aws-exports';
 
 
@@ -71,7 +63,6 @@ class Game extends Component {
     this.currentUser = await this.getUserInfo();
     const queryResult = await API.graphql(graphqlOperation(customQueries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame;
-    console.log(this.gameInfo.ended)
     let initialMessages = this.gameInfo.messages.items;
     initialMessages = initialMessages.map((message) => {
       const author = message.author.id === this.currentUser.id ? 'me' : 'them';
@@ -277,7 +268,6 @@ class Game extends Component {
             updateGameData.winner = this.game.turn() === 'w' ? 'Black' : 'White';
           }
           updateGameData.ended = true;
-          console.log('game end', this.game.turn(), gameResult);
         }
         this.setState({
           fen: this.game.fen(),
@@ -381,9 +371,7 @@ class Game extends Component {
     newGameState.id = this.gameId;
     newGameState.ended = true;
     newGameState.result = `${loser} left the game, ${winner} wins`;
-    // API.graphql(graphqlOperation(
-    //   mutations.updateGameState, { input: newGameState },
-    // ));
+    newGameState.winner = winner;
     // using xhr request manually because graphql operation is asynchrounous, which cannot finish on page unload
     const xhr = new XMLHttpRequest();
     xhr.open('POST', awsconfig.aws_appsync_graphqlEndpoint, false);
