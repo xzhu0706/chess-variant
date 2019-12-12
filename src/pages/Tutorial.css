@@ -1,0 +1,13 @@
+.tutorial table {
+    width: 150px;
+    height: 150px;
+    border-spacing: 0;
+    margin: auto;
+}
+.tutorial td {
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    text-align: center;
+}

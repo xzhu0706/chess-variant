@@ -7,15 +7,13 @@ import Variants from './pages/Variants';
 import Create from './pages/Create';
 import Tutorial from './pages/Tutorial';
 import Analysis from './pages/Analysis';
-import DiscussionBoard from './pages/DiscussionBoard';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import UserVariant from './pages/UserVariant';
 import Pieces from './pages/Pieces';
 import './App.css';
 import NavBar from './components/NavBar';
 import Sidebar from './components/Sidebar';
 import AdminDashboard from './pages/AdminDashboard';
+import About from './pages/About';
 
 
 class App extends Component {
@@ -42,11 +40,16 @@ class App extends Component {
               <Account key={props.match.params.username} {...props} />
             )}
           />
+          <Route
+            path="/pages/:vid"
+            render={(props) => <UserVariant {...props} />}
+          />
           <Route path="/create" component={Create} />
           <Route path="/tutorial" component={Tutorial} />
           <Route path="/analysis" component={Analysis} />
           <Route path="/pieces" component={Pieces} />
           <Route path="/admin" component={AdminDashboard} />
+          <Route path="/about" component={About} />
         </Switch>
       </Router>
     );

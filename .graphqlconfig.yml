@@ -20,7 +20,13 @@ extensions:
     version: 3
 =======
         maxDepth: 5
+<<<<<<< HEAD
 >>>>>>> upstream/master
 =======
         maxDepth: 5
+>>>>>>> upstream/master
+=======
+extensions:
+  amplify:
+    version: 3
 >>>>>>> upstream/master

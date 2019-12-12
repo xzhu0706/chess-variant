@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
+import { Prompt } from 'react-router';
 import Box from '@material-ui/core/Box';
-// import Paper from '@material-ui/core/Paper';
-// import Typography from '@material-ui/core/Typography';
-// import Grid from '@material-ui/core/Grid';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
-import * as mutations from '../graphql/mutations';
-import * as queries from '../graphql/queries';
-import * as subscriptions from '../graphql/subscriptions';
+import * as customQueries from '../customGraphql/queries';
+import * as customMutations from '../customGraphql/mutations';
+import * as customSubscriptions from '../customGraphql/subscriptions';
 import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
@@ -16,10 +14,8 @@ import './Game.css';
 // import Clock from '../components/Clock';
 import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
-import { Widget, toggleWidget, addResponseMessage, addUserMessage } from 'react-chat-widget';
-import 'react-chat-widget/lib/styles.css';
-import {Launcher} from 'react-chat-window'
-
+import { Launcher } from 'react-chat-window';
+import awsconfig from '../aws-exports';
 
 
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
@@ -47,7 +43,7 @@ class Game extends Component {
       turn: '',
     };
     this.game = null;
-    this.opponent = null; // the opponent. null if user created or joined game anonymously
+    this.opponent = null;
     this.gameId = null;
     this.orientation = '';
     this.gameUpdateSubscription = null;
@@ -57,12 +53,15 @@ class Game extends Component {
     this.boardId = '';
     this.isViewer = false;
     this.currentUser = null;
+    // adding listener for reloading or exiting page since component will not be unmount
+    // component only will be unmount if go to other pages in our site
+    this.addedLeaveGameListener = false;
   }
 
   async componentDidMount() {
     const gameId = this.props.match.params.id;
     this.currentUser = await this.getUserInfo();
-    const queryResult = await API.graphql(graphqlOperation(queries.getGame, { id: gameId }));
+    const queryResult = await API.graphql(graphqlOperation(customQueries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame;
     let initialMessages = this.gameInfo.messages.items;
     initialMessages = initialMessages.map((message) => {
@@ -131,7 +130,14 @@ class Game extends Component {
       yourTurn,
       turn: this.game.turn(),
     });
-    this.messageCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreateMessage)).subscribe({
+
+    if (!this.gameInfo.ended && !this.isViewer) {
+      window.addEventListener('beforeunload', this.handleLeavePage);
+      window.addEventListener('unload', this.leaveGame);
+      this.addedLeaveGameListener = true;
+    }
+
+    this.messageCreationSubscription = API.graphql(graphqlOperation(customSubscriptions.onCreateMessage)).subscribe({
       next: (messageData) => {
         const message = messageData.value.data.onCreateMessage;
         const gameId = message.game.id;
@@ -156,16 +162,16 @@ class Game extends Component {
     });
 
     this.gameUpdateSubscription = API.graphql(graphqlOperation(
-      subscriptions.onUpdateGameState, { id: gameId },
+      customSubscriptions.onUpdateGameState, { id: gameId },
     )).subscribe({
       next: (gameData) => {
         const gameState = gameData.value.data.onUpdateGameState;
         if (this.gameInfo.id === gameState.id) {
-          if (gameState.history.length > this.state.history.length) {
+          if (gameState.history && (gameState.history.length > this.state.history.length)) {
             this.game.move(gameState.history[gameState.history.length - 1]);
           }
           this.gameInfo.ended = gameState.ended;
-          const yourTurn = !this.isViewer && !gameState.ended && this.game.turn() === this.orientation[0];
+          const yourTurn = !gameState.ended && this.game.turn() === this.orientation[0];
           // let gameResult;
           // let winner;
           // if (gameState.ended === true) {
@@ -185,6 +191,10 @@ class Game extends Component {
           //   this.gameUpdateSubscription.unsubscribe();
           //   yourTurn = false;
           // }
+          if (gameState.gameResult && this.addedLeaveGameListener) {
+            window.removeEventListener('beforeunload', this.handleLeavePage);
+            window.removeEventListener('unload', this.leaveGame);
+          }
           this.setState({
             fen: this.game.fen(),
             yourTurn,
@@ -198,6 +208,12 @@ class Game extends Component {
     });
   }
 
+  handleLeavePage = (e) => {
+    const confirmationMessage = 'Are you sure you want to leave the game?';
+    e.returnValue = confirmationMessage;     // Gecko, Trident, Chrome 34+
+    return confirmationMessage;              // Gecko, WebKit, Chrome <34
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.location.search === this.props.location.search
   }
@@ -208,6 +224,10 @@ class Game extends Component {
     }
     if (!this.game.game_over() && !this.gameInfo.ended) {
       this.leaveGame();
+    }
+    if (this.addedLeaveGameListener) {
+      window.removeEventListener('beforeunload', this.handleLeavePage);
+      window.removeEventListener('unload', this.leaveGame);
     }
     localStorage.removeItem(this.gameId);
     if (this.messageCreationSubscription) {
@@ -248,7 +268,6 @@ class Game extends Component {
             updateGameData.winner = this.game.turn() === 'w' ? 'Black' : 'White';
           }
           updateGameData.ended = true;
-          console.log('game end', this.game.turn(), gameResult);
         }
         this.setState({
           fen: this.game.fen(),
@@ -259,7 +278,7 @@ class Game extends Component {
           turn: this.game.turn(),
         });
         await API.graphql(graphqlOperation(
-          mutations.updateGameState, { input: updateGameData },
+          customMutations.updateGameState, { input: updateGameData },
         ));
         this.moveFrom = null;
         return;
@@ -352,9 +371,18 @@ class Game extends Component {
     newGameState.id = this.gameId;
     newGameState.ended = true;
     newGameState.result = `${loser} left the game, ${winner} wins`;
-    API.graphql(graphqlOperation(
-      mutations.updateGameState, { input: newGameState },
-    ));
+    newGameState.winner = winner;
+    // using xhr request manually because graphql operation is asynchrounous, which cannot finish on page unload
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', awsconfig.aws_appsync_graphqlEndpoint, false);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('x-api-key', awsconfig.aws_appsync_apiKey);
+    xhr.send(JSON.stringify({
+      query: customMutations.updateGameState,
+      variables: {
+        input: newGameState,
+      },
+    }));
   }
 
   handleNewUserMessage = async (message) => {
@@ -362,7 +390,7 @@ class Game extends Component {
     messageObject.author = this.currentUser;
     messageObject.messageGameId = this.gameId;
     messageObject.content = message.data.text;
-    API.graphql(graphqlOperation(mutations.createMessage, { input: messageObject }));
+    API.graphql(graphqlOperation(customMutations.createMessage, { input: messageObject }));
     this.setState({ messageList: [...this.state.messageList, message] });
   }
 
@@ -396,6 +424,10 @@ class Game extends Component {
     }
     return (
       <Box key={this.gameId} display="flex" flexDirection="row" justifyContent="flex-start">
+        <Prompt
+          when={!state.gameResult}
+          message="Are you sure you want to leave?"
+        />
         <Box style={{ width: '30%' }}>
           <Launcher
             agentProfile={{

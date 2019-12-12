@@ -34,6 +34,7 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
             nextToken
           }
         }
+        createdAt
         player {
           id
           username
@@ -46,6 +47,12 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
           skillLevel
           rank
           createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
         }
       }
       nextToken
@@ -103,6 +110,7 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
             nextToken
           }
         }
+        createdAt
       }
       nextToken
     }
@@ -130,6 +138,7 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -182,10 +191,12 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             winner
             createdAt
           }
+          createdAt
         }
         nextToken
       }
     }
+    createdAt
     player {
       id
       username
@@ -207,6 +218,7 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -224,6 +236,62 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
       skillLevel
       rank
       createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
   }
 }
@@ -249,6 +317,7 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -301,10 +370,12 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             winner
             createdAt
           }
+          createdAt
         }
         nextToken
       }
     }
+    createdAt
     player {
       id
       username
@@ -326,6 +397,7 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -343,6 +415,62 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
       skillLevel
       rank
       createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
   }
 }
@@ -368,6 +496,7 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -420,10 +549,12 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             winner
             createdAt
           }
+          createdAt
         }
         nextToken
       }
     }
+    createdAt
     player {
       id
       username
@@ -445,6 +576,7 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -462,6 +594,62 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
       skillLevel
       rank
       createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
   }
 }
@@ -499,6 +687,7 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
             nextToken
           }
         }
+        createdAt
         player {
           id
           username
@@ -511,6 +700,12 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
           skillLevel
           rank
           createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
         }
       }
       nextToken
@@ -568,6 +763,7 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
             nextToken
           }
         }
+        createdAt
       }
       nextToken
     }
@@ -607,6 +803,7 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
             nextToken
           }
         }
+        createdAt
         player {
           id
           username
@@ -619,6 +816,12 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
           skillLevel
           rank
           createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
         }
       }
       nextToken
@@ -676,6 +879,7 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
             nextToken
           }
         }
+        createdAt
       }
       nextToken
     }
@@ -715,6 +919,7 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
             nextToken
           }
         }
+        createdAt
         player {
           id
           username
@@ -727,6 +932,12 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
           skillLevel
           rank
           createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
         }
       }
       nextToken
@@ -784,6 +995,7 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
             nextToken
           }
         }
+        createdAt
       }
       nextToken
     }
@@ -816,6 +1028,7 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -868,10 +1081,12 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
             winner
             createdAt
           }
+          createdAt
         }
         nextToken
       }
     }
+    createdAt
   }
 }
 `;
@@ -901,6 +1116,7 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -953,10 +1169,12 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
             winner
             createdAt
           }
+          createdAt
         }
         nextToken
       }
     }
+    createdAt
   }
 }
 `;
@@ -986,6 +1204,7 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -1038,10 +1257,12 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
             winner
             createdAt
           }
+          createdAt
         }
         nextToken
       }
     }
+    createdAt
   }
 }
 `;
@@ -1081,6 +1302,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
             nextToken
           }
         }
+        createdAt
         player {
           id
           username
@@ -1093,6 +1315,12 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
           skillLevel
           rank
           createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
         }
       }
       nextToken
@@ -1101,6 +1329,98 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
     skillLevel
     rank
     createdAt
+    variants {
+      items {
+        id
+        name
+        baseVariant
+        startFen
+        customPiece
+        submitted
+        approved
+        createdAt
+        updatedAt
+        creator {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
+      }
+      nextToken
+    }
+    comments {
+      items {
+        id
+        content
+        createdAt
+        user {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        variant {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -1140,6 +1460,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
             nextToken
           }
         }
+        createdAt
         player {
           id
           username
@@ -1152,6 +1473,12 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
           skillLevel
           rank
           createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
         }
       }
       nextToken
@@ -1160,6 +1487,98 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
     skillLevel
     rank
     createdAt
+    variants {
+      items {
+        id
+        name
+        baseVariant
+        startFen
+        customPiece
+        submitted
+        approved
+        createdAt
+        updatedAt
+        creator {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
+      }
+      nextToken
+    }
+    comments {
+      items {
+        id
+        content
+        createdAt
+        user {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        variant {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -1199,6 +1618,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
             nextToken
           }
         }
+        createdAt
         player {
           id
           username
@@ -1211,6 +1631,12 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
           skillLevel
           rank
           createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
         }
       }
       nextToken
@@ -1219,6 +1645,98 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
     skillLevel
     rank
     createdAt
+    variants {
+      items {
+        id
+        name
+        baseVariant
+        startFen
+        customPiece
+        submitted
+        approved
+        createdAt
+        updatedAt
+        creator {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
+      }
+      nextToken
+    }
+    comments {
+      items {
+        id
+        content
+        createdAt
+        user {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        variant {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -1228,10 +1746,194 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
     user {
       id
       username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
     reportedUser {
       id
       username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
     gameLink
     content
@@ -1257,6 +1959,7 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -1274,8 +1977,66 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
       skillLevel
       rank
       createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
+    result
     createdAt
+    updatedAt
   }
 }
 `;
@@ -1285,10 +2046,194 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
     user {
       id
       username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
     reportedUser {
       id
       username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
     gameLink
     content
@@ -1314,6 +2259,7 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -1331,8 +2277,66 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
       skillLevel
       rank
       createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
+    result
     createdAt
+    updatedAt
   }
 }
 `;
@@ -1342,10 +2346,194 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
     user {
       id
       username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
     reportedUser {
       id
       username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
     gameLink
     content
@@ -1371,6 +2559,7 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             winner
             createdAt
           }
+          createdAt
           player {
             id
             username
@@ -1388,8 +2577,1098 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
       skillLevel
       rank
       createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
+    result
     createdAt
+    updatedAt
+  }
+}
+`;
+export const createCustomizedVariant = `mutation CreateCustomizedVariant($input: CreateCustomizedVariantInput!) {
+  createCustomizedVariant(input: $input) {
+    id
+    name
+    baseVariant
+    startFen
+    customPiece
+    submitted
+    approved
+    createdAt
+    updatedAt
+    creator {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+    comments {
+      items {
+        id
+        content
+        createdAt
+        user {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        variant {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input: UpdateCustomizedVariantInput!) {
+  updateCustomizedVariant(input: $input) {
+    id
+    name
+    baseVariant
+    startFen
+    customPiece
+    submitted
+    approved
+    createdAt
+    updatedAt
+    creator {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+    comments {
+      items {
+        id
+        content
+        createdAt
+        user {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        variant {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input: DeleteCustomizedVariantInput!) {
+  deleteCustomizedVariant(input: $input) {
+    id
+    name
+    baseVariant
+    startFen
+    customPiece
+    submitted
+    approved
+    createdAt
+    updatedAt
+    creator {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+    comments {
+      items {
+        id
+        content
+        createdAt
+        user {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          variants {
+            nextToken
+          }
+          comments {
+            nextToken
+          }
+        }
+        variant {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const createComment = `mutation CreateComment($input: CreateCommentInput!) {
+  createComment(input: $input) {
+    id
+    content
+    createdAt
+    user {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+    variant {
+      id
+      name
+      baseVariant
+      startFen
+      customPiece
+      submitted
+      approved
+      createdAt
+      updatedAt
+      creator {
+        id
+        username
+        email
+        phoneNumber
+        pastGames {
+          items {
+            id
+            createdAt
+          }
+          nextToken
+        }
+        points
+        skillLevel
+        rank
+        createdAt
+        variants {
+          items {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!) {
+  updateComment(input: $input) {
+    id
+    content
+    createdAt
+    user {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+    variant {
+      id
+      name
+      baseVariant
+      startFen
+      customPiece
+      submitted
+      approved
+      createdAt
+      updatedAt
+      creator {
+        id
+        username
+        email
+        phoneNumber
+        pastGames {
+          items {
+            id
+            createdAt
+          }
+          nextToken
+        }
+        points
+        skillLevel
+        rank
+        createdAt
+        variants {
+          items {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!) {
+  deleteComment(input: $input) {
+    id
+    content
+    createdAt
+    user {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          updatedAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          comments {
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+    variant {
+      id
+      name
+      baseVariant
+      startFen
+      customPiece
+      submitted
+      approved
+      createdAt
+      updatedAt
+      creator {
+        id
+        username
+        email
+        phoneNumber
+        pastGames {
+          items {
+            id
+            createdAt
+          }
+          nextToken
+        }
+        points
+        skillLevel
+        rank
+        createdAt
+        variants {
+          items {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        comments {
+          items {
+            id
+            content
+            createdAt
+          }
+          nextToken
+        }
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            points
+            skillLevel
+            rank
+            createdAt
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
   }
 }
 `;

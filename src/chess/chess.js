@@ -871,7 +871,6 @@ var Chess = function(fen, variant=0, customPieces={}) {
       const piece = board[i];
       const difference = i - square;
       const index = -difference + 119; // oops!
-      
       if (ATTACKS[index] & (1 << SHIFTS[piece.type])) {
         if (piece.type === PAWN) {
           if (difference > 0) {
@@ -890,9 +889,9 @@ var Chess = function(fen, variant=0, customPieces={}) {
         // compute list of possible (repeating) offsets that produce the difference
         // e.g. an attack from -6 units away could be due to an offset of -1, -2, -3 or -6
         // e.g. an attack from -51 units away could be due to an offset of -51 or -17 (but not -1)
-        const derivedOffsets = offsetsFromAttack(difference, PIECE_OFFSETS_REPEATING[piece.type]);
+        const derivedOffsets = offsetsFromAttack(-difference, PIECE_OFFSETS_REPEATING[piece.type]);
 
-        // if none of the repeating offsets match this difference
+        // if none of the repeating offsets can account for this difference
         if (derivedOffsets && derivedOffsets.length === 0) {
           continue;
         }
@@ -902,13 +901,12 @@ var Chess = function(fen, variant=0, customPieces={}) {
         // if there is no blocking piece for each offset, then the offset is validated -
         // immediately return true.
         for (const offset of derivedOffsets) {
-          const ray = -offset;
-          let intermediate = i + ray;
+          let intermediate = i + offset;
       
           let blocked = false;
           while (intermediate !== square) {
             if (board[intermediate] != null) { blocked = true; break; }
-            intermediate += ray;
+            intermediate += offset;
           }
       
           if (!blocked) {
