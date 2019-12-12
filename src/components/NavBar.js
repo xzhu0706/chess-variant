@@ -7,6 +7,8 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import Button from '@material-ui/core/Button';
 import Image from 'react-bootstrap/Image';
 import TextField from '@material-ui/core/TextField';
+import InputBase from '@material-ui/core/InputBase';
+
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Dialog from '@material-ui/core/Dialog';
@@ -162,7 +164,7 @@ class NavBar extends Component {
               <Autocomplete
                     className="d-inline-block"
                     id="search-bar"
-                    style={{ width: 600}}
+                    style={{height: 25, padding: '-5 -5 -5 -5', width: 600}}
                     getOptionLabel={(option) => option.username}
                     noOptionsText="No user found"
                     options={searchResults}
@@ -171,18 +173,13 @@ class NavBar extends Component {
                     renderInput={(params) => (
                       <TextField
                         {...params}
+                        style={{marginTop: '-20px', height: 20, backgroundColor:'rgb(250, 250, 250)'}}
                         variant='outlined'
                         id="outlined-margin-dense"
                         margin='dense'
-                        label="Search a User"
+                        placeholder="Search a User"
                         fullWidth
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <SearchIcon />
-                            </InputAdornment>
-                          ),
-                        }}
+                    
                       />
                     )}
                   />

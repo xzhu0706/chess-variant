@@ -23,7 +23,7 @@ class DiscussionBoard extends Component{
     constructor(props){
         super(props)
         this.state = {
-            isDrawerOpen: false,
+            showNewPostDialog: false,
             posts: []
         }
     }
@@ -43,9 +43,9 @@ class DiscussionBoard extends Component{
         }*/
     }
 
-    toggleDrawer = () => {
+    showNewPostDialog = () => {
         alert('clicked')
-        this.setState({isDrawerOpen: !this.state.isDrawerOpen})
+        this.setState({showNewPostDialog: true})
     }
 
     render() {
@@ -57,18 +57,13 @@ class DiscussionBoard extends Component{
         } )
         return (
             <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', marginLeft: '26%', width: '50%', marginTop: '70px'}}>
-                <Fab color="secondary" aria-label="edit">
-                    <EditIcon />
-                </Fab>
+                <Box display='flex' flexDirection='row' justifyContent='flex-end'>
+                    <Fab onClick={this.showNewPostDialog} color="primary" aria-label="edit">
+                        <EditIcon />
+                    </Fab>
+                </Box>
+                <NewPost open={this.state.showNewPostDialog}/>
                 <List style={{marginTop: '10px'}}>{postCards}</List>
-                <Drawer anchor="bottom" open={this.state.isDrawerOpen} onClose={this.toggleDrawer}>
-                    <TextField 
-                        id="outlined-basic" 
-                        label="Outlined" 
-                        variant="outlined"
-                        multiline={true}
-                    />
-                </Drawer>
             </Box>
         )
     }

@@ -28,7 +28,7 @@ class Sidebar extends Component {
                     <Typography style={{marginLeft: '10px', fontSize: '18px', fontWeight:'bold'}}>Explore Variants</Typography>
                 </ListItem>
                 <ListItem>
-                    <Avatar style={{background: '#CCCC00'}}><FaChessBoard style={{fontSize: 23}}/></Avatar>
+                    <Avatar style={{background: '#CCCC00'}}><FaChessBoard style={{fontSize: 22}}/></Avatar>
                     <Typography style={{marginLeft: '10px', fontSize: '18px', fontWeight:'bold'}}>Create a Variant</Typography>
                 </ListItem>
                 <ListItem>
