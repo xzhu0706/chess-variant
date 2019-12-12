@@ -56,8 +56,10 @@ class DiscussionBoard extends Component{
             return (<PostCard author={author} title={title} content={content} />)
         } )
         return (
-            <Box display='flex' flexDirection='column' style={{backgroundColor: '#Fff', marginLeft: '25%', width: '55%', marginTop: '70px'}}>
-                <NewPost />
+            <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', marginLeft: '26%', width: '50%', marginTop: '70px'}}>
+                <Fab color="secondary" aria-label="edit">
+                    <EditIcon />
+                </Fab>
                 <List style={{marginTop: '10px'}}>{postCards}</List>
                 <Drawer anchor="bottom" open={this.state.isDrawerOpen} onClose={this.toggleDrawer}>
                     <TextField 

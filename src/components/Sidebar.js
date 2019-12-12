@@ -13,27 +13,27 @@ class Sidebar extends Component {
 
     render() {
         return (
-            <Box display='flex' flexDirection='row' alignItems='space' justifyContent='center' style={{marginTop: '50px', marginLeft: '1px', position:'fixed', width: '25%', height: '100%'}}>
-            <Box style={{height: '40%'}} display='flex' flexDirection='column' justifyContent='space-between' alignContent='flex-end'>
+            <Box display='flex' flexDirection='row' alignItems='space' justifyContent='center' style={{backgroundColor: 'white', marginTop: '30px', marginLeft: '1px', position:'fixed', width: '25%', height: '100%'}}>
+            <Box style={{marginTop: '15px', height: '40%'}} display='flex' flexDirection='column' justifyContent='space-between' alignContent='flex-end'>
                 <ListItem>
-                    <ListItemIcon><AiFillHome style={{fontSize: 24}}/></ListItemIcon>
-                    <Typography style={{marginLeft: '-15px', fontSize: '18px', fontWeight:'bold'}}>Home</Typography>
+                    <Avatar><AiFillHome style={{fontSize: 24}}/></Avatar>
+                    <Typography style={{marginLeft: '10px', fontSize: '18px', fontWeight:'bold'}}>Home</Typography>
                 </ListItem>
                 <ListItem>
-                    <ListItemIcon><GiChessRook style={{fontSize: 24}}/></ListItemIcon>
-                    <Typography style={{marginLeft: '-15px', fontSize: '18px', fontWeight:'bold'}}>Play</Typography>
+                    <Avatar><GiChessRook style={{fontSize: 24}}/></Avatar>
+                    <Typography style={{marginLeft: '10px', fontSize: '18px', fontWeight:'bold'}}>Play</Typography>
                 </ListItem>
                 <ListItem>
-                    <ListItemIcon><FaGlobe style={{fontSize: 24}}/></ListItemIcon>
-                    <Typography style={{marginLeft: '-15px', fontSize: '18px', fontWeight:'bold'}}>Explore Variants</Typography>
+                    <Avatar><FaGlobe style={{fontSize: 24}}/></Avatar>
+                    <Typography style={{marginLeft: '10px', fontSize: '18px', fontWeight:'bold'}}>Explore Variants</Typography>
                 </ListItem>
                 <ListItem>
-                    <ListItemIcon><FaChessBoard style={{fontSize: 23}}/></ListItemIcon>
-                    <Typography style={{marginLeft: '-15px', fontSize: '18px', fontWeight:'bold'}}>Create a Variant</Typography>
+                    <Avatar><FaChessBoard style={{fontSize: 23}}/></Avatar>
+                    <Typography style={{marginLeft: '10px', fontSize: '18px', fontWeight:'bold'}}>Create a Variant</Typography>
                 </ListItem>
                 <ListItem>
-                    <ListItemIcon><FaBook style={{fontSize: 23}}/></ListItemIcon>
-                    <Typography style={{marginLeft: '-15px', fontSize: '18px', fontWeight:'bold'}}>Glossary of Pieces</Typography>
+                    <Avatar><FaBook style={{fontSize: 23}}/></Avatar>
+                    <Typography style={{marginLeft: '10px', fontSize: '18px', fontWeight:'bold'}}>Glossary of Pieces</Typography>
                 </ListItem>
             </Box>
             </Box>
