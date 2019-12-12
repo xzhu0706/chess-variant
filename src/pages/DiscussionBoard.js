@@ -48,6 +48,10 @@ class DiscussionBoard extends Component{
         this.setState({showNewPostDialog: true})
     }
 
+    dismissNewPostDialog = () => {
+        this.setState({showNewPostDialog: false})
+    }
+
     render() {
         let postCards = posts.map((post) => {
             let author = post.author

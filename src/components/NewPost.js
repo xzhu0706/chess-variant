@@ -19,7 +19,7 @@ class NewPost extends Component {
     }
     render(){
         return(
-            <Dialog maxWidth='sm' fullWidth={true} open={this.props.open}>
+            <Dialog onClose={this.props.dismissNewPostDialog} maxWidth='sm' fullWidth={true} open={this.props.open}>
                 <DialogContent>
                     
                     <Box style={{ backgroundColor: 'white'}} display='flex' flexDirection='column'>
@@ -29,7 +29,7 @@ class NewPost extends Component {
                             placeholder='Enter title'
                         />
                         <InputBase
-                            style={{ border:'1px solid lightGray', borderRadius:'2px', width: '100%', fontFamily: 'Verdana', fontWeight: 'bold' }}
+                            style={{ marginTop: '10px', border:'1px solid lightGray', borderRadius:'2px', width: '100%', fontFamily: 'Verdana', fontWeight: 'bold' }}
                             multiline={true}
                             onChange = {(content) => {this.setContent(content)}}
                             rows={10}
@@ -39,7 +39,7 @@ class NewPost extends Component {
                         />
                         <Box display='flex' flexDirection='row' justifyContent='flex-end' alignItems='center'
                             style={{ margin: '10px 10px 5px 10px', backgroundColor: 'white', height: '50px' }}>
-                            <Button onClick={this.props.handleNewPost} variant="contained" color="primary">Submit</Button>
+                            <Button onClick={(title, content) => this.props.handleNewPost(this.title, this.content)} variant="contained" color="primary">Submit</Button>
                         </Box>
                     </Box>
                 </DialogContent>
