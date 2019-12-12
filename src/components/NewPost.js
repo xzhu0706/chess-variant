@@ -5,22 +5,41 @@ import InputBase from '@material-ui/core/InputBase';
 
 class NewPost extends Component {
 
+    constructor(props){
+        super(props)
+        this.title = ''
+        this.content = ''
+    }
+    setTitle = (title) => {
+        this.title = title
+    }
+    
+    setContent = (content) => {
+        this.content = content
+    }
     render(){
         return(
-            <Dialog maxWidth='md' fullWidth={true} open={this.props.open}>
+            <Dialog maxWidth='sm' fullWidth={true} open={this.props.open}>
                 <DialogContent>
-                    <Box style={{ backgroundColor: 'white', borderRadius: '4px', border: '1px solid lightGray' }} display='flex' flexDirection='column'>
+                    
+                    <Box style={{ backgroundColor: 'white'}} display='flex' flexDirection='column'>
+                        <TextField
+                            variant='outlined'
+                            margin='dense'
+                            placeholder='Enter title'
+                        />
                         <InputBase
-                            style={{ width: '100%', marginTop: '10px', fontFamily: 'Verdana', fontWeight: 'bold' }}
+                            style={{ border:'1px solid lightGray', borderRadius:'2px', width: '100%', fontFamily: 'Verdana', fontWeight: 'bold' }}
                             multiline={true}
-                            rows={5}
+                            onChange = {(content) => {this.setContent(content)}}
+                            rows={10}
                             rowsMax={Infinity}
-                            placeholder="  Start writing here."
+                            placeholder="Start writing here."
                             inputProps={{ 'aria-label': 'naked' }}
                         />
                         <Box display='flex' flexDirection='row' justifyContent='flex-end' alignItems='center'
                             style={{ margin: '10px 10px 5px 10px', backgroundColor: 'white', height: '50px' }}>
-                            <Button variant="contained" color="primary">Submit</Button>
+                            <Button onClick={this.props.handleNewPost} variant="contained" color="primary">Submit</Button>
                         </Box>
                     </Box>
                 </DialogContent>
