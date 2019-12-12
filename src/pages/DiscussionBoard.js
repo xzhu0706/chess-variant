@@ -34,8 +34,8 @@ class DiscussionBoard extends Component{
     }
 
     componentDidMount() {
-        let user = Auth.currentAuthenticatedUser()
-        if(user) this.currentUser = {id: user.attributes.sub, username: user.username}
+        //let user = Auth.currentAuthenticatedUser()
+        //if(user) this.currentUser = {id: user.attributes.sub, username: user.username}
         /*let limit = 1000
         let queryResult = await API.graphql(graphqlOperation(customQueries.listGames, { limit, filter }));
         if(queryResult){
@@ -60,7 +60,9 @@ class DiscussionBoard extends Component{
     }
 
     handleNewPost = (post) => {
-        if(!this.user) return
+        post.author = this.currentUser.username
+        //let createdPost = await API.graphql(graphqlOperation(mutations.createPost, { input: post}));
+
     }
 
     render() {
@@ -71,7 +73,7 @@ class DiscussionBoard extends Component{
             return (<PostCard author={author} title={title} content={content} />)
         } )
         return (
-            <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', marginLeft: '26%', width: '50%', marginTop: '70px'}}>
+            <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', marginLeft: '5%', width: '50%', marginTop: '70px'}}>
                 <Box display='flex' flexDirection='row' justifyContent='flex-end'>
                     <Fab onClick={this.showNewPostDialog} color="primary" aria-label="edit">
                         <EditIcon />

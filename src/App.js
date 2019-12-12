@@ -31,9 +31,8 @@ class App extends Component {
       <Router style={{background: 'blue'}}>
         <NavBar />
         <hr style={{height: '2px', backgroundColor: 'blue'}}/>
-        <Sidebar />
         <Switch>
-          <Route path="/" exact component={DiscussionBoard} />
+          <Route path="/" exact component={Home} />
           <Route path="/game/:id" component={Game} />
           <Route path="/variants" component={Variants} />
           <Route path="/home" component={Home} />

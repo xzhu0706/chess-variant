@@ -1,6 +1,6 @@
 import React, { Component, forwardRef } from 'react';
 import MaterialTable from 'material-table';
-import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 import { API, graphqlOperation } from 'aws-amplify';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
@@ -342,7 +342,7 @@ class Lobby extends Component {
     };
 
     return (
-      <Container maxWidth="sm" style={lobbyStyle}>
+      <Box style={{position:'fixed', top:'0', right:'0', minHeight: '150px', marginTop: '125px', marginRight:'5%', width: '35%'}} display='flex' flexDirection='column' alignItems='flex-end'>
         <CreateGameDialog closeDialog = {this.closeDialog} showDialog = {this.state.showDialog} createGame = {this.createGame} />
         <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog} id="btncreategame">
                 Create a game
@@ -386,7 +386,7 @@ class Lobby extends Component {
             }}
           />
         </div>
-      </Container>
+      </Box>
     );
   }
 }
