@@ -13,7 +13,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Dialog from '@material-ui/core/Dialog';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
-import './NavBar.css';
+//import './NavBar.css';
 import * as customQueries from '../customGraphql/queries';
 
 import awsconfig from '../aws-exports';
@@ -106,116 +106,80 @@ class NavBar extends Component {
 
   render() {
     const imgStyle = {
-      width: '2em',
-      height: '2em',
+      width: '3em',
+      height: '3em',
+      marginBottom: '20px',
     };
-    const {
-      username, showAuth, isAdmin, searchResults,
-    } = this.state;
-    const {
-      handleShowAuth, handleCloseAuth, handleAuthStateChange, handleSignOut,
-    } = this;
+    const {username, showAuth, isAdmin, searchResults,} = this.state;
+    const {handleShowAuth, handleCloseAuth, handleAuthStateChange, handleSignOut,} = this;
+    const loggedIn = (
+      <span>
+        <Nav.Link href={`/account/${username}`}> Hello{' '}{username}</Nav.Link>
+        {isAdmin && (
+          <Nav.Link href="/admin">Admin</Nav.Link>
+        )}
+        <Button
+          onClick={handleSignOut}
+          data-testid="logout-button"
+          >Sign Out
+        </Button>
+      </span>
+    )
+    const loggedOut = (
+        <Button
+          data-testid="login-button"
+          style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: '35px' }}
+          variant="outlined"
+          startIcon={<AccountCircle />}
+          onClick={handleShowAuth}
+          color="primary"
+          >SIGN IN
+        </Button>
+    )
+      
     return (
-      <div>
-        <ResponsiveMenu
-          menuOpenButton={<FaBars size={45} style={{ marginBottom: '1rem' }} />}
-          menuCloseButton={<FaTimes size={45} />}
-          changeMenuOn="820px"
-          menu={(
-            <div className="site-menu">
-              <Navbar.Brand style={{
-                fontFamily: 'chalkduster',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }}
-              >
-                <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Chess_pWlt26.svg" alt="Chess Piece" style={imgStyle} fluid />
-                <Link to="/" style={{ fontSize: '25px' }}>Chess Variants</Link>
-              </Navbar.Brand>
-              <ul>
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-                <li>
-                  <Link to="/variants">List of Variants</Link>
-                </li>
-                <li>
-                  <Link to="/create">Create</Link>
-                </li>
-                <li>
-                  <Link to="/about">About</Link>
-                </li>
-                {username
-                  ? (
-                    <span>
-                      <li>
-                        <Link to={`/account/${username}`}>
-                          Hello
-                          {' '}
-                          {username}
-                        </Link>
-                      </li>
-                      {isAdmin && (
-                        <li>
-                          <Link to="/admin">
-                            Admin
-                          </Link>
-                        </li>
-                      )}
-                      <li>
-                        <Button
-                          onClick={handleSignOut}
-                          data-testid="logout-button"
-                        >
-                        Sign Out
-                        </Button>
-                      </li>
-                    </span>
-                  )
-                  : (
-                    <li>
-                      <Button
-                        data-testid="login-button"
-                        style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: '35px' }}
-                        variant="outlined"
-                        startIcon={<AccountCircle />}
-                        onClick={handleShowAuth}
-                        color="primary"
-                      >
-                        SIGN IN
-                      </Button>
-                    </li>
-                  )}
-                <li>
-                  <Autocomplete
-                    className="d-inline-block"
-                    id="search-bar"
-                    style={{width: 300}}
-                    getOptionLabel={(option) => option.username}
-                    noOptionsText="No user found"
-                    options={searchResults}
-                    onChange={this.linkToUser}
-                    onInputChange={this.handleSearch}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        style={{backgroundColor:'rgb(250, 250, 250)'}}
-                        variant='outlined'
-                        id="outlined-margin-dense"
-                        margin='dense'
-                        placeholder="Search a User"
-                        fullWidth
-                    
-                      />
-                    )}
-                  />
-                </li>
-              </ul>
-            </div>
-          )}
-        />
-
+      <span>
+        <Navbar style={{height: '65px', boxShadow: '0px 3px 3px lightGray'}}variant='light' bg='white' fixed='top'>
+          <Navbar.Brand style={{
+            fontFamily: 'chalkduster',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            }}
+            >
+            <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Chess_pWlt26.svg" alt="Chess Piece" style={imgStyle} fluid />
+            <Link to="/" style={{fontSize: '25px'}}>Chess Variants</Link>
+          </Navbar.Brand>
+          <Nav className='mr-auto'>
+            <Autocomplete
+              
+              style={{ width: 300 }}
+              getOptionLabel={(option) => option.username}
+              noOptionsText="No user found"
+              options={searchResults}
+              onChange={this.linkToUser}
+              onInputChange={this.handleSearch}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  style={{ backgroundColor: 'rgb(250, 250, 250)' }}
+                  variant='outlined'
+                  id="outlined-margin-dense"
+                  margin='dense'
+                  placeholder="Search for Users"
+                  fullWidth
+                />
+              )}
+            />
+          </Nav>
+          <Nav>
+            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/variants">List of Variants</Nav.Link>
+            <Nav.Link href="/create">Create</Nav.Link>
+            <Nav.Link href="/about">About</Nav.Link>
+            {username ? loggedIn : loggedOut}
+          </Nav>
+        </Navbar>
         <Dialog onClose={handleCloseAuth} aria-labelledby="simple-dialog-title" open={showAuth}>
           <Authenticator
             hideDefault={!showAuth}
@@ -223,7 +187,7 @@ class NavBar extends Component {
             onStateChange={handleAuthStateChange}
           />
         </Dialog>
-      </div>
+      </span>
     );
   }
 }
