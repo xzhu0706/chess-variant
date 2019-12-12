@@ -6,6 +6,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import Drawer from '@material-ui/core/Drawer';
 import TextField from '@material-ui/core/TextField';
 import NewPost from '../components/NewPost';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
+import * as mutations from '../graphql/mutations';
+import * as queries from '../graphql/queries';
+import * as subscriptions from '../graphql/subscriptions';
 
 
 const content = `Blackboard’s discussion board feature allows participants to carry on discussions online, 
@@ -26,9 +30,12 @@ class DiscussionBoard extends Component{
             showNewPostDialog: false,
             posts: []
         }
+        this.currentUser =  null
     }
 
     componentDidMount() {
+        let user = Auth.currentAuthenticatedUser()
+        if(user) this.currentUser = {id: user.attributes.sub, username: user.username}
         /*let limit = 1000
         let queryResult = await API.graphql(graphqlOperation(customQueries.listGames, { limit, filter }));
         if(queryResult){
@@ -52,6 +59,10 @@ class DiscussionBoard extends Component{
         this.setState({showNewPostDialog: false})
     }
 
+    handleNewPost = (post) => {
+        if(!this.user) return
+    }
+
     render() {
         let postCards = posts.map((post) => {
             let author = post.author
@@ -66,7 +77,7 @@ class DiscussionBoard extends Component{
                         <EditIcon />
                     </Fab>
                 </Box>
-                <NewPost open={this.state.showNewPostDialog}/>
+                <NewPost handleNewPost = {this.handleNewPost} onClose = {this.dismissNewPostDialog} open={this.state.showNewPostDialog}/>
                 <List style={{marginTop: '10px'}}>{postCards}</List>
             </Box>
         )

@@ -10,28 +10,31 @@ class NewPost extends Component {
         this.title = ''
         this.content = ''
     }
-    setTitle = (title) => {
-        this.title = title
+    setTitle = (e) => {
+        alert(e.target.value)
+        this.title = e.target.value
     }
     
-    setContent = (content) => {
-        this.content = content
+    setContent = (e) => {
+        alert(e.target.value)
+        this.content = e.target.value
     }
     render(){
         return(
-            <Dialog onClose={this.props.dismissNewPostDialog} maxWidth='sm' fullWidth={true} open={this.props.open}>
+            <Dialog onClose={this.props.onClose} maxWidth='sm' fullWidth={true} open={this.props.open}>
                 <DialogContent>
                     
                     <Box style={{ backgroundColor: 'white'}} display='flex' flexDirection='column'>
                         <TextField
                             variant='outlined'
                             margin='dense'
+                            onChange = {this.setTitle}
                             placeholder='Enter title'
                         />
                         <InputBase
                             style={{ marginTop: '10px', border:'1px solid lightGray', borderRadius:'2px', width: '100%', fontFamily: 'Verdana', fontWeight: 'bold' }}
                             multiline={true}
-                            onChange = {(content) => {this.setContent(content)}}
+                            onChange = {this.setContent}
                             rows={10}
                             rowsMax={Infinity}
                             placeholder="Start writing here."
@@ -39,7 +42,7 @@ class NewPost extends Component {
                         />
                         <Box display='flex' flexDirection='row' justifyContent='flex-end' alignItems='center'
                             style={{ margin: '10px 10px 5px 10px', backgroundColor: 'white', height: '50px' }}>
-                            <Button onClick={(title, content) => this.props.handleNewPost(this.title, this.content)} variant="contained" color="primary">Submit</Button>
+                            <Button onClick={(post) => this.props.handleNewPost({title: this.title, content: this.content})} variant="contained" color="primary">Submit</Button>
                         </Box>
                     </Box>
                 </DialogContent>
