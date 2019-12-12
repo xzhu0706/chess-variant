@@ -8,7 +8,9 @@ import TextField from '@material-ui/core/TextField';
 import NewPost from '../components/NewPost';
 
 
-const content = `Blackboard’s discussion board feature allows participants to carry on discussions online, at any time of the day or night, with no need for the participants to be logged into the site at the same time.  The discussion is recorded on the course site for all to review and respond at their convenience. The discussions may be graded as well.  You may have multiple discussion board forums in your course – for example, you might choose to have a different forum for each topic.  If you are using the Blackboard Groups feature, you may find it useful to have a discussion board for each group. A course discussion board can contain multiple forums; each forum may contain multiple threads; and each thread may contain multiple postings.`
+const content = `Blackboard’s discussion board feature allows participants to carry on discussions online, 
+                at any time of the day or night, with no need for the participants to be logged into the site 
+                at the same time.  The discussion is recorded on the course site for all to review and respond`
 const posts = [
     {author: 'Daouda Gueye', title: 'This is my first post on this discussion board', content},
     {author: 'Daouda Gueye', title: 'This is my first post on this discussion board', content},
@@ -38,7 +40,7 @@ class DiscussionBoard extends Component{
             return (<PostCard author={author} title={title} content={content} />)
         } )
         return (
-            <Box display='flex' flexDirection='column' style={{backgroundColor: '#F0F0F0', marginLeft: '21%', width: '55%', marginTop: '70px'}}>
+            <Box display='flex' flexDirection='column' style={{backgroundColor: '#Fff', marginLeft: '21%', width: '55%', marginTop: '70px'}}>
                 <NewPost />
                 <List style={{marginTop: '10px'}}>{postCards}</List>
                 <Drawer anchor="bottom" open={this.state.isDrawerOpen} onClose={this.toggleDrawer}>

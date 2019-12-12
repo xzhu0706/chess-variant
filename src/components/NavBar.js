@@ -153,7 +153,7 @@ class NavBar extends Component {
     } = this;
     return (
       <div>
-            <Navbar style={{border: '1px solid lightGray'}} variant='light' bg='white' fixed='top'>
+            <Navbar style={{boxShadow: '0px 3px 3px lightGray'}} variant='light' bg='white' fixed='top'>
               <Navbar.Brand style={{ fontFamily: 'chalkduster' }}>
               <Image src={require('../icons/pieces/standard/wr.svg')} alt="Chess Piece" style={imgStyle} fluid />
                 <Link to="/" style={{ color: '#333333', fontSize: '28px' }}>Chess Variants</Link>

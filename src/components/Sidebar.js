@@ -13,26 +13,26 @@ class Sidebar extends Component {
 
     render() {
         return (
-            <List style={{marginTop: '30px', border: '1px solid lightGray', marginLeft: '1px', position:'fixed', backgroundColor: 'white', width: '20%', height: '100%'}}>
+            <List style={{marginTop: '30px', marginLeft: '1px', position:'fixed', backgroundColor: 'white', width: '20%', height: '100%'}}>
                 <ListItem>
                     <ListItemIcon><AiFillHome style={{fontSize: 24}}/></ListItemIcon>
-                    <ListItemText primary="Home"/>
+                    <ListItemText secondary="Home"/>
                 </ListItem>
                 <ListItem>
                     <ListItemIcon><GiChessRook style={{fontSize: 24}}/></ListItemIcon>
-                    <ListItemText primary="Play"/>
+                    <ListItemText secondary="Play"/>
                 </ListItem>
                 <ListItem>
                     <ListItemIcon><FaGlobe style={{fontSize: 24}}/></ListItemIcon>
-                    <ListItemText primary="Browse Variants"/>
+                    <ListItemText secondary="Browse Variants"/>
                 </ListItem>
                 <ListItem>
                     <ListItemIcon><FaChessBoard style={{fontSize: 23}}/></ListItemIcon>
-                    <ListItemText primary="Create a Variant"/>
+                    <ListItemText secondary="Create a Variant"/>
                 </ListItem>
                 <ListItem>
                     <ListItemIcon><FaBook style={{fontSize: 23}}/></ListItemIcon>
-                    <ListItemText primary="Glossary of Pieces"/>
+                    <ListItemText secondary="Glossary of Pieces"/>
                 </ListItem>
             </List>
         )

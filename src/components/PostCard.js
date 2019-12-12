@@ -14,31 +14,31 @@ class PostCard extends Component{
 
     render(){
         return (
-            <Box display='flex' flexDirection='column' bgColor= 'white' style={{backgroundColor: 'white', marginBottom: '10px', border:'1px solid lightGray', borderRadius: '4px'}}>
-                <Typography style={{fontWeight: 'bold', margin: '10px 0 0 10px'}} variant='h5' color='textPrimary' component='h5'>
+            <Box display='flex' flexDirection='column' style={{border:'1px solid lightGray', borderRadius: '5px', marginBottom: '10px'}}>
+                <Box display='flex' flexDirection='column' style={{margin: '10px 10px 10px 10px'}}>
+                <Typography style={{fontWeight: 'bold', fontFamily: '"Lucida Sans Unicode", "Lucida Grande", sans-serif'}} variant='h6' color='textPrimary' component='h5'>
                         {this.props.title}
                 </Typography>
-                    <Box style={{marginLeft: '10px'}}display='flex' flexDirection='row' justifyContent='flex-start'>
-                        <Avatar alt="Cindy Baker" src="">D</Avatar>
-                        <Box style={{marginLeft: '5px'}}display='flex' flexDirection='column' alignItems='flex-start' alignContent='flex-start'>
-                            <Typography align='left' variant='subtitle1'>Daouda Gueye</Typography>
-                            <div style={{marginTop: '-12px'}}>
-                                <Typography variant='caption'>2h</Typography>
-                            </div>
-                        </Box>
+                <Box display='flex' flexDirection='row' justifyContent='flex-start'>
+                    <Avatar alt="" src="">D</Avatar>
+                    <Box style={{ marginLeft: '5px' }} display='flex' flexDirection='column' alignItems='flex-start' alignContent='flex-start'>
+                        <Typography align='left' variant='subtitle1'>Daouda Gueye</Typography>
+                        <Typography variant='caption'>2h</Typography>
                     </Box>
-                <Typography style={{margin: '10px 10px 10px 10px'}}variant='body1' color='black' component='p'>
+                </Box>
+                <Typography style={{marginTop: '10px', fontFamily: 'Bookman', fontSize: '20px'}} variant='body1' color='black' component='p'>
                         {this.props.content}
                 </Typography>
-                <Box display='flex' flexDirection='row' justifyContent='flex-start' style={{marginLeft: '10px'}}>
-                <IconButton aria-label="delete" disabled color="primary">
-                    <FaRegThumbsUp style={{fontSize: 21}}/>
-                    <Typography style={{marginLeft: '5px'}}variant='caption'>100</Typography>
-                </IconButton>
-                <IconButton aria-label="delete" disabled color="primary">
-                    <FaRegComment style={{fontSize: 22}}/>
-                    <Typography style={{marginLeft: '5px'}}variant='caption'>{'  50'}</Typography>
-                </IconButton>
+                <Box display='flex' flexDirection='row' justifyContent='flex-start'>
+                    <IconButton>
+                        <FaRegThumbsUp style={{ fontSize: 22 }} />
+                        <Typography style={{ marginLeft: '5px' }} variant='subtitle2'>100</Typography>
+                    </IconButton>
+                    <IconButton>
+                        <FaRegComment style={{ fontSize: 24 }} />
+                        <Typography style={{ marginLeft: '5px' }} variant='subtitle2'>50</Typography>
+                    </IconButton>
+                </Box>
                 </Box>
             </Box>
         )}
