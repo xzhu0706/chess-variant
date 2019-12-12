@@ -164,7 +164,7 @@ class NavBar extends Component {
               <Autocomplete
                     className="d-inline-block"
                     id="search-bar"
-                    style={{height: 25, padding: '-5 -5 -5 -5', width: 600}}
+                    style={{width: 300}}
                     getOptionLabel={(option) => option.username}
                     noOptionsText="No user found"
                     options={searchResults}
@@ -173,7 +173,7 @@ class NavBar extends Component {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        style={{marginTop: '-20px', height: 20, backgroundColor:'rgb(250, 250, 250)'}}
+                        style={{backgroundColor:'rgb(250, 250, 250)'}}
                         variant='outlined'
                         id="outlined-margin-dense"
                         margin='dense'
