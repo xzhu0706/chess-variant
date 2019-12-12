@@ -159,29 +159,33 @@ class NavBar extends Component {
                 <Link to="/" style={{ color: '#333333', fontSize: '28px' }}>Chess Variants</Link>
               </Navbar.Brand>
               <Nav className='mr-auto'>
-                <Autocomplete
-                  style={{ width: '600px', height: '50px' }}
-                  getOptionLabel={(option) => option.username}
-                  noOptionsText="No user found"
-                  options={searchResults}
-                  freeSolo={true}
-                  onChange={this.linkToUser}
-                  onInputChange={this.handleSearch}
-                  renderInput={(params) => (
-                    <TextField
-                      id="input-with-icon-textfield"
-                      label="TextField"
-                      fullWidth
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <AccountCircle />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  )}
-                />
+              <Autocomplete
+                    className="d-inline-block"
+                    id="search-bar"
+                    style={{ width: 600}}
+                    getOptionLabel={(option) => option.username}
+                    noOptionsText="No user found"
+                    options={searchResults}
+                    onChange={this.linkToUser}
+                    onInputChange={this.handleSearch}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant='outlined'
+                        id="outlined-margin-dense"
+                        margin='dense'
+                        label="Search a User"
+                        fullWidth
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <SearchIcon />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    )}
+                  />
               </Nav>
                 {username
                   ? (

@@ -14,9 +14,9 @@ class PostCard extends Component{
 
     render(){
         return (
-            <Box display='flex' flexDirection='column' style={{border:'1px solid lightGray', borderRadius: '5px', marginBottom: '10px'}}>
+            <Box display='flex' flexDirection='column' style={{border:'1px solid lightGray', borderRadius: '5px', marginBottom: '15px'}}>
                 <Box display='flex' flexDirection='column' style={{margin: '10px 10px 10px 10px'}}>
-                <Typography style={{fontWeight: 'bold', fontFamily: '"Lucida Sans Unicode", "Lucida Grande", sans-serif'}} variant='h6' color='textPrimary' component='h5'>
+                <Typography style={{fontWeight: 'bold', fontSize: '16px', fontFamily: '"Lucida Sans Unicode", "Lucida Grande", sans-serif'}} variant='h6' color='textPrimary' component='h6'>
                         {this.props.title}
                 </Typography>
                 <Box display='flex' flexDirection='row' justifyContent='flex-start'>
@@ -26,7 +26,7 @@ class PostCard extends Component{
                         <Typography variant='caption'>2h</Typography>
                     </Box>
                 </Box>
-                <Typography style={{marginTop: '10px', fontFamily: 'Bookman', fontSize: '20px'}} variant='body1' color='black' component='p'>
+                <Typography style={{marginTop: '10px', fontFamily: 'Arial', fontSize: '16px'}} variant='body1' color='black' component='p'>
                         {this.props.content}
                 </Typography>
                 <Box display='flex' flexDirection='row' justifyContent='flex-start'>

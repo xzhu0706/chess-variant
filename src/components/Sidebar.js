@@ -32,7 +32,7 @@ class Sidebar extends Component {
                 </ListItem>
                 <ListItem>
                     <ListItemIcon><FaBook style={{fontSize: 23}}/></ListItemIcon>
-                    <ListItemText secondary="Glossary of Pieces"/>
+                    <ListItemText style={{fontSize: '20px'}} primary="Glossary of Pieces"/>
                 </ListItem>
             </List>
         )

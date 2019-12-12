@@ -17,7 +17,7 @@ class NewPost extends Component {
                     rowsMax={Infinity}
                 />*/}
                     <InputBase
-                        style={{width: '100%'}}
+                        style={{width: '100%', marginTop: '10px', fontFamily: 'Verdana', fontWeight: 'bold'}}
                         multiline={true}
                         rows = {1}
                         rowsMax={Infinity}
