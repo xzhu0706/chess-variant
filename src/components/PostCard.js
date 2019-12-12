@@ -20,7 +20,7 @@ class PostCard extends Component{
                         {this.props.title}
                 </Typography>
                 <Box display='flex' flexDirection='row' justifyContent='flex-start'>
-                    <Avatar alt="" src="">D</Avatar>
+                    <Avatar style={{backgroundColor: '#333333', color: 'white'}}>D</Avatar>
                     <Box style={{ marginLeft: '5px' }} display='flex' flexDirection='column' alignItems='flex-start' alignContent='flex-start'>
                         <Typography align='left' variant='subtitle1'>Daouda Gueye</Typography>
                         <Typography variant='caption'>2h</Typography>

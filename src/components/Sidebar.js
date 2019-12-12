@@ -16,23 +16,23 @@ class Sidebar extends Component {
             <Box display='flex' flexDirection='row' alignItems='space' justifyContent='center' style={{backgroundColor: 'white', marginTop: '30px', marginLeft: '1px', position:'fixed', width: '25%', height: '100%'}}>
             <Box style={{marginTop: '15px', height: '40%'}} display='flex' flexDirection='column' justifyContent='space-between' alignContent='flex-end'>
                 <ListItem>
-                    <Avatar><AiFillHome style={{fontSize: 24}}/></Avatar>
+                    <Avatar style={{background: 'royalBlue'}}><AiFillHome style={{fontSize: 24}}/></Avatar>
                     <Typography style={{marginLeft: '10px', fontSize: '18px', fontWeight:'bold'}}>Home</Typography>
                 </ListItem>
                 <ListItem>
-                    <Avatar><GiChessRook style={{fontSize: 24}}/></Avatar>
+                    <Avatar style={{background: '#D80000'}}><GiChessRook style={{fontSize: 24}}/></Avatar>
                     <Typography style={{marginLeft: '10px', fontSize: '18px', fontWeight:'bold'}}>Play</Typography>
                 </ListItem>
                 <ListItem>
-                    <Avatar><FaGlobe style={{fontSize: 24}}/></Avatar>
+                    <Avatar style={{background: '#008800'}}><FaGlobe style={{fontSize: 24}}/></Avatar>
                     <Typography style={{marginLeft: '10px', fontSize: '18px', fontWeight:'bold'}}>Explore Variants</Typography>
                 </ListItem>
                 <ListItem>
-                    <Avatar><FaChessBoard style={{fontSize: 23}}/></Avatar>
+                    <Avatar style={{background: '#CCCC00'}}><FaChessBoard style={{fontSize: 23}}/></Avatar>
                     <Typography style={{marginLeft: '10px', fontSize: '18px', fontWeight:'bold'}}>Create a Variant</Typography>
                 </ListItem>
                 <ListItem>
-                    <Avatar><FaBook style={{fontSize: 23}}/></Avatar>
+                    <Avatar style={{background: 'dodgerBlue'}}><FaBook style={{fontSize: 23}}/></Avatar>
                     <Typography style={{marginLeft: '10px', fontSize: '18px', fontWeight:'bold'}}>Glossary of Pieces</Typography>
                 </ListItem>
             </Box>
