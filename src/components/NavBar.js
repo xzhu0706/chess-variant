@@ -4,12 +4,14 @@ import { Navbar, Nav, NavLink } from 'react-bootstrap';
 import ResponsiveMenu from 'react-responsive-navbar';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
 import Image from 'react-bootstrap/Image';
 import TextField from '@material-ui/core/TextField';
 import InputBase from '@material-ui/core/InputBase';
-
+import InputAdornment from '@material-ui/core/InputAdornment';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import SearchIcon from '@material-ui/icons/Search';
 import Dialog from '@material-ui/core/Dialog';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
@@ -168,6 +170,13 @@ class NavBar extends Component {
                   margin='dense'
                   placeholder="Search for Users"
                   fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               )}
             />

@@ -10,6 +10,10 @@ export const onCreateGame = `subscription OnCreateGame {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -31,6 +35,11 @@ export const onCreateGame = `subscription OnCreateGame {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -41,16 +50,44 @@ export const onCreateGame = `subscription OnCreateGame {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -86,6 +123,10 @@ export const onCreateGame = `subscription OnCreateGame {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -107,6 +148,11 @@ export const onCreateGame = `subscription OnCreateGame {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -126,6 +172,10 @@ export const onUpdateGame = `subscription OnUpdateGame {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -147,6 +197,11 @@ export const onUpdateGame = `subscription OnUpdateGame {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -157,16 +212,44 @@ export const onUpdateGame = `subscription OnUpdateGame {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -202,6 +285,10 @@ export const onUpdateGame = `subscription OnUpdateGame {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -223,6 +310,11 @@ export const onUpdateGame = `subscription OnUpdateGame {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -242,6 +334,10 @@ export const onDeleteGame = `subscription OnDeleteGame {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -263,6 +359,11 @@ export const onDeleteGame = `subscription OnDeleteGame {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -273,16 +374,44 @@ export const onDeleteGame = `subscription OnDeleteGame {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -318,6 +447,10 @@ export const onDeleteGame = `subscription OnDeleteGame {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -339,6 +472,11 @@ export const onDeleteGame = `subscription OnDeleteGame {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -358,6 +496,10 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -379,6 +521,11 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -389,16 +536,44 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -434,6 +609,10 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -455,6 +634,11 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -475,6 +659,17 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -485,6 +680,9 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -492,10 +690,22 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -528,6 +738,17 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
           content
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -538,6 +759,9 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
         }
@@ -555,6 +779,17 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -565,6 +800,9 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -572,10 +810,22 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -584,6 +834,37 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -594,18 +875,34 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -621,10 +918,22 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -635,7 +944,19 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -654,6 +975,17 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -664,6 +996,9 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -671,10 +1006,22 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -707,6 +1054,17 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
           content
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -717,6 +1075,9 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
         }
@@ -734,6 +1095,17 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -744,6 +1116,9 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -751,10 +1126,22 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -763,6 +1150,37 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -773,18 +1191,34 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -800,10 +1234,22 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -814,7 +1260,19 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -833,6 +1291,17 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -843,6 +1312,9 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -850,10 +1322,22 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -886,6 +1370,17 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
           content
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -896,6 +1391,9 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
         }
@@ -913,6 +1411,17 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -923,6 +1432,9 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -930,10 +1442,22 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -942,6 +1466,37 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -952,18 +1507,34 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -979,10 +1550,22 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -993,7 +1576,19 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1002,7 +1597,6 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
   }
 }
 `;
-
 export const onCreateMessage = `subscription OnCreateMessage {
   onCreateMessage {
     id
@@ -1018,6 +1612,17 @@ export const onCreateMessage = `subscription OnCreateMessage {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1028,6 +1633,9 @@ export const onCreateMessage = `subscription OnCreateMessage {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -1035,10 +1643,22 @@ export const onCreateMessage = `subscription OnCreateMessage {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1071,6 +1691,17 @@ export const onCreateMessage = `subscription OnCreateMessage {
           content
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1081,6 +1712,9 @@ export const onCreateMessage = `subscription OnCreateMessage {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
         }
@@ -1091,7 +1725,6 @@ export const onCreateMessage = `subscription OnCreateMessage {
   }
 }
 `;
-
 export const onUpdateMessage = `subscription OnUpdateMessage {
   onUpdateMessage {
     id
@@ -1107,6 +1740,17 @@ export const onUpdateMessage = `subscription OnUpdateMessage {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1117,6 +1761,9 @@ export const onUpdateMessage = `subscription OnUpdateMessage {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -1124,10 +1771,22 @@ export const onUpdateMessage = `subscription OnUpdateMessage {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1160,6 +1819,17 @@ export const onUpdateMessage = `subscription OnUpdateMessage {
           content
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1170,6 +1840,9 @@ export const onUpdateMessage = `subscription OnUpdateMessage {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
         }
@@ -1195,6 +1868,17 @@ export const onDeleteMessage = `subscription OnDeleteMessage {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1205,6 +1889,9 @@ export const onDeleteMessage = `subscription OnDeleteMessage {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -1212,10 +1899,22 @@ export const onDeleteMessage = `subscription OnDeleteMessage {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1248,6 +1947,17 @@ export const onDeleteMessage = `subscription OnDeleteMessage {
           content
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1258,6 +1968,9 @@ export const onDeleteMessage = `subscription OnDeleteMessage {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
         }
@@ -1265,6 +1978,612 @@ export const onDeleteMessage = `subscription OnDeleteMessage {
       }
     }
     createdAt
+  }
+}
+`;
+export const onCreatePost = `subscription OnCreatePost {
+  onCreatePost {
+    id
+    title
+    content
+    createdAt
+    author {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+            messages {
+              nextToken
+            }
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onUpdatePost = `subscription OnUpdatePost {
+  onUpdatePost {
+    id
+    title
+    content
+    createdAt
+    author {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+            messages {
+              nextToken
+            }
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onDeletePost = `subscription OnDeletePost {
+  onDeletePost {
+    id
+    title
+    content
+    createdAt
+    author {
+      id
+      username
+      email
+      phoneNumber
+      pastGames {
+        items {
+          id
+          game {
+            id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
+            creatorOrientation
+            time
+            variant
+            fen
+            available
+            ended
+            history
+            result
+            winner
+            createdAt
+            messages {
+              nextToken
+            }
+          }
+          createdAt
+          player {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+      points
+      skillLevel
+      rank
+      createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+      variants {
+        items {
+          id
+          name
+          baseVariant
+          startFen
+          customPiece
+          submitted
+          approved
+          createdAt
+          creator {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+          user {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          variant {
+            id
+            name
+            baseVariant
+            startFen
+            customPiece
+            submitted
+            approved
+            createdAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
   }
 }
 `;
@@ -1280,6 +2599,10 @@ export const onCreateUser = `subscription OnCreateUser {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -1301,6 +2624,11 @@ export const onCreateUser = `subscription OnCreateUser {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1311,16 +2639,44 @@ export const onCreateUser = `subscription OnCreateUser {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1331,6 +2687,62 @@ export const onCreateUser = `subscription OnCreateUser {
     skillLevel
     rank
     createdAt
+    posts {
+      items {
+        id
+        title
+        content
+        createdAt
+        author {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            items {
+              id
+              createdAt
+            }
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
+          variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
     variants {
       items {
         id
@@ -1341,23 +2753,50 @@ export const onCreateUser = `subscription OnCreateUser {
         submitted
         approved
         createdAt
-        updatedAt
         creator {
           id
           username
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1366,6 +2805,26 @@ export const onCreateUser = `subscription OnCreateUser {
             id
             content
             createdAt
+            user {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            variant {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
           }
           nextToken
         }
@@ -1383,16 +2842,44 @@ export const onCreateUser = `subscription OnCreateUser {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1405,18 +2892,34 @@ export const onCreateUser = `subscription OnCreateUser {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1438,6 +2941,10 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -1459,6 +2966,11 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1469,16 +2981,44 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1489,6 +3029,62 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
     skillLevel
     rank
     createdAt
+    posts {
+      items {
+        id
+        title
+        content
+        createdAt
+        author {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            items {
+              id
+              createdAt
+            }
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
+          variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
     variants {
       items {
         id
@@ -1499,23 +3095,50 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
         submitted
         approved
         createdAt
-        updatedAt
         creator {
           id
           username
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1524,6 +3147,26 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
             id
             content
             createdAt
+            user {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            variant {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
           }
           nextToken
         }
@@ -1541,16 +3184,44 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1563,18 +3234,34 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1596,6 +3283,10 @@ export const onDeleteUser = `subscription OnDeleteUser {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -1617,6 +3308,11 @@ export const onDeleteUser = `subscription OnDeleteUser {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1627,16 +3323,44 @@ export const onDeleteUser = `subscription OnDeleteUser {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1647,6 +3371,62 @@ export const onDeleteUser = `subscription OnDeleteUser {
     skillLevel
     rank
     createdAt
+    posts {
+      items {
+        id
+        title
+        content
+        createdAt
+        author {
+          id
+          username
+          email
+          phoneNumber
+          pastGames {
+            items {
+              id
+              createdAt
+            }
+            nextToken
+          }
+          points
+          skillLevel
+          rank
+          createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
+          variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
     variants {
       items {
         id
@@ -1657,23 +3437,50 @@ export const onDeleteUser = `subscription OnDeleteUser {
         submitted
         approved
         createdAt
-        updatedAt
         creator {
           id
           username
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1682,6 +3489,26 @@ export const onDeleteUser = `subscription OnDeleteUser {
             id
             content
             createdAt
+            user {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            variant {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
           }
           nextToken
         }
@@ -1699,16 +3526,44 @@ export const onDeleteUser = `subscription OnDeleteUser {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1721,18 +3576,34 @@ export const onDeleteUser = `subscription OnDeleteUser {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1755,6 +3626,17 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1765,6 +3647,9 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -1772,10 +3657,22 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1784,6 +3681,37 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -1794,18 +3722,34 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1821,10 +3765,22 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -1835,7 +3791,19 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1851,6 +3819,17 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1861,6 +3840,9 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -1868,10 +3850,22 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1880,6 +3874,37 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -1890,18 +3915,34 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1917,10 +3958,22 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -1931,7 +3984,19 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1950,6 +4015,17 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1960,6 +4036,9 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -1967,10 +4046,22 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1979,6 +4070,37 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -1989,18 +4111,34 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2016,10 +4154,22 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2030,7 +4180,19 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2055,6 +4217,17 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2065,6 +4238,9 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2072,10 +4248,22 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2084,6 +4272,37 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -2094,18 +4313,34 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2121,10 +4356,22 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2135,7 +4382,19 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2151,6 +4410,17 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2161,6 +4431,9 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2168,10 +4441,22 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2180,6 +4465,37 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -2190,18 +4506,34 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2217,10 +4549,22 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2231,7 +4575,19 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2250,6 +4606,17 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2260,6 +4627,9 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2267,10 +4637,22 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2279,6 +4661,37 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -2289,18 +4702,34 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2316,10 +4745,22 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2330,7 +4771,19 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2355,6 +4808,17 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2365,6 +4829,9 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2372,10 +4839,22 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2384,6 +4863,37 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -2394,18 +4904,34 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2421,10 +4947,22 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2435,7 +4973,19 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2451,6 +5001,17 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2461,6 +5022,9 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2468,10 +5032,22 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2480,6 +5056,37 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -2490,18 +5097,34 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2517,10 +5140,22 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2531,7 +5166,19 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2550,6 +5197,17 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2560,6 +5218,9 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2567,10 +5228,22 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2579,6 +5252,37 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -2589,18 +5293,34 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2616,10 +5336,22 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2630,7 +5362,19 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2652,7 +5396,6 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
     submitted
     approved
     createdAt
-    updatedAt
     creator {
       id
       username
@@ -2663,6 +5406,17 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2673,6 +5427,9 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2680,10 +5437,22 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2692,6 +5461,37 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -2702,18 +5502,34 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2729,10 +5545,22 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2743,7 +5571,19 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2760,16 +5600,44 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2782,18 +5650,34 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2813,7 +5697,6 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
     submitted
     approved
     createdAt
-    updatedAt
     creator {
       id
       username
@@ -2824,6 +5707,17 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2834,6 +5728,9 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2841,10 +5738,22 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2853,6 +5762,37 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -2863,18 +5803,34 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2890,10 +5846,22 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2904,7 +5872,19 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2921,16 +5901,44 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2943,18 +5951,34 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2974,7 +5998,6 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
     submitted
     approved
     createdAt
-    updatedAt
     creator {
       id
       username
@@ -2985,6 +6008,17 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2995,6 +6029,9 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -3002,10 +6039,22 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3014,6 +6063,37 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -3024,18 +6104,34 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -3051,10 +6147,22 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3065,7 +6173,19 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3082,16 +6202,44 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
           skillLevel
           rank
           createdAt
+          posts {
+            items {
+              id
+              title
+              content
+              createdAt
+            }
+            nextToken
+          }
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -3104,18 +6252,34 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -3140,6 +6304,17 @@ export const onCreateComment = `subscription OnCreateComment {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -3150,6 +6325,9 @@ export const onCreateComment = `subscription OnCreateComment {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -3157,10 +6335,22 @@ export const onCreateComment = `subscription OnCreateComment {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3169,6 +6359,37 @@ export const onCreateComment = `subscription OnCreateComment {
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -3179,18 +6400,34 @@ export const onCreateComment = `subscription OnCreateComment {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -3206,10 +6443,22 @@ export const onCreateComment = `subscription OnCreateComment {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3220,7 +6469,19 @@ export const onCreateComment = `subscription OnCreateComment {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3235,7 +6496,6 @@ export const onCreateComment = `subscription OnCreateComment {
       submitted
       approved
       createdAt
-      updatedAt
       creator {
         id
         username
@@ -3244,7 +6504,30 @@ export const onCreateComment = `subscription OnCreateComment {
         pastGames {
           items {
             id
+            game {
+              id
+              creatorOrientation
+              time
+              variant
+              fen
+              available
+              ended
+              history
+              result
+              winner
+              createdAt
+            }
             createdAt
+            player {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
           }
           nextToken
         }
@@ -3252,6 +6535,25 @@ export const onCreateComment = `subscription OnCreateComment {
         skillLevel
         rank
         createdAt
+        posts {
+          items {
+            id
+            title
+            content
+            createdAt
+            author {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+          }
+          nextToken
+        }
         variants {
           items {
             id
@@ -3262,7 +6564,19 @@ export const onCreateComment = `subscription OnCreateComment {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
           nextToken
         }
@@ -3271,6 +6585,26 @@ export const onCreateComment = `subscription OnCreateComment {
             id
             content
             createdAt
+            user {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            variant {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
           }
           nextToken
         }
@@ -3285,10 +6619,22 @@ export const onCreateComment = `subscription OnCreateComment {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3299,7 +6645,19 @@ export const onCreateComment = `subscription OnCreateComment {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3323,6 +6681,17 @@ export const onUpdateComment = `subscription OnUpdateComment {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -3333,6 +6702,9 @@ export const onUpdateComment = `subscription OnUpdateComment {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -3340,10 +6712,22 @@ export const onUpdateComment = `subscription OnUpdateComment {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3352,6 +6736,37 @@ export const onUpdateComment = `subscription OnUpdateComment {
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -3362,18 +6777,34 @@ export const onUpdateComment = `subscription OnUpdateComment {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -3389,10 +6820,22 @@ export const onUpdateComment = `subscription OnUpdateComment {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3403,7 +6846,19 @@ export const onUpdateComment = `subscription OnUpdateComment {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3418,7 +6873,6 @@ export const onUpdateComment = `subscription OnUpdateComment {
       submitted
       approved
       createdAt
-      updatedAt
       creator {
         id
         username
@@ -3427,7 +6881,30 @@ export const onUpdateComment = `subscription OnUpdateComment {
         pastGames {
           items {
             id
+            game {
+              id
+              creatorOrientation
+              time
+              variant
+              fen
+              available
+              ended
+              history
+              result
+              winner
+              createdAt
+            }
             createdAt
+            player {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
           }
           nextToken
         }
@@ -3435,6 +6912,25 @@ export const onUpdateComment = `subscription OnUpdateComment {
         skillLevel
         rank
         createdAt
+        posts {
+          items {
+            id
+            title
+            content
+            createdAt
+            author {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+          }
+          nextToken
+        }
         variants {
           items {
             id
@@ -3445,7 +6941,19 @@ export const onUpdateComment = `subscription OnUpdateComment {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
           nextToken
         }
@@ -3454,6 +6962,26 @@ export const onUpdateComment = `subscription OnUpdateComment {
             id
             content
             createdAt
+            user {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            variant {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
           }
           nextToken
         }
@@ -3468,10 +6996,22 @@ export const onUpdateComment = `subscription OnUpdateComment {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3482,7 +7022,19 @@ export const onUpdateComment = `subscription OnUpdateComment {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3506,6 +7058,17 @@ export const onDeleteComment = `subscription OnDeleteComment {
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -3516,6 +7079,9 @@ export const onDeleteComment = `subscription OnDeleteComment {
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -3523,10 +7089,22 @@ export const onDeleteComment = `subscription OnDeleteComment {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3535,6 +7113,37 @@ export const onDeleteComment = `subscription OnDeleteComment {
       skillLevel
       rank
       createdAt
+      posts {
+        items {
+          id
+          title
+          content
+          createdAt
+          author {
+            id
+            username
+            email
+            phoneNumber
+            pastGames {
+              nextToken
+            }
+            points
+            skillLevel
+            rank
+            createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
       variants {
         items {
           id
@@ -3545,18 +7154,34 @@ export const onDeleteComment = `subscription OnDeleteComment {
           submitted
           approved
           createdAt
-          updatedAt
           creator {
             id
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -3572,10 +7197,22 @@ export const onDeleteComment = `subscription OnDeleteComment {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3586,7 +7223,19 @@ export const onDeleteComment = `subscription OnDeleteComment {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3601,7 +7250,6 @@ export const onDeleteComment = `subscription OnDeleteComment {
       submitted
       approved
       createdAt
-      updatedAt
       creator {
         id
         username
@@ -3610,7 +7258,30 @@ export const onDeleteComment = `subscription OnDeleteComment {
         pastGames {
           items {
             id
+            game {
+              id
+              creatorOrientation
+              time
+              variant
+              fen
+              available
+              ended
+              history
+              result
+              winner
+              createdAt
+            }
             createdAt
+            player {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
           }
           nextToken
         }
@@ -3618,6 +7289,25 @@ export const onDeleteComment = `subscription OnDeleteComment {
         skillLevel
         rank
         createdAt
+        posts {
+          items {
+            id
+            title
+            content
+            createdAt
+            author {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+          }
+          nextToken
+        }
         variants {
           items {
             id
@@ -3628,7 +7318,19 @@ export const onDeleteComment = `subscription OnDeleteComment {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
           nextToken
         }
@@ -3637,6 +7339,26 @@ export const onDeleteComment = `subscription OnDeleteComment {
             id
             content
             createdAt
+            user {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            variant {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+            }
           }
           nextToken
         }
@@ -3651,10 +7373,22 @@ export const onDeleteComment = `subscription OnDeleteComment {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            posts {
+              nextToken
+            }
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3665,7 +7399,19 @@ export const onDeleteComment = `subscription OnDeleteComment {
             submitted
             approved
             createdAt
-            updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken

@@ -67,7 +67,7 @@
 				"Runtime": "nodejs8.10",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-chess-variant-develop-94111-deployment",
+					"S3Bucket": "amplify-chess-variant-newenv-211644-deployment",
 					"S3Key": "amplify-builds/AdminQueries6dd78331-75615279636c6f305756-build.zip"
 				}
 			}

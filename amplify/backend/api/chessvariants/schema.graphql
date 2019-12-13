@@ -7,15 +7,16 @@ type User @model
 ]) {
   id: ID!
   username: String!
-  email: String
-  phoneNumber: String
+  email: String!
+  phoneNumber: String!
   pastGames: [PlayerGameMapping] @connection(name: "userPlayer", sortField: "createdAt")
-  variants: [CustomizedVariant] @connection(name: "userVariant", sortField: "updatedAt")
+  variants: [CustomizedVariant] @connection(name: "userVariant", sortField: "createdAt")
   comments: [Comment] @connection(name: "userComment", sortField: "createdAt")
   points: Int
   skillLevel: String
   rank: Int
   createdAt: String
+  posts: [Post] @connection(name: "userPosts", sortField:"createdAt")
 }
 
 type Complaint @model
@@ -26,12 +27,12 @@ type Complaint @model
   ]
 ) {
   id: ID!
-  user: User @connection
-  reportedUser: User @connection
+  user: User
+  reportedUser: User
   gameLink: String
   content: String!
   processed: Boolean!
-  processedBy: User @connection
+  processedBy: User
   result: String
   createdAt: String
   updatedAt: String
@@ -53,9 +54,8 @@ type CustomizedVariant @model
   customPiece: String
   submitted: Boolean!
   approved: Boolean!
-  comments: [Comment] @connection(name: "variantComment", sortField: "createdAt")
+  comments: [Comment] @connection(name: "variantComment")
   createdAt: String
-  updatedAt: String
 }
 
 type Comment @model
@@ -108,7 +108,7 @@ type Message @model {
 
 type Post @model{
   id: ID!
-  author: PlayerInfo!
+  author: User! @connection(name: "userPosts")
   title: String!
   content: String!
   createdAt: AWSDateTime!

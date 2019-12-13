@@ -60,7 +60,9 @@ class DiscussionBoard extends Component{
     }
 
     handleNewPost = (post) => {
-        post.author = this.currentUser.username
+        let date = new Date()
+        alert(date.toJSON())
+        //post.author = this.currentUser.username
         //let createdPost = await API.graphql(graphqlOperation(mutations.createPost, { input: post}));
 
     }
@@ -73,7 +75,7 @@ class DiscussionBoard extends Component{
             return (<PostCard author={author} title={title} content={content} />)
         } )
         return (
-            <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', marginLeft: '5%', width: '50%', marginTop: '70px'}}>
+            <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', marginLeft: '10%', width: '40%', marginTop: '70px'}}>
                 <Box display='flex' flexDirection='row' justifyContent='flex-end'>
                     <Fab onClick={this.showNewPostDialog} color="primary" aria-label="edit">
                         <EditIcon />
