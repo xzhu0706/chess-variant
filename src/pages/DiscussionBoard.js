@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
-import {List, Container, Box} from '@material-ui/core';
+import {List, Box} from '@material-ui/core';
 import PostCard from '../components/PostCard';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
-import Drawer from '@material-ui/core/Drawer';
-import TextField from '@material-ui/core/TextField';
 import NewPost from '../components/NewPost';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
@@ -69,7 +67,7 @@ class DiscussionBoard extends Component{
         }).catch(async (e) => {
           await Auth.currentCredentials().then((credential) => {
             currentUser.id = credential.identityId.split(':')[1];
-            currentUser.username = 'anonymous';
+            currentUser.username = 'Anonymous';
           });
         });
         return currentUser;
