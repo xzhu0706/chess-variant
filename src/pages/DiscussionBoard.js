@@ -41,6 +41,7 @@ class DiscussionBoard extends Component{
         if(queryResult){
             queryResult = queryResult.data.listPosts.items
             let posts = queryResult.map((post) => {
+                alert(JSON.stringify(post))
                 let author = post.author.username
                 let title = post.title
                 let content = post.content
@@ -56,7 +57,7 @@ class DiscussionBoard extends Component{
 
     handleNewPost = async (post) => {
         let createdAt = new Date().toJSON()
-        post['postAuthorId']= this.currentUser.id
+        post['author']= this.currentUser
         post['createdAt'] = createdAt
         alert(JSON.stringify(post))
         try {
@@ -84,7 +85,7 @@ class DiscussionBoard extends Component{
 
     render() {
         let postCards = posts.map((post) => {
-            let author = post.author
+            let author = post.author.username
             let title = post.title
             let content = post.content
             return (<PostCard author={author} title={title} content={content} />)
@@ -97,7 +98,7 @@ class DiscussionBoard extends Component{
                     </Fab>
                 </Box>
                 <NewPost handleNewPost = {this.handleNewPost} onClose = {this.dismissNewPostDialog} open={this.state.showNewPostDialog}/>
-                <List style={{marginTop: '10px'}}>{postCards}</List>
+                <List style={{marginTop: '10px'}}>{this.state.posts}</List>
             </Box>
         )
     }

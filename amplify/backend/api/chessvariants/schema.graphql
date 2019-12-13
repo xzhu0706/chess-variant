@@ -16,8 +16,9 @@ type User @model
   skillLevel: String
   rank: Int
   createdAt: String
-  posts: [Post] @connection(name: "userPosts", sortField:"createdAt")
 }
+
+
 
 type Complaint @model
 @auth(
@@ -108,7 +109,7 @@ type Message @model {
 
 type Post @model{
   id: ID!
-  author: User! @connection(name: "userPosts")
+  author: PlayerInfo!
   title: String!
   content: String!
   createdAt: AWSDateTime!
