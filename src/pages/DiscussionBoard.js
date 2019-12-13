@@ -10,6 +10,7 @@ import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
+//import getUserInfo from '../Utils/CurrentUser';
 
 
 const content = `Blackboard’s discussion board feature allows participants to carry on discussions online, 
@@ -33,13 +34,12 @@ class DiscussionBoard extends Component{
         this.currentUser =  null
     }
 
-    componentDidMount() {
-        //let user = Auth.currentAuthenticatedUser()
-        //if(user) this.currentUser = {id: user.attributes.sub, username: user.username}
-        /*let limit = 1000
-        let queryResult = await API.graphql(graphqlOperation(customQueries.listGames, { limit, filter }));
+    async componentDidMount() {
+        this.currentUser = await this.getUserInfo()
+        let limit = 1000
+        let queryResult = await API.graphql(graphqlOperation(queries.listPosts,{}));
         if(queryResult){
-            queryResult = queryResult.data.listGames.items
+            queryResult = queryResult.data.listPosts.items
             let posts = queryResult.map((post) => {
                 let author = post.author.username
                 let title = post.title
@@ -47,25 +47,40 @@ class DiscussionBoard extends Component{
                 return (<PostCard author={author} title={title} content={content} />)
             })
             this.setState({posts})
-        }*/
+        }
     }
 
-    showNewPostDialog = () => {
-        alert('clicked')
-        this.setState({showNewPostDialog: true})
+    showNewPostDialog = () => {this.setState({showNewPostDialog: true})}
+
+    dismissNewPostDialog = () => {this.setState({showNewPostDialog: false})}
+
+    handleNewPost = async (post) => {
+        let createdAt = new Date().toJSON()
+        post['postAuthorId']= this.currentUser.id
+        post['createdAt'] = createdAt
+        alert(JSON.stringify(post))
+        try {
+            let createdPost = await API.graphql(graphqlOperation(mutations.createPost, { input: post}));
+            alert(JSON.stringify(createdPost))
+            let newPostCard = (<PostCard author={this.currentUser.username} title={post.title} content={post.content} />)
+            this.setState({posts: [newPostCard, ...this.state.posts]})
+        }
+        catch(err) {console.log(err)}
     }
 
-    dismissNewPostDialog = () => {
-        this.setState({showNewPostDialog: false})
-    }
-
-    handleNewPost = (post) => {
-        let date = new Date()
-        alert(date.toJSON())
-        //post.author = this.currentUser.username
-        //let createdPost = await API.graphql(graphqlOperation(mutations.createPost, { input: post}));
-
-    }
+    getUserInfo = async () => {
+        const currentUser = {};
+        await Auth.currentAuthenticatedUser().then((user) => {
+          currentUser.id = user.attributes.sub;
+          currentUser.username = user.username;
+        }).catch(async (e) => {
+          await Auth.currentCredentials().then((credential) => {
+            currentUser.id = credential.identityId.split(':')[1];
+            currentUser.username = 'anonymous';
+          });
+        });
+        return currentUser;
+      }
 
     render() {
         let postCards = posts.map((post) => {

@@ -1,6 +1,6 @@
-import {Auth } from 'aws-amplify';
+import {Auth} from 'aws-amplify';
 
-getUserInfo = async() => {
+async function getUserInfo() {
     const currentUser = {};
     await Auth.currentAuthenticatedUser().then((user) => {
       currentUser.id = user.attributes.sub;

@@ -11,12 +11,10 @@ class NewPost extends Component {
         this.content = ''
     }
     setTitle = (e) => {
-        alert(e.target.value)
         this.title = e.target.value
     }
     
     setContent = (e) => {
-        alert(e.target.value)
         this.content = e.target.value
     }
     render(){
