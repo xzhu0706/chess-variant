@@ -12,17 +12,10 @@ import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
 //import getUserInfo from '../Utils/CurrentUser';
 
+const SECONDS_IN_A_MINUTE = 60
+const SECONDS_IN_AN_HOUR = 3600
+const SECONDS_IN_A_DAY = 86400
 
-const content = `Blackboard’s discussion board feature allows participants to carry on discussions online, 
-                at any time of the day or night, with no need for the participants to be logged into the site 
-                at the same time.  The discussion is recorded on the course site for all to review and respond`
-const posts = [
-    {author: 'Daouda Gueye', title: 'This is my first post on this discussion board', content},
-    {author: 'Daouda Gueye', title: 'This is my first post on this discussion board', content},
-    {author: 'Daouda Gueye', title: 'This is my first post on this discussion board', content},
-    {author: 'Daouda Gueye', title: 'This is my first post on this discussion board', content},
-    {author: 'Daouda Gueye', title: 'This is my first post on this discussion board', content},
-]
 class DiscussionBoard extends Component{
 
     constructor(props){
@@ -41,11 +34,11 @@ class DiscussionBoard extends Component{
         if(queryResult){
             queryResult = queryResult.data.listPosts.items
             let posts = queryResult.map((post) => {
-                alert(JSON.stringify(post))
                 let author = post.author.username
                 let title = post.title
                 let content = post.content
-                return (<PostCard author={author} title={title} content={content} />)
+                let elapsedTime = this.getElapsedTime(post.createdAt)
+                return (<PostCard author={author} elapsedTime={elapsedTime} title={title} content={content} />)
             })
             this.setState({posts})
         }
@@ -59,11 +52,11 @@ class DiscussionBoard extends Component{
         let createdAt = new Date().toJSON()
         post['author']= this.currentUser
         post['createdAt'] = createdAt
-        alert(JSON.stringify(post))
         try {
             let createdPost = await API.graphql(graphqlOperation(mutations.createPost, { input: post}));
             alert(JSON.stringify(createdPost))
-            let newPostCard = (<PostCard author={this.currentUser.username} title={post.title} content={post.content} />)
+            let elapsedTime = this.getElapsedTime(createdAt)
+            let newPostCard = (<PostCard author={this.currentUser.username} elapsedTime={elapsedTime} title={post.title} content={post.content} />)
             this.setState({posts: [newPostCard, ...this.state.posts]})
         }
         catch(err) {console.log(err)}
@@ -81,15 +74,27 @@ class DiscussionBoard extends Component{
           });
         });
         return currentUser;
-      }
+    }
+
+    getElapsedTime = (creationDate) => {
+        /**
+         * 1min = 60s = 
+         * 1hour = 60 mins = 3600s
+         * 1 day = 24h = 86400s
+         */
+        let date = new Date(creationDate)
+        let now = new Date()
+        //timeDiff is converted to seconds from milliseconds
+        let timeDiff = parseInt((now-date)/1000)
+        let elapsedTime;
+        if((elapsedTime = parseInt(timeDiff/SECONDS_IN_A_DAY)) > 0) return elapsedTime + 'd'
+        if((elapsedTime = parseInt(timeDiff/SECONDS_IN_AN_HOUR)) > 0) return elapsedTime + 'h'
+        if((elapsedTime = parseInt(elapsedTime/SECONDS_IN_A_DAY)) > 0) return elapsedTime + 'm'
+        return timeDiff + 's'
+    }
 
     render() {
-        let postCards = posts.map((post) => {
-            let author = post.author.username
-            let title = post.title
-            let content = post.content
-            return (<PostCard author={author} title={title} content={content} />)
-        } )
+        
         return (
             <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', marginLeft: '10%', width: '40%', marginTop: '70px'}}>
                 <Box display='flex' flexDirection='row' justifyContent='flex-end'>

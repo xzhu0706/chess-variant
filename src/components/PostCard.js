@@ -23,7 +23,7 @@ class PostCard extends Component{
                     <Avatar style={{backgroundColor: '#333333', color: 'white'}}>D</Avatar>
                     <Box style={{ marginLeft: '5px' }} display='flex' flexDirection='column' alignItems='flex-start' alignContent='flex-start'>
                         <Typography align='left' variant='subtitle1'>Daouda Gueye</Typography>
-                        <Typography variant='caption'>2h</Typography>
+                        <Typography style={{marginTop: '-5px'}} variant='caption'>{this.props.elapsedTime}</Typography>
                     </Box>
                 </Box>
                 <Typography style={{marginTop: '10px', fontFamily: 'Arial', fontSize: '16px'}} variant='body1' color='black' component='p'>
