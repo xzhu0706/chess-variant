@@ -54,7 +54,6 @@ class DiscussionBoard extends Component{
         post['createdAt'] = createdAt
         try {
             let createdPost = await API.graphql(graphqlOperation(mutations.createPost, { input: post}));
-            alert(JSON.stringify(createdPost))
             let elapsedTime = this.getElapsedTime(createdAt)
             let newPostCard = (<PostCard author={this.currentUser.username} elapsedTime={elapsedTime} title={post.title} content={post.content} />)
             this.setState({posts: [newPostCard, ...this.state.posts]})
@@ -84,12 +83,13 @@ class DiscussionBoard extends Component{
          */
         let date = new Date(creationDate)
         let now = new Date()
+
         //timeDiff is converted to seconds from milliseconds
         let timeDiff = parseInt((now-date)/1000)
         let elapsedTime;
         if((elapsedTime = parseInt(timeDiff/SECONDS_IN_A_DAY)) > 0) return elapsedTime + 'd'
         if((elapsedTime = parseInt(timeDiff/SECONDS_IN_AN_HOUR)) > 0) return elapsedTime + 'h'
-        if((elapsedTime = parseInt(elapsedTime/SECONDS_IN_A_DAY)) > 0) return elapsedTime + 'm'
+        if((elapsedTime = parseInt(timeDiff/SECONDS_IN_A_MINUTE)) > 0) return elapsedTime + 'm'
         return timeDiff + 's'
     }
 

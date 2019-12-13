@@ -22,7 +22,7 @@ class PostCard extends Component{
                 <Box display='flex' flexDirection='row' justifyContent='flex-start'>
                     <Avatar style={{backgroundColor: '#333333', color: 'white'}}>D</Avatar>
                     <Box style={{ marginLeft: '5px' }} display='flex' flexDirection='column' alignItems='flex-start' alignContent='flex-start'>
-                        <Typography align='left' variant='subtitle1'>Daouda Gueye</Typography>
+                        <Typography align='left' variant='subtitle1'>{this.props.author}</Typography>
                         <Typography style={{marginTop: '-5px'}} variant='caption'>{this.props.elapsedTime}</Typography>
                     </Box>
                 </Box>
