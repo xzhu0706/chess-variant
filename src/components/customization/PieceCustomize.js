@@ -37,31 +37,34 @@ function PieceCustomize(props) {
 
   let keyCount = 0;
 
-  props.offsets.forEach((offset) => {
+  const {
+    offsets, repeatOffsets, hideInput, onChangeOffsets, onChangeRepeatOffsets,
+  } = props;
+  offsets.forEach((offset) => {
     // calculate cx , cy from the given offset
     const cx = (10 + 20 * (offset + 119 & 15)) / 3;
     const cy = (10 + 20 * (offset + 119 >>> 4)) / 3;
     circles.push(<circle key={keyCount} className="move" cx={`${cx}%`} cy={`${cy}%`} r="2.5%" />);
-    keyCount++;
+    keyCount += 1;
   });
 
-  props.repeatOffsets.forEach((offset) => {
+  repeatOffsets.forEach((offset) => {
     let cx; let
       cy;
     // determine how many repetitions (offset multiplications) until we hit the end of the board
     const reps = Math.floor(7 / Math.max(Math.abs(7 - (offset + 119 & 15)), Math.abs(7 - (offset + 119 >>> 4))));
-    for (let i = 1; i <= reps; i++) {
+    for (let i = 1; i <= reps; i += 1) {
       // calculate cx , cy from the given offset
       cx = (10 + 20 * (offset * i + 119 & 15)) / 3;
       cy = (10 + 20 * (offset * i + 119 >>> 4)) / 3;
       circles.push(<circle key={keyCount} className="moveRepeat" cx={`${cx}%`} cy={`${cy}%`} r="2.5%" />);
-      keyCount++;
+      keyCount += 1;
     }
   });
 
   return (
     <div className="piece-customize">
-      { props.hideInput
+      { hideInput
         ? null : (
           <div className="move-input">
             <TextField
@@ -69,13 +72,13 @@ function PieceCustomize(props) {
               inputProps={{ 'data-testid': 'test-offset-input' }}
               helperText="Movement to an exact square"
               variant="outlined"
-              onChange={props.onChangeOffsets}
+              onChange={onChangeOffsets}
             />
             <TextField
               label="Repeating offsets"
               helperText="Movement in a particular direction"
               variant="outlined"
-              onChange={props.onChangeRepeatOffsets}
+              onChange={onChangeRepeatOffsets}
             />
           </div>
         )}

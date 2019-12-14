@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-const _style = {
+const myStyle = {
   backgroundColor: '#eee',
   width: '97%',
   padding: '0.75rem',
@@ -10,7 +10,7 @@ const _style = {
 };
 
 const ContentBox = ({ board, style, children }) => (
-  <div style={_style}>
+  <div style={myStyle}>
     <Row className="justify-content-md-center">
       <Col xs="auto">
         <div>

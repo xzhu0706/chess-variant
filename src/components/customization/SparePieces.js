@@ -1,8 +1,9 @@
 import React from 'react';
 
 function SparePieces(props) {
+  const { handleChange } = props;
   return (
-    <form onChange={props.handleChange}>
+    <form onChange={handleChange}>
       <div className="piece-selector">
         <div className="misc-section">
           <input id="cursor" type="radio" name="piece" value="cursor" defaultChecked />

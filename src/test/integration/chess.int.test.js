@@ -3,11 +3,16 @@
 const mychessjs = require('../../chess/chess');
 
 /* For each variant, this file tests the functions we modified in chess/chess.js, which are
- * generate_moves()         (generates a list of valid moves in the current game position)
- * in_check()               (returns true iff the current player's king is in check - should be disabled in antichess)
- * in_checkmate()           (returns true iff the current player's king is in checkmate - should be impossible in antichess)
- * in_stalemate()           (returns true iff the current player has no legal moves)
- * insufficient_material()  (returns true iff neither player can win with the pieces he/she has - should be disabled in grid chess)
+ * generate_moves()
+ * (generates a list of valid moves in the current game position)
+ * in_check()
+ * (returns true iff the current player's king is in check - should be disabled in antichess)
+ * in_checkmate()
+ * (returns true iff the current player's king is in checkmate - should be impossible in antichess)
+ * in_stalemate()
+ * (returns true iff the current player has no legal moves)
+ * insufficient_material()
+ * (returns true iff neither player can win with the pieces he/she has - should be disabled in grid chess)
  *
  */
 
@@ -1349,7 +1354,7 @@ describe('offsetsFromAttack() test: given a list of (repeating) offsets, return 
   // e.g. an attack from +6 units away could be due to a repeating offset of +1, +2, +3 or +6
   // e.g. an attack from -51 units away could be due to a repeating offset of -51 or -17 (but not -1)
   const allOffsets = [];
-  for (let i = -119; i <= 119; i++) {
+  for (let i = -119; i <= 119; i += 1) {
     allOffsets.push(i);
   }
 
