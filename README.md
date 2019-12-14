@@ -5,6 +5,7 @@ Live Demo: http://chess-variant-20191210113159-hostingbucket-develop.s3-website-
 1. `cd` to the directory with the project files.
 1. `npm install`
 1. `npm start`
+1. Open an issue or send an email to xzhu000@citymail.cuny.edu stating you would like to receive an **aws-exports.js** file to run the project locally
 
 If you want to run this project locally on your machine, `npm install` (or `sudo npm install`) may fail to execute the post-install script in `package.json` which copies our own version of `chess.js` into the `chess.js` library folder in `node_modules` (using the `cp` command). (For the purposes of putting all our code in one repo, we did not put our `chess.js` module in a separate GitHub repo, and this was the solution we chose).
 
