@@ -370,7 +370,7 @@ class Lobby extends Component {
     };
 
     return (
-      <Box style={{position:'fixed', top:'0', right:'0', minHeight: '150px', marginTop: '125px', marginRight:'10%', width: '35%'}} display='flex' flexDirection='column' alignItems='flex-end'>
+      <Box style={{position:'fixed', top:'0', right:'0', minHeight: '150px', marginTop: '125px', marginRight:'5%', width: '40%'}} display='flex' flexDirection='column' alignItems='flex-end'>
         <CreateGameDialog closeDialog = {this.closeDialog} showDialog = {this.state.showDialog} createGame = {this.createGame} />
         <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog} id="btncreategame">
                 Create a game
