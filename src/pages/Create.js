@@ -6,7 +6,6 @@ import PieceCustomize from '../components/customization/PieceCustomize.js';
 import Button from '@material-ui/core/Button'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-// import TextField from '@material-ui/core/TextField'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
 import './Create.css';

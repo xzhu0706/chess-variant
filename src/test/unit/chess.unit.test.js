@@ -1,5 +1,5 @@
 /* unit tests for chess.js */
-const mychessjs = require("./chess.js");
+const mychessjs = require("../../chess/chess");
 
 /* This file contains tests on the following units in chess.js:
  * valid_2x2_grid_move() (checks whether two squares are in different 2x2 grids)
