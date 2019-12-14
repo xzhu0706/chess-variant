@@ -21,7 +21,6 @@ import Button from '@material-ui/core/Button';
 // import * as subscriptions from '../graphql/subscriptions';
 // import * as queries from '../graphql/queries';
 // import * as mutations from '../graphql/mutations';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -128,7 +127,7 @@ class Lobby extends Component {
     };
     let queryResult = await API.graphql(graphqlOperation(customQueries.listGames, { limit, filter }));
     if (queryResult) {
-      console.log(queryResult);
+      //console.log(queryResult);
       queryResult = queryResult.data.listGames.items;
       const games = queryResult.map((game) => {
         const gameId = game.id;
@@ -163,7 +162,7 @@ class Lobby extends Component {
 
     this.gameUpdateSubscription = API.graphql(graphqlOperation(customSubscriptions.onUpdateGame)).subscribe({
       next: (gameData) => {
-        console.log('joined game', gameData.value.data);
+        //console.log('joined game', gameData.value.data);
         const game = gameData.value.data.onUpdateGame;
         const currentGame = localStorage.getItem(CURRENT_GAME);
         if (currentGame && currentGame === game.id && !game.ended) {
@@ -177,7 +176,7 @@ class Lobby extends Component {
         }
       },
     });
-    console.log('join game subscription', this.gameUpdateSubscription, this.gameCreationSubscription);
+    //console.log('join game subscription', this.gameUpdateSubscription, this.gameCreationSubscription);
   }
 
   componentWillUnmount() {
@@ -197,12 +196,12 @@ class Lobby extends Component {
     let userInfo;
     this.setState({ showDialog: false });
     const newGame = { ...gameInfo };
-    console.log('new', newGame);
+    //console.log('new', newGame);
     newGame.fen = 'init';
     newGame.available = true;
     newGame.ended = false;
     await this.getUserInfo().then((user) => {
-      console.log(typeof (user), user);
+      //console.log(typeof (user), user);
       if (typeof (user) === 'object') {
         userInfo = { ...user };
         newGame.creator = {
@@ -237,7 +236,7 @@ class Lobby extends Component {
         graphqlOperation(customQueries.getUserWithPastGames, { id: userInfo.attributes.sub }),
       );
       const queryResult3 = await API.graphql(graphqlOperation(customQueries.getGame, { id: newGameData.id }));
-      console.log('after creat game', newPlayerGameMapping, queryResult2, queryResult3);
+      //console.log('after creat game', newPlayerGameMapping, queryResult2, queryResult3);
     }
   }
 
@@ -323,9 +322,9 @@ class Lobby extends Component {
         const newPlayerGameMapping = await API.graphql(
           graphqlOperation(customMutations.createPlayerGameMapping, { input: playerGameMappingInput }),
         );
-        console.log('joined mapping', newPlayerGameMapping);
+        //console.log('joined mapping', newPlayerGameMapping);
       } catch (e) {
-        console.log(e);
+        //console.log(e);
       }
     }
     this.props.history.push({ pathname: `/game/${gameId}` });
