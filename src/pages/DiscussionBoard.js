@@ -27,7 +27,7 @@ class DiscussionBoard extends Component{
 
     async componentDidMount() {
         this.currentUser = await this.getUserInfo()
-        let limit = 1000
+        let limit = 100
         let queryResult = await API.graphql(graphqlOperation(queries.listPosts,{}));
         if(queryResult){
             queryResult = queryResult.data.listPosts.items

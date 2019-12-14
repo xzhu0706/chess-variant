@@ -4,8 +4,11 @@ import PostComments from './PostComments'
 import { Button } from 'semantic-ui-react'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import getUserInfo from '../Utils/CurrentUser'
-import {createComment} from '../graphql/mutations'
+import getElapsedTime from '../Utils/ElapsedTime'
+import {createPostComment} from '../graphql/mutations'
 import {listComments, getPost} from '../graphql/queries'
+import PostComment from './PostComment'
+
 
 class PostCard extends Component{
 
@@ -32,6 +35,13 @@ class PostCard extends Component{
             try {
                 let queryResult = await API.graphql(graphqlOperation(getPost, {id: this.postId}))
                 let comments = queryResult.data.getPost.comments.items
+                comments = comments.map((comment) => {
+                    let author = comment.author
+                    let content = comment.content
+                    let elapsedTime = getElapsedTime(comment.createAt)
+                    return (<PostComment key={comment.id} author={author.username} content={content} elapsedTime={elapsedTime}/>)
+                })
+                alert(JSON.stringify(comments))
                 this.setState({showComments: !this.state.showComments, comments})
             }
             catch(error) {console.log(error)}
@@ -40,19 +50,18 @@ class PostCard extends Component{
     }
 
     handleNewComment = async (commentText) => {
-        alert(commentText)
-        /*
-        let commentText = e.target.value
         let comment = {}
         comment.author = this.currentUser
         comment.content = commentText
         comment.createdAt = new Date().toJSON()
         comment.postCommentPostId = this.postId
         try {
-            let createdComment = await API.graphql(graphqlOperation(createComment, { input: comment}));
-
+            await API.graphql(graphqlOperation(createPostComment, { input: comment}));
+            let elapsedTime = getElapsedTime(comment.createdAt)
+            let newPostComment = (<PostComment author={comment.author.username} content={comment.content} elapsedTime={elapsedTime} />)
+            this.setState({comments: [newPostComment, ...this.state.comments]})
         }
-        catch(error) {console.log(error)}*/
+        catch(error) {console.log(error)}
     }
 
     render(){
