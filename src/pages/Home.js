@@ -25,10 +25,20 @@ class Home extends Component {
         <h1 style={{ fontFamily: 'AppleSDGothicNeo-Bold' }}>Featured Variants</h1>
         <Row className="justify-content-md-center">
           <Col md="auto">
-            <PopularVariants name="Antichess" src={AntiChess} description="Win by losing all your pieces or being stalemated" link="antichess" />
+            <PopularVariants
+              name="Antichess"
+              src={AntiChess}
+              description="Win by losing all your pieces or being stalemated"
+              link="antichess"
+            />
           </Col>
           <Col md="auto">
-            <PopularVariants name="Grid Chess" description="Each move must cross one or multiple grid lines" src={GridChess} link="grid" />
+            <PopularVariants
+              name="Grid Chess"
+              description="Each move must cross one or multiple grid lines"
+              src={GridChess}
+              link="grid"
+            />
           </Col>
         </Row>
       </div>

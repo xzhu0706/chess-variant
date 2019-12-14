@@ -180,7 +180,11 @@ const AccountInfo = ({
   username,
 }) => (
   <div>
-    <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg" thumbnail fluid />
+    <Image
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg"
+      thumbnail
+      fluid
+    />
     <ListGroup>
       <ListGroupItem variant="flush">{username}</ListGroupItem>
     </ListGroup>

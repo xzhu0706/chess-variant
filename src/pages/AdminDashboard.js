@@ -1,8 +1,7 @@
+/* eslint-disable no-param-reassign */
 import React, { Component } from 'react';
 import Amplify, { Auth, API } from 'aws-amplify';
-//import { createUser } from '../graphql/mutations';
-import { listComplaints } from '../customGraphql/queries';
-import { deleteComplaint, updateComplaint } from '../customGraphql/mutations';
+// import { createUser } from '../graphql/mutations';
 import { Link } from 'react-router-dom';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -14,6 +13,8 @@ import MaterialTable from 'material-table';
 import Chip from '@material-ui/core/Chip';
 import ToolTip from '@material-ui/core/Tooltip';
 import PersonPin from '@material-ui/icons/PersonPin';
+import { deleteComplaint, updateComplaint } from '../customGraphql/mutations';
+import { listComplaints } from '../customGraphql/queries';
 import awsconfig from '../aws-exports';
 
 Amplify.configure(awsconfig);
@@ -329,17 +330,14 @@ class AdminDashboard extends Component {
   retrieveUpdatedUser = async (username) => {
     const updatedUser = await this.getUser(username);
     // clean up the returned result so that it can go through genreateUserRows function
-    console.log('updated', updatedUser)
+    console.log('updated', updatedUser);
     updatedUser.Attributes = updatedUser.UserAttributes;
     const updatedUserRow = this.generateUserRows([updatedUser]);
-    const users = [...this.state.users];
-    users[this.updatedUserIndex] = updatedUserRow[0];
-    this.setState({
-      users,
-    }, () => {console.log(this.state.users)});
-    // this.setState((prevState) => ({
-    //   users: [...prevState.users, ...moreUserRows],
-    // }));
+    this.setState((prevState) => {
+      const users = [...prevState.users];
+      users.splice(this.updatedUserIndex, 1, updatedUserRow[0]);
+      return { ...prevState, users };
+    });
   }
 
   handleJumpPage = async () => {
@@ -515,20 +513,18 @@ class AdminDashboard extends Component {
               cellStyle: { verticalAlign: 'top' },
             }}
             editable={{
-              onRowUpdate: (newData, oldData) =>
-                new Promise((resolve) => {
-                  setTimeout(() => {
-                    this.handleUpdateComplaint(newData, oldData);
-                    resolve();
-                  }, 1000);
-                }),
-              onRowDelete: (oldData) =>
-                new Promise((resolve) => {
-                  setTimeout(() => {
-                    resolve();
-                    this.handleDeleteComplaint(oldData);
-                  }, 1000);
-                }),
+              onRowUpdate: (newData, oldData) => new Promise((resolve) => {
+                setTimeout(() => {
+                  this.handleUpdateComplaint(newData, oldData);
+                  resolve();
+                }, 1000);
+              }),
+              onRowDelete: (oldData) => new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve();
+                  this.handleDeleteComplaint(oldData);
+                }, 1000);
+              }),
             }}
             actions={[
 

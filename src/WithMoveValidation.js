@@ -3,20 +3,20 @@ import PropTypes from 'prop-types';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
 import Button from '@material-ui/core/Button';
-import GameData from './GameData.js';
+import GameData from './components/GameData';
 import CustomPlayOption from './components/customization/CustomPlayOption';
-import wm from "./icons/pieces/fairy/wk_180.svg"; // "mann" (upside-down king)
-import bm from "./icons/pieces/fairy/bk_180.svg";
-import wf from "./icons/pieces/fairy/wb_180.svg"; // "ferz" (upside-down bishop)
-import bf from "./icons/pieces/fairy/bb_180.svg";
-import wd from "./icons/pieces/fairy/wn_180.svg"; // "night rider" (upside-down knight)
-import bd from "./icons/pieces/fairy/bn_180.svg";
-import we from "./icons/pieces/fairy/we.svg"; // "empress" (knight/rook combo)
-import be from "./icons/pieces/fairy/be.svg"; // "empress"
-import ws from "./icons/pieces/fairy/ws.svg"; // "princess" (knight/bishop combo)
-import bs from "./icons/pieces/fairy/bs.svg"; // "princess"
-import wj from "./icons/white_joker.svg"; //
-import bj from "./icons/black_joker.svg";
+import wm from './icons/pieces/fairy/wk_180.svg'; // "mann" (upside-down king)
+import bm from './icons/pieces/fairy/bk_180.svg';
+import wf from './icons/pieces/fairy/wb_180.svg'; // "ferz" (upside-down bishop)
+import bf from './icons/pieces/fairy/bb_180.svg';
+import wd from './icons/pieces/fairy/wn_180.svg'; // "night rider" (upside-down knight)
+import bd from './icons/pieces/fairy/bn_180.svg';
+import we from './icons/pieces/fairy/we.svg'; // "empress" (knight/rook combo)
+import be from './icons/pieces/fairy/be.svg'; // "empress"
+import ws from './icons/pieces/fairy/ws.svg'; // "princess" (knight/bishop combo)
+import bs from './icons/pieces/fairy/bs.svg'; // "princess"
+import wj from './icons/white_joker.svg'; //
+import bj from './icons/black_joker.svg';
 
 
 import './variant-style.css';
@@ -40,7 +40,7 @@ class HumanVsHuman extends Component {
 
   componentDidMount() {
     this.setState({
-      turn: this.game.turn()
+      turn: this.game.turn(),
     });
     this.updateGameResult(); // in case the FEN string gives an ending position
   }
@@ -50,7 +50,7 @@ class HumanVsHuman extends Component {
     if (this.props.editMode && this.props.sparePiece !== 'cursor' && prevProps.sparePiece === 'cursor') {
       this.setState({
         squareStyles: {},
-        fromSquare: ''
+        fromSquare: '',
       });
     }
     // not totally necessary, but if we didn't do this, then
@@ -61,8 +61,8 @@ class HumanVsHuman extends Component {
 
   flipOrientation = () => {
     this.setState({
-      orientation: this.state.orientation === 'white' ? 'black' : 'white'
-    })
+      orientation: this.state.orientation === 'white' ? 'black' : 'white',
+    });
   }
 
   clearBoard = () => {
@@ -70,11 +70,11 @@ class HumanVsHuman extends Component {
     this.setState({
       fen: this.game.fen(),
       fromSquare: '',
-      squareStyles: {}
+      squareStyles: {},
     });
     if (this.props.handleFenChange) {
-      this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
-    };
+      this.props.handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
+    }
   }
 
   resetBoard = () => {
@@ -82,11 +82,11 @@ class HumanVsHuman extends Component {
     this.setState({
       fen: this.game.fen(),
       fromSquare: '',
-      squareStyles: {}
+      squareStyles: {},
     });
     if (this.props.handleFenChange) {
-      this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
-    };
+      this.props.handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
+    }
   }
 
   prevMove = () => {
@@ -95,7 +95,7 @@ class HumanVsHuman extends Component {
       this.game.undo();
       this.setState({
         fen: this.game.fen(),
-        reverseHistory
+        reverseHistory,
       }, () => console.log(this.game.history(), this.state.reverseHistory));
     }
   }
@@ -107,14 +107,14 @@ class HumanVsHuman extends Component {
       this.game.move(move);
       this.setState({
         fen: this.game.fen(),
-        reverseHistory
+        reverseHistory,
       }, () => console.log(this.game.history(), this.state.reverseHistory));
     }
   }
 
   // adjust board size according to window size
   calcWidth = (dimensions) => {
-    let customWidth = Math.min(540/640 * dimensions.screenWidth, 600/640 * dimensions.screenHeight);
+    let customWidth = Math.min(540 / 640 * dimensions.screenWidth, 600 / 640 * dimensions.screenHeight);
     if (customWidth < 300) customWidth = 300;
     return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
   }
@@ -144,26 +144,21 @@ class HumanVsHuman extends Component {
     if (this.game.game_over()) {
       let result;
       if (this.game.in_checkmate()) {
-        result = "checkmate";
-      }
-      else if (this.props.variant === 3 && this.game.extinguished()) {
+        result = 'checkmate';
+      } else if (this.props.variant === 3 && this.game.extinguished()) {
         result = 'extinction';
-      }
-      else if (this.game.in_stalemate()) {
-        result = "stalemate";
-      }
-      else if (this.game.insufficient_material()) {
-        result = "insufficient";
-      }
-      else if (this.game.in_threefold_repetition()) {
-        result = "repetition";
-      }
-      else {
+      } else if (this.game.in_stalemate()) {
+        result = 'stalemate';
+      } else if (this.game.insufficient_material()) {
+        result = 'insufficient';
+      } else if (this.game.in_threefold_repetition()) {
+        result = 'repetition';
+      } else {
         result = 'fifty';
       }
       this.setState({
         gameOver: true,
-        gameResult: result
+        gameResult: result,
       });
     }
     /* (we will pass the value of this.state.gameResult to GameData) */
@@ -188,7 +183,7 @@ class HumanVsHuman extends Component {
       });
 
       // highlight the destination square of every possible move, moves[i].to
-      const hintSquares = moves.map(move => move.to);
+      const hintSquares = moves.map((move) => move.to);
       this.highlightSquare(hintSquares);
 
       // process the case where the user has registered a move by clicking
@@ -212,34 +207,31 @@ class HumanVsHuman extends Component {
 
       // end the game if necessary
       this.updateGameResult();
-    }
-    else { // edit mode
+    } else { // edit mode
       if (this.props.sparePiece !== 'cursor') {
         // if the selected square is not empty
         if (this.game.get(square)) {
           if (this.props.sparePiece === 'trash') { // if trash icon is selected, delete piece on selected square
             this.game.remove(square);
             this.setState({
-              fen: this.game.fen()
+              fen: this.game.fen(),
             });
             if (this.props.handleFenChange) {
-              this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
-            };
+              this.props.handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
+            }
           }
-        }
-        else { // place the selected spare piece on the selected square if the selected square is empty
-          const type = this.props.sparePiece.toLowerCase(); 
+        } else { // place the selected spare piece on the selected square if the selected square is empty
+          const type = this.props.sparePiece.toLowerCase();
           const color = this.props.sparePiece === this.props.sparePiece.toLowerCase() ? 'b' : 'w';
-          this.game.put({ type: type, color: color }, square);
+          this.game.put({ type, color }, square);
           this.setState({
-            fen: this.game.fen()
+            fen: this.game.fen(),
           });
           if (this.props.handleFenChange) {
-            this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
-          };
+            this.props.handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
+          }
         }
-      }
-      else {
+      } else {
         // do nothing if the person clicked on the same square twice
         if (this.state.fromSquare === square) {
           return;
@@ -267,8 +259,8 @@ class HumanVsHuman extends Component {
         });
 
         if (this.props.handleFenChange) {
-          this.props.handleFenChange(this.game.fen()) // in the /create page, update this.state.startFen
-        };
+          this.props.handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
+        }
       }
     }
   };
@@ -277,14 +269,17 @@ class HumanVsHuman extends Component {
   // This will allow the user to have multiple squares be highlighted simultaneously,
   // for whatever reason (annotation?)
   onSquareRightClick = (square) => {
-    if (!this.props.editMode) 
+    if (!this.props.editMode) {
       this.setState(({ squareStyles }) => ({
         squareStyles: { ...squareStyles, [square]: { backgroundColor: '#e86c65' } },
       }));
+    }
   };
 
   render() {
-    const { fen, history, reverseHistory, turn, gameResult, squareStyles, orientation } = this.state;
+    const {
+      fen, history, reverseHistory, turn, gameResult, squareStyles, orientation,
+    } = this.state;
     return this.props.children({
       squareStyles,
       fen,
@@ -300,15 +295,15 @@ class HumanVsHuman extends Component {
       clearBoard: this.clearBoard,
       prevMove: this.prevMove,
       nextMove: this.nextMove,
-      orientation
+      orientation,
     });
   }
 }
 
-export default function WithMoveValidation(start_fen, variant=0, showData=true, smallBoard=false, editMode=false, sparePiece, customPiece, handleFenChange) {
-  let boardId = variant === 2 ? "grid-board" : "false"; // if variant isn't grid chess, boardId will be set to false
+export default function WithMoveValidation(start_fen, variant = 0, showData = true, smallBoard = false, editMode = false, sparePiece, customPiece, handleFenChange) {
+  const boardId = variant === 2 ? 'grid-board' : 'false'; // if variant isn't grid chess, boardId will be set to false
   return (
-    <div style={smallBoard ? { maxWidth: '384px' } : { maxWidth: '540px' } }>
+    <div style={smallBoard ? { maxWidth: '384px' } : { maxWidth: '540px' }}>
       <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece} customPiece={customPiece} handleFenChange={handleFenChange}>
         { /* HumanVsHuman calls the following function as this.props.children() in its render() method */ }
         {({
@@ -326,15 +321,15 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
           clearBoard,
           prevMove,
           nextMove,
-          orientation
+          orientation,
         }) => {
           // redefine calcWidth() if smallBoard arg is true
           if (smallBoard) {
             calcWidth = (dimensions) => {
-              let customWidth = Math.min(384/460 * dimensions.screenWidth, 430/460 * dimensions.screenHeight);
+              let customWidth = Math.min(384 / 460 * dimensions.screenWidth, 430 / 460 * dimensions.screenHeight);
               if (customWidth < 215) customWidth = 215;
               return (dimensions.screenWidth < 460 || dimensions.screenHeight < 460) ? customWidth : 384;
-            }
+            };
           }
 
           let customPieces = {
@@ -460,49 +455,51 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                 alt="black joker"
               />
             ),
-          }
+          };
 
           // for antichess, replace king with flipped king
           if (variant === 1) {
-            customPieces = {...customPieces, ...{
-              wK: ({ squareWidth }) => (
-                <img
-                  style={{
-                    width: squareWidth,
-                    height: squareWidth,
-                  }}
-                  src={wm}
-                  alt="white mann"
-                />
-              ),
-              bK: ({ squareWidth }) => (
-                <img
-                  style={{
-                    width: squareWidth,
-                    height: squareWidth,
-                  }}
-                  src={bm}
-                  alt="black mann"
-                />
-              ),
-            }}
+            customPieces = {
+              ...customPieces,
+              ...{
+                wK: ({ squareWidth }) => (
+                  <img
+                    style={{
+                      width: squareWidth,
+                      height: squareWidth,
+                    }}
+                    src={wm}
+                    alt="white mann"
+                  />
+                ),
+                bK: ({ squareWidth }) => (
+                  <img
+                    style={{
+                      width: squareWidth,
+                      height: squareWidth,
+                    }}
+                    src={bm}
+                    alt="black mann"
+                  />
+                ),
+              },
+            };
           }
 
-          const gameData =
-            showData ? (
-              <div className="p-1">
-                <GameData
-                  variant={variant}
-                  history={history}
-                  turn={turn}
-                  gameResult={gameResult}
-                  prevMove={prevMove}
-                  nextMove={nextMove}
-                  currentMove={history.length - reverseHistory.length}
-                />
-              </div>
-            ) :
-            null;
+          const gameData = showData ? (
+            <div className="p-1">
+              <GameData
+                variant={variant}
+                history={history}
+                turn={turn}
+                gameResult={gameResult}
+                prevMove={prevMove}
+                nextMove={nextMove}
+                currentMove={history.length - reverseHistory.length}
+              />
+            </div>
+          )
+            : null;
 
           return (
             // <div className="d-flex flex-column">
@@ -512,8 +509,8 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                 <Chessboard
                   position={fen}
                   boardStyle={{
-                      borderRadius: '5px',
-                      boxShadow: '0 2px 3px rgba(0, 0, 0, 0.5)',
+                    borderRadius: '5px',
+                    boxShadow: '0 2px 3px rgba(0, 0, 0, 0.5)',
                   }}
                   pieces={customPieces}
                   lightSquareStyle={{ backgroundColor: '#f7f7f7' }}
@@ -526,7 +523,7 @@ export default function WithMoveValidation(start_fen, variant=0, showData=true, 
                   orientation={orientation}
                 />
               </div>
-              <div style={{ textAlign: "center", margin: '0.4em' }}>
+              <div style={{ textAlign: 'center', margin: '0.4em' }}>
                 <Button size="small" variant="outlined" onClick={flipOrientation}>Flip board</Button>
                 {editMode ? <Button size="small" variant="outlined" onClick={resetBoard}>Reset to starting position</Button> : null}
                 {editMode ? <Button size="small" variant="outlined" onClick={clearBoard}>Clear board</Button> : null}

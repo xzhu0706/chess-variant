@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import * as queries from '../graphql/queries';
-import * as mutations from '../graphql/mutations';
-import * as customMutations from '../customGraphql/mutations';
 import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
 import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
-import './CommentBox.css'
+import * as queries from '../graphql/queries';
+import * as mutations from '../graphql/mutations';
+import * as customMutations from '../customGraphql/mutations';
+import './CommentBox.css';
 
 class CommentBox extends React.Component {
   constructor(props) {
@@ -18,23 +18,27 @@ class CommentBox extends React.Component {
       isAdmin: false,
     };
   }
-  
+
   async componentDidMount() {
     try {
       this.checkAdmin();
       const queryResult = await API.graphql(graphqlOperation(
         queries.getCustomizedVariant, { id: this.props.variant },
       ));
-      const comments = queryResult.data.getCustomizedVariant.comments;
-      const formatted = comments.items.map(comment => {
-        const { id, content, createdAt, user } = comment; 
-        return { id, author: user.username, content, createdAt };
+      const { comments } = queryResult.data.getCustomizedVariant;
+      const formatted = comments.items.map((comment) => {
+        const {
+          id, content, createdAt, user,
+        } = comment;
+        return {
+          id, author: user.username, content, createdAt,
+        };
       });
       this.setState({
-        comments: formatted
+        comments: formatted,
       });
-    } catch(error) {
-      throw new Error("error getting comment data");
+    } catch (error) {
+      throw new Error('error getting comment data');
     }
   }
 
@@ -56,24 +60,24 @@ class CommentBox extends React.Component {
         input: {
           content,
           commentUserId: authorId,
-          commentVariantId: this.props.variant
-        } 
+          commentVariantId: this.props.variant,
+        },
       }));
       const commentId = storedComment.data.createComment.id;
-      const createdAt = storedComment.data.createComment.createdAt;
+      const { createdAt } = storedComment.data.createComment;
 
       const comment = {
         id: commentId,
         author: authorName,
         content,
-        createdAt
+        createdAt,
       };
 
       this.setState({
-        comments: [...this.state.comments, comment]
+        comments: [...this.state.comments, comment],
       });
     } catch {
-      throw new Error("error saving comment");
+      throw new Error('error saving comment');
     }
   }
 
@@ -93,7 +97,7 @@ class CommentBox extends React.Component {
         if (deletedComment) {
           this.setState((prevState) => {
             const comments = [...prevState.comments];
-            const deletedIndex = comments.findIndex(c => c.id === id)
+            const deletedIndex = comments.findIndex((c) => c.id === id);
             comments.splice(deletedIndex, 1);
             return { ...prevState, comments };
           });
@@ -104,12 +108,12 @@ class CommentBox extends React.Component {
       }
     }
   }
-  
+
   formatComments() {
-    return this.state.comments.map(comment => {
-      console.log(comment)
+    return this.state.comments.map((comment) => {
+      console.log(comment);
       return (
-        <Comment 
+        <Comment
           key={comment.id}
           id={comment.id}
           author={comment.author}
@@ -118,7 +122,7 @@ class CommentBox extends React.Component {
           isAdmin={this.state.isAdmin}
           deleteComment={this.deleteComment}
         />
-      ); 
+      );
     });
   }
 
@@ -128,9 +132,9 @@ class CommentBox extends React.Component {
     return (
       <div className="comment-box">
         <h2>Comment Box</h2>
-        <CommentForm handleComment={this.handleComment.bind(this)}/>
+        <CommentForm handleComment={this.handleComment.bind(this)} />
         <h3>
-          {comments.length === 1 ? "1 comment" : `${comments.length} comments`}
+          {comments.length === 1 ? '1 comment' : `${comments.length} comments`}
         </h3>
         {comments}
       </div>
@@ -153,21 +157,21 @@ class CommentForm extends React.Component {
   // update this.state.content with user input
   handleContentChange(event) {
     this.setState({
-      content: event.target.value
+      content: event.target.value,
     });
   }
 
   // store comment when user submits comment
-  async handleSubmit(event) { 
+  async handleSubmit(event) {
     event.preventDefault();
     // get currently logged in user
     const author = await Auth.currentUserInfo();
     if (!author) {
-      alert("Please log in to comment.");
+      alert('Please log in to comment.');
       return;
     }
     // pass user details and content to callback
-    this.props.handleComment(author.attributes.sub, author.username, this.state.content)
+    this.props.handleComment(author.attributes.sub, author.username, this.state.content);
   }
 
   render() {
@@ -177,7 +181,7 @@ class CommentForm extends React.Component {
         <div style={{ fontStyle: 'italic', padding: '0.25rem 0' }}>
           <TextField
             className="comment-field"
-            multiline={true}
+            multiline
             rows="8"
             placeholder="Comment"
             required
@@ -192,7 +196,9 @@ class CommentForm extends React.Component {
 
 class Comment extends React.Component {
   render() {
-    const { id, author, content, createdAt, isAdmin, deleteComment } = this.props;
+    const {
+      id, author, content, createdAt, isAdmin, deleteComment,
+    } = this.props;
     return (
       <div className="comment row">
         <div className="col-2">
@@ -211,13 +217,15 @@ class Comment extends React.Component {
             </a>
           )}
           <p>{content}</p>
-          <span className="float-right text-muted">{createdAt.slice(0,10)} {createdAt.slice(11,19)}</span>
+          <span className="float-right text-muted">
+            {createdAt.slice(0, 10)}
+            {createdAt.slice(11, 19)}
+          </span>
         </div>
       </div>
     );
   }
 }
-
 
 
 export default CommentBox;

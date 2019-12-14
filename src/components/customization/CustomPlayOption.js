@@ -10,20 +10,20 @@ class CustomPlayOption extends React.Component {
     super(props);
 
     this.state = {
-      redirect: false
+      redirect: false,
     };
   }
 
   handleSubmit = () => {
     this.setState({
-      redirect: true
+      redirect: true,
     });
   }
 
   validateFen = (fen) => {
     const position = fen.split(' ')[0];
-    let white_kings = (position.match(/k/g) || []).length;
-    let black_kings = (position.match(/K/g) || []).length;
+    const white_kings = (position.match(/k/g) || []).length;
+    const black_kings = (position.match(/K/g) || []).length;
     return white_kings === 1 && black_kings === 1;
   }
 
@@ -31,17 +31,17 @@ class CustomPlayOption extends React.Component {
     // redirect to analysis page and pass props that are accessible via props.location.state
     if (!this.validateFen(this.props.fen)) {
       const errorDiv = document.getElementById('play-err');
-      errorDiv.innerHTML = "";
+      errorDiv.innerHTML = '';
       const span = document.createElement('span');
       const text = document.createTextNode('In chess, both players must have one king each.');
       span.appendChild(text);
       errorDiv.appendChild(span);
       return;
     }
-    let path = '/analysis';
+    const path = '/analysis';
     this.props.history.push({
       pathname: path,
-      state: { fen: this.props.fen, customPiece: this.props.customPiece}
+      state: { fen: this.props.fen, customPiece: this.props.customPiece },
     });
   }
 
@@ -57,8 +57,7 @@ class CustomPlayOption extends React.Component {
           name="fen"
           readOnly
           style={{ margin: '0.25em' }}
-        >
-        </input>
+        />
       </div>
     );
   }

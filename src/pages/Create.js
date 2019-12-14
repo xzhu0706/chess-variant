@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Board from '../WithMoveValidation';
-import SparePieces from '../components/customization/SparePieces.js';
-import PieceCustomize from '../components/customization/PieceCustomize.js';
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
+import PieceCustomize from '../components/customization/PieceCustomize.js';
+import SparePieces from '../components/customization/SparePieces.js';
+import Board from '../WithMoveValidation';
 import * as mutations from '../graphql/mutations';
 import './Create.css';
 
@@ -25,7 +25,7 @@ class Create extends React.Component {
       icon: 'cursor',
       startFen: START_FEN,
       offsets: [],
-      repeatOffsets: []
+      repeatOffsets: [],
     };
     this.handleIconChange = this.handleIconChange.bind(this);
     this.handleRepeatOffsetsChange = this.handleRepeatOffsetsChange.bind(this);
@@ -36,31 +36,31 @@ class Create extends React.Component {
 
   handleIconChange(event) {
     this.setState({
-      icon: event.target.value
+      icon: event.target.value,
     });
-  };
+  }
 
   handleOffsetsChange(event) {
     // separate input into list of numbers (separation criterion: any number of spaces/commas/semicolons); e.g.,
     // '1 2 , -3,4' -> [ 1, 2, -3, 4 ]
     const offsets = (event.target.value).split(/[\s,;]+/).map(Number);
     // remove everything from the list except for numbers that are valid offsets
-    const filtered = offsets.filter(offset => offset && offset >= -119 && offset <= 119 && offset !== 0);
+    const filtered = offsets.filter((offset) => offset && offset >= -119 && offset <= 119 && offset !== 0);
     this.setState({
-      offsets: filtered
+      offsets: filtered,
     });
   }
 
   handleRepeatOffsetsChange(event) {
     const offsets = (event.target.value).split(/[\s,;]+/).map(Number);
-    const filtered = offsets.filter(offset => offset && offset >= -119 && offset <= 119 && offset !== 0);
+    const filtered = offsets.filter((offset) => offset && offset >= -119 && offset <= 119 && offset !== 0);
     this.setState({
-      repeatOffsets: filtered
+      repeatOffsets: filtered,
     });
   }
 
   customPiece() {
-    return { 'c': { '0': this.state.offsets, '1': this.state.repeatOffsets } };
+    return { c: { 0: this.state.offsets, 1: this.state.repeatOffsets } };
   }
 
   async handleSubmit(event) {
@@ -70,7 +70,7 @@ class Create extends React.Component {
     const customPiece = JSON.stringify(this.customPiece());
     const creator = await Auth.currentUserInfo();
     if (!creator) {
-      alert("Please log in to save a variant.");
+      alert('Please log in to save a variant.');
       return;
     }
     const creatorId = creator.attributes.sub;
@@ -78,53 +78,70 @@ class Create extends React.Component {
     // return if name input is empty or is just whitespaces
     if (!name.replace(/\s/g, '')) {
       const saved = document.getElementById('saved');
-      ReactDOM.render(<span style={{ color: 'red' }}><ErrorOutlineIcon className={this.props.icon}/> Empty name! </span>, saved);
+      ReactDOM.render(<span style={{ color: 'red' }}>
+        <ErrorOutlineIcon className={this.props.icon} />
+        {' '}
+Empty name!
+        {' '}
+                      </span>, saved);
       return;
     }
 
     const customVariant = await API.graphql(graphqlOperation(mutations.createCustomizedVariant, {
       input: {
-        approved: false, submitted: false, name, startFen, customPiece, customizedVariantCreatorId: creatorId
-      } 
+        approved: false, submitted: false, name, startFen, customPiece, customizedVariantCreatorId: creatorId,
+      },
     }));
     if (customVariant) {
       const saved = document.getElementById('saved');
-      ReactDOM.render(<CheckCircleOutlineIcon style={{ color: 'green' }} className={this.props.icon}/>, saved);
-    }
-    else {
+      ReactDOM.render(<CheckCircleOutlineIcon style={{ color: 'green' }} className={this.props.icon} />, saved);
+    } else {
       const saved = document.getElementById('saved');
-      ReactDOM.render(<ErrorOutlineIcon className={this.props.icon}/>, saved);
+      ReactDOM.render(<ErrorOutlineIcon className={this.props.icon} />, saved);
     }
   }
 
   // callback that we will pass to Board (not ideal...)
   handleFenChange(startFen) {
     this.setState({
-      startFen
+      startFen,
     });
   }
 
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
-        <div id='board' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', position: 'relative', }}>
+        <div
+          id="board"
+          style={{
+            display: 'flex', flexWrap: 'wrap', justifyContent: 'center', position: 'relative',
+          }}
+        >
           {/* render the board */}
           <div>
             {Board(START_FEN, 0, false, false, true, this.state.icon, this.customPiece(), this.handleFenChange)}
             <div style={{
-            textAlign: 'left',
-            padding: '0.75em',
-            backgroundColor:'#e5e5e6',
-            maxWidth: '540px',
-            margin: 'auto',
-            border: '0.2em solid black' }}>
+              textAlign: 'left',
+              padding: '0.75em',
+              backgroundColor: '#e5e5e6',
+              maxWidth: '540px',
+              margin: 'auto',
+              border: '0.2em solid black',
+            }}
+            >
               <form onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="Your variant name" ref={input => this._name = input} />
+                <input type="text" placeholder="Your variant name" ref={(input) => this._name = input} />
                 <Button type="submit">Save as Variant</Button>
-                <span id="saved"></span>
+                <span id="saved" />
               </form>
-              <div>Exact offsets: {this.state.offsets.length !== 0 ? this.state.offsets.join(', ') : 'N/A'}</div>
-              <div>Regular offsets: {this.state.repeatOffsets.length !== 0 ? this.state.repeatOffsets.join(', ') : 'N/A'}</div>
+              <div>
+Exact offsets:
+                {this.state.offsets.length !== 0 ? this.state.offsets.join(', ') : 'N/A'}
+              </div>
+              <div>
+Regular offsets:
+                {this.state.repeatOffsets.length !== 0 ? this.state.repeatOffsets.join(', ') : 'N/A'}
+              </div>
             </div>
           </div>
           {/* render controlled inputs */}

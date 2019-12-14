@@ -14,7 +14,7 @@ describe('testing SparePieces', () => {
         repeatOffsets={[]}
         onChangeOffsets={onChangeOffsets}
         onChangeRepeatOffsets={onChangeRepeatOffsets}
-      />
+      />,
     );
     const input = getByTestId('test-offset-input');
     fireEvent.change(input, { target: { value: '16' } });
