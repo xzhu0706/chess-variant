@@ -13,7 +13,7 @@ function SparePieces(props) {
         <div className="spares-section">
           <div className="title">standard spares</div>
           <div className="piece-row">
-            <input id="white-pawn" type="radio" name="piece" value="P"/>
+            <input id="white-pawn" data-testid="test-element" type="radio" name="piece" value="P"/>
             <label className="piece-card white-pawn" htmlFor="white-pawn" title="white pawn"></label>
             <input id="white-bishop" type="radio" name="piece" value="B" />
             <label className="piece-card white-bishop" htmlFor="white-bishop" title="white bishop"></label>

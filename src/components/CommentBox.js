@@ -206,7 +206,7 @@ class Comment extends React.Component {
         </div>
         <div className="col-10">
           {isAdmin && (
-            <a href="#" className="float-right">
+            <a href="/#" className="float-right">
               <DeleteForeverTwoToneIcon onClick={(e) => deleteComment(e, id)} style={{ color: '#708070' }} />
             </a>
           )}

@@ -1,6 +1,6 @@
 /* integration tests for chess.js */
 
-const mychessjs = require("./chess.js");
+const mychessjs = require("../../chess/chess");
 
 /* For each variant, this file tests the functions we modified in chess/chess.js, which are
  * generate_moves()         (generates a list of valid moves in the current game position)
