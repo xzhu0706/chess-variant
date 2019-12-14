@@ -36,12 +36,12 @@ class PostCard extends Component{
                 let queryResult = await API.graphql(graphqlOperation(getPost, {id: this.postId}))
                 let comments = queryResult.data.getPost.comments.items
                 comments = comments.map((comment) => {
+                    //alert(JSON.stringify(comment) + " " + comment.createdAt )
                     let author = comment.author
                     let content = comment.content
-                    let elapsedTime = getElapsedTime(comment.createAt)
+                    let elapsedTime = getElapsedTime(comment.createdAt)
                     return (<PostComment key={comment.id} author={author.username} content={content} elapsedTime={elapsedTime}/>)
                 })
-                alert(JSON.stringify(comments))
                 this.setState({showComments: !this.state.showComments, comments})
             }
             catch(error) {console.log(error)}

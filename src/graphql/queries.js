@@ -516,24 +516,6 @@ export const getPost = `query GetPost($id: ID!) {
         }
         content
         createdAt
-        post {
-          id
-          author {
-            id
-            username
-          }
-          title
-          content
-          createdAt
-          comments {
-            items {
-              id
-              content
-              createdAt
-            }
-            nextToken
-          }
-        }
       }
       nextToken
     }
