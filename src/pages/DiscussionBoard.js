@@ -36,7 +36,7 @@ class DiscussionBoard extends Component{
                 let title = post.title
                 let content = post.content
                 let elapsedTime = this.getElapsedTime(post.createdAt)
-                return (<PostCard author={author} elapsedTime={elapsedTime} title={title} content={content} />)
+                return (<PostCard postId={post.id} author={author} elapsedTime={elapsedTime} title={title} content={content} />)
             })
             this.setState({posts})
         }

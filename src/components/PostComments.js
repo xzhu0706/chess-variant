@@ -50,7 +50,7 @@ class PostComments extends Component {
                         placeholder="  Leave a comment."
                         inputProps={{ 'aria-label': 'naked' }}
                     />
-                    <Fab variant="extended" color="primary">Add Comment</Fab>
+                    <Fab onClick={this.props.handleNewComment} variant="extended" color="primary">Add Comment</Fab>
                 </Box>
                 <Comment.Group className="ui comments">
                     {comments}

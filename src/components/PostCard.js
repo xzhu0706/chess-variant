@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
-import {Box, Avatar, Typography } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import { FaRegComment } from "react-icons/fa";
-import { FaRegThumbsUp } from "react-icons/fa";
+import React, {Component} from 'react'
+import {Box, Avatar, Typography } from '@material-ui/core'
 import PostComments from './PostComments'
 import { Button } from 'semantic-ui-react'
+import { API, graphqlOperation, Auth } from 'aws-amplify';
+import getUserInfo from '../Utils/CurrentUser'
+import {createComment} from '../graphql/mutations'
+import {listComments} from '../graphql/queries'
 
 class PostCard extends Component{
 
@@ -14,11 +15,30 @@ class PostCard extends Component{
             showComments: false,
             comments: []
         }
+        this.postId = this.props.postId
+        this.currentUser = null
+    }
+
+    async componentDidMount(){
+        this.currentUser = await getUserInfo()
     }
 
     toggleCommentsVisibility = () => {
         alert('clicked')
         this.setState({showComments: !this.state.showComments})
+    }
+
+    handleNewComment = async (commentText) => {
+        let comment = {}
+        comment.author = this.currentUser
+        comment.content = commentText
+        comment.createdAt = new Date().toJSON()
+        comment.postCommentPostId = this.postId
+        try {
+            let createdComment = await API.graphql(graphqlOperation(createComment, { input: comment}));
+
+        }
+        catch(error) {console.log(error)}
     }
 
     render(){
@@ -46,23 +66,16 @@ class PostCard extends Component{
                             labelPosition='right'
                         />
                         <Button
+                            onClick = {this.toggleCommentsVisibility}
                             style = {{marginLeft: '10px'}}
                             content='Comment'
                             icon='comments outline'
                             label={{ as: 'a', basic: true, content: '2,048' }}
                             labelPosition='right'
                         />
-                        {/*<IconButton>
-                            <FaRegThumbsUp style={{ fontSize: 22 }} />
-                            <Typography style={{ marginLeft: '5px' }} variant='subtitle2'>100</Typography>
-                        </IconButton>
-                        <IconButton onTouchTap={this.toggleCommentsVisibilit}>
-                            <FaRegComment onClick={this.toggleCommentsVisibility} style={{ fontSize: 24 }} />
-                            <Typography style={{ marginLeft: '5px' }} variant='subtitle2'>50</Typography>
-                        </IconButton>*/}
                     </Box>
                 </Box>
-                {this.state.showComments && (<PostComments comments={this.state.comments}/>)}
+                {this.state.showComments && (<PostComments handleNewComment = {this.handleNewComment} comments={this.state.comments}/>)}
             </Box>
         )}
 }
