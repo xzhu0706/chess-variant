@@ -555,31 +555,6 @@ export const listPosts = `query ListPosts(
       title
       content
       createdAt
-      comments {
-        items {
-          id
-          author {
-            id
-            username
-          }
-          content
-          createdAt
-          post {
-            id
-            author {
-              id
-              username
-            }
-            title
-            content
-            createdAt
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
     }
     nextToken
   }
@@ -596,38 +571,6 @@ export const getPostComment = `query GetPostComment($id: ID!) {
     createdAt
     post {
       id
-      author {
-        id
-        username
-      }
-      title
-      content
-      createdAt
-      comments {
-        items {
-          id
-          author {
-            id
-            username
-          }
-          content
-          createdAt
-          post {
-            id
-            author {
-              id
-              username
-            }
-            title
-            content
-            createdAt
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
     }
   }
 }
@@ -648,31 +591,6 @@ export const listPostComments = `query ListPostComments(
       createdAt
       post {
         id
-        author {
-          id
-          username
-        }
-        title
-        content
-        createdAt
-        comments {
-          items {
-            id
-            author {
-              id
-              username
-            }
-            content
-            createdAt
-            post {
-              id
-              title
-              content
-              createdAt
-            }
-          }
-          nextToken
-        }
       }
     }
     nextToken

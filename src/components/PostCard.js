@@ -13,7 +13,7 @@ class PostCard extends Component{
         super(props)
         this.state = {
             showComments: false,
-            comments: []
+            comments: null
         }
         this.postId = this.props.postId
         this.currentUser = null
@@ -21,10 +21,21 @@ class PostCard extends Component{
 
     async componentDidMount(){
         this.currentUser = await getUserInfo()
+        let filter = {''}
+
     }
 
     toggleCommentsVisibility = () => {
-        alert('clicked')
+        //There is no need to load the comments if the user doesn't need them.
+        // We can just wait until the comments are expanded and load them if they haven't 
+        //already been loaded.
+
+        // this is essentially saying "if the comments have been expanded(showComments was false) and 
+        //the comments haven't been loaded yet, load them.
+        if(!this.state.showComments && this.state.comments === null){
+            let queryResult = await API.graphql(graphqlOperation(queries.getPost,{}));
+
+        }
         this.setState({showComments: !this.state.showComments})
     }
 
