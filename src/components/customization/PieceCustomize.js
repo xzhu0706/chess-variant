@@ -65,6 +65,7 @@ function PieceCustomize(props) {
       <div className="move-input">
         <TextField
           label="Exact offsets"
+          inputProps={{ 'data-testid': 'test-offset-input' }}
           helperText="Movement to an exact square"
           variant="outlined"
           onChange={props.onChangeOffsets}
