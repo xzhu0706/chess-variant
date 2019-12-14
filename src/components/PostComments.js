@@ -39,14 +39,14 @@ class PostComments extends Component {
         })
         return (
             <Box style={{margin:'15px 15px 15px 15px', backgroundColor: 'whiteSmoke', border: '1px solid lightGray'}} display='flex' flexDirection='column' justifyContent='center'>
-                <Box display='flex' flexDirection='row' justifyContent='center'>
+                <Box style={{marginTop: '10px'}} display='flex' flexDirection='row' justifyContent='space-between'>
                     <InputBase
-                        style={{ marginTop: '10px', border: '1px solid lightGray', borderRadius: '2px', width: '100%', fontFamily: 'Verdana' }}
+                        style={{ backgroundColor: 'white', border: '1px solid lightGray', borderRadius: '20px', width: '75%', fontFamily: 'Verdana' }}
                         multiline={true}
                         onChange={(e) => this.setComment}
                         rows={1}
                         rowsMax={Infinity}
-                        placeholder="Leave a comment."
+                        placeholder="  Leave a comment."
                         inputProps={{ 'aria-label': 'naked' }}
                     />
                     <Fab variant="extended" color="primary">Add Comment</Fab>
