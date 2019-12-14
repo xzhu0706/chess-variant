@@ -60,15 +60,6 @@ export const getGame = `query GetGame($id: ID!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -214,9 +205,6 @@ export const listGames = `query ListGames(
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -342,9 +330,6 @@ export const getMessage = `query GetMessage($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -515,137 +500,31 @@ export const listMessages = `query ListMessages(
 export const getPost = `query GetPost($id: ID!) {
   getPost(id: $id) {
     id
-    title
-    content
-    createdAt
     author {
       id
       username
-      email
-      phoneNumber
-      pastGames {
-        items {
+    }
+    title
+    content
+    createdAt
+    comments {
+      items {
+        id
+        author {
           id
-          game {
-            id
-            players {
-              nextToken
-            }
-            creator {
-              id
-              username
-            }
-            opponent {
-              id
-              username
-            }
-            creatorOrientation
-            time
-            variant
-            fen
-            available
-            ended
-            history
-            result
-            winner
-            createdAt
-            messages {
-              nextToken
-            }
-          }
-          createdAt
-          player {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
+          username
         }
-        nextToken
-      }
-      points
-      skillLevel
-      rank
-      createdAt
-      posts {
-        items {
+        content
+        createdAt
+        post {
           id
-          title
-          content
-          createdAt
           author {
             id
             username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
           }
-        }
-        nextToken
-      }
-      variants {
-        items {
-          id
-          name
-          baseVariant
-          startFen
-          customPiece
-          submitted
-          approved
+          title
+          content
           createdAt
-          creator {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
           comments {
             items {
               id
@@ -655,61 +534,8 @@ export const getPost = `query GetPost($id: ID!) {
             nextToken
           }
         }
-        nextToken
       }
-      comments {
-        items {
-          id
-          content
-          createdAt
-          user {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-          variant {
-            id
-            name
-            baseVariant
-            startFen
-            customPiece
-            submitted
-            approved
-            createdAt
-            creator {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
+      nextToken
     }
   }
 }
@@ -722,14 +548,134 @@ export const listPosts = `query ListPosts(
   listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      title
-      content
-      createdAt
       author {
         id
         username
       }
+      title
+      content
+      createdAt
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
     }
+    nextToken
+  }
+}
+`;
+export const getPostComment = `query GetPostComment($id: ID!) {
+  getPostComment(id: $id) {
+    id
+    author {
+      id
+      username
+    }
+    content
+    createdAt
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const listPostComments = `query ListPostComments(
+  $filter: ModelPostCommentFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listPostComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      author {
+        id
+        username
+      }
+      content
+      createdAt
+      post {
+        id
+        author {
+          id
+          username
+        }
+        title
+        content
+        createdAt
+        comments {
+          items {
+            id
+            author {
+              id
+              username
+            }
+            content
+            createdAt
+            post {
+              id
+              title
+              content
+              createdAt
+            }
+          }
+          nextToken
+        }
+      }
+    }
+    nextToken
   }
 }
 `;
@@ -787,9 +733,6 @@ export const listUsers = `query ListUsers(
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -804,37 +747,6 @@ export const listUsers = `query ListUsers(
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -857,9 +769,6 @@ export const listUsers = `query ListUsers(
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -895,9 +804,6 @@ export const listUsers = `query ListUsers(
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -998,15 +904,6 @@ export const getUser = `query GetUser($id: ID!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -1036,62 +933,6 @@ export const getUser = `query GetUser($id: ID!) {
     skillLevel
     rank
     createdAt
-    posts {
-      items {
-        id
-        title
-        content
-        createdAt
-        author {
-          id
-          username
-          email
-          phoneNumber
-          pastGames {
-            items {
-              id
-              createdAt
-            }
-            nextToken
-          }
-          points
-          skillLevel
-          rank
-          createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
-          variants {
-            items {
-              id
-              name
-              baseVariant
-              startFen
-              customPiece
-              submitted
-              approved
-              createdAt
-            }
-            nextToken
-          }
-          comments {
-            items {
-              id
-              content
-              createdAt
-            }
-            nextToken
-          }
-        }
-      }
-      nextToken
-    }
     variants {
       items {
         id
@@ -1118,15 +959,6 @@ export const getUser = `query GetUser($id: ID!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -1201,15 +1033,6 @@ export const getUser = `query GetUser($id: ID!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -1253,9 +1076,6 @@ export const getUser = `query GetUser($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1340,9 +1160,6 @@ export const getUserByUsername = `query GetUserByUsername(
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1357,37 +1174,6 @@ export const getUserByUsername = `query GetUserByUsername(
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -1410,9 +1196,6 @@ export const getUserByUsername = `query GetUserByUsername(
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1448,9 +1231,6 @@ export const getUserByUsername = `query GetUserByUsername(
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1540,9 +1320,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1557,37 +1334,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -1610,9 +1356,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1648,9 +1391,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1733,9 +1473,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1750,37 +1487,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -1803,9 +1509,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1841,9 +1544,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1929,9 +1629,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1946,37 +1643,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -1999,9 +1665,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -2037,9 +1700,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -2127,25 +1787,6 @@ export const listComplaints = `query ListComplaints(
         skillLevel
         rank
         createdAt
-        posts {
-          items {
-            id
-            title
-            content
-            createdAt
-            author {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-          }
-          nextToken
-        }
         variants {
           items {
             id
@@ -2240,25 +1881,6 @@ export const listComplaints = `query ListComplaints(
         skillLevel
         rank
         createdAt
-        posts {
-          items {
-            id
-            title
-            content
-            createdAt
-            author {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-          }
-          nextToken
-        }
         variants {
           items {
             id
@@ -2356,25 +1978,6 @@ export const listComplaints = `query ListComplaints(
         skillLevel
         rank
         createdAt
-        posts {
-          items {
-            id
-            title
-            content
-            createdAt
-            author {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-          }
-          nextToken
-        }
         variants {
           items {
             id
@@ -2496,25 +2099,6 @@ export const listCustomizedVariants = `query ListCustomizedVariants(
         skillLevel
         rank
         createdAt
-        posts {
-          items {
-            id
-            title
-            content
-            createdAt
-            author {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-          }
-          nextToken
-        }
         variants {
           items {
             id
@@ -2587,9 +2171,6 @@ export const listCustomizedVariants = `query ListCustomizedVariants(
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -2686,9 +2267,6 @@ export const getCustomizedVariant = `query GetCustomizedVariant($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -2703,37 +2281,6 @@ export const getCustomizedVariant = `query GetCustomizedVariant($id: ID!) {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -2756,9 +2303,6 @@ export const getCustomizedVariant = `query GetCustomizedVariant($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -2794,9 +2338,6 @@ export const getCustomizedVariant = `query GetCustomizedVariant($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -2852,15 +2393,6 @@ export const getCustomizedVariant = `query GetCustomizedVariant($id: ID!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -2904,9 +2436,6 @@ export const getCustomizedVariant = `query GetCustomizedVariant($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -2982,9 +2511,6 @@ export const getComment = `query GetComment($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -2999,37 +2525,6 @@ export const getComment = `query GetComment($id: ID!) {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -3052,9 +2547,6 @@ export const getComment = `query GetComment($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3090,9 +2582,6 @@ export const getComment = `query GetComment($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3175,25 +2664,6 @@ export const getComment = `query GetComment($id: ID!) {
         skillLevel
         rank
         createdAt
-        posts {
-          items {
-            id
-            title
-            content
-            createdAt
-            author {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-          }
-          nextToken
-        }
         variants {
           items {
             id
@@ -3266,9 +2736,6 @@ export const getComment = `query GetComment($id: ID!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3355,25 +2822,6 @@ export const listComments = `query ListComments(
         skillLevel
         rank
         createdAt
-        posts {
-          items {
-            id
-            title
-            content
-            createdAt
-            author {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-          }
-          nextToken
-        }
         variants {
           items {
             id
@@ -3454,15 +2902,6 @@ export const listComments = `query ListComments(
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id

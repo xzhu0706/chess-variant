@@ -60,15 +60,6 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -211,9 +202,6 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -331,9 +319,6 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -348,37 +333,6 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -401,9 +355,6 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -439,9 +390,6 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -527,9 +475,6 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -647,9 +592,6 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -664,37 +606,6 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -717,9 +628,6 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -755,9 +663,6 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -843,9 +748,6 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -963,9 +865,6 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -980,37 +879,6 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -1033,9 +901,6 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1071,9 +936,6 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1170,15 +1032,6 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -1332,15 +1185,6 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -1494,15 +1338,6 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -1650,9 +1485,6 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1778,9 +1610,6 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1906,9 +1735,6 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1984,12 +1810,42 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
 export const createPost = `mutation CreatePost($input: CreatePostInput!) {
   createPost(input: $input) {
     id
-    title
-    content
-    createdAt
     author {
       id
       username
+    }
+    title
+    content
+    createdAt
+    comments {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        createdAt
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+      }
+      nextToken
     }
   }
 }
@@ -1997,12 +1853,42 @@ export const createPost = `mutation CreatePost($input: CreatePostInput!) {
 export const updatePost = `mutation UpdatePost($input: UpdatePostInput!) {
   updatePost(input: $input) {
     id
-    title
-    content
-    createdAt
     author {
       id
       username
+    }
+    title
+    content
+    createdAt
+    comments {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        createdAt
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+      }
+      nextToken
     }
   }
 }
@@ -2010,6 +1896,184 @@ export const updatePost = `mutation UpdatePost($input: UpdatePostInput!) {
 export const deletePost = `mutation DeletePost($input: DeletePostInput!) {
   deletePost(input: $input) {
     id
+    author {
+      id
+      username
+    }
+    title
+    content
+    createdAt
+    comments {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        createdAt
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const createPostComment = `mutation CreatePostComment($input: CreatePostCommentInput!) {
+  createPostComment(input: $input) {
+    id
+    author {
+      id
+      username
+    }
+    content
+    createdAt
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const updatePostComment = `mutation UpdatePostComment($input: UpdatePostCommentInput!) {
+  updatePostComment(input: $input) {
+    id
+    author {
+      id
+      username
+    }
+    content
+    createdAt
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const deletePostComment = `mutation DeletePostComment($input: DeletePostCommentInput!) {
+  deletePostComment(input: $input) {
+    id
+    author {
+      id
+      username
+    }
+    content
+    createdAt
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
   }
 }
 `;
@@ -2075,15 +2139,6 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -2113,62 +2168,6 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
     skillLevel
     rank
     createdAt
-    posts {
-      items {
-        id
-        title
-        content
-        createdAt
-        author {
-          id
-          username
-          email
-          phoneNumber
-          pastGames {
-            items {
-              id
-              createdAt
-            }
-            nextToken
-          }
-          points
-          skillLevel
-          rank
-          createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
-          variants {
-            items {
-              id
-              name
-              baseVariant
-              startFen
-              customPiece
-              submitted
-              approved
-              createdAt
-            }
-            nextToken
-          }
-          comments {
-            items {
-              id
-              content
-              createdAt
-            }
-            nextToken
-          }
-        }
-      }
-      nextToken
-    }
     variants {
       items {
         id
@@ -2195,15 +2194,6 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -2278,15 +2268,6 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -2330,9 +2311,6 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -2417,15 +2395,6 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -2455,62 +2424,6 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
     skillLevel
     rank
     createdAt
-    posts {
-      items {
-        id
-        title
-        content
-        createdAt
-        author {
-          id
-          username
-          email
-          phoneNumber
-          pastGames {
-            items {
-              id
-              createdAt
-            }
-            nextToken
-          }
-          points
-          skillLevel
-          rank
-          createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
-          variants {
-            items {
-              id
-              name
-              baseVariant
-              startFen
-              customPiece
-              submitted
-              approved
-              createdAt
-            }
-            nextToken
-          }
-          comments {
-            items {
-              id
-              content
-              createdAt
-            }
-            nextToken
-          }
-        }
-      }
-      nextToken
-    }
     variants {
       items {
         id
@@ -2537,15 +2450,6 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -2620,15 +2524,6 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -2672,9 +2567,6 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -2759,15 +2651,6 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -2797,62 +2680,6 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
     skillLevel
     rank
     createdAt
-    posts {
-      items {
-        id
-        title
-        content
-        createdAt
-        author {
-          id
-          username
-          email
-          phoneNumber
-          pastGames {
-            items {
-              id
-              createdAt
-            }
-            nextToken
-          }
-          points
-          skillLevel
-          rank
-          createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
-          variants {
-            items {
-              id
-              name
-              baseVariant
-              startFen
-              customPiece
-              submitted
-              approved
-              createdAt
-            }
-            nextToken
-          }
-          comments {
-            items {
-              id
-              content
-              createdAt
-            }
-            nextToken
-          }
-        }
-      }
-      nextToken
-    }
     variants {
       items {
         id
@@ -2879,15 +2706,6 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -2962,15 +2780,6 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -3014,9 +2823,6 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3090,9 +2896,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3107,37 +2910,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -3160,9 +2932,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3198,9 +2967,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3283,9 +3049,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3300,37 +3063,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -3353,9 +3085,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3391,9 +3120,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3479,9 +3205,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3496,37 +3219,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -3549,9 +3241,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3587,9 +3276,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3681,9 +3367,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3698,37 +3381,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -3751,9 +3403,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3789,9 +3438,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3874,9 +3520,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3891,37 +3534,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -3944,9 +3556,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3982,9 +3591,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4070,9 +3676,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4087,37 +3690,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -4140,9 +3712,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4178,9 +3747,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4272,9 +3838,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4289,37 +3852,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -4342,9 +3874,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4380,9 +3909,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4465,9 +3991,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4482,37 +4005,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -4535,9 +4027,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4573,9 +4062,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4661,9 +4147,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4678,37 +4161,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -4731,9 +4183,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4769,9 +4218,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4870,9 +4316,6 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4887,37 +4330,6 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -4940,9 +4352,6 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4978,9 +4387,6 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5036,15 +4442,6 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -5088,9 +4485,6 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5171,9 +4565,6 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5188,37 +4579,6 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -5241,9 +4601,6 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5279,9 +4636,6 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5337,15 +4691,6 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -5389,9 +4734,6 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5472,9 +4814,6 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5489,37 +4828,6 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -5542,9 +4850,6 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5580,9 +4885,6 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5638,15 +4940,6 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -5690,9 +4983,6 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5768,9 +5058,6 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5785,37 +5072,6 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -5838,9 +5094,6 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5876,9 +5129,6 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5961,25 +5211,6 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
         skillLevel
         rank
         createdAt
-        posts {
-          items {
-            id
-            title
-            content
-            createdAt
-            author {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-          }
-          nextToken
-        }
         variants {
           items {
             id
@@ -6052,9 +5283,6 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6145,9 +5373,6 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6162,37 +5387,6 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -6215,9 +5409,6 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6253,9 +5444,6 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6338,25 +5526,6 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
         skillLevel
         rank
         createdAt
-        posts {
-          items {
-            id
-            title
-            content
-            createdAt
-            author {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-          }
-          nextToken
-        }
         variants {
           items {
             id
@@ -6429,9 +5598,6 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6522,9 +5688,6 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6539,37 +5702,6 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -6592,9 +5724,6 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6630,9 +5759,6 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6715,25 +5841,6 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
         skillLevel
         rank
         createdAt
-        posts {
-          items {
-            id
-            title
-            content
-            createdAt
-            author {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-          }
-          nextToken
-        }
         variants {
           items {
             id
@@ -6806,9 +5913,6 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }

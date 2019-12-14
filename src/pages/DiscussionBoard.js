@@ -92,7 +92,6 @@ class DiscussionBoard extends Component{
     }
 
     render() {
-        
         return (
             <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', marginLeft: '10%', width: '40%', marginTop: '70px'}}>
                 <Box display='flex' flexDirection='row' justifyContent='flex-end'>

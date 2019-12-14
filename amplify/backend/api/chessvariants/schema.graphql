@@ -113,6 +113,15 @@ type Post @model{
   title: String!
   content: String!
   createdAt: AWSDateTime!
+  comments: [PostComment] @connection(name: "PostComments", sortField: "createdAt")
+}
+
+type PostComment @model {
+  id: ID!
+  author: PlayerInfo!
+  content: String!
+  createdAt: AWSDateTime!
+  post: Post! @connection(name: "PostComments")
 }
 
 type PlayerInfo {

@@ -394,20 +394,6 @@ class Game extends Component {
     this.setState({ messageList: [...this.state.messageList, message] });
   }
 
-  getUserInfo = async () => {
-    const currentUser = {};
-    await Auth.currentAuthenticatedUser().then((user) => {
-      currentUser.id = user.attributes.sub;
-      currentUser.username = user.username;
-    }).catch(async (e) => {
-      await Auth.currentCredentials().then((credential) => {
-        currentUser.id = credential.identityId.split(':')[1];
-        currentUser.username = 'anonymous';
-      });
-    });
-    return currentUser;
-  }
-
   toggleWidget = () => {
     this.setState({ isChatWidgetOpen: !this.state.isChatWidgetOpen });
     this.setState({ messagesCount: 0 });

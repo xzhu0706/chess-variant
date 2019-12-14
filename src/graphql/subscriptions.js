@@ -60,15 +60,6 @@ export const onCreateGame = `subscription OnCreateGame {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -222,15 +213,6 @@ export const onUpdateGame = `subscription OnUpdateGame {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -384,15 +366,6 @@ export const onDeleteGame = `subscription OnDeleteGame {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -546,15 +519,6 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -697,9 +661,6 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -817,9 +778,6 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -834,37 +792,6 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -887,9 +814,6 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -925,9 +849,6 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1013,9 +934,6 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1133,9 +1051,6 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1150,37 +1065,6 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -1203,9 +1087,6 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1241,9 +1122,6 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1329,9 +1207,6 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1449,9 +1324,6 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1466,37 +1338,6 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -1519,9 +1360,6 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1557,9 +1395,6 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1650,9 +1485,6 @@ export const onCreateMessage = `subscription OnCreateMessage {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1778,9 +1610,6 @@ export const onUpdateMessage = `subscription OnUpdateMessage {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1906,9 +1735,6 @@ export const onDeleteMessage = `subscription OnDeleteMessage {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -1984,137 +1810,31 @@ export const onDeleteMessage = `subscription OnDeleteMessage {
 export const onCreatePost = `subscription OnCreatePost {
   onCreatePost {
     id
-    title
-    content
-    createdAt
     author {
       id
       username
-      email
-      phoneNumber
-      pastGames {
-        items {
+    }
+    title
+    content
+    createdAt
+    comments {
+      items {
+        id
+        author {
           id
-          game {
-            id
-            players {
-              nextToken
-            }
-            creator {
-              id
-              username
-            }
-            opponent {
-              id
-              username
-            }
-            creatorOrientation
-            time
-            variant
-            fen
-            available
-            ended
-            history
-            result
-            winner
-            createdAt
-            messages {
-              nextToken
-            }
-          }
-          createdAt
-          player {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
+          username
         }
-        nextToken
-      }
-      points
-      skillLevel
-      rank
-      createdAt
-      posts {
-        items {
+        content
+        createdAt
+        post {
           id
-          title
-          content
-          createdAt
           author {
             id
             username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
           }
-        }
-        nextToken
-      }
-      variants {
-        items {
-          id
-          name
-          baseVariant
-          startFen
-          customPiece
-          submitted
-          approved
+          title
+          content
           createdAt
-          creator {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
           comments {
             items {
               id
@@ -2124,61 +1844,8 @@ export const onCreatePost = `subscription OnCreatePost {
             nextToken
           }
         }
-        nextToken
       }
-      comments {
-        items {
-          id
-          content
-          createdAt
-          user {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-          variant {
-            id
-            name
-            baseVariant
-            startFen
-            customPiece
-            submitted
-            approved
-            createdAt
-            creator {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
+      nextToken
     }
   }
 }
@@ -2186,137 +1853,31 @@ export const onCreatePost = `subscription OnCreatePost {
 export const onUpdatePost = `subscription OnUpdatePost {
   onUpdatePost {
     id
-    title
-    content
-    createdAt
     author {
       id
       username
-      email
-      phoneNumber
-      pastGames {
-        items {
+    }
+    title
+    content
+    createdAt
+    comments {
+      items {
+        id
+        author {
           id
-          game {
-            id
-            players {
-              nextToken
-            }
-            creator {
-              id
-              username
-            }
-            opponent {
-              id
-              username
-            }
-            creatorOrientation
-            time
-            variant
-            fen
-            available
-            ended
-            history
-            result
-            winner
-            createdAt
-            messages {
-              nextToken
-            }
-          }
-          createdAt
-          player {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
+          username
         }
-        nextToken
-      }
-      points
-      skillLevel
-      rank
-      createdAt
-      posts {
-        items {
+        content
+        createdAt
+        post {
           id
-          title
-          content
-          createdAt
           author {
             id
             username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
           }
-        }
-        nextToken
-      }
-      variants {
-        items {
-          id
-          name
-          baseVariant
-          startFen
-          customPiece
-          submitted
-          approved
+          title
+          content
           createdAt
-          creator {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
           comments {
             items {
               id
@@ -2326,54 +1887,91 @@ export const onUpdatePost = `subscription OnUpdatePost {
             nextToken
           }
         }
-        nextToken
       }
+      nextToken
+    }
+  }
+}
+`;
+export const onDeletePost = `subscription OnDeletePost {
+  onDeletePost {
+    id
+    author {
+      id
+      username
+    }
+    title
+    content
+    createdAt
+    comments {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        createdAt
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onCreatePostComment = `subscription OnCreatePostComment {
+  onCreatePostComment {
+    id
+    author {
+      id
+      username
+    }
+    content
+    createdAt
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
       comments {
         items {
           id
-          content
-          createdAt
-          user {
+          author {
             id
             username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
           }
-          variant {
+          content
+          createdAt
+          post {
             id
-            name
-            baseVariant
-            startFen
-            customPiece
-            submitted
-            approved
-            createdAt
-            creator {
+            author {
               id
               username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
             }
+            title
+            content
+            createdAt
             comments {
               nextToken
             }
@@ -2385,197 +1983,89 @@ export const onUpdatePost = `subscription OnUpdatePost {
   }
 }
 `;
-export const onDeletePost = `subscription OnDeletePost {
-  onDeletePost {
+export const onUpdatePostComment = `subscription OnUpdatePostComment {
+  onUpdatePostComment {
     id
-    title
-    content
-    createdAt
     author {
       id
       username
-      email
-      phoneNumber
-      pastGames {
-        items {
-          id
-          game {
-            id
-            players {
-              nextToken
-            }
-            creator {
-              id
-              username
-            }
-            opponent {
-              id
-              username
-            }
-            creatorOrientation
-            time
-            variant
-            fen
-            available
-            ended
-            history
-            result
-            winner
-            createdAt
-            messages {
-              nextToken
-            }
-          }
-          createdAt
-          player {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
+    }
+    content
+    createdAt
+    post {
+      id
+      author {
+        id
+        username
       }
-      points
-      skillLevel
-      rank
+      title
+      content
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
-      variants {
-        items {
-          id
-          name
-          baseVariant
-          startFen
-          customPiece
-          submitted
-          approved
-          createdAt
-          creator {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-          comments {
-            items {
-              id
-              content
-              createdAt
-            }
-            nextToken
-          }
-        }
-        nextToken
-      }
       comments {
         items {
           id
-          content
-          createdAt
-          user {
+          author {
             id
             username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
             }
-            points
-            skillLevel
-            rank
+            title
+            content
             createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
             comments {
               nextToken
             }
           }
-          variant {
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onDeletePostComment = `subscription OnDeletePostComment {
+  onDeletePostComment {
+    id
+    author {
+      id
+      username
+    }
+    content
+    createdAt
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      comments {
+        items {
+          id
+          author {
             id
-            name
-            baseVariant
-            startFen
-            customPiece
-            submitted
-            approved
-            createdAt
-            creator {
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
               id
               username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
             }
+            title
+            content
+            createdAt
             comments {
               nextToken
             }
@@ -2649,15 +2139,6 @@ export const onCreateUser = `subscription OnCreateUser {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -2687,62 +2168,6 @@ export const onCreateUser = `subscription OnCreateUser {
     skillLevel
     rank
     createdAt
-    posts {
-      items {
-        id
-        title
-        content
-        createdAt
-        author {
-          id
-          username
-          email
-          phoneNumber
-          pastGames {
-            items {
-              id
-              createdAt
-            }
-            nextToken
-          }
-          points
-          skillLevel
-          rank
-          createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
-          variants {
-            items {
-              id
-              name
-              baseVariant
-              startFen
-              customPiece
-              submitted
-              approved
-              createdAt
-            }
-            nextToken
-          }
-          comments {
-            items {
-              id
-              content
-              createdAt
-            }
-            nextToken
-          }
-        }
-      }
-      nextToken
-    }
     variants {
       items {
         id
@@ -2769,15 +2194,6 @@ export const onCreateUser = `subscription OnCreateUser {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -2852,15 +2268,6 @@ export const onCreateUser = `subscription OnCreateUser {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -2904,9 +2311,6 @@ export const onCreateUser = `subscription OnCreateUser {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -2991,15 +2395,6 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -3029,62 +2424,6 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
     skillLevel
     rank
     createdAt
-    posts {
-      items {
-        id
-        title
-        content
-        createdAt
-        author {
-          id
-          username
-          email
-          phoneNumber
-          pastGames {
-            items {
-              id
-              createdAt
-            }
-            nextToken
-          }
-          points
-          skillLevel
-          rank
-          createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
-          variants {
-            items {
-              id
-              name
-              baseVariant
-              startFen
-              customPiece
-              submitted
-              approved
-              createdAt
-            }
-            nextToken
-          }
-          comments {
-            items {
-              id
-              content
-              createdAt
-            }
-            nextToken
-          }
-        }
-      }
-      nextToken
-    }
     variants {
       items {
         id
@@ -3111,15 +2450,6 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -3194,15 +2524,6 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -3246,9 +2567,6 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3333,15 +2651,6 @@ export const onDeleteUser = `subscription OnDeleteUser {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -3371,62 +2680,6 @@ export const onDeleteUser = `subscription OnDeleteUser {
     skillLevel
     rank
     createdAt
-    posts {
-      items {
-        id
-        title
-        content
-        createdAt
-        author {
-          id
-          username
-          email
-          phoneNumber
-          pastGames {
-            items {
-              id
-              createdAt
-            }
-            nextToken
-          }
-          points
-          skillLevel
-          rank
-          createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
-          variants {
-            items {
-              id
-              name
-              baseVariant
-              startFen
-              customPiece
-              submitted
-              approved
-              createdAt
-            }
-            nextToken
-          }
-          comments {
-            items {
-              id
-              content
-              createdAt
-            }
-            nextToken
-          }
-        }
-      }
-      nextToken
-    }
     variants {
       items {
         id
@@ -3453,15 +2706,6 @@ export const onDeleteUser = `subscription OnDeleteUser {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -3536,15 +2780,6 @@ export const onDeleteUser = `subscription OnDeleteUser {
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -3588,9 +2823,6 @@ export const onDeleteUser = `subscription OnDeleteUser {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3664,9 +2896,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3681,37 +2910,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -3734,9 +2932,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3772,9 +2967,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3857,9 +3049,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3874,37 +3063,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -3927,9 +3085,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -3965,9 +3120,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4053,9 +3205,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4070,37 +3219,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -4123,9 +3241,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4161,9 +3276,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4255,9 +3367,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4272,37 +3381,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -4325,9 +3403,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4363,9 +3438,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4448,9 +3520,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4465,37 +3534,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -4518,9 +3556,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4556,9 +3591,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4644,9 +3676,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4661,37 +3690,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -4714,9 +3712,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4752,9 +3747,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4846,9 +3838,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4863,37 +3852,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -4916,9 +3874,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -4954,9 +3909,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5039,9 +3991,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5056,37 +4005,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -5109,9 +4027,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5147,9 +4062,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5235,9 +4147,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5252,37 +4161,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -5305,9 +4183,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5343,9 +4218,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5444,9 +4316,6 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5461,37 +4330,6 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -5514,9 +4352,6 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5552,9 +4387,6 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5610,15 +4442,6 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -5662,9 +4485,6 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5745,9 +4565,6 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5762,37 +4579,6 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -5815,9 +4601,6 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5853,9 +4636,6 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -5911,15 +4691,6 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -5963,9 +4734,6 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6046,9 +4814,6 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6063,37 +4828,6 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -6116,9 +4850,6 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6154,9 +4885,6 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6212,15 +4940,6 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
           skillLevel
           rank
           createdAt
-          posts {
-            items {
-              id
-              title
-              content
-              createdAt
-            }
-            nextToken
-          }
           variants {
             items {
               id
@@ -6264,9 +4983,6 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6342,9 +5058,6 @@ export const onCreateComment = `subscription OnCreateComment {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6359,37 +5072,6 @@ export const onCreateComment = `subscription OnCreateComment {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -6412,9 +5094,6 @@ export const onCreateComment = `subscription OnCreateComment {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6450,9 +5129,6 @@ export const onCreateComment = `subscription OnCreateComment {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6535,25 +5211,6 @@ export const onCreateComment = `subscription OnCreateComment {
         skillLevel
         rank
         createdAt
-        posts {
-          items {
-            id
-            title
-            content
-            createdAt
-            author {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-          }
-          nextToken
-        }
         variants {
           items {
             id
@@ -6626,9 +5283,6 @@ export const onCreateComment = `subscription OnCreateComment {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6719,9 +5373,6 @@ export const onUpdateComment = `subscription OnUpdateComment {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6736,37 +5387,6 @@ export const onUpdateComment = `subscription OnUpdateComment {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -6789,9 +5409,6 @@ export const onUpdateComment = `subscription OnUpdateComment {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6827,9 +5444,6 @@ export const onUpdateComment = `subscription OnUpdateComment {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -6912,25 +5526,6 @@ export const onUpdateComment = `subscription OnUpdateComment {
         skillLevel
         rank
         createdAt
-        posts {
-          items {
-            id
-            title
-            content
-            createdAt
-            author {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-          }
-          nextToken
-        }
         variants {
           items {
             id
@@ -7003,9 +5598,6 @@ export const onUpdateComment = `subscription OnUpdateComment {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -7096,9 +5688,6 @@ export const onDeleteComment = `subscription OnDeleteComment {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -7113,37 +5702,6 @@ export const onDeleteComment = `subscription OnDeleteComment {
       skillLevel
       rank
       createdAt
-      posts {
-        items {
-          id
-          title
-          content
-          createdAt
-          author {
-            id
-            username
-            email
-            phoneNumber
-            pastGames {
-              nextToken
-            }
-            points
-            skillLevel
-            rank
-            createdAt
-            posts {
-              nextToken
-            }
-            variants {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
       variants {
         items {
           id
@@ -7166,9 +5724,6 @@ export const onDeleteComment = `subscription OnDeleteComment {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -7204,9 +5759,6 @@ export const onDeleteComment = `subscription OnDeleteComment {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
@@ -7289,25 +5841,6 @@ export const onDeleteComment = `subscription OnDeleteComment {
         skillLevel
         rank
         createdAt
-        posts {
-          items {
-            id
-            title
-            content
-            createdAt
-            author {
-              id
-              username
-              email
-              phoneNumber
-              points
-              skillLevel
-              rank
-              createdAt
-            }
-          }
-          nextToken
-        }
         variants {
           items {
             id
@@ -7380,9 +5913,6 @@ export const onDeleteComment = `subscription OnDeleteComment {
             skillLevel
             rank
             createdAt
-            posts {
-              nextToken
-            }
             variants {
               nextToken
             }
