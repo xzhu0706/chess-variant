@@ -4,6 +4,7 @@ import { Prompt } from 'react-router';
 import Box from '@material-ui/core/Box';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
+import { Launcher } from 'react-chat-window';
 import * as customQueries from '../customGraphql/queries';
 import * as customMutations from '../customGraphql/mutations';
 import * as customSubscriptions from '../customGraphql/subscriptions';
@@ -12,9 +13,8 @@ import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
 import './Game.css';
 // import Clock from '../components/Clock';
-import GameData from '../GameData';
+import GameData from '../components/GameData';
 import GameInfo from '../components/GameInfo';
-import { Launcher } from 'react-chat-window';
 import awsconfig from '../aws-exports';
 
 
@@ -210,12 +210,12 @@ class Game extends Component {
 
   handleLeavePage = (e) => {
     const confirmationMessage = 'Are you sure you want to leave the game?';
-    e.returnValue = confirmationMessage;     // Gecko, Trident, Chrome 34+
-    return confirmationMessage;              // Gecko, WebKit, Chrome <34
+    e.returnValue = confirmationMessage; // Gecko, Trident, Chrome 34+
+    return confirmationMessage; // Gecko, WebKit, Chrome <34
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.location.search === this.props.location.search
+    return nextProps.location.search === this.props.location.search;
   }
 
   componentWillUnmount() {
@@ -357,7 +357,7 @@ class Game extends Component {
 
   // chessboard.jsx method for responsive board sizing
   calcWidth = (dimensions) => {
-    let customWidth = Math.min(dimensions.screenWidth, 600/640 * dimensions.screenHeight);
+    let customWidth = Math.min(dimensions.screenWidth, 600 / 640 * dimensions.screenHeight);
     if (customWidth < 300) customWidth = 300;
     return (dimensions.screenWidth < 640 || dimensions.screenHeight < 640) ? customWidth : 540;
   }

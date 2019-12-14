@@ -97,8 +97,9 @@ class NavBar extends Component {
   }
 
   linkToUser = (e, val) => {
+    const { history } = this.props;
     if (val) {
-      this.props.history.push(`/account/${val.username}`);
+      history.push(`/account/${val.username}`);
     }
   }
 
@@ -128,7 +129,12 @@ class NavBar extends Component {
                 alignItems: 'flex-end',
               }}
               >
-                <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Chess_pWlt26.svg" alt="Chess Piece" style={imgStyle} fluid />
+                <Image
+                  src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Chess_pWlt26.svg"
+                  alt="Chess Piece"
+                  style={imgStyle}
+                  fluid
+                />
                 <Link to="/" style={{ fontSize: '25px' }}>Chess Variants</Link>
               </Navbar.Brand>
               <ul>

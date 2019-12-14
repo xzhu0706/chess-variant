@@ -11,15 +11,39 @@ function GameInfo({
   return (
     <Box>
       <Paper style={{ border: '1px solid #D3D3D3', marginBottom: '2px' }}>
-        <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h5" component="h5">
+        <Typography
+          style={{
+            fontFamily: 'AppleSDGothicNeo-Bold',
+            color: Colors.CHARCOAL,
+            marginLeft: '5px',
+          }}
+          variant="h5"
+          component="h5"
+        >
           {players}
         </Typography>
-        <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.CHARCOAL, marginLeft: '5px' }} variant="h6" component="h6">
+        <Typography
+          style={{
+            fontFamily: 'AppleSDGothicNeo-Bold',
+            color: Colors.CHARCOAL,
+            marginLeft: '5px',
+          }}
+          variant="h6"
+          component="h6"
+        >
           Variant:
           {' '}
           {variant}
         </Typography>
-        <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px' }} variant="h6" component="h6">
+        <Typography
+          style={{
+            fontFamily: 'AppleSDGothicNeo-Bold',
+            color: '#008000',
+            marginLeft: '5px',
+          }}
+          variant="h6"
+          component="h6"
+        >
           {gameResult}
         </Typography>
         <Typography style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#008000', marginLeft: '5px' }} component="p">

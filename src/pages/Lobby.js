@@ -1,7 +1,7 @@
 import React, { Component, forwardRef } from 'react';
 import MaterialTable from 'material-table';
 import Container from '@material-ui/core/Container';
-import { API, graphqlOperation } from 'aws-amplify';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Check from '@material-ui/icons/Check';
@@ -19,20 +19,19 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Button from '@material-ui/core/Button';
 // import * as subscriptions from '../graphql/subscriptions';
-import * as customSubscriptions from '../customGraphql/subscriptions';
 // import * as queries from '../graphql/queries';
 // import * as mutations from '../graphql/mutations';
-import * as customMutations from '../customGraphql/mutations';
-import { Auth } from 'aws-amplify';
-import CreateGameDialog from './CreateGameDialog';
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import * as customMutations from '../customGraphql/mutations';
+import * as customSubscriptions from '../customGraphql/subscriptions';
+import CreateGameDialog from './CreateGameDialog';
 import * as customQueries from '../customGraphql/queries';
 
 
-
-const CURRENT_GAME = 'currentGame'
+const CURRENT_GAME = 'currentGame';
 const lobbyColumns = [
   {
     title: 'Player',
@@ -84,7 +83,7 @@ const lobbyColumns = [
       color: '#333333',
     },
   },
-  {title: '', field: 'gameId',  hidden: true},
+  { title: '', field: 'gameId', hidden: true },
 ];
 
 const tableIcons = {
@@ -129,7 +128,7 @@ class Lobby extends Component {
     };
     let queryResult = await API.graphql(graphqlOperation(customQueries.listGames, { limit, filter }));
     if (queryResult) {
-      console.log(queryResult)
+      console.log(queryResult);
       queryResult = queryResult.data.listGames.items;
       const games = queryResult.map((game) => {
         const gameId = game.id;
@@ -151,7 +150,7 @@ class Lobby extends Component {
       },
     });
 
-    /*this.gameDeletionSubscription = API.graphql(graphqlOperation(subscriptions.onDeleteGame),).subscribe({
+    /* this.gameDeletionSubscription = API.graphql(graphqlOperation(subscriptions.onDeleteGame),).subscribe({
       next: (gameData) => {
         let game = gameData.value.data.onDeleteGame
         let gameId = game.id
@@ -160,21 +159,21 @@ class Lobby extends Component {
         })
         this.setState({games: remainingGames})
       },
-    });*/
+    }); */
 
     this.gameUpdateSubscription = API.graphql(graphqlOperation(customSubscriptions.onUpdateGame)).subscribe({
       next: (gameData) => {
         console.log('joined game', gameData.value.data);
-        let game = gameData.value.data.onUpdateGame
-        let currentGame = localStorage.getItem(CURRENT_GAME)
-        if(currentGame && currentGame === game.id && !game.ended){
-          this.props.history.push({pathname: `/game/${game.id}`})
+        const game = gameData.value.data.onUpdateGame;
+        const currentGame = localStorage.getItem(CURRENT_GAME);
+        if (currentGame && currentGame === game.id && !game.ended) {
+          this.props.history.push({ pathname: `/game/${game.id}` });
         }
         // since they didn't create the game which has now been joined, any other player
         // will simply remove it from their lobby.
-        else if(this.gamesData.hasOwnProperty(game.id)){
-          delete this.gamesData[game.id]
-          this.removeGameFromLobby(game.id)
+        else if (this.gamesData.hasOwnProperty(game.id)) {
+          delete this.gamesData[game.id];
+          this.removeGameFromLobby(game.id);
         }
       },
     });
@@ -193,7 +192,7 @@ class Lobby extends Component {
     }
   }
 
- 
+
   createGame = async (event, gameInfo) => {
     let userInfo;
     this.setState({ showDialog: false });
@@ -243,19 +242,19 @@ class Lobby extends Component {
   }
 
   showDialog = () => {
-    this.setState({showDialog: true})
+    this.setState({ showDialog: true });
   }
 
   closeDialog = () => {
-    this.setState({showDialog: false})
+    this.setState({ showDialog: false });
   }
 
   showJoiningOwnGameDialog = () => {
-    this.setState({showJoiningOwnGameDialog: true})
+    this.setState({ showJoiningOwnGameDialog: true });
   }
 
   closeJoiningOwnGameDialog = () => {
-    this.setState({showJoiningOwnGameDialog: false})
+    this.setState({ showJoiningOwnGameDialog: false });
   }
 
   constructRowFromGameData = (game) => {
@@ -266,14 +265,14 @@ class Lobby extends Component {
     const gameId = game.id;
     const opponent = game.opponent ? game.opponent.username : 'n/a';
     return {
-      creator, player, skillLevel, timing, variant, gameId,opponent
+      creator, player, skillLevel, timing, variant, gameId, opponent,
     };
   }
 
   joinGame = async (event, rowData) => {
     let userInfo;
     const joinGameInput = {};
-    const { gameId,opponent} = rowData;
+    const { gameId, opponent } = rowData;
     await this.getUserInfo().then((user) => {
       if (typeof (user) === 'object') {
         userInfo = { ...user };
@@ -290,14 +289,14 @@ class Lobby extends Component {
     });
 
     // Wrong user trying to join invite only game
-    if(opponent !== "n/a"){
+    if (opponent !== 'n/a') {
       // guest user
-      if(joinGameInput.opponent.username === 'anonymous'){
+      if (joinGameInput.opponent.username === 'anonymous') {
         this.showJoiningOwnGameDialog();
         return;
       }
       // wrong user
-      if(userInfo.username !== opponent){
+      if (userInfo.username !== opponent) {
         this.showJoiningOwnGameDialog();
         return;
       }
@@ -345,10 +344,8 @@ class Lobby extends Component {
   }
 
   removeGameFromLobby = (gameId) => {
-    let remainingGames = this.state.games.filter((gameData) => {
-      return gameData.gameId !== gameId
-    })
-    this.setState({games: remainingGames})
+    const remainingGames = this.state.games.filter((gameData) => gameData.gameId !== gameId);
+    this.setState({ games: remainingGames });
   }
 
   render() {
@@ -371,7 +368,7 @@ class Lobby extends Component {
 
     return (
       <Container maxWidth="sm" style={lobbyStyle}>
-        <CreateGameDialog closeDialog = {this.closeDialog} showDialog = {this.state.showDialog} createGame = {this.createGame} />
+        <CreateGameDialog closeDialog={this.closeDialog} showDialog={this.state.showDialog} createGame={this.createGame} />
         <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog} id="btncreategame">
                 Create a game
         </Button>
@@ -389,7 +386,7 @@ class Lobby extends Component {
 
         <div style={{ width: '100%' }}>
           <MaterialTable
-            onRowClick = {(event, rowData) => this.joinGame(event, rowData)}
+            onRowClick={(event, rowData) => this.joinGame(event, rowData)}
             icons={tableIcons}
             columns={lobbyColumns}
             data={this.state.games}
@@ -419,4 +416,4 @@ class Lobby extends Component {
     );
   }
 }
-export default Lobby; 
+export default Lobby;

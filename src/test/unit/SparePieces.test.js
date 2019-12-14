@@ -8,7 +8,7 @@ describe('testing SparePieces', () => {
 
   test('selecting a spare piece executes the icon change callback', () => {
     const { getByTestId } = render(
-        <SparePieces handleChange={handleIconChange} />
+      <SparePieces handleChange={handleIconChange} />,
     );
     const element = getByTestId('test-element');
     fireEvent.click(element);
