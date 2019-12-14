@@ -8,7 +8,7 @@ function PostComment(props) {
             <Comment.Content style={{ width: '100%' }}>
                 <Box display='flex' flexDirection='row' justifyContent='flex-start' alignItems='center'>
                     <Avatar style={{ backgroundColor: '#333333', color: 'white' }}>{props.author[0]}</Avatar>
-                    <Comment.Author as='a'>{props.author}</Comment.Author>
+                    <Comment.Author style={{marginLeft:'5px'}}as='a'>{props.author}</Comment.Author>
                     <Comment.Metadata>
                         <div>{props.elapsedTime}</div>
                     </Comment.Metadata>

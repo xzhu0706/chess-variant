@@ -14,20 +14,28 @@ class PostComments extends Component {
     render() {
         
         return (
-            <Box style={{margin:'15px 15px 15px 15px', backgroundColor: 'whiteSmoke', border: '1px solid lightGray'}} display='flex' flexDirection='column' justifyContent='center'>
+            <Box style={{margin:'15px 15px 15px 15px', backgroundColor: 'whiteSmoke', border: '1px solid lightGray', borderRadius: '4px'}} display='flex' flexDirection='column' justifyContent='center'>
                 <Box style={{margin: '10px 5px 0 5px'}} display='flex' flexDirection='row' justifyContent='space-between'>
                     <InputBase
-                        style={{ backgroundColor: 'white', border: '1px solid lightGray', borderRadius: '20px', width: '75%', fontFamily: 'Verdana' }}
+                        style={{ 
+                            backgroundColor: 'white', 
+                            border: '1px solid lightGray', 
+                            borderRadius: '20px', 
+                            width: '75%', 
+                            fontFamily: 'Verdana',
+                            paddingLeft: '15px',
+                            height: '40px'
+                        }}
                         multiline={true}
                         onChange={this.setComment}
                         rows={1}
                         rowsMax={Infinity}
-                        placeholder="  Leave a comment."
+                        placeholder="Leave a comment."
                         inputProps={{ 'aria-label': 'naked' }}
                     />
-                    <Fab onClick={(comment) => this.props.handleNewComment(this.comment)} variant="extended" color="primary">Add Comment</Fab>
+                    <Fab style={{backgroundColor: 'dodgerBlue', color: 'white', fontWeight: 'bold', height: '40px'}} onClick={(comment) => this.props.handleNewComment(this.comment)} variant="extended">Add Comment</Fab>
                 </Box>
-                <Comment.Group className="ui comments">
+                <Comment.Group style={{marginLeft: '10px'}} className="ui comments">
                     {this.props.comments}
                 </Comment.Group>
             </Box>

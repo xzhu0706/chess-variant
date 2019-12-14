@@ -8,7 +8,8 @@ import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
-//import getUserInfo from '../Utils/CurrentUser';
+import getUserInfo from '../Utils/CurrentUser';
+import getElapsedTime from '../Utils/ElapsedTime'
 
 const SECONDS_IN_A_MINUTE = 60
 const SECONDS_IN_AN_HOUR = 3600
@@ -26,7 +27,7 @@ class DiscussionBoard extends Component{
     }
 
     async componentDidMount() {
-        this.currentUser = await this.getUserInfo()
+        this.currentUser = await getUserInfo()
         let limit = 100
         let queryResult = await API.graphql(graphqlOperation(queries.listPosts,{}));
         if(queryResult){
@@ -35,7 +36,7 @@ class DiscussionBoard extends Component{
                 let author = post.author.username
                 let title = post.title
                 let content = post.content
-                let elapsedTime = this.getElapsedTime(post.createdAt)
+                let elapsedTime = getElapsedTime(post.createdAt)
                 return (<PostCard postId={post.id} author={author} elapsedTime={elapsedTime} title={title} content={content} />)
             })
             this.setState({posts})
@@ -52,43 +53,11 @@ class DiscussionBoard extends Component{
         post['createdAt'] = createdAt
         try {
             let createdPost = await API.graphql(graphqlOperation(mutations.createPost, { input: post}));
-            let elapsedTime = this.getElapsedTime(createdAt)
+            let elapsedTime = getElapsedTime(createdAt)
             let newPostCard = (<PostCard author={this.currentUser.username} elapsedTime={elapsedTime} title={post.title} content={post.content} />)
             this.setState({posts: [newPostCard, ...this.state.posts]})
         }
         catch(err) {console.log(err)}
-    }
-
-    getUserInfo = async () => {
-        const currentUser = {};
-        await Auth.currentAuthenticatedUser().then((user) => {
-          currentUser.id = user.attributes.sub;
-          currentUser.username = user.username;
-        }).catch(async (e) => {
-          await Auth.currentCredentials().then((credential) => {
-            currentUser.id = credential.identityId.split(':')[1];
-            currentUser.username = 'Anonymous';
-          });
-        });
-        return currentUser;
-    }
-
-    getElapsedTime = (creationDate) => {
-        /**
-         * 1min = 60s = 
-         * 1hour = 60 mins = 3600s
-         * 1 day = 24h = 86400s
-         */
-        let date = new Date(creationDate)
-        let now = new Date()
-
-        //timeDiff is converted to seconds from milliseconds
-        let timeDiff = parseInt((now-date)/1000)
-        let elapsedTime;
-        if((elapsedTime = parseInt(timeDiff/SECONDS_IN_A_DAY)) > 0) return elapsedTime + 'd'
-        if((elapsedTime = parseInt(timeDiff/SECONDS_IN_AN_HOUR)) > 0) return elapsedTime + 'h'
-        if((elapsedTime = parseInt(timeDiff/SECONDS_IN_A_MINUTE)) > 0) return elapsedTime + 'm'
-        return timeDiff + 's'
     }
 
     render() {
