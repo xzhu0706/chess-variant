@@ -23,7 +23,8 @@ class PostComments extends Component {
         const comments = COMMENTS.map((comment) => {
             return (
                 <Comment className='comment'>
-                    <Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/matt.jpg' />
+                    <Avatar style={{ backgroundColor: '#333333', color: 'white' }}>D</Avatar>
+                    <Comment.Avatar src='' />
                     <Comment.Content>
                         <Comment.Author as='a'>{comment.author}</Comment.Author>
                         <Comment.Metadata>
@@ -39,7 +40,7 @@ class PostComments extends Component {
         })
         return (
             <Box style={{margin:'15px 15px 15px 15px', backgroundColor: 'whiteSmoke', border: '1px solid lightGray'}} display='flex' flexDirection='column' justifyContent='center'>
-                <Box style={{marginTop: '10px'}} display='flex' flexDirection='row' justifyContent='space-between'>
+                <Box style={{margin: '10px 5px 0 5px'}} display='flex' flexDirection='row' justifyContent='space-between'>
                     <InputBase
                         style={{ backgroundColor: 'white', border: '1px solid lightGray', borderRadius: '20px', width: '75%', fontFamily: 'Verdana' }}
                         multiline={true}

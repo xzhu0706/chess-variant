@@ -4,6 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { FaRegComment } from "react-icons/fa";
 import { FaRegThumbsUp } from "react-icons/fa";
 import PostComments from './PostComments'
+import { Button } from 'semantic-ui-react'
 
 class PostCard extends Component{
 
@@ -15,7 +16,10 @@ class PostCard extends Component{
         }
     }
 
-    toggleCommentsVisibility = () => {this.setState({showComments: !this.state.showComments})}
+    toggleCommentsVisibility = () => {
+        alert('clicked')
+        this.setState({showComments: !this.state.showComments})
+    }
 
     render(){
         return (
@@ -35,18 +39,30 @@ class PostCard extends Component{
                         {this.props.content}
                     </Typography>
                     <Box display='flex' flexDirection='row' justifyContent='flex-start'>
-                        <IconButton>
+                        <Button
+                            content='Like'
+                            icon='thumbs up outline'
+                            label={{ as: 'a', basic: true, content: '2,048' }}
+                            labelPosition='right'
+                        />
+                        <Button
+                            style = {{marginLeft: '10px'}}
+                            content='Comment'
+                            icon='comments outline'
+                            label={{ as: 'a', basic: true, content: '2,048' }}
+                            labelPosition='right'
+                        />
+                        {/*<IconButton>
                             <FaRegThumbsUp style={{ fontSize: 22 }} />
                             <Typography style={{ marginLeft: '5px' }} variant='subtitle2'>100</Typography>
                         </IconButton>
-                        <IconButton>
-                            <FaRegComment style={{ fontSize: 24 }} />
+                        <IconButton onTouchTap={this.toggleCommentsVisibilit}>
+                            <FaRegComment onClick={this.toggleCommentsVisibility} style={{ fontSize: 24 }} />
                             <Typography style={{ marginLeft: '5px' }} variant='subtitle2'>50</Typography>
-                        </IconButton>
+                        </IconButton>*/}
                     </Box>
                 </Box>
-                {/*this.state.showComments && (<PostComments comments={this.state.comments}/>)*/}
-                <PostComments />
+                {this.state.showComments && (<PostComments comments={this.state.comments}/>)}
             </Box>
         )}
 }
