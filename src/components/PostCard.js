@@ -5,7 +5,7 @@ import { Button } from 'semantic-ui-react'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import getUserInfo from '../Utils/CurrentUser'
 import {createComment} from '../graphql/mutations'
-import {listComments} from '../graphql/queries'
+import {listComments, getPost} from '../graphql/queries'
 
 class PostCard extends Component{
 
@@ -21,25 +21,28 @@ class PostCard extends Component{
 
     async componentDidMount(){
         this.currentUser = await getUserInfo()
-        let filter = {''}
-
     }
 
-    toggleCommentsVisibility = () => {
+    toggleCommentsVisibility = async () => {
         //There is no need to load the comments if the user doesn't need them.
         // We can just wait until the comments are expanded and load them if they haven't 
         //already been loaded.
 
-        // this is essentially saying "if the comments have been expanded(showComments was false) and 
-        //the comments haven't been loaded yet, load them.
-        if(!this.state.showComments && this.state.comments === null){
-            let queryResult = await API.graphql(graphqlOperation(queries.getPost,{}));
-
+        if(this.state.comments === null){
+            try {
+                let queryResult = await API.graphql(graphqlOperation(getPost, {id: this.postId}))
+                let comments = queryResult.data.getPost.comments.items
+                this.setState({showComments: !this.state.showComments, comments})
+            }
+            catch(error) {console.log(error)}
         }
-        this.setState({showComments: !this.state.showComments})
+        else this.setState({showComments: !this.state.showComments})
     }
 
     handleNewComment = async (commentText) => {
+        alert(commentText)
+        /*
+        let commentText = e.target.value
         let comment = {}
         comment.author = this.currentUser
         comment.content = commentText
@@ -49,7 +52,7 @@ class PostCard extends Component{
             let createdComment = await API.graphql(graphqlOperation(createComment, { input: comment}));
 
         }
-        catch(error) {console.log(error)}
+        catch(error) {console.log(error)}*/
     }
 
     render(){

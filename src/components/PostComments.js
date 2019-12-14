@@ -17,19 +17,33 @@ class PostComments extends Component {
         this.comment = ''
     }
 
-    setComment = (e) => {this.comment = e.target.value}
+    setComment = (e) => {
+        alert(e.target.value)
+        this.comment = e.target.value
+    }
 
     render() {
+        const imageStyle = {
+            border: '1px solid lightGray',
+            borderRadius: '20px',
+            textAlign: 'center',
+            width: '3em',
+            height: '3em',
+            marginBottom: '15px',
+            backgroundColor: '#333333'
+        }
         const comments = COMMENTS.map((comment) => {
             return (
                 <Comment className='comment'>
-                    <Avatar style={{ backgroundColor: '#333333', color: 'white' }}>D</Avatar>
-                    <Comment.Avatar src='' />
-                    <Comment.Content>
+                    {/*<Comment.Avatar style={imageStyle} src=""></Comment.Avatar>*/}
+                    <Comment.Content style={{width: '100%'}}>
+                        <Box display='flex' flexDirection='row' justifyContent='flex-start' alignItems='center'>
+                        <Avatar style={{backgroundColor: '#333333', color: 'white' }}>D</Avatar>
                         <Comment.Author as='a'>{comment.author}</Comment.Author>
                         <Comment.Metadata>
                             <div>Today at 5:42PM</div>
                         </Comment.Metadata>
+                        </Box>
                         <Comment.Text>{comment.content}</Comment.Text>
                         <Comment.Actions>
                             <Comment.Action>Reply</Comment.Action>
@@ -44,13 +58,13 @@ class PostComments extends Component {
                     <InputBase
                         style={{ backgroundColor: 'white', border: '1px solid lightGray', borderRadius: '20px', width: '75%', fontFamily: 'Verdana' }}
                         multiline={true}
-                        onChange={(e) => this.setComment}
+                        onChange={this.setComment}
                         rows={1}
                         rowsMax={Infinity}
                         placeholder="  Leave a comment."
                         inputProps={{ 'aria-label': 'naked' }}
                     />
-                    <Fab onClick={this.props.handleNewComment} variant="extended" color="primary">Add Comment</Fab>
+                    <Fab onClick={(comment) => this.props.handleNewComment(this.comment)} variant="extended" color="primary">Add Comment</Fab>
                 </Box>
                 <Comment.Group className="ui comments">
                     {comments}
