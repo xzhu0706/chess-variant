@@ -101,8 +101,9 @@ class NavBar extends Component {
   }
 
   linkToUser = (e, val) => {
+    const { history } = this.props;
     if (val) {
-      this.props.history.push(`/account/${val.username}`);
+      history.push(`/account/${val.username}`);
     }
   }
 

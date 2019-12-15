@@ -2,6 +2,8 @@ Live Demo: http://chess-variant-20191210113159-hostingbucket-develop.s3-website-
 
 ## How to install and demo on your computer
 
+1. Open an issue or send an email to xzhu000@citymail.cuny.edu stating you would like to receive an **aws-exports.js** file to run the project locally. The file should be placed under the `src` folder.
+1. Clone the project on your computer
 1. `cd` to the directory with the project files.
 1. `npm install`
 1. `npm start`
@@ -14,7 +16,6 @@ After `npm install`, check whether you get a warning like
 
 Then it is imperative that you copy `chess.js` to `node_modules/chess.js` yourself. Try `sudo npm run postinstall` on Linux. If that doesn't work for some reason, you can try to `npm install` again with the `--unsafe-perm` flag (`npm install --unsafe-perm`). Alternatively (e.g., if you're on Windows and there is no `cp` command), you can manually copy `chess.js` to the `node_modules/chess.js` folder.
 
-
 If you encounter a puppeteer installation error after `npm install`, see https://github.com/puppeteer/puppeteer/issues/2173#issuecomment-399745457.
 
 
@@ -22,5 +23,6 @@ If you encounter a puppeteer installation error after `npm install`, see https:/
 ## How to test
 
 1. `npm test` (`npm test -- <file_path>` if you want to run a particular test file)
+1. `npm test -- --coverage` if you want to see the test coverage.
 
 The tests are located in `src/test`.

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import PieceCustomize from '../components/customization/PieceCustomize';
-import wj from "../icons/white_joker.svg";
-import CommentBox from "../components/CommentBox";
+import wj from '../icons/white_joker.svg';
+import CommentBox from '../components/CommentBox';
 import Board from '../WithMoveValidation';
 
 export default class UserVariant extends React.Component {
@@ -14,12 +14,13 @@ export default class UserVariant extends React.Component {
       creator: '',
       name: '',
       startFen: '',
-      customPiece: ''
+      customPiece: '',
     };
   }
 
   async componentDidMount() {
-    const vid = this.props.match.params.vid;
+    const { match } = this.props;
+    const { vid } = match.params;
 
     try {
       const queryResult = await API.graphql(graphqlOperation(
@@ -27,21 +28,26 @@ export default class UserVariant extends React.Component {
       ));
       const variant = queryResult.data.getCustomizedVariant;
       if (variant) {
-        const { creator, name, startFen, customPiece } = variant;
+        const {
+          creator, name, startFen, customPiece,
+        } = variant;
         this.setState({
           creator: creator.username,
           name,
           startFen,
-          customPiece: JSON.parse(customPiece)
+          customPiece: JSON.parse(customPiece),
         });
       }
-    } catch(error) {
-      throw new Error("error getting variant data");
+    } catch (error) {
+      throw new Error('error getting variant data');
     }
   }
 
   render() {
-    const { creator, name, startFen, customPiece } = this.state;
+    const {
+      creator, name, startFen, customPiece,
+    } = this.state;
+    const { match } = this.props;
     return (
       creator && startFen ? (
         <div>
@@ -75,9 +81,9 @@ export default class UserVariant extends React.Component {
                       <td className=".pieces-data">joker (custom)</td>
                     </tr>
                     <tr>
-                    <td colSpan='3'>
-                      <PieceCustomize offsets={customPiece['c'][0]} repeatOffsets={customPiece['c'][1]} hideInput={true} />
-                    </td>
+                      <td colSpan="3">
+                        <PieceCustomize offsets={customPiece.c[0]} repeatOffsets={customPiece.c[1]} hideInput />
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -85,10 +91,10 @@ export default class UserVariant extends React.Component {
             </div>
           </div>
           <div style={{ width: '100%', height: '100%' }}>
-            <CommentBox id={this.props.match.params.vid} variant={this.props.match.params.vid} />
+            <CommentBox id={match.params.vid} variant={match.params.vid} />
           </div>
-        </div>) : null
+        </div>
+      ) : null
     );
   }
 }
-

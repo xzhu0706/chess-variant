@@ -10,42 +10,37 @@ class CustomPlayOption extends React.Component {
     super(props);
 
     this.state = {
-      redirect: false
     };
-  }
-
-  handleSubmit = () => {
-    this.setState({
-      redirect: true
-    });
   }
 
   validateFen = (fen) => {
     const position = fen.split(' ')[0];
-    let white_kings = (position.match(/k/g) || []).length;
-    let black_kings = (position.match(/K/g) || []).length;
-    return white_kings === 1 && black_kings === 1;
+    const whiteKings = (position.match(/k/g) || []).length;
+    const blackKings = (position.match(/K/g) || []).length;
+    return whiteKings === 1 && blackKings === 1;
   }
 
   play() {
     // redirect to analysis page and pass props that are accessible via props.location.state
-    if (!this.validateFen(this.props.fen)) {
+    const { fen, history, customPiece } = this.props;
+    if (!this.validateFen(fen)) {
       const errorDiv = document.getElementById('play-err');
-      errorDiv.innerHTML = "";
+      errorDiv.innerHTML = '';
       const span = document.createElement('span');
       const text = document.createTextNode('In chess, both players must have one king each.');
       span.appendChild(text);
       errorDiv.appendChild(span);
       return;
     }
-    let path = '/analysis';
-    this.props.history.push({
+    const path = '/analysis';
+    history.push({
       pathname: path,
-      state: { fen: this.props.fen, customPiece: this.props.customPiece}
+      state: { fen, customPiece },
     });
   }
 
   render() {
+    const { fen } = this.props;
     return (
       <div>
         <div id="play-err"> </div>
@@ -53,12 +48,11 @@ class CustomPlayOption extends React.Component {
           Analyse
         </Button>
         <input
-          value={this.props.fen}
+          value={fen}
           name="fen"
           readOnly
           style={{ margin: '0.25em' }}
-        >
-        </input>
+        />
       </div>
     );
   }

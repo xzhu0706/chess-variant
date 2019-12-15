@@ -25,7 +25,8 @@ class Account extends Component {
   }
 
   async componentDidMount() {
-    const { username } = this.props.match.params;
+    const { match } = this.props;
+    const { username } = match.params;
     const currentUser = await Auth.currentUserInfo();
     const queryResult = await API.graphql(graphqlOperation(
       customQueries.getUserByUsername, { username },
@@ -180,7 +181,11 @@ const AccountInfo = ({
   username,
 }) => (
   <div>
-    <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg" thumbnail fluid />
+    <Image
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg"
+      thumbnail
+      fluid
+    />
     <ListGroup>
       <ListGroupItem variant="flush">{username}</ListGroupItem>
     </ListGroup>
