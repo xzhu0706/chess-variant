@@ -25,7 +25,8 @@ class DiscussionBoard extends Component{
 
     async componentDidMount() {
         this.currentUser = await getUserInfo()
-        let queryResult = await API.graphql(graphqlOperation(queries.listPosts,{}));
+        let limit = 100
+        let queryResult = await API.graphql(graphqlOperation(queries.listPosts,{limit: limit}));
         if(queryResult) {
             queryResult = queryResult.data.listPosts.items
             let posts = queryResult.map((post) => {
@@ -49,7 +50,7 @@ class DiscussionBoard extends Component{
         try {
             let createdPost = await API.graphql(graphqlOperation(mutations.createPost, { input: post}));
             let author = this.currentUser.username
-            let newPostCard = this.generatePostCard(createdPost.data.createPost, author)
+            let newPostCard = this.generatePostCard(createdPost.data.createPost, author, true)
             this.setState({posts: [newPostCard, ...this.state.posts],})
         }
         catch(error) {console.log(error)}
@@ -58,8 +59,8 @@ class DiscussionBoard extends Component{
         }
     }
 
-    generatePostCard(post, author){
-        let elapsedTime = getElapsedTime(post.createdAt)
+    generatePostCard(post, author, newPost=false){
+        let elapsedTime = getElapsedTime(post.createdAt, newPost)
         let likeInfo = this.userLikesPost(post)
         return (
             <PostCard

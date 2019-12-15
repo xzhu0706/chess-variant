@@ -112,15 +112,25 @@ class PostCard extends Component{
      */
     computeTimeInterval = (elapsedTime) => {
         let interval;
-        switch(elapsedTime[1]){
-            case 'h':
-                interval = Time.MILLISECONDS_IN_AN_HOUR
+        let suffix = elapsedTime[elapsedTime.length-1]
+        switch(suffix) {
+            case Time.YEAR_REPRESENTATION:
+                interval = Time.MILLISECONDS_IN_A_YEAR
                 break
-            case 'd':
+            case Time.DAY_REPRESENTATION:
                 interval = Time.MILLISECONDS_IN_A_DAY
                 break
-            default:
+            case Time.HOURS_REPRESENTATION:
+                interval = Time.MILLISECONDS_IN_AN_HOUR
+                break
+            case Time.MINUTES_REPRESENTATION:
                 interval = Time.MILLISECONDS_IN_A_MINUTE
+                break
+            case Time.SECONDS_REPRESENTATION:
+                interval = Time.MILLISECONDS_IN_A_MINUTE
+                break
+            default:
+                interval = Time.MILLISECONDS_IN_A_MONTH
                 break
         }
         return interval
@@ -213,6 +223,8 @@ class PostCard extends Component{
 
     render(){
         let likeButtonColor = this.state.highlightLikeButton? LIKED_COLOR : UNLIKED_COLOR
+        let elapsedTime = this.state.elapsedTime
+        elapsedTime = elapsedTime[elapsedTime.length-1] === Time.SECONDS_REPRESENTATION? 'just now' : elapsedTime
         return (
             <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', border:'1px solid lightGray', borderRadius: '4px', marginBottom: '15px'}}>
                 <Box display='flex' flexDirection='column' style={{ margin: '10px 10px 10px 10px' }}>
@@ -223,7 +235,7 @@ class PostCard extends Component{
                         <Avatar style={{ backgroundColor: '#333333', color: 'white' }}>D</Avatar>
                         <Box style={{ marginLeft: '5px' }} display='flex' flexDirection='column' alignItems='flex-start' alignContent='flex-start'>
                             <Typography align='left' variant='subtitle1'>{this.props.author}</Typography>
-                            <Typography style={{ marginTop: '-5px' }} variant='caption'>{this.state.elapsedTime}</Typography>
+                            <Typography style={{ marginTop: '-5px' }} variant='subtitle2'>{elapsedTime}</Typography>
                         </Box>
                     </Box>
                     <Typography style={{ marginTop: '10px', fontFamily: 'Arial', fontSize: '16px' }} variant='body1' color='black' component='p'>
