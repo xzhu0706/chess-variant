@@ -24,7 +24,6 @@ class PostComments extends Component {
                             width: '75%', 
                             fontFamily: 'Verdana',
                             paddingLeft: '15px',
-                            height: '40px'
                         }}
                         multiline={true}
                         onChange={this.setComment}

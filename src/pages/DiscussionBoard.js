@@ -48,16 +48,17 @@ class DiscussionBoard extends Component{
         try {
             let createdPost = await API.graphql(graphqlOperation(mutations.createPost, { input: post}));
             let author = this.currentUser.username
-            let newPostCard = this.generatePostCard(post, author)
+            let newPostCard = this.generatePostCard(createdPost.date.createPost, author)
             this.setState({posts: [newPostCard, ...this.state.posts]})
         }
         catch(error) {console.log(error)}
     }
 
     generatePostCard(post, author){
-        let elapsedTime = getElapsedTime(createdAt)
+        let elapsedTime = getElapsedTime(post.createdAt)
         return (
             <PostCard 
+                postId = {post.id}
                 author={author} 
                 elapsedTime={elapsedTime} 
                 title={post.title} 
