@@ -5,6 +5,7 @@ import { Button } from 'semantic-ui-react'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import getUserInfo from '../Utils/CurrentUser'
 import getElapsedTime from '../Utils/ElapsedTime'
+import {computeTimeInterval} from '../Utils/ElapsedTime'
 import {createPostComment, createPostLike, deletePostLike} from '../graphql/mutations'
 import {listComments, getPost} from '../graphql/queries'
 import PostComment from './PostComment'
@@ -13,7 +14,7 @@ import * as Time from '../Constants/TimeConstants';
 
 
 const LIKED_COLOR = 'blue'
-const UNLIKED_COLOR = 'gray'
+const DISLIKED_COLOR = 'gray'
 
 class PostCard extends Component{
 
@@ -39,7 +40,7 @@ class PostCard extends Component{
 
     async componentDidMount(){
         this.currentUser = await getUserInfo()
-        let interval = this.computeTimeInterval(this.state.elapsedTime)
+        let interval = computeTimeInterval(this.state.elapsedTime)
         this.interval = setInterval(() => this.updateElapsedTime(), interval);
         this.commentCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreatePostComment)).subscribe({
             next: (commentData) => {
@@ -97,45 +98,6 @@ class PostCard extends Component{
         clearInterval(this.interval)
     }
 
-    /**
-     * Instead of updating elapsed time every minute for all posts, we update it based
-     * on the elapsed time since the creation of the post that is shown on it. 
-     * Thus, elapsed time will be updated as follows:
-     * if the elapsed time in less than an hour, it will be updated every minute,
-     * if it's greater or equal to an hour but is less than 24 hours, it will be updated every hour
-     * otherwise, it will be updated every 24 hours (every day)
-     * 
-     * input: elapsed time since the creation of the post in the following format: <time><suffix>
-     * where time is a number between 1-60 representing the ranges of seconds, minutes and hours
-     * and time suffix is either s, m, or just now
-     * output: 
-     */
-    computeTimeInterval = (elapsedTime) => {
-        let interval;
-        let suffix = elapsedTime[elapsedTime.length-1]
-        switch(suffix) {
-            case Time.YEAR_REPRESENTATION:
-                interval = Time.MILLISECONDS_IN_A_YEAR
-                break
-            case Time.DAY_REPRESENTATION:
-                interval = Time.MILLISECONDS_IN_A_DAY
-                break
-            case Time.HOURS_REPRESENTATION:
-                interval = Time.MILLISECONDS_IN_AN_HOUR
-                break
-            case Time.MINUTES_REPRESENTATION:
-                interval = Time.MILLISECONDS_IN_A_MINUTE
-                break
-            case Time.SECONDS_REPRESENTATION:
-                interval = Time.MILLISECONDS_IN_A_MINUTE
-                break
-            default:
-                interval = Time.MILLISECONDS_IN_A_MONTH
-                break
-        }
-        return interval
-    }
-
     updateElapsedTime = () => {
         let elapsedTime = getElapsedTime(this.createdAt)
         this.setState({elapsedTime})
@@ -164,6 +126,7 @@ class PostCard extends Component{
                 key={comment.id}
                 author={comment.author.username} 
                 content={comment.content} 
+                createdAt = {comment.createdAt}
                 elapsedTime={elapsedTime} 
             />
         )
@@ -176,8 +139,8 @@ class PostCard extends Component{
         comment.createdAt = new Date().toJSON()
         comment.postCommentPostId = this.postId
         try {
-            await API.graphql(graphqlOperation(createPostComment, { input: comment}));
-            let newCommentCard = this.generateCommentCard(comment)
+            let createdComment = await API.graphql(graphqlOperation(createPostComment, { input: comment}));
+            let newCommentCard = this.generateCommentCard(createdComment.data.createPostComment)
             this.setState({comments: [newCommentCard, ...this.state.comments], commentsCount: this.state.commentsCount+1})
         }
         catch(error) {console.log(error)}
@@ -222,9 +185,11 @@ class PostCard extends Component{
     }
 
     render(){
-        let likeButtonColor = this.state.highlightLikeButton? LIKED_COLOR : UNLIKED_COLOR
+        let likeButtonColor = this.state.highlightLikeButton? LIKED_COLOR : DISLIKED_COLOR
         let elapsedTime = this.state.elapsedTime
         elapsedTime = elapsedTime[elapsedTime.length-1] === Time.SECONDS_REPRESENTATION? 'just now' : elapsedTime
+
+        /* will turn likesCount and commentsCount into something like 1k, 100k, etc if get a chance*/
         return (
             <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', border:'1px solid lightGray', borderRadius: '4px', marginBottom: '15px'}}>
                 <Box display='flex' flexDirection='column' style={{ margin: '10px 10px 10px 10px' }}>
@@ -235,7 +200,7 @@ class PostCard extends Component{
                         <Avatar style={{ backgroundColor: '#333333', color: 'white' }}>D</Avatar>
                         <Box style={{ marginLeft: '5px' }} display='flex' flexDirection='column' alignItems='flex-start' alignContent='flex-start'>
                             <Typography align='left' variant='subtitle1'>{this.props.author}</Typography>
-                            <Typography style={{ marginTop: '-5px' }} variant='subtitle2'>{elapsedTime}</Typography>
+                            <Typography style={{ marginTop: '-2px' }} variant='subtitle2'>{elapsedTime}</Typography>
                         </Box>
                     </Box>
                     <Typography style={{ marginTop: '10px', fontFamily: 'Arial', fontSize: '16px' }} variant='body1' color='black' component='p'>

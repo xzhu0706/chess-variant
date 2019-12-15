@@ -21,6 +21,7 @@ class DiscussionBoard extends Component{
             posts: []
         }
         this.currentUser =  null
+        this.postCreationSubscription = null
     }
 
     async componentDidMount() {
@@ -36,7 +37,20 @@ class DiscussionBoard extends Component{
                 return this.generatePostCard(post, author)
             })
             this.setState({posts})
+            this.postCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreatePost)).subscribe({
+                next: (postData) => {
+                    let post = postData.value.data.onCreatePost
+                    if(this.currentUser.id === post.author.id) return
+                    let postCard = this.generatePostCard(post)
+                    this.setState({posts: [postCard, ...this.state.posts]})
+                },
+            });
         }
+    }
+
+    componentWillMount() {
+        if(this.postCreationSubscription)
+            this.postCreationSubscription.unsubscribe()
     }
 
     showNewPostDialog = () => {this.setState({showNewPostDialog: true})}
@@ -50,7 +64,7 @@ class DiscussionBoard extends Component{
         try {
             let createdPost = await API.graphql(graphqlOperation(mutations.createPost, { input: post}));
             let author = this.currentUser.username
-            let newPostCard = this.generatePostCard(createdPost.data.createPost, author, true)
+            let newPostCard = this.generatePostCard(createdPost.data.createPost, author)
             this.setState({posts: [newPostCard, ...this.state.posts],})
         }
         catch(error) {console.log(error)}
@@ -59,8 +73,8 @@ class DiscussionBoard extends Component{
         }
     }
 
-    generatePostCard(post, author, newPost=false){
-        let elapsedTime = getElapsedTime(post.createdAt, newPost)
+    generatePostCard(post, author){
+        let elapsedTime = getElapsedTime(post.createdAt)
         let likeInfo = this.userLikesPost(post)
         return (
             <PostCard
