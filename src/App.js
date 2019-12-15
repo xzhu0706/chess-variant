@@ -26,10 +26,9 @@ class App extends Component {
 
   render() {
     return (
-      <Router style={{background: 'blue'}}>
+      <Router>
         <NavBar />
-        <hr style={{height: '2px', backgroundColor: 'blue'}}/>
-        <Switch>
+        <Switch >
           <Route path="/" exact component={Home} />
           <Route path="/game/:id" component={Game} />
           <Route path="/variants" component={Variants} />

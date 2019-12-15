@@ -7,6 +7,7 @@ import Chess from 'chess.js';
 import { Launcher } from 'react-chat-window';
 import * as customQueries from '../customGraphql/queries';
 import * as customMutations from '../customGraphql/mutations';
+import * as customSubscriptions from '../customGraphql/subscriptions';
 import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';

@@ -1,6 +1,6 @@
 import React, { Component, forwardRef } from 'react';
 import MaterialTable from 'material-table';
-import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';

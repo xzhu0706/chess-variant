@@ -32,7 +32,7 @@ class DiscussionBoard extends Component{
                 let author = post.author.username
                 let likesCount = post.likes.length
                 let commentsCount = post.comments.length
-                return this.generatePostCard(post, author, likesCount, commentsCount)
+                return this.generatePostCard(post, author)
             })
             this.setState({posts})
         }
@@ -57,6 +57,7 @@ class DiscussionBoard extends Component{
 
     generatePostCard(post, author){
         let elapsedTime = getElapsedTime(post.createdAt)
+        let liked = this.userLikesPost(post)
         return (
             <PostCard 
                 postId = {post.id}
@@ -66,13 +67,28 @@ class DiscussionBoard extends Component{
                 content={post.content} 
                 likesCount={post.likes.items.length}
                 commentsCount={post.comments.items.length}
+                liked = {liked}
             />
         )
     }
 
+    userLikesPost = (post) => {
+        let likers = post.likes.items
+        alert(JSON.stringify(likers))
+        for(let i = 0; i < likers.length; i++){
+            alert('HERE')
+            let likeObject = likers[i]
+            alert(likeObject.liker.id + "<-->" + this.currentUser.id)
+            if(likeObject.liker.id === this.currentUser.id){
+                return true
+            }
+        }
+        return false
+    }
+
     render() {
         return (
-            <Box display='flex' flexDirection='column' style={{backgroundColor: 'rgb(253, 253, 253)', marginLeft: '5%', width: '45%', marginTop: '70px'}}>
+            <Box display='flex' flexDirection='column' style={{backgroundColor: 'rgb(253, 253, 253)', marginLeft: '5%', width: '45%', marginTop: '0px'}}>
                 <Box display='flex' flexDirection='row' justifyContent='flex-end'>
                     <Fab onClick={this.showNewPostDialog} color="primary" aria-label="edit">
                         <EditIcon />

@@ -10,6 +10,8 @@ import {listComments, getPost} from '../graphql/queries'
 import PostComment from './PostComment'
 import * as subscriptions from '../graphql/subscriptions';
 
+const LIKED_COLOR = 'blue'
+const UNLIKED_COLOR = 'gray'
 
 class PostCard extends Component{
 
@@ -107,7 +109,6 @@ class PostCard extends Component{
     }
 
     handleNewLike = async () => {
-        alert('NEW LIKE')
         //Don't allow users to like posts anonymously
         if(this.currentUser.username === 'anonymous') return
 
@@ -122,6 +123,7 @@ class PostCard extends Component{
     }
 
     render(){
+        let likeButtonColor = this.props.liked? LIKED_COLOR : UNLIKED_COLOR
         return (
             <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', border:'1px solid lightGray', borderRadius: '4px', marginBottom: '15px'}}>
                 <Box display='flex' flexDirection='column' style={{ margin: '10px 10px 10px 10px' }}>
@@ -140,10 +142,11 @@ class PostCard extends Component{
                     </Typography>
                     <Box display='flex' flexDirection='row' justifyContent='flex-start'>
                         <Button
+                            color = {likeButtonColor}
                             onClick = {this.handleNewLike}
                             content='Like'
                             icon='thumbs up outline'
-                            label={{ as: 'a', basic: true, content: this.state.likesCount }}
+                            label={{ color: likeButtonColor, as: 'a', basic: true, content: this.state.likesCount }}
                             labelPosition='right'
                         />
                         <Button
