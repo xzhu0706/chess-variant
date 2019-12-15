@@ -4,9 +4,9 @@ import { Prompt } from 'react-router';
 import Box from '@material-ui/core/Box';
 import Chessboard from 'chessboardjsx';
 import Chess from 'chess.js';
+import * as customSubscriptions from '../customGraphql/subscriptions';
 import * as customQueries from '../customGraphql/queries';
 import * as customMutations from '../customGraphql/mutations';
-import * as customSubscriptions from '../customGraphql/subscriptions';
 import * as Games from '../Constants/GameComponentConstants';
 import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
@@ -16,6 +16,7 @@ import GameData from '../GameData';
 import GameInfo from '../components/GameInfo';
 import { Launcher } from 'react-chat-window';
 import awsconfig from '../aws-exports';
+
 
 
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';

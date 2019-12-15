@@ -1817,6 +1817,40 @@ export const onCreatePost = `subscription OnCreatePost {
     title
     content
     createdAt
+    likes {
+      items {
+        id
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        liker {
+          id
+          username
+        }
+      }
+      nextToken
+    }
     comments {
       items {
         id
@@ -1835,6 +1869,12 @@ export const onCreatePost = `subscription OnCreatePost {
           title
           content
           createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
           comments {
             items {
               id
@@ -1860,6 +1900,40 @@ export const onUpdatePost = `subscription OnUpdatePost {
     title
     content
     createdAt
+    likes {
+      items {
+        id
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        liker {
+          id
+          username
+        }
+      }
+      nextToken
+    }
     comments {
       items {
         id
@@ -1878,6 +1952,12 @@ export const onUpdatePost = `subscription OnUpdatePost {
           title
           content
           createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
           comments {
             items {
               id
@@ -1903,6 +1983,40 @@ export const onDeletePost = `subscription OnDeletePost {
     title
     content
     createdAt
+    likes {
+      items {
+        id
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        liker {
+          id
+          username
+        }
+      }
+      nextToken
+    }
     comments {
       items {
         id
@@ -1921,6 +2035,12 @@ export const onDeletePost = `subscription OnDeletePost {
           title
           content
           createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
           comments {
             items {
               id
@@ -1936,6 +2056,228 @@ export const onDeletePost = `subscription OnDeletePost {
   }
 }
 `;
+export const onCreatePostLike = `subscription OnCreatePostLike {
+  onCreatePostLike {
+    id
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+    liker {
+      id
+      username
+    }
+  }
+}
+`;
+export const onUpdatePostLike = `subscription OnUpdatePostLike {
+  onUpdatePostLike {
+    id
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+    liker {
+      id
+      username
+    }
+  }
+}
+`;
+export const onDeletePostLike = `subscription OnDeletePostLike {
+  onDeletePostLike {
+    id
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+    liker {
+      id
+      username
+    }
+  }
+}
+`;
 export const onCreatePostComment = `subscription OnCreatePostComment {
   onCreatePostComment {
     id
@@ -1945,135 +2287,18 @@ export const onCreatePostComment = `subscription OnCreatePostComment {
     }
     content
     createdAt
-    post {
-      id
-      author {
-        id
-        username
-      }
-      title
-      content
-      createdAt
-      comments {
-        items {
-          id
-          author {
-            id
-            username
-          }
-          content
-          createdAt
-          post {
-            id
-            author {
-              id
-              username
-            }
-            title
-            content
-            createdAt
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
-    }
   }
 }
 `;
 export const onUpdatePostComment = `subscription OnUpdatePostComment {
   onUpdatePostComment {
     id
-    author {
-      id
-      username
-    }
-    content
-    createdAt
-    post {
-      id
-      author {
-        id
-        username
-      }
-      title
-      content
-      createdAt
-      comments {
-        items {
-          id
-          author {
-            id
-            username
-          }
-          content
-          createdAt
-          post {
-            id
-            author {
-              id
-              username
-            }
-            title
-            content
-            createdAt
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
-    }
   }
 }
 `;
 export const onDeletePostComment = `subscription OnDeletePostComment {
   onDeletePostComment {
     id
-    author {
-      id
-      username
-    }
-    content
-    createdAt
-    post {
-      id
-      author {
-        id
-        username
-      }
-      title
-      content
-      createdAt
-      comments {
-        items {
-          id
-          author {
-            id
-            username
-          }
-          content
-          createdAt
-          post {
-            id
-            author {
-              id
-              username
-            }
-            title
-            content
-            createdAt
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
-    }
   }
 }
 `;

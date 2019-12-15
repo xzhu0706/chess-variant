@@ -8,6 +8,7 @@ import getElapsedTime from '../Utils/ElapsedTime'
 import {createPostComment} from '../graphql/mutations'
 import {listComments, getPost} from '../graphql/queries'
 import PostComment from './PostComment'
+import * as subscriptions from '../graphql/subscriptions';
 
 
 class PostCard extends Component{
@@ -16,37 +17,62 @@ class PostCard extends Component{
         super(props)
         this.state = {
             showComments: false,
-            comments: null
+            comments: null,
+            likesCount: this.props.likesCount,
+            commentsCount: this.props.commentsCount
         }
         this.postId = this.props.postId
         this.currentUser = null
+        this.postUpdateSubscription = null
+        this.commentCreationSubscription = null
+        this.likeCreationSubscription = null
     }
 
     async componentDidMount(){
         this.currentUser = await getUserInfo()
+        this.commentCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreatePostComment)).subscribe({
+            next: (commentData) => {
+                //if the comment component hasn' been expanded yet for some reasons,
+                //just ignore the updates.
+                if(this.state.comments === null) return
+                
+                let comment = commentData.value.data.onCreatePostComment
+                let commentCard = this.generateCommentCard(comment)
+                this.setState({
+                    commentsCount: this.state.commentsCount+1, 
+                    comments: [commentCard, ...this.state.comments]
+                })
+            },
+        });
+
     }
 
     toggleCommentsVisibility = async () => {
         //There is no need to load the comments if the user doesn't need them.
         // We can just wait until the comments are expanded and load them if they haven't 
         //already been loaded.
-
         if(this.state.comments === null){
             try {
                 let queryResult = await API.graphql(graphqlOperation(getPost, {id: this.postId}))
                 let comments = queryResult.data.getPost.comments.items
-                comments = comments.map((comment) => {
-                    //alert(JSON.stringify(comment) + " " + comment.createdAt )
-                    let author = comment.author
-                    let content = comment.content
-                    let elapsedTime = getElapsedTime(comment.createdAt)
-                    return (<PostComment key={comment.id} author={author.username} content={content} elapsedTime={elapsedTime}/>)
-                })
+                comments = comments.map((comment) => { return this.generateCommentCard(comment) })
                 this.setState({showComments: !this.state.showComments, comments})
             }
             catch(error) {console.log(error)}
         }
         else this.setState({showComments: !this.state.showComments})
+    }
+
+    generateCommentCard(comment) {
+        let elapsedTime = getElapsedTime(comment.createdAt)
+        return (
+            <PostComment
+                key={comment.id}
+                author={comment.author.username} 
+                content={comment.content} 
+                elapsedTime={elapsedTime} 
+            />
+        )
     }
 
     handleNewComment = async (commentText) => {
@@ -57,11 +83,24 @@ class PostCard extends Component{
         comment.postCommentPostId = this.postId
         try {
             await API.graphql(graphqlOperation(createPostComment, { input: comment}));
-            let elapsedTime = getElapsedTime(comment.createdAt)
-            let newPostComment = (<PostComment author={comment.author.username} content={comment.content} elapsedTime={elapsedTime} />)
-            this.setState({comments: [newPostComment, ...this.state.comments]})
+            let newCommentCard = this.generateCommentCard(comment)
+            this.setState({comments: [newCommentCard, ...this.state.comments], commentsCount: this.state.commentsCount+1})
         }
         catch(error) {console.log(error)}
+    }
+
+    handleNewLike = () => {
+        //Don't allow users to like posts anonymously
+        if(currentUser.username === 'anonymous') return
+
+        let like = {}
+        like.liker = this.currentUser
+        like.postLikePostId = this.postId
+        try {
+            await API.graphql(graphqlOperation(createPostLike, { input: like}));
+            this.setState({likesCount: this.state.likesCount})
+        } 
+        catch (error) {console.log(error)}
     }
 
     render(){
@@ -85,7 +124,7 @@ class PostCard extends Component{
                         <Button
                             content='Like'
                             icon='thumbs up outline'
-                            label={{ as: 'a', basic: true, content: '2,048' }}
+                            label={{ as: 'a', basic: true, content: this.state.likesCount }}
                             labelPosition='right'
                         />
                         <Button
@@ -93,7 +132,7 @@ class PostCard extends Component{
                             style = {{marginLeft: '10px'}}
                             content='Comment'
                             icon='comments outline'
-                            label={{ as: 'a', basic: true, content: '2,048' }}
+                            label={{ as: 'a', basic: true, content: this.state.commentsCount }}
                             labelPosition='right'
                         />
                     </Box>
@@ -102,5 +141,4 @@ class PostCard extends Component{
             </Box>
         )}
 }
-
 export default PostCard

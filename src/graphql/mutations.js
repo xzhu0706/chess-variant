@@ -1817,6 +1817,40 @@ export const createPost = `mutation CreatePost($input: CreatePostInput!) {
     title
     content
     createdAt
+    likes {
+      items {
+        id
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        liker {
+          id
+          username
+        }
+      }
+      nextToken
+    }
     comments {
       items {
         id
@@ -1835,6 +1869,12 @@ export const createPost = `mutation CreatePost($input: CreatePostInput!) {
           title
           content
           createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
           comments {
             items {
               id
@@ -1860,6 +1900,40 @@ export const updatePost = `mutation UpdatePost($input: UpdatePostInput!) {
     title
     content
     createdAt
+    likes {
+      items {
+        id
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        liker {
+          id
+          username
+        }
+      }
+      nextToken
+    }
     comments {
       items {
         id
@@ -1878,6 +1952,12 @@ export const updatePost = `mutation UpdatePost($input: UpdatePostInput!) {
           title
           content
           createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
           comments {
             items {
               id
@@ -1903,6 +1983,40 @@ export const deletePost = `mutation DeletePost($input: DeletePostInput!) {
     title
     content
     createdAt
+    likes {
+      items {
+        id
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        liker {
+          id
+          username
+        }
+      }
+      nextToken
+    }
     comments {
       items {
         id
@@ -1921,6 +2035,12 @@ export const deletePost = `mutation DeletePost($input: DeletePostInput!) {
           title
           content
           createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
           comments {
             items {
               id
@@ -1932,6 +2052,228 @@ export const deletePost = `mutation DeletePost($input: DeletePostInput!) {
         }
       }
       nextToken
+    }
+  }
+}
+`;
+export const createPostLike = `mutation CreatePostLike($input: CreatePostLikeInput!) {
+  createPostLike(input: $input) {
+    id
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+    liker {
+      id
+      username
+    }
+  }
+}
+`;
+export const updatePostLike = `mutation UpdatePostLike($input: UpdatePostLikeInput!) {
+  updatePostLike(input: $input) {
+    id
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+    liker {
+      id
+      username
+    }
+  }
+}
+`;
+export const deletePostLike = `mutation DeletePostLike($input: DeletePostLikeInput!) {
+  deletePostLike(input: $input) {
+    id
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+    liker {
+      id
+      username
     }
   }
 }
@@ -1954,6 +2296,32 @@ export const createPostComment = `mutation CreatePostComment($input: CreatePostC
       title
       content
       createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
       comments {
         items {
           id
@@ -1972,6 +2340,9 @@ export const createPostComment = `mutation CreatePostComment($input: CreatePostC
             title
             content
             createdAt
+            likes {
+              nextToken
+            }
             comments {
               nextToken
             }
@@ -2001,6 +2372,32 @@ export const updatePostComment = `mutation UpdatePostComment($input: UpdatePostC
       title
       content
       createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
       comments {
         items {
           id
@@ -2019,6 +2416,9 @@ export const updatePostComment = `mutation UpdatePostComment($input: UpdatePostC
             title
             content
             createdAt
+            likes {
+              nextToken
+            }
             comments {
               nextToken
             }
@@ -2048,6 +2448,32 @@ export const deletePostComment = `mutation DeletePostComment($input: DeletePostC
       title
       content
       createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
       comments {
         items {
           id
@@ -2066,6 +2492,9 @@ export const deletePostComment = `mutation DeletePostComment($input: DeletePostC
             title
             content
             createdAt
+            likes {
+              nextToken
+            }
             comments {
               nextToken
             }

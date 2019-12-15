@@ -507,6 +507,40 @@ export const getPost = `query GetPost($id: ID!) {
     title
     content
     createdAt
+    likes {
+      items {
+        id
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        liker {
+          id
+          username
+        }
+      }
+      nextToken
+    }
     comments {
       items {
         id
@@ -516,6 +550,30 @@ export const getPost = `query GetPost($id: ID!) {
         }
         content
         createdAt
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
       }
       nextToken
     }
@@ -537,6 +595,195 @@ export const listPosts = `query ListPosts(
       title
       content
       createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getPostLike = `query GetPostLike($id: ID!) {
+  getPostLike(id: $id) {
+    id
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+    liker {
+      id
+      username
+    }
+  }
+}
+`;
+export const listPostLikes = `query ListPostLikes(
+  $filter: ModelPostLikeFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listPostLikes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      post {
+        id
+        author {
+          id
+          username
+        }
+        title
+        content
+        createdAt
+        likes {
+          items {
+            id
+            post {
+              id
+              title
+              content
+              createdAt
+            }
+            liker {
+              id
+              username
+            }
+          }
+          nextToken
+        }
+        comments {
+          items {
+            id
+            author {
+              id
+              username
+            }
+            content
+            createdAt
+            post {
+              id
+              title
+              content
+              createdAt
+            }
+          }
+          nextToken
+        }
+      }
+      liker {
+        id
+        username
+      }
     }
     nextToken
   }
@@ -553,6 +800,67 @@ export const getPostComment = `query GetPostComment($id: ID!) {
     createdAt
     post {
       id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
     }
   }
 }
@@ -573,6 +881,47 @@ export const listPostComments = `query ListPostComments(
       createdAt
       post {
         id
+        author {
+          id
+          username
+        }
+        title
+        content
+        createdAt
+        likes {
+          items {
+            id
+            post {
+              id
+              title
+              content
+              createdAt
+            }
+            liker {
+              id
+              username
+            }
+          }
+          nextToken
+        }
+        comments {
+          items {
+            id
+            author {
+              id
+              username
+            }
+            content
+            createdAt
+            post {
+              id
+              title
+              content
+              createdAt
+            }
+          }
+          nextToken
+        }
       }
     }
     nextToken

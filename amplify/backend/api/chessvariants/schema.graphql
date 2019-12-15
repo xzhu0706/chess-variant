@@ -60,12 +60,12 @@ type CustomizedVariant @model
 }
 
 type Comment @model
-@auth(
-  rules: [
-    { allow: public, operations: [read, create, delete] }
-    { allow: groups, groups: ["Admin"] }
-  ]
-) {
+  @auth(
+    rules: [
+      { allow: public, operations: [read, create, delete] }
+      { allow: groups, groups: ["Admin"] }
+    ]
+  ) {
   id: ID!
   user: User! @connection(name: "userComment")
   content: String!
@@ -113,9 +113,15 @@ type Post @model{
   title: String!
   content: String!
   createdAt: AWSDateTime!
-  comments: [PostComment] @connection(name: "PostComments", sortField: "createdAt")
+  likes: [PostLike] @connection(name: "PostLikes")
+  comments: [PostComment] @connection(name: "PostComments", sortField: "createdAt") 
 }
 
+type PostLike @model{
+  id: ID!
+  post: Post! @connection(name: "PostLikes")
+  liker: PlayerInfo!
+}
 type PostComment @model {
   id: ID!
   author: PlayerInfo!
