@@ -11,6 +11,7 @@ import * as subscriptions from '../graphql/subscriptions';
 import getUserInfo from '../Utils/CurrentUser';
 import getElapsedTime from '../Utils/ElapsedTime'
 
+
 class DiscussionBoard extends Component{
 
     constructor(props){

@@ -141,7 +141,7 @@ class NavBar extends Component {
       
     return (
       <span>
-        <Navbar style={{height: '65px', boxShadow: '0px 3px 3px lightGray'}}variant='light' bg='white' fixed='top'>
+        <Navbar style={{height:'65px', marginBottom: '60px', boxShadow: '0px 3px 3px lightGray'}}variant='light' bg='white' fixed='top'>
           <Navbar.Brand style={{
             fontFamily: 'chalkduster',
             display: 'flex',

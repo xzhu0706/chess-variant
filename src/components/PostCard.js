@@ -57,6 +57,7 @@ class PostCard extends Component{
                 //if the post shown on this card is not the one that received the like,
                 //ignore it.
                 if(like.post.id !== this.postId) return
+                if(this.currentUser.id === like.liker.id) return
                 this.setState({likesCount: this.state.likesCount+1})
             },
         });

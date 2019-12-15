@@ -2059,6 +2059,9 @@ export const onDeletePost = `subscription OnDeletePost {
 export const onCreatePostLike = `subscription OnCreatePostLike {
   onCreatePostLike {
     id
+    liker {
+      id
+    }
     post {
       id
     }
