@@ -50,9 +50,12 @@ class DiscussionBoard extends Component{
             let createdPost = await API.graphql(graphqlOperation(mutations.createPost, { input: post}));
             let author = this.currentUser.username
             let newPostCard = this.generatePostCard(createdPost.data.createPost, author)
-            this.setState({posts: [newPostCard, ...this.state.posts]})
+            this.setState({posts: [newPostCard, ...this.state.posts],})
         }
         catch(error) {console.log(error)}
+        finally{
+            this.setState({showNewPostDialog: false})
+        }
     }
 
     generatePostCard(post, author){

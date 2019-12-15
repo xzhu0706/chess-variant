@@ -150,7 +150,7 @@ class PostCard extends Component{
         like.postLikePostId = this.postId
         try {
             let createdPostLike = await API.graphql(graphqlOperation(createPostLike, { input: like}));
-            this.postLikeId = createPostLike.data.createPostLike.id
+            this.postLikeId = createdPostLike.data.createPostLike.id
             this.setState({likesCount: this.state.likesCount+1, highlightLikeButton: true})
         } 
         catch (error) {console.log(error)}
