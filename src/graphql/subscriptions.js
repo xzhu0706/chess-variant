@@ -2061,71 +2061,6 @@ export const onCreatePostLike = `subscription OnCreatePostLike {
     id
     post {
       id
-      author {
-        id
-        username
-      }
-      title
-      content
-      createdAt
-      likes {
-        items {
-          id
-          post {
-            id
-            author {
-              id
-              username
-            }
-            title
-            content
-            createdAt
-            likes {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-          liker {
-            id
-            username
-          }
-        }
-        nextToken
-      }
-      comments {
-        items {
-          id
-          author {
-            id
-            username
-          }
-          content
-          createdAt
-          post {
-            id
-            author {
-              id
-              username
-            }
-            title
-            content
-            createdAt
-            likes {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
-    }
-    liker {
-      id
-      username
     }
   }
 }
@@ -2133,148 +2068,12 @@ export const onCreatePostLike = `subscription OnCreatePostLike {
 export const onUpdatePostLike = `subscription OnUpdatePostLike {
   onUpdatePostLike {
     id
-    post {
-      id
-      author {
-        id
-        username
-      }
-      title
-      content
-      createdAt
-      likes {
-        items {
-          id
-          post {
-            id
-            author {
-              id
-              username
-            }
-            title
-            content
-            createdAt
-            likes {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-          liker {
-            id
-            username
-          }
-        }
-        nextToken
-      }
-      comments {
-        items {
-          id
-          author {
-            id
-            username
-          }
-          content
-          createdAt
-          post {
-            id
-            author {
-              id
-              username
-            }
-            title
-            content
-            createdAt
-            likes {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
-    }
-    liker {
-      id
-      username
-    }
   }
 }
 `;
 export const onDeletePostLike = `subscription OnDeletePostLike {
   onDeletePostLike {
     id
-    post {
-      id
-      author {
-        id
-        username
-      }
-      title
-      content
-      createdAt
-      likes {
-        items {
-          id
-          post {
-            id
-            author {
-              id
-              username
-            }
-            title
-            content
-            createdAt
-            likes {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-          liker {
-            id
-            username
-          }
-        }
-        nextToken
-      }
-      comments {
-        items {
-          id
-          author {
-            id
-            username
-          }
-          content
-          createdAt
-          post {
-            id
-            author {
-              id
-              username
-            }
-            title
-            content
-            createdAt
-            likes {
-              nextToken
-            }
-            comments {
-              nextToken
-            }
-          }
-        }
-        nextToken
-      }
-    }
-    liker {
-      id
-      username
-    }
   }
 }
 `;
@@ -2287,6 +2086,9 @@ export const onCreatePostComment = `subscription OnCreatePostComment {
     }
     content
     createdAt
+    post {
+      id
+    }
   }
 }
 `;

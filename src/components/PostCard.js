@@ -32,11 +32,15 @@ class PostCard extends Component{
         this.currentUser = await getUserInfo()
         this.commentCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreatePostComment)).subscribe({
             next: (commentData) => {
-                //if the comment component hasn' been expanded yet for some reasons,
+                //if the comment component hasn't been expanded yet for some reasons,
                 //just ignore the updates.
                 if(this.state.comments === null) return
-                
                 let comment = commentData.value.data.onCreatePostComment
+                
+                //if the post shown on this card is not the one that received the comment,
+                //ignore it.
+                if(this.postId !== comment.post.id) return
+
                 let commentCard = this.generateCommentCard(comment)
                 this.setState({
                     commentsCount: this.state.commentsCount+1, 
@@ -45,6 +49,15 @@ class PostCard extends Component{
             },
         });
 
+        this.likeCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreatePostComment)).subscribe({
+            next: (likeData) => {
+                let like = likeData.value.data.onCreatePostLike
+                //if the post shown on this card is not the one that received the like,
+                //ignore it.
+                if(like.post.id !== this.postId) return
+                this.setState({likesCount: this.state.likesCount+1})
+            },
+        });
     }
 
     toggleCommentsVisibility = async () => {
