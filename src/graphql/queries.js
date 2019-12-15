@@ -597,6 +597,7 @@ export const listPosts = `query ListPosts(
       createdAt
       likes {
         items {
+          id
           liker {
             id
           }

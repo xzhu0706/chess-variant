@@ -5,7 +5,7 @@ import { Button } from 'semantic-ui-react'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import getUserInfo from '../Utils/CurrentUser'
 import getElapsedTime from '../Utils/ElapsedTime'
-import {createPostComment, createPostLike} from '../graphql/mutations'
+import {createPostComment, createPostLike, deletePostLike} from '../graphql/mutations'
 import {listComments, getPost} from '../graphql/queries'
 import PostComment from './PostComment'
 import * as subscriptions from '../graphql/subscriptions';
@@ -21,13 +21,16 @@ class PostCard extends Component{
             showComments: false,
             comments: null,
             likesCount: this.props.likesCount,
-            commentsCount: this.props.commentsCount
+            commentsCount: this.props.commentsCount,
+            highlightLikeButton: this.props.liked
         }
         this.postId = this.props.postId
+        this.postLikeId = this.props.postLikeId
         this.currentUser = null
         this.postUpdateSubscription = null
         this.commentCreationSubscription = null
         this.likeCreationSubscription = null
+        this.likeDeletionSubscription = null
     }
 
     async componentDidMount(){
@@ -58,9 +61,28 @@ class PostCard extends Component{
                 let like = likeData.value.data.onCreatePostLike
                 //if the post shown on this card is not the one that received the like,
                 //ignore it.
+
+                 //if the post has been liked by the current user, ignore it
+                //everything has already been taken care of in likePost
                 if(like.post.id !== this.postId) return
+
                 if(this.currentUser.id === like.liker.id) return
                 this.setState({likesCount: this.state.likesCount+1})
+            },
+        });
+
+        this.likeDeletionSubscription = API.graphql(graphqlOperation(subscriptions.onCreatePostLike)).subscribe({
+            next: (dislikeData) => {
+                let dislike = dislikeData.value.data.onCreatePostLike
+                //if the post shown on this card is not the one that received the dislike,
+                //ignore it.
+                if(dislike.post.id !== this.postId) return
+
+                //if the post has been disliked by the current user, ignore it
+                //everything has already been taken care of in dislikePost
+                if(this.currentUser.id === dislike.liker.id) return
+
+                this.setState({likesCount: this.state.likesCount-1})
             },
         });
     }
@@ -70,7 +92,6 @@ class PostCard extends Component{
         // We can just wait until the comments are expanded and load them if they haven't 
         //already been loaded.
         if(this.state.comments === null){
-            alert(this.postId)
             try {
                 let queryResult = await API.graphql(graphqlOperation(getPost, {id: this.postId}))
                 let comments = queryResult.data.getPost.comments.items
@@ -108,22 +129,46 @@ class PostCard extends Component{
         catch(error) {console.log(error)}
     }
 
-    handleNewLike = async () => {
+    handleLikeButtonClick = () => {
         //Don't allow users to like posts anonymously
         if(this.currentUser.username === 'anonymous') return
 
+        //if the like button is highlighted, user is disliking the post.
+        if(this.state.highlightLikeButton){
+            this.dislikePost()
+            return
+        }
+        
+        //user must have liked the post
+        this.likePost()
+        
+    }
+
+    likePost = async () => {
         let like = {}
         like.liker = this.currentUser
         like.postLikePostId = this.postId
         try {
-            await API.graphql(graphqlOperation(createPostLike, { input: like}));
-            this.setState({likesCount: this.state.likesCount+1})
+            let createdPostLike = await API.graphql(graphqlOperation(createPostLike, { input: like}));
+            this.postLikeId = createPostLike.data.createPostLike.id
+            this.setState({likesCount: this.state.likesCount+1, highlightLikeButton: true})
         } 
         catch (error) {console.log(error)}
     }
 
+    dislikePost = async () => {
+        let deleteInput = {}
+        deleteInput.id = this.postLikeId
+        try {
+            await API.graphql(graphqlOperation(deletePostLike, { input: deleteInput }));
+            this.postLikeId = null
+            this.setState({likesCount: this.state.likesCount-1, highlightLikeButton: false})
+        }
+        catch (error) {console.log(error)}
+    }
+
     render(){
-        let likeButtonColor = this.props.liked? LIKED_COLOR : UNLIKED_COLOR
+        let likeButtonColor = this.state.highlightLikeButton? LIKED_COLOR : UNLIKED_COLOR
         return (
             <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', border:'1px solid lightGray', borderRadius: '4px', marginBottom: '15px'}}>
                 <Box display='flex' flexDirection='column' style={{ margin: '10px 10px 10px 10px' }}>
@@ -143,7 +188,7 @@ class PostCard extends Component{
                     <Box display='flex' flexDirection='row' justifyContent='flex-start'>
                         <Button
                             color = {likeButtonColor}
-                            onClick = {this.handleNewLike}
+                            onClick = {this.handleLikeButtonClick}
                             content='Like'
                             icon='thumbs up outline'
                             label={{ color: likeButtonColor, as: 'a', basic: true, content: this.state.likesCount }}

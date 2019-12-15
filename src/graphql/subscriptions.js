@@ -2077,6 +2077,12 @@ export const onUpdatePostLike = `subscription OnUpdatePostLike {
 export const onDeletePostLike = `subscription OnDeletePostLike {
   onDeletePostLike {
     id
+    post{
+      id
+    }
+    liker{
+      id
+    }
   }
 }
 `;

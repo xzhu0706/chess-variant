@@ -49,7 +49,7 @@ class DiscussionBoard extends Component{
         try {
             let createdPost = await API.graphql(graphqlOperation(mutations.createPost, { input: post}));
             let author = this.currentUser.username
-            let newPostCard = this.generatePostCard(createdPost.date.createPost, author)
+            let newPostCard = this.generatePostCard(createdPost.data.createPost, author)
             this.setState({posts: [newPostCard, ...this.state.posts]})
         }
         catch(error) {console.log(error)}
@@ -57,33 +57,30 @@ class DiscussionBoard extends Component{
 
     generatePostCard(post, author){
         let elapsedTime = getElapsedTime(post.createdAt)
-        let liked = this.userLikesPost(post)
+        let likeInfo = this.userLikesPost(post)
         return (
-            <PostCard 
+            <PostCard
+                key = {post.id} 
                 postId = {post.id}
+                postLikeId = {likeInfo.postLikeId }
                 author={author} 
                 elapsedTime={elapsedTime} 
                 title={post.title} 
                 content={post.content} 
                 likesCount={post.likes.items.length}
                 commentsCount={post.comments.items.length}
-                liked = {liked}
+                liked = {likeInfo.like}
             />
         )
     }
 
     userLikesPost = (post) => {
         let likers = post.likes.items
-        alert(JSON.stringify(likers))
         for(let i = 0; i < likers.length; i++){
-            alert('HERE')
             let likeObject = likers[i]
-            alert(likeObject.liker.id + "<-->" + this.currentUser.id)
-            if(likeObject.liker.id === this.currentUser.id){
-                return true
-            }
+            if(likeObject.liker.id === this.currentUser.id) return {like:true, postLikeId: likeObject.id}
         }
-        return false
+        return {like:false, postLikeId: null}
     }
 
     render() {

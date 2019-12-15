@@ -12,7 +12,7 @@ function getElapsedTime(creationDate) {
      */
     let date = new Date(creationDate)
     let now = new Date()
-    alert(creationDate)
+    
     //timeDiff is converted to seconds from milliseconds
     let timeDiff = parseInt((now-date)/1000)
     let elapsedTime;
