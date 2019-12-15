@@ -1,3 +1,5 @@
+/* eslint-disable no-continue */
+/* eslint-disable no-bitwise */
 /* unit tests for chess.js */
 const mychessjs = require('../../chess/chess');
 
@@ -108,7 +110,7 @@ describe('valid_2x2_grid_move() unit testing', () => {
   });
 
   test('a8 is not in the same 2x2 subgrid as squares other than itself, b8, a7 and b7', () => {
-    for (let s = SQUARES.a8; s <= SQUARES.h1; s++) {
+    for (let s = SQUARES.a8; s <= SQUARES.h1; s += 1) {
       if (s & 0x88) {
         s += 7;
         continue;
@@ -122,7 +124,7 @@ describe('valid_2x2_grid_move() unit testing', () => {
   });
 
   test('g3 is not in the same 2x2 subgrid as squares other than itself, g4, h4 and h3', () => {
-    for (let s = SQUARES.a8; s <= SQUARES.h1; s++) {
+    for (let s = SQUARES.a8; s <= SQUARES.h1; s += 1) {
       if (s & 0x88) {
         s += 7;
         continue;
@@ -136,7 +138,7 @@ describe('valid_2x2_grid_move() unit testing', () => {
   });
 
   test('f3 is not in the same 2x2 subgrid as squares other than itself, e4, f4, and e3', () => {
-    for (let s = SQUARES.a8; s <= SQUARES.h1; s++) {
+    for (let s = SQUARES.a8; s <= SQUARES.h1; s += 1) {
       if (s & 0x88) {
         s += 7;
         continue;
@@ -150,13 +152,12 @@ describe('valid_2x2_grid_move() unit testing', () => {
   });
 
   test('b2 is not in the same 2x2 subgrid as squares other than itself, a2, a1 and b1', () => {
-    for (let s = SQUARES.a8; s <= SQUARES.h1; s++) {
+    for (let s = SQUARES.a8; s <= SQUARES.h1; s += 1) {
       if (s & 0x88) {
         s += 7;
         continue;
       }
-      if (s === SQUARES.a2 || s === SQUARES.b2
-          || s === SQUARES.a1 || s === SQUARES.b1) {
+      if (s === SQUARES.a2 || s === SQUARES.b2 || s === SQUARES.a1 || s === SQUARES.b1) {
         continue;
       }
       expect(mychessjs.valid_2x2_grid_move(SQUARES.b2, s)).toBe(true);
@@ -165,203 +166,205 @@ describe('valid_2x2_grid_move() unit testing', () => {
 });
 
 describe('attacked() unit testing', () => {
-  const gridGame = mychessjs.Chess('1k6/8/8/8/8/8/1q6/1K6 w - - 0 1', 2);
-  // +------------------------+
-  // 8 | .  k  .  .  .  .  .  . |
-  // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | .  q  .  .  .  .  .  . |
-  // 1 | .  K  .  .  .  .  .  . |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
   test("In grid chess, a king isn't attacked by a queen in the same grid (above the king)", () => {
+    const gridGame = mychessjs.Chess('1k6/8/8/8/8/8/1q6/1K6 w - - 0 1', 2);
+    // +------------------------+
+    // 8 | .  k  .  .  .  .  .  . |
+    // 7 | .  .  .  .  .  .  .  . |
+    // 6 | .  .  .  .  .  .  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | .  q  .  .  .  .  .  . |
+    // 1 | .  K  .  .  .  .  .  . |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
+    // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
     expect(gridGame.attacked('b', 113)).toBe(false);
   });
 
-  const gridGame2 = mychessjs.Chess('1k6/8/8/8/8/8/8/qK6 w - - 0 1', 2);
-  // +------------------------+
-  // 8 | .  k  .  .  .  .  .  . |
-  // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | .  .  .  .  .  .  .  . |
-  // 1 | q  K  .  .  .  .  .  . |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
   test("In grid chess, a king isn't attacked by a queen in the same grid (to the left of the king)", () => {
+    const gridGame2 = mychessjs.Chess('1k6/8/8/8/8/8/8/qK6 w - - 0 1', 2);
+    // +------------------------+
+    // 8 | .  k  .  .  .  .  .  . |
+    // 7 | .  .  .  .  .  .  .  . |
+    // 6 | .  .  .  .  .  .  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | .  .  .  .  .  .  .  . |
+    // 1 | q  K  .  .  .  .  .  . |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
+    // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
     expect(gridGame2.attacked('b', 113)).toBe(false);
   });
 
-  const gridGame3 = mychessjs.Chess('1k6/8/8/8/8/8/2q5/1K6 w - - 0 1', 2);
-  // +------------------------+
-  // 8 | .  k  .  .  .  .  .  . |
-  // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | .  .  q  .  .  .  .  . |
-  // 1 | .  K  .  .  .  .  .  . |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
   test('In grid chess, a king is attacked by an adjacent queen in the next grid', () => {
+    const gridGame3 = mychessjs.Chess('1k6/8/8/8/8/8/2q5/1K6 w - - 0 1', 2);
+    // +------------------------+
+    // 8 | .  k  .  .  .  .  .  . |
+    // 7 | .  .  .  .  .  .  .  . |
+    // 6 | .  .  .  .  .  .  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | .  .  q  .  .  .  .  . |
+    // 1 | .  K  .  .  .  .  .  . |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
+    // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
     expect(gridGame3.attacked('b', 113)).toBe(true);
   });
 
-  const standardGame = mychessjs.Chess('1K6/8/8/8/8/8/1Q6/1k6 w - - 0 1', 0);
-  // +------------------------+
-  // 8 | .  K  .  .  .  .  .  . |
-  // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | .  Q  .  .  .  .  .  . |
-  // 1 | .  k  .  .  .  .  .  . |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
   test("In standard chess, Black's king is attacked by an adjacent White queen", () => {
+    const standardGame = mychessjs.Chess('1K6/8/8/8/8/8/1Q6/1k6 w - - 0 1', 0);
+    // +------------------------+
+    // 8 | .  K  .  .  .  .  .  . |
+    // 7 | .  .  .  .  .  .  .  . |
+    // 6 | .  .  .  .  .  .  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | .  Q  .  .  .  .  .  . |
+    // 1 | .  k  .  .  .  .  .  . |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
+    // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
     expect(standardGame.attacked('w', 113)).toBe(true);
   });
 
-  const standardGame2 = mychessjs.Chess('1k6/8/8/8/8/8/2q5/1K6 w - - 0 1', 0);
-  // +------------------------+
-  // 8 | .  k  .  .  .  .  .  . |
-  // 7 | .  .  .  .  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | .  .  q  .  .  .  .  . |
-  // 1 | .  K  .  .  .  .  .  . |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
   test('In standard chess, a king is under attack if there is a diagonally adjacent opponent queen', () => {
+    const standardGame2 = mychessjs.Chess('1k6/8/8/8/8/8/2q5/1K6 w - - 0 1', 0);
+    // +------------------------+
+    // 8 | .  k  .  .  .  .  .  . |
+    // 7 | .  .  .  .  .  .  .  . |
+    // 6 | .  .  .  .  .  .  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | .  .  q  .  .  .  .  . |
+    // 1 | .  K  .  .  .  .  .  . |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
+    // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
     expect(standardGame2.attacked('b', 113)).toBe(true);
   });
 
-  const standardGame3 = mychessjs.Chess('rnbqkbnr/pppp1ppp/8/8/8/8/PPPPQPPP/RNB1KBNR b KQkq - 0 1', 0);
-  // +------------------------+
-  // 8 | r  n  b  q  k  b  n  r |
-  // 7 | p  p  p  p  .  p  p  p |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | P  P  P  P  Q  P  P  P |
-  // 1 | R  N  B  .  K  B  N  R |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  test('In standard chess, the king is attacked by a queen on the same file when there is NO piece blocking the path', () => {
+  test('In standard chess, the king is attacked by a queen on the same file '
+  + 'when there is NO piece blocking the path', () => {
+    const standardGame3 = mychessjs.Chess('rnbqkbnr/pppp1ppp/8/8/8/8/PPPPQPPP/RNB1KBNR b KQkq - 0 1', 0);
+    // +------------------------+
+    // 8 | r  n  b  q  k  b  n  r |
+    // 7 | p  p  p  p  .  p  p  p |
+    // 6 | .  .  .  .  .  .  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | P  P  P  P  Q  P  P  P |
+    // 1 | R  N  B  .  K  B  N  R |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
     expect(standardGame3.attacked('w', 4)).toBe(true);
   });
 
-  const standardGame4 = mychessjs.Chess('rnbqkbnr/pppppppp/8/8/8/8/PPPPQPPP/RNB1KBNR b KQkq - 0 1', 0);
-  // +------------------------+
-  // 8 | r  n  b  q  k  b  n  r |
-  // 7 | p  p  p  p  p  p  p  p |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | P  P  P  P  Q  P  P  P |
-  // 1 | R  N  B  .  K  B  N  R |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
-  test('In standard chess, the king is NOT attacked by a queen on the same file when there IS a piece blocking the path', () => {
+  test('In standard chess, the king is NOT attacked by a queen on the same file '
+  + 'when there IS a piece blocking the path', () => {
+    const standardGame4 = mychessjs.Chess('rnbqkbnr/pppppppp/8/8/8/8/PPPPQPPP/RNB1KBNR b KQkq - 0 1', 0);
+    // +------------------------+
+    // 8 | r  n  b  q  k  b  n  r |
+    // 7 | p  p  p  p  p  p  p  p |
+    // 6 | .  .  .  .  .  .  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | P  P  P  P  Q  P  P  P |
+    // 1 | R  N  B  .  K  B  N  R |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
     expect(standardGame4.attacked('w', 4)).toBe(false);
   });
 
-  const standardGame5 = mychessjs.Chess('rnbqkbnr/pppppppp/5N2/8/8/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1', 0);
-  // +------------------------+
-  // 8 | r  n  b  q  k  b  n  r |
-  // 7 | p  p  p  p  p  p  p  p |
-  // 6 | .  .  .  .  .  N  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | P  P  P  P  P  P  P  P |
-  // 1 | R  N  B  Q  K  B  .  R |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
   test('In standard chess, a knight attacks the king when if it is blocked by intermediate pieces', () => {
+    const standardGame5 = mychessjs.Chess('rnbqkbnr/pppppppp/5N2/8/8/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1', 0);
+    // +------------------------+
+    // 8 | r  n  b  q  k  b  n  r |
+    // 7 | p  p  p  p  p  p  p  p |
+    // 6 | .  .  .  .  .  N  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | P  P  P  P  P  P  P  P |
+    // 1 | R  N  B  Q  K  B  .  R |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
     expect(standardGame5.attacked('w', 4)).toBe(true);
   });
 
-  const standardGame6 = mychessjs.Chess('rnbqkbnr/pppp4/5N2/8/8/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1', 0);
-  // +------------------------+
-  // 8 | r  n  b  q  k  b  n  r |
-  // 7 | p  p  p  p  .  .  .  . |
-  // 6 | .  .  .  .  .  N  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | P  P  P  P  P  P  P  P |
-  // 1 | R  N  B  Q  K  B  .  R |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
   test('In standard chess, a knight attacks the king when it is not blocked by intermediate pieces', () => {
+    const standardGame6 = mychessjs.Chess('rnbqkbnr/pppp4/5N2/8/8/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1', 0);
+    // +------------------------+
+    // 8 | r  n  b  q  k  b  n  r |
+    // 7 | p  p  p  p  .  .  .  . |
+    // 6 | .  .  .  .  .  N  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | P  P  P  P  P  P  P  P |
+    // 1 | R  N  B  Q  K  B  .  R |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
     expect(standardGame6.attacked('w', 4)).toBe(true);
   });
 
-  const standardGame7 = mychessjs.Chess('rnbqkbnr/pppp4/5D2/8/8/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1', 0);
-  // +------------------------+
-  // 8 | r  n  b  q  k  b  n  r |
-  // 7 | p  p  p  p  .  .  .  . |
-  // 6 | .  .  .  .  .  D  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  .  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | P  P  P  P  P  P  P  P |
-  // 1 | R  N  B  Q  K  B  .  R |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
   test('In standard chess, a nightrider attacks the king from 1 knight distance away '
   + 'when it is not blocked by intermediate pieces', () => {
+    const standardGame7 = mychessjs.Chess('rnbqkbnr/pppp4/5D2/8/8/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1', 0);
+    // +------------------------+
+    // 8 | r  n  b  q  k  b  n  r |
+    // 7 | p  p  p  p  .  .  .  . |
+    // 6 | .  .  .  .  .  D  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  .  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | P  P  P  P  P  P  P  P |
+    // 1 | R  N  B  Q  K  B  .  R |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
     expect(standardGame7.attacked('w', 4)).toBe(true);
   });
 
-  const standardGame8 = mychessjs.Chess('rnbqkbnr/pppp4/8/8/6D1/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1', 0);
-  // +------------------------+
-  // 8 | r  n  b  q  k  b  n  r |
-  // 7 | p  p  p  p  .  .  .  . |
-  // 6 | .  .  .  .  .  .  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  D  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | P  P  P  P  P  P  P  P |
-  // 1 | R  N  B  Q  K  B  .  R |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
   test('In standard chess, a nightrider attacks the king from 2 knight distances away '
   + 'when it is not blocked by intermediate pieces', () => {
+    const standardGame8 = mychessjs.Chess('rnbqkbnr/pppp4/8/8/6D1/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1', 0);
+    // +------------------------+
+    // 8 | r  n  b  q  k  b  n  r |
+    // 7 | p  p  p  p  .  .  .  . |
+    // 6 | .  .  .  .  .  .  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  D  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | P  P  P  P  P  P  P  P |
+    // 1 | R  N  B  Q  K  B  .  R |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
     expect(standardGame8.attacked('w', 4)).toBe(true);
   });
 
-  const standardGame9 = mychessjs.Chess('rnbqkbnr/pppp4/5p2/8/6D1/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1', 0);
-  // +------------------------+
-  // 8 | r  n  b  q  k  b  n  r |
-  // 7 | p  p  p  p  .  .  .  . |
-  // 6 | .  .  .  .  .  p  .  . |
-  // 5 | .  .  .  .  .  .  .  . |
-  // 4 | .  .  .  .  .  .  D  . |
-  // 3 | .  .  .  .  .  .  .  . |
-  // 2 | P  P  P  P  P  P  P  P |
-  // 1 | R  N  B  Q  K  B  .  R |
-  //   +------------------------+
-  //     a  b  c  d  e  f  g  h
   test('In standard chess, a nightrider does not attack the king from 2 knight distances away '
   + 'when it is blocked by an enemy piece 1 knight distance away', () => {
+    const standardGame9 = mychessjs.Chess('rnbqkbnr/pppp4/5p2/8/6D1/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1', 0);
+    // +------------------------+
+    // 8 | r  n  b  q  k  b  n  r |
+    // 7 | p  p  p  p  .  .  .  . |
+    // 6 | .  .  .  .  .  p  .  . |
+    // 5 | .  .  .  .  .  .  .  . |
+    // 4 | .  .  .  .  .  .  D  . |
+    // 3 | .  .  .  .  .  .  .  . |
+    // 2 | P  P  P  P  P  P  P  P |
+    // 1 | R  N  B  Q  K  B  .  R |
+    //   +------------------------+
+    //     a  b  c  d  e  f  g  h
     expect(standardGame9.attacked('w', 4)).toBe(false);
   });
 
@@ -501,7 +504,8 @@ describe('attacked() unit testing', () => {
     expect(standardGame.attacked('w', 4)).toBe(true);
   });
 
-  test("In antichess, a king is under attack (it's just not under check) if there is an adjacent opponent queen", () => {
+  test('In antichess, a king is under attack (it\'s just not under check) '
+  + 'if there is an adjacent opponent queen', () => {
     const antiGame = mychessjs.Chess('1K6/8/8/8/8/8/1Q6/1k6 b - - 0 1', 0);
     // +------------------------+
     // 8 | .  K  .  .  .  .  .  . |
@@ -531,7 +535,8 @@ describe('attacked() unit testing', () => {
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   // It's White's turn and White's king is placed on square 'b1' (i.e., 113).
-  test("In antichess, a king is under attack (it's just not under check) if there is an opponent queen on the same diagonal", () => {
+  test('In antichess, a king is under attack (it\'s just not under check) '
+  + 'if there is an opponent queen on the same diagonal', () => {
     expect(antiGame2.attacked('b', 113)).toBe(true);
   });
 });

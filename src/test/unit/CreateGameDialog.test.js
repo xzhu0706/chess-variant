@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-// const CreateGameDialog = require('../../pages/CreateGameDialog.js')
-import CreateGameDialog from '../../pages/CreateGameDialog.js';
+// const CreateGameDialog = require('../../pages/CreateGameDialog')
+import CreateGameDialog from '../../pages/CreateGameDialog';
 
 afterEach(cleanup);
 

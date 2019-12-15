@@ -19,7 +19,8 @@ export default class UserVariant extends React.Component {
   }
 
   async componentDidMount() {
-    const { vid } = this.props.match.params;
+    const { match } = this.props;
+    const { vid } = match.params;
 
     try {
       const queryResult = await API.graphql(graphqlOperation(
@@ -46,6 +47,7 @@ export default class UserVariant extends React.Component {
     const {
       creator, name, startFen, customPiece,
     } = this.state;
+    const { match } = this.props;
     return (
       creator && startFen ? (
         <div>
@@ -89,7 +91,7 @@ export default class UserVariant extends React.Component {
             </div>
           </div>
           <div style={{ width: '100%', height: '100%' }}>
-            <CommentBox id={this.props.match.params.vid} variant={this.props.match.params.vid} />
+            <CommentBox id={match.params.vid} variant={match.params.vid} />
           </div>
         </div>
       ) : null

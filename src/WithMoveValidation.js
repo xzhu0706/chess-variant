@@ -24,19 +24,27 @@ import './variant-style.css';
 class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
-  state = {
-    fen: this.props.fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-    history: [],
-    reverseHistory: [],
-    squareStyles: {}, // custom square styles
-    fromSquare: '', // most recently clicked square (empty if a move was just made)
-    turn: '',
-    orientation: 'white',
-    gameOver: false,
-    gameResult: '', // checkmate, stalemate, insufficient material, ...
-  };
+  constructor(props) {
+    super(props);
+    const { fen, variant, customPiece } = this.props;
+    this.state = {
+      fen: fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      history: [],
+      reverseHistory: [],
+      squareStyles: {}, // custom square styles
+      fromSquare: '', // most recently clicked square (empty if a move was just made)
+      turn: '',
+      orientation: 'white',
+      gameOver: false,
+      gameResult: '', // checkmate, stalemate, insufficient material, ...
+    };
 
-  game = new Chess(this.props.fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', this.props.variant, this.props.customPiece || { c: { 0: [], 1: [] } });
+    this.game = new Chess(
+      fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      variant,
+      customPiece || { c: { 0: [], 1: [] } },
+    );
+  }
 
   componentDidMount() {
     this.setState({
@@ -46,8 +54,9 @@ class HumanVsHuman extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    const { editMode, sparePiece } = this.props;
     // get rid of old square-selection information if the user leaves cursor mode
-    if (this.props.editMode && this.props.sparePiece !== 'cursor' && prevProps.sparePiece === 'cursor') {
+    if (editMode && sparePiece !== 'cursor' && prevProps.sparePiece === 'cursor') {
       this.setState({
         squareStyles: {},
         fromSquare: '',
@@ -60,8 +69,9 @@ class HumanVsHuman extends Component {
   }
 
   flipOrientation = () => {
+    const { orientation } = this.state;
     this.setState({
-      orientation: this.state.orientation === 'white' ? 'black' : 'white',
+      orientation: orientation === 'white' ? 'black' : 'white',
     });
   }
 
@@ -72,8 +82,9 @@ class HumanVsHuman extends Component {
       fromSquare: '',
       squareStyles: {},
     });
-    if (this.props.handleFenChange) {
-      this.props.handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
+    const { handleFenChange } = this.props;
+    if (handleFenChange) {
+      handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
     }
   }
 
@@ -84,31 +95,34 @@ class HumanVsHuman extends Component {
       fromSquare: '',
       squareStyles: {},
     });
-    if (this.props.handleFenChange) {
-      this.props.handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
+    const { handleFenChange } = this.props;
+    if (handleFenChange) {
+      handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
     }
   }
 
   prevMove = () => {
     if (this.game.history().length > 0) {
-      const reverseHistory = [...this.state.reverseHistory, this.game.history().pop()];
+      const { reverseHistory } = this.state;
+      const newReverseHistory = [...reverseHistory, this.game.history().pop()];
       this.game.undo();
       this.setState({
         fen: this.game.fen(),
-        reverseHistory,
-      }, () => console.log(this.game.history(), this.state.reverseHistory));
+        reverseHistory: newReverseHistory,
+      });
     }
   }
 
   nextMove = () => {
-    const reverseHistory = [...this.state.reverseHistory];
+    const { reverseHistory } = this.state;
+    const newReverseHistory = [...reverseHistory];
     if (reverseHistory.length > 0) {
       const move = reverseHistory.pop();
       this.game.move(move);
       this.setState({
         fen: this.game.fen(),
-        reverseHistory,
-      }, () => console.log(this.game.history(), this.state.reverseHistory));
+        reverseHistory: newReverseHistory,
+      });
     }
   }
 
@@ -140,34 +154,12 @@ class HumanVsHuman extends Component {
     }));
   };
 
-  updateGameResult() {
-    if (this.game.game_over()) {
-      let result;
-      if (this.game.in_checkmate()) {
-        result = 'checkmate';
-      } else if (this.props.variant === 3 && this.game.extinguished()) {
-        result = 'extinction';
-      } else if (this.game.in_stalemate()) {
-        result = 'stalemate';
-      } else if (this.game.insufficient_material()) {
-        result = 'insufficient';
-      } else if (this.game.in_threefold_repetition()) {
-        result = 'repetition';
-      } else {
-        result = 'fifty';
-      }
-      this.setState({
-        gameOver: true,
-        gameResult: result,
-      });
-    }
-    /* (we will pass the value of this.state.gameResult to GameData) */
-  }
-
   onSquareClick = (square) => {
-    if (!this.props.editMode) {
+    const { editMode, sparePiece, handleFenChange } = this.props;
+    const { gameOver, fromSquare } = this.state;
+    if (!editMode) {
     // disable user input if game is over
-      if (this.state.gameOver) return;
+      if (gameOver) return;
 
       // highlight the square you just clicked
       this.setState(() => ({
@@ -188,7 +180,7 @@ class HumanVsHuman extends Component {
 
       // process the case where the user has registered a move by clicking
       const move = this.game.move({
-        from: this.state.fromSquare,
+        from: fromSquare,
         to: square,
         promotion: 'q', // always promote to a queen for example simplicity
         // fix this so the user can choose what to promote to
@@ -207,60 +199,58 @@ class HumanVsHuman extends Component {
 
       // end the game if necessary
       this.updateGameResult();
-    } else { // edit mode
-      if (this.props.sparePiece !== 'cursor') {
-        // if the selected square is not empty
-        if (this.game.get(square)) {
-          if (this.props.sparePiece === 'trash') { // if trash icon is selected, delete piece on selected square
-            this.game.remove(square);
-            this.setState({
-              fen: this.game.fen(),
-            });
-            if (this.props.handleFenChange) {
-              this.props.handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
-            }
-          }
-        } else { // place the selected spare piece on the selected square if the selected square is empty
-          const type = this.props.sparePiece.toLowerCase();
-          const color = this.props.sparePiece === this.props.sparePiece.toLowerCase() ? 'b' : 'w';
-          this.game.put({ type, color }, square);
+    } else if (sparePiece !== 'cursor') {
+      // if the selected square is not empty
+      if (this.game.get(square)) {
+        if (sparePiece === 'trash') { // if trash icon is selected, delete piece on selected square
+          this.game.remove(square);
           this.setState({
             fen: this.game.fen(),
           });
-          if (this.props.handleFenChange) {
-            this.props.handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
+          if (handleFenChange) {
+            handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
           }
         }
-      } else {
-        // do nothing if the person clicked on the same square twice
-        if (this.state.fromSquare === square) {
-          return;
-        }
-
-        // highlight clicked square, and update the from square
-        this.setState({
-          squareStyles: { [square]: { backgroundColor: '#ebae34' } },
-          fromSquare: square,
-        });
-
-        // get just selected piece if it exists
-        const piece = this.game.get(this.state.fromSquare);
-
-        if (piece === null) return;
-
-        // displace the selected piece on the board
-        this.game.remove(this.state.fromSquare);
-        this.game.put(piece, square);
-
-        // update the fen, and empty out the from square
+      } else { // place the selected spare piece on the selected square if the selected square is empty
+        const type = sparePiece.toLowerCase();
+        const color = sparePiece === sparePiece.toLowerCase() ? 'b' : 'w';
+        this.game.put({ type, color }, square);
         this.setState({
           fen: this.game.fen(),
-          fromSquare: '',
         });
-
-        if (this.props.handleFenChange) {
-          this.props.handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
+        if (handleFenChange) {
+          handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
         }
+      }
+    } else {
+      // do nothing if the person clicked on the same square twice
+      if (fromSquare === square) {
+        return;
+      }
+
+      // highlight clicked square, and update the from square
+      this.setState({
+        squareStyles: { [square]: { backgroundColor: '#ebae34' } },
+        fromSquare: square,
+      });
+
+      // get just selected piece if it exists
+      const piece = this.game.get(fromSquare);
+
+      if (piece === null) return;
+
+      // displace the selected piece on the board
+      this.game.remove(fromSquare);
+      this.game.put(piece, square);
+
+      // update the fen, and empty out the from square
+      this.setState({
+        fen: this.game.fen(),
+        fromSquare: '',
+      });
+
+      if (handleFenChange) {
+        handleFenChange(this.game.fen()); // in the /create page, update this.state.startFen
       }
     }
   };
@@ -269,18 +259,45 @@ class HumanVsHuman extends Component {
   // This will allow the user to have multiple squares be highlighted simultaneously,
   // for whatever reason (annotation?)
   onSquareRightClick = (square) => {
-    if (!this.props.editMode) {
+    const { editMode } = this.props;
+    if (!editMode) {
       this.setState(({ squareStyles }) => ({
         squareStyles: { ...squareStyles, [square]: { backgroundColor: '#e86c65' } },
       }));
     }
   };
 
+  updateGameResult() {
+    if (this.game.game_over()) {
+      let result;
+      const { variant } = this.props;
+      if (this.game.in_checkmate()) {
+        result = 'checkmate';
+      } else if (variant === 3 && this.game.extinguished()) {
+        result = 'extinction';
+      } else if (this.game.in_stalemate()) {
+        result = 'stalemate';
+      } else if (this.game.insufficient_material()) {
+        result = 'insufficient';
+      } else if (this.game.in_threefold_repetition()) {
+        result = 'repetition';
+      } else {
+        result = 'fifty';
+      }
+      this.setState({
+        gameOver: true,
+        gameResult: result,
+      });
+    }
+    /* (we will pass the value of this.state.gameResult to GameData) */
+  }
+
   render() {
     const {
       fen, history, reverseHistory, turn, gameResult, squareStyles, orientation,
     } = this.state;
-    return this.props.children({
+    const { children } = this.props;
+    return children({
       squareStyles,
       fen,
       history,
@@ -300,11 +317,20 @@ class HumanVsHuman extends Component {
   }
 }
 
-export default function WithMoveValidation(start_fen, variant = 0, showData = true, smallBoard = false, editMode = false, sparePiece, customPiece, handleFenChange) {
+export default function WithMoveValidation(
+  startFen, variant = 0, showData = true, smallBoard = false, editMode = false, sparePiece, customPiece, handleFenChange,
+) {
   const boardId = variant === 2 ? 'grid-board' : 'false'; // if variant isn't grid chess, boardId will be set to false
   return (
     <div style={smallBoard ? { maxWidth: '384px' } : { maxWidth: '540px' }}>
-      <HumanVsHuman fen={start_fen} variant={variant} editMode={editMode} sparePiece={sparePiece} customPiece={customPiece} handleFenChange={handleFenChange}>
+      <HumanVsHuman
+        fen={startFen}
+        variant={variant}
+        editMode={editMode}
+        sparePiece={sparePiece}
+        customPiece={customPiece}
+        handleFenChange={handleFenChange}
+      >
         { /* HumanVsHuman calls the following function as this.props.children() in its render() method */ }
         {({
           squareStyles,
@@ -525,7 +551,7 @@ export default function WithMoveValidation(start_fen, variant = 0, showData = tr
               </div>
               <div style={{ textAlign: 'center', margin: '0.4em' }}>
                 <Button size="small" variant="outlined" onClick={flipOrientation}>Flip board</Button>
-                {editMode ? <Button size="small" variant="outlined" onClick={resetBoard}>Reset to starting position</Button> : null}
+                {editMode ? <Button size="small" variant="outlined" onClick={resetBoard}>Reset to start</Button> : null}
                 {editMode ? <Button size="small" variant="outlined" onClick={clearBoard}>Clear board</Button> : null}
               </div>
               { gameData }
