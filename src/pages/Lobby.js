@@ -144,8 +144,9 @@ class Lobby extends Component {
         const gameId = game.id;
         this.gamesData[gameId] = game;
         const row = this.constructRowFromGameData(game);
-        const games = [row, ...this.state.games];
-        this.setState({ games });
+        const { games } = this.state;
+        const updatedGames = [row, ...games];
+        this.setState({ games: updatedGames });
       },
     });
 
@@ -166,7 +167,8 @@ class Lobby extends Component {
         const game = gameData.value.data.onUpdateGame;
         const currentGame = localStorage.getItem(CURRENT_GAME);
         if (currentGame && currentGame === game.id && !game.ended) {
-          this.props.history.push({ pathname: `/game/${game.id}` });
+          const { history } = this.props;
+          history.push({ pathname: `/game/${game.id}` });
         }
         // since they didn't create the game which has now been joined, any other player
         // will simply remove it from their lobby.
@@ -228,14 +230,14 @@ class Lobby extends Component {
         playerGameMappingGameId: newGameData.id,
         playerGameMappingPlayerId: userInfo.attributes.sub,
       };
-      const newPlayerGameMapping = await API.graphql(
+      await API.graphql(
         graphqlOperation(customMutations.createPlayerGameMapping, { input: playerGameMappingInput }),
       );
       // testing output
-      const queryResult2 = await API.graphql(
+      await API.graphql(
         graphqlOperation(customQueries.getUserWithPastGames, { id: userInfo.attributes.sub }),
       );
-      const queryResult3 = await API.graphql(graphqlOperation(customQueries.getGame, { id: newGameData.id }));
+      await API.graphql(graphqlOperation(customQueries.getGame, { id: newGameData.id }));
       // console.log('after creat game', newPlayerGameMapping, queryResult2, queryResult3);
     }
   }
@@ -319,7 +321,7 @@ class Lobby extends Component {
           playerGameMappingGameId: joinedGameData.id,
           playerGameMappingPlayerId: userInfo.attributes.sub,
         };
-        const newPlayerGameMapping = await API.graphql(
+        await API.graphql(
           graphqlOperation(customMutations.createPlayerGameMapping, { input: playerGameMappingInput }),
         );
         // console.log('joined mapping', newPlayerGameMapping);
@@ -327,7 +329,8 @@ class Lobby extends Component {
         // console.log(e);
       }
     }
-    this.props.history.push({ pathname: `/game/${gameId}` });
+    const { history } = this.props;
+    history.push({ pathname: `/game/${gameId}` });
   }
 
   getUserInfo = async () => {
@@ -343,7 +346,8 @@ class Lobby extends Component {
   }
 
   removeGameFromLobby = (gameId) => {
-    const remainingGames = this.state.games.filter((gameData) => gameData.gameId !== gameId);
+    const { games } = this.state;
+    const remainingGames = games.filter((gameData) => gameData.gameId !== gameId);
     this.setState({ games: remainingGames });
   }
 
@@ -365,14 +369,15 @@ class Lobby extends Component {
       fontFamily: 'AppleSDGothicNeo-Bold',
     };
 
+    const { showDialog, showJoiningOwnGameDialog, games } = this.state;
     return (
       <Container maxWidth="sm" style={lobbyStyle}>
-        <CreateGameDialog closeDialog={this.closeDialog} showDialog={this.state.showDialog} createGame={this.createGame} />
+        <CreateGameDialog closeDialog={this.closeDialog} showDialog={showDialog} createGame={this.createGame} />
         <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog} id="btncreategame">
                 Create a game
         </Button>
         <Dialog
-          open={this.state.showJoiningOwnGameDialog}
+          open={showJoiningOwnGameDialog}
           onClose={this.closeJoiningOwnGameDialog}
         >
           <DialogTitle id="alert-dialog-title">Invalid Opponent</DialogTitle>
@@ -388,7 +393,7 @@ class Lobby extends Component {
             onRowClick={(event, rowData) => this.joinGame(event, rowData)}
             icons={tableIcons}
             columns={lobbyColumns}
-            data={this.state.games}
+            data={games}
             title="Lobby"
             maxWidth="md"
             options={{

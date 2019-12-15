@@ -25,7 +25,8 @@ class Account extends Component {
   }
 
   async componentDidMount() {
-    const { username } = this.props.match.params;
+    const { match } = this.props;
+    const { username } = match.params;
     const currentUser = await Auth.currentUserInfo();
     const queryResult = await API.graphql(graphqlOperation(
       customQueries.getUserByUsername, { username },

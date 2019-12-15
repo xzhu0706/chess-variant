@@ -22,14 +22,15 @@ class Tutorial extends React.Component {
 
   render() {
     const paragraphStyle = { marginTop: '1rem' };
+    const { offsets, repeatOffsets } = this.state;
     return (
       <div style={{ textAlign: 'center' }}>
         <h1>Customization Tutorial</h1>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
           <div style={{ margin: '1em' }} className="tutorial">
             <PieceCustomize
-              offsets={this.state.offsets}
-              repeatOffsets={this.state.repeatOffsets}
+              offsets={offsets}
+              repeatOffsets={repeatOffsets}
               hideInput
             />
           </div>

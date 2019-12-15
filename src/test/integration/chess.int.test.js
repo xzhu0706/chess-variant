@@ -567,7 +567,8 @@ describe('Testing grid chess (move generation, checking and game-over conditions
   //   +------------------------+
   //     a  b  c  d  e  f  g  h
   // (White's turn.)
-  test('In grid chess, a king that is not on any side/corner will have 8-3=5 viable (out-of-grid) moves on an empty board', () => {
+  test('In grid chess, a king that is not on any side/corner will have '
+  + '8-3=5 viable (out-of-grid) moves on an empty board', () => {
     const moves = gridGame5.generate_moves();
     const expected = [
       {
