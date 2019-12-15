@@ -67,7 +67,8 @@ class DiscussionBoard extends Component{
                 postId = {post.id}
                 postLikeId = {likeInfo.postLikeId }
                 author={author} 
-                elapsedTime={elapsedTime} 
+                elapsedTime={elapsedTime}
+                createdAt = {post.createdAt} 
                 title={post.title} 
                 content={post.content} 
                 likesCount={post.likes.items.length}

@@ -9,6 +9,8 @@ import {createPostComment, createPostLike, deletePostLike} from '../graphql/muta
 import {listComments, getPost} from '../graphql/queries'
 import PostComment from './PostComment'
 import * as subscriptions from '../graphql/subscriptions';
+import * as Time from '../Constants/TimeConstants';
+
 
 const LIKED_COLOR = 'blue'
 const UNLIKED_COLOR = 'gray'
@@ -22,11 +24,13 @@ class PostCard extends Component{
             comments: null,
             likesCount: this.props.likesCount,
             commentsCount: this.props.commentsCount,
+            elapsedTime: this.props.elapsedTime,
             highlightLikeButton: this.props.liked
         }
         this.postId = this.props.postId
         this.postLikeId = this.props.postLikeId
         this.currentUser = null
+        this.createdAt = this.props.createdAt
         this.postUpdateSubscription = null
         this.commentCreationSubscription = null
         this.likeCreationSubscription = null
@@ -35,6 +39,8 @@ class PostCard extends Component{
 
     async componentDidMount(){
         this.currentUser = await getUserInfo()
+        let interval = this.computeTimeInterval(this.state.elapsedTime)
+        this.interval = setInterval(() => this.updateElapsedTime(), interval);
         this.commentCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreatePostComment)).subscribe({
             next: (commentData) => {
                 //if the comment component hasn't been expanded yet for some reasons,
@@ -85,6 +91,44 @@ class PostCard extends Component{
                 this.setState({likesCount: this.state.likesCount-1})
             },
         });
+    }
+
+    componentWillMount(){
+        clearInterval(this.interval)
+    }
+
+    /**
+     * Instead of updating elapsed time every minute for all posts, we update it based
+     * on the elapsed time since the creation of the post that is shown on it. 
+     * Thus, elapsed time will be updated as follows:
+     * if the elapsed time in less than an hour, it will be updated every minute,
+     * if it's greater or equal to an hour but is less than 24 hours, it will be updated every hour
+     * otherwise, it will be updated every 24 hours (every day)
+     * 
+     * input: elapsed time since the creation of the post in the following format: <time><suffix>
+     * where time is a number between 1-60 representing the ranges of seconds, minutes and hours
+     * and time suffix is either s, m, or just now
+     * output: 
+     */
+    computeTimeInterval = (elapsedTime) => {
+        let interval;
+        switch(elapsedTime[1]){
+            case 'h':
+                interval = Time.MILLISECONDS_IN_AN_HOUR
+                break
+            case 'd':
+                interval = Time.MILLISECONDS_IN_A_DAY
+                break
+            default:
+                interval = Time.MILLISECONDS_IN_A_MINUTE
+                break
+        }
+        return interval
+    }
+
+    updateElapsedTime = () => {
+        let elapsedTime = getElapsedTime(this.createdAt)
+        this.setState({elapsedTime})
     }
 
     toggleCommentsVisibility = async () => {
@@ -179,7 +223,7 @@ class PostCard extends Component{
                         <Avatar style={{ backgroundColor: '#333333', color: 'white' }}>D</Avatar>
                         <Box style={{ marginLeft: '5px' }} display='flex' flexDirection='column' alignItems='flex-start' alignContent='flex-start'>
                             <Typography align='left' variant='subtitle1'>{this.props.author}</Typography>
-                            <Typography style={{ marginTop: '-5px' }} variant='caption'>{this.props.elapsedTime}</Typography>
+                            <Typography style={{ marginTop: '-5px' }} variant='caption'>{this.state.elapsedTime}</Typography>
                         </Box>
                     </Box>
                     <Typography style={{ marginTop: '10px', fontFamily: 'Arial', fontSize: '16px' }} variant='body1' color='black' component='p'>
