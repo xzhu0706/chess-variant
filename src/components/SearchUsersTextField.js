@@ -17,9 +17,13 @@ class SearchUsersTextField extends Component{
 
     render(){
         let options = this.props.options
+        let originalOptionsCount = options.length
+        if(!originalOptionsCount) options.push({username: 'no users found', id: 0})
         return (
             <div>
                 <TextField
+                    id="outlined-margin-dense"
+                    margin='dense'
                     variant='outlined'
                     placeholder="Search for Users"
                     onChange={this.props.onChange}
@@ -37,18 +41,19 @@ class SearchUsersTextField extends Component{
                     open={this.props.open}
                     anchorEl={this.props.anchorEl}
                     role={undefined}
-                    style={{ width: this.props.width, marginTop: '10px' }}
+                    style={{ width: this.props.width }}
                     transition
                     disablePortal
                     placement='bottom-end'
                 >
                     {({ TransitionProps, }) => (
-                        <Fade {...TransitionProps} timeout={350}>
+                        <Fade {...TransitionProps} timeout={200}>
                             <Paper>
-                                <ClickAwayListener onClickAway={this.props.handleToggle}>
+                                <ClickAwayListener onClickAway={this.props.dismissPopper}>
                                     <MenuList id="split-button-menu">
                                         {options.map((user, index) => (
                                             <MenuItem
+                                                disabled = {!originalOptionsCount}
                                                 key={user.id}
                                                 onClick={event => this.props.handleMenuItemClick(event, user)}
                                             >{user.username}

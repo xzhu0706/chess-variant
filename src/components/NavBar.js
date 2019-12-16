@@ -29,7 +29,6 @@ const ADMIN = 'Admin'
 const SIGNOUT = 'Sign Out'
 const PROFILE_INDEX = 0
 const ADMIN_INDEX = 1
-const LOGOUT_INDEX = 2
 const LogoutButtonPopperOptions = {[PROFILE]: true, [ADMIN]: false, [SIGNOUT]: true}
 
 class NavBar extends Component {
@@ -115,13 +114,15 @@ class NavBar extends Component {
       });
     } else {
       this.setState({
-        searchResults: [],
+        showSearchUsersTextfieldPopper: false,
+        searchResults: []
       });
     }
   }
 
   linkToUser = (e, val) => {
     const { history } = this.props;
+    this.dismissSearchUsersTextFieldPopper()
     if (val) {
       history.push(`/account/${val.username}`);
     }
@@ -134,6 +135,7 @@ class NavBar extends Component {
   }
 
   handleLogoutButtonPopperSelection = (event, selectedIndex) => {
+    this.setState({showLogoutButtonPopper: false})
     switch(selectedIndex){
       case PROFILE_INDEX:
         this.state.username !== '' && this.props.history.push(`/account/${this.state.username}`)
@@ -147,10 +149,8 @@ class NavBar extends Component {
     }
   }
 
-  toggleSearchUsersTextFieldPopper = (e) => {
-    alert("CHANGED")
-    
-    this.setState({showSearchUsersTextfieldPopper: !this.state.showSearchUsersTextfieldPopper})
+  dismissSearchUsersTextFieldPopper = (e) => {    
+    this.setState({showSearchUsersTextfieldPopper: false})
   }
 
   render() {
@@ -208,6 +208,7 @@ class NavBar extends Component {
               handleMenuItemClick = {this.linkToUser}
               onChange = {this.handleSearch}
               open = {this.state.showSearchUsersTextfieldPopper}
+              dismissPopper = {this.dismissSearchUsersTextFieldPopper}
               width = '500px'
               anchorEl = {this.searchUsersTextfieldAnchorEl}
             />
