@@ -23,7 +23,13 @@ class PopupButton extends Component{
                     color="primary"
                     aria-label="split button"
                 >
-                    <Button size='medium' style = {{backgroundColor: '#2867B2'}}>{this.props.username}
+                    <Button 
+                        size='medium'
+                        startIcon = {this.props.startIcon}
+                        style = {{
+                            backgroundColor: '#2867B2'
+                        }}
+                        >{this.props.username}
                     </Button>
                     <Button
                         style = {{backgroundColor: '#2867B2'}}

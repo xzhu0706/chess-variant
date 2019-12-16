@@ -28,6 +28,8 @@ import * as customMutations from '../customGraphql/mutations';
 import * as customSubscriptions from '../customGraphql/subscriptions';
 import CreateGameDialog from './CreateGameDialog';
 import * as customQueries from '../customGraphql/queries';
+import { colors } from '@material-ui/core';
+import * as Colors from '../Constants/Colors'
 
 
 const CURRENT_GAME = 'currentGame';
@@ -364,18 +366,20 @@ class Lobby extends Component {
       width: '30%',
       padding: '10px',
       marginBottom: '10px',
-      backgroundColor: '#333333',
+      backgroundColor: Colors.ROYAL_BLUE,
       color: '#FFF',
       fontFamily: 'AppleSDGothicNeo-Bold',
     };
 
     const { showDialog, showJoiningOwnGameDialog, games } = this.state;
     return (
-      <Box style={{position:'fixed', top:'0', right:'0', minHeight: '150px', marginTop: '125px', marginRight:'5%', width: '40%'}} display='flex' flexDirection='column' alignItems='flex-end'>
+      <Box style={{position:'fixed', top:'0', right:'0', minHeight: '150px', marginTop: '110px', marginRight:'5%', width: '40%'}} display='flex' flexDirection='column'>
         <CreateGameDialog closeDialog = {this.closeDialog} showDialog = {this.state.showDialog} createGame = {this.createGame} />
+        <Box display='flex' flexDirection='row' justifyContent='flex-end' alignItems='flex-start'>
         <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog} id="btncreategame">
                 Create a game
         </Button>
+        </Box>
         <Dialog
           open={showJoiningOwnGameDialog}
           onClose={this.closeJoiningOwnGameDialog}
@@ -388,7 +392,7 @@ class Lobby extends Component {
           </DialogActions>
         </Dialog>
 
-        <div style={{ width: '100%' }}>
+        <div style={{ marginTop: '14px', width: '100%' }}>
           <MaterialTable
             onRowClick={(event, rowData) => this.joinGame(event, rowData)}
             icons={tableIcons}

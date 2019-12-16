@@ -10,6 +10,7 @@ import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
 import getUserInfo from '../Utils/CurrentUser';
 import getElapsedTime from '../Utils/ElapsedTime'
+import * as Colors from '../Constants/Colors'
 
 
 class DiscussionBoard extends Component{
@@ -106,7 +107,7 @@ class DiscussionBoard extends Component{
         return (
             <Box display='flex' flexDirection='column' style={{backgroundColor: 'rgb(253, 253, 253)', marginLeft: '5%', width: '45%', marginTop: '0px'}}>
                 <Box display='flex' flexDirection='row' justifyContent='flex-end'>
-                    <Fab onClick={this.showNewPostDialog} color="primary" aria-label="edit">
+                    <Fab style={{backgroundColor: Colors.ROYAL_BLUE}} onClick={this.showNewPostDialog} color="primary" aria-label="edit">
                         <EditIcon />
                     </Fab>
                 </Box>

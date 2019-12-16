@@ -158,21 +158,11 @@ class NavBar extends Component {
           open = {this.state.showLogoutButtonPopper}
           username = {this.state.username}
           anchorEl = {this.logoutButtonAnchorEl}
+          startIcon={<AccountCircle />}
         />
         </Nav.Item>
     )
-      {/*<span>
-        <Nav.Link href={`/account/${username}`}> Hello{' '}{username}</Nav.Link>
-        {isAdmin && (
-          <Nav.Link href="/admin">Admin</Nav.Link>
-        )}
-        <Button
-          onClick={handleSignOut}
-          data-testid="logout-button"
-          >Sign Out
-        </Button>
-        </span>}
-      )*/}
+
     const loggedOut = (
         <Button
           data-testid="login-button"
@@ -187,7 +177,7 @@ class NavBar extends Component {
       
     return (
       <span>
-        <Navbar style={{height:'65px', boxShadow: '0px 3px 3px lightGray'}}variant='light' bg='white' fixed='top'>
+        <Navbar style={{fontWeight: 'semi-bold', height:'65px', boxShadow: '0px 3px 3px lightGray'}}variant='light' bg='white' fixed='top'>
           <Navbar.Brand style={{
             fontFamily: 'chalkduster',
             display: 'flex',
@@ -201,7 +191,7 @@ class NavBar extends Component {
           <Nav className='mr-auto'>
             <Autocomplete
               
-              style={{ width: 300 }}
+              style={{ width: 500 }}
               getOptionLabel={(option) => option.username}
               noOptionsText="No user found"
               options={searchResults}
