@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Grow from "@material-ui/core/Grow";
+import Fade from "@material-ui/core/Fade";
 import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -23,9 +23,10 @@ class PopupButton extends Component{
                     color="primary"
                     aria-label="split button"
                 >
-                    <Button>{this.props.username}</Button>
+                    <Button size='medium' style = {{backgroundColor: '#2867B2'}}>{this.props.username}
+                    </Button>
                     <Button
-                        color="primary"
+                        style = {{backgroundColor: '#2867B2'}}
                         size="small"
                         aria-controls={this.props.open ? "split-button-menu" : undefined}
                         aria-expanded={this.props.open ? "true" : undefined}
@@ -44,12 +45,10 @@ class PopupButton extends Component{
                     disablePortal
                     placement = 'center-bottom'
                 >
-                    {({ TransitionProps, placement }) => (
-                        <Grow
-                            {...TransitionProps}
-                        >
+                    {({ TransitionProps,  }) => (
+                        <Fade {...TransitionProps} timeout={350}>
                             <Paper>
-                                <ClickAwayListener>
+                                <ClickAwayListener onClickAway = {this.props.handleToggle}>
                                     <MenuList id="split-button-menu">
                                         {Object.keys(options).map((key, index) => (
                                             options[key] &&
@@ -62,7 +61,7 @@ class PopupButton extends Component{
                                     </MenuList>
                                 </ClickAwayListener>
                             </Paper>
-                        </Grow>
+                        </Fade>
                     )}
                 </Popper>
                 </Grid>

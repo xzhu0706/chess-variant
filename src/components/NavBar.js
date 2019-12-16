@@ -29,7 +29,7 @@ const SIGNOUT = 'Sign Out'
 const PROFILE_INDEX = 0
 const ADMIN_INDEX = 1
 const LOGOUT_INDEX = 2
-const LogoutButtonPopperOptions = {PROFILE: true, ADMIN: false, SIGNOUT: true}
+const LogoutButtonPopperOptions = {[PROFILE]: true, [ADMIN]: false, [SIGNOUT]: true}
 
 class NavBar extends Component {
   constructor(props) {
@@ -119,11 +119,13 @@ class NavBar extends Component {
   }
 
   toggleLogoutButtonPopper = (e) => {
-    this.logoutButtonAnchorEl = e.target
+    if(this.logoutButtonAnchorEl === null)
+      this.logoutButtonAnchorEl = e.target
     this.setState({showLogoutButtonPopper: !this.state.showLogoutButtonPopper})
   }
 
-  handleLogoutButtonPopperSelection = (selectedIndex) => {
+  handleLogoutButtonPopperSelection = (event, selectedIndex) => {
+    alert(selectedIndex)
     switch(selectedIndex){
       case PROFILE_INDEX:
         this.state.username !== '' && this.props.history.push(`/account/${this.state.username}`)
