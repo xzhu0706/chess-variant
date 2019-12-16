@@ -19,6 +19,7 @@ import { Authenticator, Greetings } from 'aws-amplify-react';
 import * as customQueries from '../customGraphql/queries';
 import PopupButton from './PopupButton';
 import awsconfig from '../aws-exports';
+import SearchUsersTextField from './SearchUsersTextField'
 //import { isMainThread } from 'worker_threads';
 
 Amplify.configure(awsconfig);
@@ -38,9 +39,12 @@ class NavBar extends Component {
       username: '',
       showAuth: false,
       isAdmin: false,
-      showLogoutButtonPopper: false
+      showLogoutButtonPopper: false,
+      showSearchUsersTextfieldPopper: false,
+      searchResults: []
     };
     this.logoutButtonAnchorEl = null
+    this.searchUsersTextfieldAnchorEl = null
   }
 
   async componentDidMount() {
@@ -94,6 +98,8 @@ class NavBar extends Component {
   }
 
   handleSearch = async (e) => {
+    if(this.searchUsersTextfieldAnchorEl === null)
+    this.searchUsersTextfieldAnchorEl = e.target
     const input = e.target.value;
     // start searching after 2 characters input
     if (input.length > 2) {
@@ -105,6 +111,7 @@ class NavBar extends Component {
       const queryResult = await API.graphql(graphqlOperation(customQueries.listUsers, { filter }));
       this.setState({
         searchResults: queryResult.data.listUsers.items,
+        showSearchUsersTextfieldPopper: true
       });
     } else {
       this.setState({
@@ -127,7 +134,6 @@ class NavBar extends Component {
   }
 
   handleLogoutButtonPopperSelection = (event, selectedIndex) => {
-    alert(selectedIndex)
     switch(selectedIndex){
       case PROFILE_INDEX:
         this.state.username !== '' && this.props.history.push(`/account/${this.state.username}`)
@@ -139,6 +145,12 @@ class NavBar extends Component {
         this.handleSignOut()
         break
     }
+  }
+
+  toggleSearchUsersTextFieldPopper = (e) => {
+    alert("CHANGED")
+    
+    this.setState({showSearchUsersTextfieldPopper: !this.state.showSearchUsersTextfieldPopper})
   }
 
   render() {
@@ -168,7 +180,7 @@ class NavBar extends Component {
     const loggedOut = (
         <Button
           data-testid="login-button"
-          style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: '35px' }}
+          style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: 'auto' }}
           variant="outlined"
           startIcon={<AccountCircle />}
           onClick={handleShowAuth}
@@ -179,7 +191,7 @@ class NavBar extends Component {
       
     return (
       <span>
-        <Navbar style={{fontWeight: 'semi-bold', height:'65px', boxShadow: '0px 3px 3px lightGray'}}variant='light' bg='white' fixed='top'>
+        <Navbar style={{fontWeight: 'semi-bold', height:'60px', boxShadow: '0px 3px 3px lightGray'}}variant='light' bg='white' fixed='top'>
           <Navbar.Brand style={{
             fontFamily: 'chalkduster',
             display: 'flex',
@@ -191,40 +203,21 @@ class NavBar extends Component {
             <Link to="/" style={{fontSize: '25px'}}>Chess Variants</Link>
           </Navbar.Brand>
           <Nav className='mr-auto'>
-            <Autocomplete
-              
-              style={{ width: 500 }}
-              getOptionLabel={(option) => option.username}
-              noOptionsText="No user found"
-              options={searchResults}
-              onChange={this.linkToUser}
-              onInputChange={this.handleSearch}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  style={{ backgroundColor: 'rgb(250, 250, 250)' }}
-                  variant='outlined'
-                  id="outlined-margin-dense"
-                  margin='dense'
-                  placeholder="Search for Users"
-                  fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              )}
+            <SearchUsersTextField 
+              options = {this.state.searchResults}
+              handleMenuItemClick = {this.linkToUser}
+              onChange = {this.handleSearch}
+              open = {this.state.showSearchUsersTextfieldPopper}
+              width = '500px'
+              anchorEl = {this.searchUsersTextfieldAnchorEl}
             />
           </Nav>
-          <Nav>
+          <Nav >
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/variants">List of Variants</Nav.Link>
             <Nav.Link href="/create">Create</Nav.Link>
             <Nav.Link href="/about">About</Nav.Link>
-            {username ? loggedIn : loggedOut}
+            {username? loggedIn : loggedOut}
           </Nav>
         </Navbar>
         <Dialog onClose={handleCloseAuth} aria-labelledby="simple-dialog-title" open={showAuth}>
