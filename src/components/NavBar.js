@@ -79,6 +79,7 @@ class NavBar extends Component {
         username,
         isAdmin: groups && groups[0] === 'Admin',
       });
+      window.location.reload()
     }
   }
 
@@ -88,6 +89,7 @@ class NavBar extends Component {
         username: '',
         isAdmin: false,
       });
+      window.location.reload()
     });
   }
 

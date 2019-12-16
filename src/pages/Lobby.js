@@ -368,6 +368,7 @@ class Lobby extends Component {
       marginBottom: '10px',
       backgroundColor: Colors.ROYAL_BLUE,
       color: '#FFF',
+      fontWeight: 'bold',
       fontFamily: 'AppleSDGothicNeo-Bold',
     };
 
