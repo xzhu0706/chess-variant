@@ -17,10 +17,16 @@ import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
 //import './NavBar.css';
 import * as customQueries from '../customGraphql/queries';
-
+import PopupButton from './PopupButton';
 import awsconfig from '../aws-exports';
+import { isMainThread } from 'worker_threads';
 
 Amplify.configure(awsconfig);
+
+const PROFILE = 0
+const ADMIN = 1
+const LOGOUT = 2
+const LogoutButtonPopperOptions = [{'profile': true}, {'Admin': false}, {'Log out': true}]
 
 class NavBar extends Component {
   constructor(props) {
@@ -29,6 +35,7 @@ class NavBar extends Component {
       username: '',
       showAuth: false,
       isAdmin: false,
+      showLogoutButtonPopper: false
     };
   }
 
@@ -107,6 +114,14 @@ class NavBar extends Component {
     }
   }
 
+  toggleLogoutButtonPopper = () => {
+    this.setState({showLogoutButtonPopper: !this.state.showLogoutButtonPopper})
+  }
+
+  handleLogoutButtonPopperSelection = (selectedIndex) => {
+
+  }
+
   render() {
     const imgStyle = {
       width: '3em',
@@ -115,8 +130,17 @@ class NavBar extends Component {
     };
     const {username, showAuth, isAdmin, searchResults,} = this.state;
     const {handleShowAuth, handleCloseAuth, handleAuthStateChange, handleSignOut,} = this;
+    if(isAdmin)
+      LogoutButtonPopperOptions[Admin]['Admin'] = true;
     const loggedIn = (
-      <span>
+      <Nav.Link href={`/account/${username}`}>
+        <PopupButton
+          options = {LogoutButtonPopperOptions} 
+          handleMenuItemClick = {this.handleLogoutButtonPopperSelection}
+        />
+      </Nav.Link>
+    )
+      {/*<span>
         <Nav.Link href={`/account/${username}`}> Hello{' '}{username}</Nav.Link>
         {isAdmin && (
           <Nav.Link href="/admin">Admin</Nav.Link>
@@ -126,8 +150,8 @@ class NavBar extends Component {
           data-testid="logout-button"
           >Sign Out
         </Button>
-      </span>
-    )
+        </span>}
+      )*/}
     const loggedOut = (
         <Button
           data-testid="login-button"
