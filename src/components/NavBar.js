@@ -19,14 +19,17 @@ import { Authenticator, Greetings } from 'aws-amplify-react';
 import * as customQueries from '../customGraphql/queries';
 import PopupButton from './PopupButton';
 import awsconfig from '../aws-exports';
-import { isMainThread } from 'worker_threads';
+//import { isMainThread } from 'worker_threads';
 
 Amplify.configure(awsconfig);
 
-const PROFILE = 0
-const ADMIN = 1
-const LOGOUT = 2
-const LogoutButtonPopperOptions = [{'profile': true}, {'Admin': false}, {'Log out': true}]
+const PROFILE = 'Profile'
+const ADMIN = 'Admin'
+const SIGNOUT = 'Sign Out'
+const PROFILE_INDEX = 0
+const ADMIN_INDEX = 1
+const LOGOUT_INDEX = 2
+const LogoutButtonPopperOptions = {PROFILE: true, ADMIN: false, SIGNOUT: true}
 
 class NavBar extends Component {
   constructor(props) {
@@ -37,6 +40,7 @@ class NavBar extends Component {
       isAdmin: false,
       showLogoutButtonPopper: false
     };
+    this.logoutButtonAnchorEl = null
   }
 
   async componentDidMount() {
@@ -114,12 +118,23 @@ class NavBar extends Component {
     }
   }
 
-  toggleLogoutButtonPopper = () => {
+  toggleLogoutButtonPopper = (e) => {
+    this.logoutButtonAnchorEl = e.target
     this.setState({showLogoutButtonPopper: !this.state.showLogoutButtonPopper})
   }
 
   handleLogoutButtonPopperSelection = (selectedIndex) => {
-
+    switch(selectedIndex){
+      case PROFILE_INDEX:
+        this.state.username !== '' && this.props.history.push(`/account/${this.state.username}`)
+        break
+      case ADMIN_INDEX:
+        this.state.username !== '' && this.props.history.push("/admin")
+        break
+      default:
+        this.handleSignOut()
+        break
+    }
   }
 
   render() {
@@ -131,14 +146,18 @@ class NavBar extends Component {
     const {username, showAuth, isAdmin, searchResults,} = this.state;
     const {handleShowAuth, handleCloseAuth, handleAuthStateChange, handleSignOut,} = this;
     if(isAdmin)
-      LogoutButtonPopperOptions[Admin]['Admin'] = true;
+      LogoutButtonPopperOptions[ADMIN] = true
     const loggedIn = (
-      <Nav.Link href={`/account/${username}`}>
+      <Nav.Item>
         <PopupButton
           options = {LogoutButtonPopperOptions} 
           handleMenuItemClick = {this.handleLogoutButtonPopperSelection}
+          handleToggle = {this.toggleLogoutButtonPopper}
+          open = {this.state.showLogoutButtonPopper}
+          username = {this.state.username}
+          anchorEl = {this.logoutButtonAnchorEl}
         />
-      </Nav.Link>
+        </Nav.Item>
     )
       {/*<span>
         <Nav.Link href={`/account/${username}`}> Hello{' '}{username}</Nav.Link>

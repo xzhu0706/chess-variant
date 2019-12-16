@@ -1,17 +1,26 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
+import Grid from '@material-ui/core/Grid';
+
  
 class PopupButton extends Component{
-
-    
 
     render(){
         let options = this.props.options
         return(
-            <div>
+            <Grid container direction="column" alignItems="center">
+            <Grid item xs={12}>
                 <ButtonGroup
                     variant="contained"
                     color="primary"
-                    ref={anchorRef}
                     aria-label="split button"
                 >
                     <Button>{this.props.username}</Button>
@@ -23,35 +32,31 @@ class PopupButton extends Component{
                         aria-label="select merge strategy"
                         aria-haspopup="menu"
                         onClick={this.props.handleToggle}
-                    >
-                        <ArrowDropDownIcon />
+                    > <ArrowDropDownIcon />
                     </Button>
-                </ButtonGroup>
+                    </ButtonGroup>
                 <Popper
                     open={this.props.open}
-                    anchorEl={anchorRef.current}
+                    anchorEl = {this.props.anchorEl}
                     role={undefined}
+                    style = {{marginTop: '10px'}}
                     transition
                     disablePortal
+                    placement = 'center-bottom'
                 >
                     {({ TransitionProps, placement }) => (
                         <Grow
                             {...TransitionProps}
-                            style={{
-                                transformOrigin:
-                                    placement === "bottom" ? "center top" : "center bottom"
-                            }}
                         >
                             <Paper>
-                                <ClickAwayListener onClickAway={handleClose}>
+                                <ClickAwayListener>
                                     <MenuList id="split-button-menu">
-                                        {options.map((option, index) => (
+                                        {Object.keys(options).map((key, index) => (
+                                            options[key] &&
                                             <MenuItem
-                                                key={option}
-                                                disabled={index === 2}
-                                                selected={index === selectedIndex}
+                                                key={key}
                                                 onClick={event => this.props.handleMenuItemClick(event, index)}
-                                            >{option}
+                                            >{key}
                                             </MenuItem>
                                         ))}
                                     </MenuList>
@@ -60,7 +65,8 @@ class PopupButton extends Component{
                         </Grow>
                     )}
                 </Popper>
-            </div>
+                </Grid>
+                </Grid>
         )
     }
 }
