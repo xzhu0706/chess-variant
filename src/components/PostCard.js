@@ -14,16 +14,16 @@ import * as Time from '../Constants/TimeConstants';
 
 
 const LIKED_COLOR = 'blue'
-const DISLIKED_COLOR = 'gray'
+const DISLIKED_COLOR = 'grey'
 
-class PostCard extends Component{
+class PostCard extends Component{ 
 
     constructor(props){
         super(props)
         this.state = {
             showComments: false,
             comments: null,
-            likesCount: this.props.likesCount,
+            likesCount: 0,
             commentsCount: this.props.commentsCount,
             elapsedTime: this.props.elapsedTime,
             highlightLikeButton: this.props.liked
@@ -36,9 +36,12 @@ class PostCard extends Component{
         this.commentCreationSubscription = null
         this.likeCreationSubscription = null
         this.likeDeletionSubscription = null
+        this.likesCount = this.props.likesCount
     }
 
-    async componentDidMount(){
+    componentDidMount = async () => {
+        this.likesCount = this.props.likesCount
+        this.setState({likesCount: this.likesCount})
         this.currentUser = await getUserInfo()
         let interval = computeTimeInterval(this.state.elapsedTime)
         this.interval = setInterval(() => this.updateElapsedTime(), interval);
@@ -67,18 +70,18 @@ class PostCard extends Component{
             next: (likeData) => {
                 let like = likeData.value.data.onCreatePostLike
                 //if the post shown on this card is not the one that received the like,
-                //ignore it.
-
-                 //if the post has been liked by the current user, ignore it
-                //everything has already been taken care of in likePost
+                //ignore it. 
                 if(like.post.id !== this.postId) return
-
+                //if the post has been liked by the current user, ignore it
+                //everything has already been taken care of in likePost
                 if(this.currentUser.id === like.liker.id) return
-                this.setState({likesCount: this.state.likesCount+1})
+                alert(this)
+                this.likesCount = this.likesCount + 1
+                this.setState({likesCount: like.post.likes.items.length})
             },
         });
 
-        this.likeDeletionSubscription = API.graphql(graphqlOperation(subscriptions.onCreatePostLike)).subscribe({
+        this.likeDeletionSubscription = API.graphql(graphqlOperation(subscriptions.onDeletePostLike)).subscribe({
             next: (dislikeData) => {
                 let dislike = dislikeData.value.data.onCreatePostLike
                 //if the post shown on this card is not the one that received the dislike,
@@ -88,13 +91,18 @@ class PostCard extends Component{
                 //if the post has been disliked by the current user, ignore it
                 //everything has already been taken care of in dislikePost
                 if(this.currentUser.id === dislike.liker.id) return
-
                 this.setState({likesCount: this.state.likesCount-1})
             },
         });
     }
 
-    componentWillMount(){
+    componentWillUnmount(){
+        if(this.likeCreationSubscription !== null)
+            this.likeCreationSubscription.unsubscribe()
+        if(this.likeDeletionSubscription !== null)
+            this.likeDeletionSubscription.unsubscribe()
+        if(this.commentCreationSubscription !== null)
+            this.commentCreationSubscription.unsubscribe()
         clearInterval(this.interval)
     }
 
@@ -158,10 +166,10 @@ class PostCard extends Component{
         
         //user must have liked the post
         this.likePost()
-        
     }
 
     likePost = async () => {
+        alert('LIKE POST')
         let like = {}
         like.liker = this.currentUser
         like.postLikePostId = this.postId
@@ -185,10 +193,10 @@ class PostCard extends Component{
     }
 
     render(){
+
         let likeButtonColor = this.state.highlightLikeButton? LIKED_COLOR : DISLIKED_COLOR
         let elapsedTime = this.state.elapsedTime
         elapsedTime = elapsedTime[elapsedTime.length-1] === Time.SECONDS_REPRESENTATION? 'just now' : elapsedTime
-
         /* will turn likesCount and commentsCount into something like 1k, 100k, etc if get a chance*/
         return (
             <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', border:'1px solid lightGray', borderRadius: '4px', marginBottom: '15px'}}>

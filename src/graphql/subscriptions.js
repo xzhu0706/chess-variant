@@ -2064,6 +2064,27 @@ export const onCreatePostLike = `subscription OnCreatePostLike {
     }
     post {
       id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          content
+          createdAt
+        }
+        nextToken
+      }
     }
   }
 }

@@ -33,16 +33,15 @@ class DiscussionBoard extends Component{
             queryResult = queryResult.data.listPosts.items
             let posts = queryResult.map((post) => {
                 let author = post.author.username
-                let likesCount = post.likes.length
-                let commentsCount = post.comments.length
                 return this.generatePostCard(post, author)
             })
             this.setState({posts})
+            
             this.postCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreatePost)).subscribe({
                 next: (postData) => {
                     let post = postData.value.data.onCreatePost
                     if(this.currentUser.id === post.author.id) return
-                    let postCard = this.generatePostCard(post)
+                    let postCard = this.generatePostCard(post, post.author.username)
                     this.setState({posts: [postCard, ...this.state.posts]})
                 },
             });
@@ -76,6 +75,7 @@ class DiscussionBoard extends Component{
 
     generatePostCard(post, author){
         let elapsedTime = getElapsedTime(post.createdAt)
+        
         let likeInfo = this.userLikesPost(post)
         return (
             <PostCard

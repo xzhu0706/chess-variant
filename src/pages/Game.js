@@ -144,7 +144,6 @@ class Game extends Component {
         const gameId = message.game.id;
         const authorId = message.author.id;
         if (gameId === this.gameId && authorId !== this.currentUser.id) {
-          // addResponseMessage(message.content)
           const widgetOpen = this.state.isChatWidgetOpen;
           const messagesCount = widgetOpen ? 0 : this.state.messagesCount + 1;
           this.setState({
