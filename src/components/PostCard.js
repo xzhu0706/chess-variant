@@ -22,7 +22,7 @@ class PostCard extends Component{
         super(props)
         this.state = {
             showComments: false,
-            comments: null,
+            comments: [],
             likesCount: 0,
             commentsCount: this.props.commentsCount,
             elapsedTime: this.props.elapsedTime,
@@ -37,6 +37,7 @@ class PostCard extends Component{
         this.likeCreationSubscription = null
         this.likeDeletionSubscription = null
         this.likesCount = this.props.likesCount
+        this.fetchedComments = false
     }
 
     componentDidMount = async () => {
@@ -47,10 +48,13 @@ class PostCard extends Component{
         this.interval = setInterval(() => this.updateElapsedTime(), interval);
         this.commentCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreatePostComment)).subscribe({
             next: (commentData) => {
-                //if the comment component hasn't been expanded yet for some reasons,
-                //just ignore the updates.
-                if(this.state.comments === null) return
                 let comment = commentData.value.data.onCreatePostComment
+                //if the comment component hasn't been expanded yet for some reasons,
+                //just just update the number
+                if(!this.fetchedComments) {
+                    this.setState({commentsCount: comment.post.comments.items.length})
+                    return
+                }
                 
                 //if the post shown on this card is not the one that received the comment,
                 //ignore it.
@@ -58,10 +62,9 @@ class PostCard extends Component{
 
                 if(this.currentUser.id === comment.author.id) return
 
-                let commentCard = this.generateCommentCard(comment)
                 this.setState({
-                    commentsCount: this.state.commentsCount+1, 
-                    comments: [commentCard, ...this.state.comments]
+                    commentsCount: comment.post.comments.items.length, 
+                    comments: comment.post.comments.items
                 })
             },
         });
@@ -83,7 +86,7 @@ class PostCard extends Component{
 
         this.likeDeletionSubscription = API.graphql(graphqlOperation(subscriptions.onDeletePostLike)).subscribe({
             next: (dislikeData) => {
-                let dislike = dislikeData.value.data.onCreatePostLike
+                let dislike = dislikeData.value.data.onDeletePostLike
                 //if the post shown on this card is not the one that received the dislike,
                 //ignore it.
                 if(dislike.post.id !== this.postId) return
@@ -91,7 +94,7 @@ class PostCard extends Component{
                 //if the post has been disliked by the current user, ignore it
                 //everything has already been taken care of in dislikePost
                 if(this.currentUser.id === dislike.liker.id) return
-                this.setState({likesCount: this.state.likesCount-1})
+                this.setState({likesCount: dislike.post.likes.items.length})
             },
         });
     }
@@ -115,12 +118,12 @@ class PostCard extends Component{
         //There is no need to load the comments if the user doesn't need them.
         // We can just wait until the comments are expanded and load them if they haven't 
         //already been loaded.
-        if(this.state.comments === null){
+        if(!this.fetchedComments){
             try {
                 let queryResult = await API.graphql(graphqlOperation(getPost, {id: this.postId}))
                 let comments = queryResult.data.getPost.comments.items
-                comments = comments.map((comment) => { return this.generateCommentCard(comment) })
                 this.setState({showComments: !this.state.showComments, comments})
+                this.fetchedComments = true
             }
             catch(error) {console.log(error)}
         }
@@ -149,7 +152,7 @@ class PostCard extends Component{
         try {
             let createdComment = await API.graphql(graphqlOperation(createPostComment, { input: comment}));
             let newCommentCard = this.generateCommentCard(createdComment.data.createPostComment)
-            this.setState({comments: [newCommentCard, ...this.state.comments], commentsCount: this.state.commentsCount+1})
+            this.setState({comments: [createdComment.data.createPostComment, ...this.state.comments], commentsCount: this.state.commentsCount+1})
         }
         catch(error) {console.log(error)}
     }
@@ -169,7 +172,6 @@ class PostCard extends Component{
     }
 
     likePost = async () => {
-        alert('LIKE POST')
         let like = {}
         like.liker = this.currentUser
         like.postLikePostId = this.postId
@@ -193,6 +195,7 @@ class PostCard extends Component{
     }
 
     render(){
+        let comments = this.state.comments.map((comment) => { return this.generateCommentCard(comment) })
 
         let likeButtonColor = this.state.highlightLikeButton? LIKED_COLOR : DISLIKED_COLOR
         let elapsedTime = this.state.elapsedTime
@@ -233,7 +236,7 @@ class PostCard extends Component{
                         />
                     </Box>
                 </Box>
-                {this.state.showComments && (<PostComments handleNewComment = {this.handleNewComment} comments={this.state.comments}/>)}
+                {this.state.showComments && (<PostComments handleNewComment = {this.handleNewComment} comments={comments}/>)}
             </Box>
         )}
 }

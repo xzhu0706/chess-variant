@@ -9,25 +9,34 @@ function getElapsedTime(creationDate) {
     let date = new Date(creationDate)
     let now = new Date()
     //timeDiff is converted to seconds from milliseconds
-    let timeDiff = parseInt((now-date)/1000)
-
+    let timeDiff = now-date
+    timeDiff /= 1000
+    
     let elapsedTime;
-    if((elapsedTime = parseInt(timeDiff/Time.SECONDS_IN_A_YEAR)) > 0)
-        return elapsedTime + Time.YEAR_REPRESENTATION
+    let res;
+    let years = Math.round(timeDiff/Time.SECONDS_IN_A_YEAR)
+    let months = Math.round(timeDiff/Time.SECONDS_IN_A_MONTH)
+    let days = Math.round(timeDiff/Time.SECONDS_IN_A_DAY)
+    let hours = Math.round(timeDiff/Time.SECONDS_IN_AN_HOUR)
+    let minutes = Math.round(timeDiff/Time.SECONDS_IN_A_MINUTE)
+    if(years > 0)
+        res = years + Time.YEAR_REPRESENTATION
+    
+    else if(months > 0) 
+        res = months + Time.MONTH_REPRESENTATION
 
-    if((elapsedTime = parseInt(timeDiff/Time.SECONDS_IN_A_MONTH)) > 0) 
-        return elapsedTime + Time.MONTH_REPRESENTATION
+    else if(days > 0) 
+        res = days + Time.DAY_REPRESENTATION
 
-    if((elapsedTime = parseInt(timeDiff/Time.SECONDS_IN_A_DAY)) > 0) 
-        return elapsedTime + Time.DAY_REPRESENTATION
+    else if(hours > 0) 
+        res = hours + Time.HOURS_REPRESENTATION
 
-    if((elapsedTime = parseInt(timeDiff/Time.SECONDS_IN_AN_HOUR)) > 0) 
-        return elapsedTime + Time.HOURS_REPRESENTATION
-
-    if((elapsedTime = parseInt(timeDiff/Time.SECONDS_IN_A_MINUTE)) > 0) 
-        return elapsedTime + Time.MINUTES_REPRESENTATION
-
-    return elapsedTime + Time.SECONDS_REPRESENTATION
+    else if(minutes > 0) 
+        res = minutes + Time.MINUTES_REPRESENTATION
+    else
+        res = parseInt(timeDiff/1000) + Time.SECONDS_REPRESENTATION
+    alert(years + " " + months + " " + days + " " + hours + " " + minutes + "<>" + timeDiff + ": " + res)
+    return res
 }
 
 

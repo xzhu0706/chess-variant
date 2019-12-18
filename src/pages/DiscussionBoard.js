@@ -75,7 +75,9 @@ class DiscussionBoard extends Component{
 
     generatePostCard(post, author){
         let elapsedTime = getElapsedTime(post.createdAt)
-        
+        let diff = new Date() - new Date(post.createdAt)
+        if(post.title === 'TIME3')
+            alert(post.createdAt + " <> " + elapsedTime + " <> " + diff)
         let likeInfo = this.userLikesPost(post)
         return (
             <PostCard
