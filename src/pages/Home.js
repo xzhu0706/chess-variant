@@ -22,7 +22,7 @@ class Home extends Component {
   render() {
     const { history } = this.props;
     return (
-      <Box style={{height: '100%'}}display='flex' flexDirection='row' justifyContent='space-between'>
+      <Box style={{height: '100%'}} display='flex' flexDirection='row' justifyContent='space-between'>
         <DiscussionBoard />
         <Lobby history={this.props.history} /> 
       </Box>       

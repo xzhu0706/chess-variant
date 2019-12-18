@@ -16,6 +16,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
 //import './NavBar.css';
+import {colorForLetter} from '../Utils/ColorForLetter'
 import * as customQueries from '../customGraphql/queries';
 import PopupButton from './PopupButton';
 import awsconfig from '../aws-exports';
@@ -155,8 +156,8 @@ class NavBar extends Component {
 
   render() {
     const imgStyle = {
-      width: '3em',
-      height: '3em',
+      width: '4em',
+      height: '4em',
       marginBottom: '20px',
     };
     const {username, showAuth, isAdmin, searchResults,} = this.state;
@@ -166,7 +167,8 @@ class NavBar extends Component {
     const loggedIn = (
       <Nav.Item>
         <PopupButton
-          options = {LogoutButtonPopperOptions} 
+          options = {LogoutButtonPopperOptions}
+          backgroundColor = {colorForLetter(username.charAt(0).toUpperCase())} 
           handleMenuItemClick = {this.handleLogoutButtonPopperSelection}
           handleToggle = {this.toggleLogoutButtonPopper}
           open = {this.state.showLogoutButtonPopper}
@@ -200,7 +202,7 @@ class NavBar extends Component {
             }}
             >
             <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Chess_pWlt26.svg" alt="Chess Piece" style={imgStyle} fluid />
-            <Link to="/" style={{fontSize: '25px'}}>Chess Variants</Link>
+            <Link to="/" style={{marginLeft: '-10px', fontSize: '27px'}}>Chess Variants</Link>
           </Navbar.Brand>
           <Nav className='mr-auto'>
             <SearchUsersTextField 

@@ -27,7 +27,7 @@ class SearchUsersTextField extends Component{
                     variant='outlined'
                     placeholder="Search for Users"
                     onChange={this.props.onChange}
-                    style = {{width: this.props.width}}
+                    style = {{backgroundColor: 'whiteSmoke', width: this.props.width}}
                     fullWidth
                     InputProps={{
                         startAdornment: (

@@ -27,12 +27,12 @@ class PopupButton extends Component{
                         size='medium'
                         startIcon = {this.props.startIcon}
                         style = {{
-                            backgroundColor: '#2867B2'
+                            backgroundColor: this.props.backgroundColor
                         }}
                         >{this.props.username}
                     </Button>
                     <Button
-                        style = {{backgroundColor: '#2867B2'}}
+                        style = {{backgroundColor: this.props.backgroundColor}}
                         size="small"
                         aria-controls={this.props.open ? "split-button-menu" : undefined}
                         aria-expanded={this.props.open ? "true" : undefined}
@@ -49,7 +49,7 @@ class PopupButton extends Component{
                     style = {{marginTop: '10px'}}
                     transition
                     disablePortal
-                    placement = 'center-bottom'
+                    placement = 'bottom-end'
                 >
                     {({ TransitionProps,  }) => (
                         <Fade {...TransitionProps} timeout={350}>

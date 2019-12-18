@@ -38,7 +38,6 @@ class PostCard extends Component{
         this.commentCreationSubscription = null
         this.likeCreationSubscription = null
         this.likeDeletionSubscription = null
-        this.likesCount = this.props.likesCount
         this.fetchedComments = false
     }
 
@@ -77,10 +76,11 @@ class PostCard extends Component{
                 //if the post shown on this card is not the one that received the like,
                 //ignore it. 
                 if(like.post.id !== this.postId) return
+
                 //if the post has been liked by the current user, ignore it
                 //everything has already been taken care of in likePost
                 if(this.currentUser.id === like.liker.id) return
-                this.likesCount = this.likesCount + 1
+
                 this.setState({likesCount: like.post.likes.items.length})
             },
         });
@@ -199,6 +199,7 @@ class PostCard extends Component{
         let comments = this.state.comments.map((comment) => { return this.generateCommentCard(comment) })
         let initial = this.props.author.charAt(0).toUpperCase()
         let avatarColor = colorForLetter(initial) 
+        let liked = this.state.highlightLikeButton
         let likeButtonColor = this.state.highlightLikeButton? LIKED_COLOR : DISLIKED_COLOR
         let elapsedTime = this.state.elapsedTime
         elapsedTime = elapsedTime[elapsedTime.length-1] === Time.SECONDS_REPRESENTATION? 'just now' : elapsedTime
@@ -216,12 +217,14 @@ class PostCard extends Component{
                             <Typography style={{ marginTop: '-2px' }} variant='subtitle2'>{elapsedTime}</Typography>
                         </Box>
                     </Box>
-                    <Typography style={{ marginTop: '10px', fontFamily: 'Arial', fontSize: '16px' }} variant='body1' color='black' component='p'>
+                    <Typography style={{ color: 'black', marginTop: '10px', marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px' }} variant='body1' component='p'>
                         {this.props.content}
                     </Typography>
                     <Box display='flex' flexDirection='row' justifyContent='flex-start'>
                         <Button
                             color = {likeButtonColor}
+                            compact = {true}
+                            size = 'tiny'
                             onClick = {this.handleLikeButtonClick}
                             content='Like'
                             icon='thumbs up outline'
@@ -230,6 +233,8 @@ class PostCard extends Component{
                         />
                         <Button
                             onClick = {this.toggleCommentsVisibility}
+                            compact = {true}
+                            size = 'tiny'
                             style = {{marginLeft: '10px'}}
                             content='Comment'
                             icon='comments outline'

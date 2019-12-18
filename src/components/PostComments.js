@@ -21,7 +21,7 @@ class PostComments extends Component {
                             backgroundColor: 'white', 
                             border: '1px solid lightGray', 
                             borderRadius: '20px', 
-                            width: '75%', 
+                            width: '77%', 
                             fontFamily: 'Verdana',
                             paddingLeft: '15px',
                         }}
@@ -29,7 +29,7 @@ class PostComments extends Component {
                         onChange={this.setComment}
                         rows={1}
                         rowsMax={Infinity}
-                        placeholder="Leave a comment."
+                        placeholder="Leave a comment..."
                         inputProps={{ 'aria-label': 'naked' }}
                     />
                     <Fab style={{backgroundColor: 'dodgerBlue', color: 'white', fontWeight: 'bold', height: '40px'}} onClick={(comment) => this.props.handleNewComment(this.comment)} variant="extended">Add Comment</Fab>
