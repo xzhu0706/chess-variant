@@ -6,6 +6,7 @@ import { API, graphqlOperation, Auth } from 'aws-amplify';
 import getUserInfo from '../Utils/CurrentUser'
 import getElapsedTime from '../Utils/ElapsedTime'
 import {computeTimeInterval} from '../Utils/ElapsedTime'
+import {colorForLetter} from '../Utils/ColorForLetter'
 import {createPostComment, createPostLike, deletePostLike} from '../graphql/mutations'
 import {listComments, getPost} from '../graphql/queries'
 import PostComment from './PostComment'
@@ -13,8 +14,9 @@ import * as subscriptions from '../graphql/subscriptions';
 import * as Time from '../Constants/TimeConstants';
 
 
+
 const LIKED_COLOR = 'blue'
-const DISLIKED_COLOR = 'grey'
+const DISLIKED_COLOR = ''
 
 class PostCard extends Component{ 
 
@@ -49,7 +51,7 @@ class PostCard extends Component{
         this.commentCreationSubscription = API.graphql(graphqlOperation(subscriptions.onCreatePostComment)).subscribe({
             next: (commentData) => {
                 let comment = commentData.value.data.onCreatePostComment
-                //if the comment component hasn't been expanded yet for some reasons,
+                //if the comment component hasn't been expanded,
                 //just just update the number
                 if(!this.fetchedComments) {
                     this.setState({commentsCount: comment.post.comments.items.length})
@@ -78,7 +80,6 @@ class PostCard extends Component{
                 //if the post has been liked by the current user, ignore it
                 //everything has already been taken care of in likePost
                 if(this.currentUser.id === like.liker.id) return
-                alert(this)
                 this.likesCount = this.likesCount + 1
                 this.setState({likesCount: like.post.likes.items.length})
             },
@@ -196,7 +197,8 @@ class PostCard extends Component{
 
     render(){
         let comments = this.state.comments.map((comment) => { return this.generateCommentCard(comment) })
-
+        let initial = this.props.author.charAt(0).toUpperCase()
+        let avatarColor = colorForLetter(initial) 
         let likeButtonColor = this.state.highlightLikeButton? LIKED_COLOR : DISLIKED_COLOR
         let elapsedTime = this.state.elapsedTime
         elapsedTime = elapsedTime[elapsedTime.length-1] === Time.SECONDS_REPRESENTATION? 'just now' : elapsedTime
@@ -208,7 +210,7 @@ class PostCard extends Component{
                         {this.props.title}
                     </Typography>
                     <Box display='flex' flexDirection='row' justifyContent='flex-start'>
-                        <Avatar style={{ backgroundColor: '#333333', color: 'white' }}>D</Avatar>
+                        <Avatar style={{ backgroundColor: avatarColor, color: 'white' }}>{initial}</Avatar>
                         <Box style={{ marginLeft: '5px' }} display='flex' flexDirection='column' alignItems='flex-start' alignContent='flex-start'>
                             <Typography align='left' variant='subtitle1'>{this.props.author}</Typography>
                             <Typography style={{ marginTop: '-2px' }} variant='subtitle2'>{elapsedTime}</Typography>

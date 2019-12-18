@@ -35,7 +35,6 @@ function getElapsedTime(creationDate) {
         res = minutes + Time.MINUTES_REPRESENTATION
     else
         res = parseInt(timeDiff/1000) + Time.SECONDS_REPRESENTATION
-    alert(years + " " + months + " " + days + " " + hours + " " + minutes + "<>" + timeDiff + ": " + res)
     return res
 }
 

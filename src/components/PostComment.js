@@ -3,6 +3,7 @@ import { Button, Comment, Form, Header } from 'semantic-ui-react'
 import {Box, Avatar, Typography, InputBase, Fab} from '@material-ui/core';
 import getElapsedTime from '../Utils/ElapsedTime'
 import {computeTimeInterval} from '../Utils/ElapsedTime'
+import {colorForLetter} from '../Utils/ColorForLetter'
 import * as Time from '../Constants/TimeConstants';
 
 
@@ -34,11 +35,13 @@ class PostComment extends Component {
     render(){
         let elapsedTime = this.state.elapsedTime
         elapsedTime = elapsedTime[elapsedTime.length-1] === Time.SECONDS_REPRESENTATION? 'just now' : elapsedTime
+        let initial = this.props.author.charAt(0).toUpperCase()
+        let avatarColor = colorForLetter(initial)
         return (
             <Comment>
                 <Comment.Content style={{ width: '100%' }}>
                     <Box display='flex' flexDirection='row' justifyContent='flex-start' alignItems='center'>
-                        <Avatar style={{ backgroundColor: '#333333', color: 'white' }}>{this.props.author[0]}</Avatar>
+                        <Avatar style={{ backgroundColor: avatarColor, color: 'white' }}>{initial}</Avatar>
                         <Comment.Author style={{ marginLeft: '5px' }} as='a'>{this.props.author}</Comment.Author>
                         <Comment.Metadata>
                             <div>{elapsedTime}</div>
