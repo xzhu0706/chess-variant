@@ -17,6 +17,7 @@ import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
 //import './NavBar.css';
 import {colorForLetter} from '../Utils/ColorForLetter'
+import * as Colors from '../Constants/Colors'
 import * as customQueries from '../customGraphql/queries';
 import PopupButton from './PopupButton';
 import awsconfig from '../aws-exports';
@@ -182,11 +183,11 @@ class NavBar extends Component {
     const loggedOut = (
         <Button
           data-testid="login-button"
-          style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: '#333333', height: 'auto' }}
+          style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.ROYAL_BLUE, height: 'auto' }}
           variant="outlined"
+          color = 'primary'
           startIcon={<AccountCircle />}
           onClick={handleShowAuth}
-          color="primary"
           >SIGN IN
         </Button>
     )

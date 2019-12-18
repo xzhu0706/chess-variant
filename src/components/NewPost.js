@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {List, Container, Box, Button, TextField, Dialog, DialogContent} from '@material-ui/core';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import InputBase from '@material-ui/core/InputBase';
+import * as Colors from '../Constants/Colors'
 
 class NewPost extends Component {
 
@@ -30,7 +31,15 @@ class NewPost extends Component {
                             placeholder='Enter title'
                         />
                         <InputBase
-                            style={{ marginTop: '10px', border:'1px solid lightGray', borderRadius:'2px', width: '100%', fontFamily: 'Verdana', fontWeight: 'bold' }}
+                            style={{ 
+                                marginTop: '10px', 
+                                border:'1px solid lightGray', 
+                                borderRadius:'2px', 
+                                width: '100%', 
+                                fontFamily: 'Verdana',
+                                paddingTop: '10px',
+                                paddingLeft: '10px'
+                            }}
                             multiline={true}
                             onChange = {this.setContent}
                             rows={10}
@@ -40,7 +49,7 @@ class NewPost extends Component {
                         />
                         <Box display='flex' flexDirection='row' justifyContent='flex-end' alignItems='center'
                             style={{ margin: '10px 10px 5px 10px', backgroundColor: 'white', height: '50px' }}>
-                            <Button onClick={(post) => this.props.handleNewPost({title: this.title, content: this.content})} variant="contained" color="primary">Submit</Button>
+                            <Button style={{backgroundColor: Colors.ROYAL_BLUE}} onClick={(post) => this.props.handleNewPost({title: this.title, content: this.content})} variant="contained" color="primary">Submit</Button>
                         </Box>
                     </Box>
                 </DialogContent>
