@@ -135,6 +135,10 @@ class NavBar extends Component {
       this.logoutButtonAnchorEl = e.target
     this.setState({showLogoutButtonPopper: !this.state.showLogoutButtonPopper})
   }
+  
+  toggleOffLogoutButtonPopper = () =>{
+    this.setState({showLogoutButtonPopper: false})
+  }
 
   handleLogoutButtonPopperSelection = (event, selectedIndex) => {
     this.setState({showLogoutButtonPopper: false})
