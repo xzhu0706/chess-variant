@@ -19,20 +19,22 @@ class PopupButton extends Component{
             <Grid container direction="column" alignItems="center">
                 <Grid item xs={12}>
                     <ButtonGroup
-                        variant="contained"
-                        color="primary"
+                        variant='contained'
+                        color='inherit'
                         aria-label="split button"
+                        style={{backgroundColor: '#fff', color: '#fff'}}
                     >
                         <Button
                             size='medium'
                             startIcon={this.props.startIcon}
                             style={{
-                                backgroundColor: this.props.backgroundColor
+                                backgroundColor: this.props.backgroundColor,
+                                color: '#fff'
                             }}
                         >{this.props.username}
                         </Button>
                         <Button
-                            style={{ backgroundColor: this.props.backgroundColor }}
+                            style={{ backgroundColor: this.props.backgroundColor, color: '#fff' }}
                             size="small"
                             aria-controls={this.props.open ? "split-button-menu" : undefined}
                             aria-expanded={this.props.open ? "true" : undefined}

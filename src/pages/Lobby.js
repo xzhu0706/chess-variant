@@ -374,7 +374,7 @@ class Lobby extends Component {
 
     const { showDialog, showJoiningOwnGameDialog, games } = this.state;
     return (
-      <Box style={{position:'fixed', top:'0', right:'0', minHeight: '150px', marginTop: '110px', marginRight:'5%', width: '40%'}} display='flex' flexDirection='column'>
+      <Box style={{position:'fixed', top:'0', right:'0', minHeight: '150px', marginTop: '100px', marginRight:this.props.marginRight, width: this.props.width}} display='flex' flexDirection='column'>
         <CreateGameDialog closeDialog = {this.closeDialog} showDialog = {this.state.showDialog} createGame = {this.createGame} />
         <Box display='flex' flexDirection='row' justifyContent='flex-end' alignItems='flex-start'>
         <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog} id="btncreategame">
@@ -393,7 +393,7 @@ class Lobby extends Component {
           </DialogActions>
         </Dialog>
 
-        <div style={{ marginTop: '14px', width: '100%' }}>
+        <div style={{ marginTop: '0px', width: '100%' }}>
           <MaterialTable
             onRowClick={(event, rowData) => this.joinGame(event, rowData)}
             icons={tableIcons}

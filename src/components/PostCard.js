@@ -160,7 +160,10 @@ class PostCard extends Component{
 
     handleLikeButtonClick = () => {
         //Don't allow users to like posts anonymously
-        if(this.currentUser.username === 'anonymous') return
+        if(this.currentUser.username.toLowerCase() === 'anonymous') {
+            alert('Anonymous likes are not allowed')
+            return
+        }
 
         //if the like button is highlighted, user is disliking the post.
         if(this.state.highlightLikeButton){

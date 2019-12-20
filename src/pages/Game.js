@@ -13,6 +13,7 @@ import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
 import './Game.css';
 // import Clock from '../components/Clock';
+import getUserInfo from '../Utils/CurrentUser'
 import GameData from '../components/GameData';
 import GameInfo from '../components/GameInfo';
 import awsconfig from '../aws-exports';
@@ -61,7 +62,7 @@ class Game extends Component {
 
   async componentDidMount() {
     const gameId = this.props.match.params.id;
-    this.currentUser = await this.getUserInfo();
+    this.currentUser = await getUserInfo();
     const queryResult = await API.graphql(graphqlOperation(customQueries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame;
     let initialMessages = this.gameInfo.messages.items;

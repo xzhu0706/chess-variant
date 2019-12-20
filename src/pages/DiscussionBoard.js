@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {List, Box} from '@material-ui/core';
+import {List, Box, Container} from '@material-ui/core';
 import PostCard from '../components/PostCard';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
@@ -104,7 +104,7 @@ class DiscussionBoard extends Component{
 
     render() {
         return (
-            <Box display='flex' flexDirection='column' style={{marginLeft: '5%', width: '45%', marginTop: '0px'}}>
+            <Box display='flex' flexDirection='column' style={{marginLeft:this.props.marginLeft, width: this.props.width}}>
                 <Box display='flex' flexDirection='row' justifyContent='flex-end'>
                     <Fab style={{backgroundColor: Colors.ROYAL_BLUE}} onClick={this.showNewPostDialog} color="primary" aria-label="edit">
                         <EditIcon />

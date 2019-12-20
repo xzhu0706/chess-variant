@@ -22,6 +22,7 @@ import * as customQueries from '../customGraphql/queries';
 import PopupButton from './PopupButton';
 import awsconfig from '../aws-exports';
 import SearchUsersTextField from './SearchUsersTextField'
+import {NAVBAR_COLLAPSE_BREAKPOINT} from '../Constants/NavbarConstants'
 //import { isMainThread } from 'worker_threads';
 
 Amplify.configure(awsconfig);
@@ -42,13 +43,15 @@ class NavBar extends Component {
       isAdmin: false,
       showLogoutButtonPopper: false,
       showSearchUsersTextfieldPopper: false,
-      searchResults: []
+      searchResults: [],
+      collapsed: window.innerWidth < NAVBAR_COLLAPSE_BREAKPOINT
     };
     this.logoutButtonAnchorEl = null
     this.searchUsersTextfieldAnchorEl = null
   }
 
   async componentDidMount() {
+    window.addEventListener("resize", this.setCollapseState)
     try {
       const user = await Auth.currentUserPoolUser();
       if (user) {
@@ -61,6 +64,18 @@ class NavBar extends Component {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  componentWillUnmount(){
+    window.removeEventListener("resize", this.setCollapseState)
+  }
+
+  setCollapseState = (e) => {
+    let width = e.target.outerWidth
+      if(width < NAVBAR_COLLAPSE_BREAKPOINT)
+        this.setState({collapsed: true})
+      else
+        this.setState({collapsed: false})
   }
 
   handleShowAuth = () => {
@@ -159,6 +174,10 @@ class NavBar extends Component {
     this.setState({showSearchUsersTextfieldPopper: false})
   }
 
+  onNavbarToggle(e) {
+    console.log('TOGGLED!')
+  }
+
   render() {
     const imgStyle = {
       width: '4em',
@@ -186,6 +205,7 @@ class NavBar extends Component {
     )
 
     const loggedOut = (
+      <Nav.Item>
         <Button
           data-testid="login-button"
           style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.ROYAL_BLUE, height: 'auto' }}
@@ -195,21 +215,25 @@ class NavBar extends Component {
           onClick={handleShowAuth}
           >SIGN IN
         </Button>
+        </Nav.Item>
     )
       
     return (
       <span>
-        <Navbar style={{fontWeight: 'semi-bold', height:'60px', boxShadow: '0px 3px 3px lightGray'}}variant='light' bg='white' fixed='top'>
+        <Navbar onToggle = {this.onNavbarToggle} collapseOnSelect expand="lg" style={{fontWeight: 'semi-bold', boxShadow: '0px 3px 3px lightGray'}}variant='light' bg='white' fixed='top'>
           <Navbar.Brand style={{
             fontFamily: 'chalkduster',
             display: 'flex',
+            height: '50px',
             justifyContent: 'center',
             alignItems: 'center',
             }}
             >
             <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Chess_pWlt26.svg" alt="Chess Piece" style={imgStyle} fluid />
-            <Link to="/" style={{marginLeft: '-10px', fontSize: '27px'}}>Chess Variants</Link>
+            <Link to="/" style={{marginLeft: '-10px', fontSize: '25px'}}>Chess Variants</Link>
           </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className='mr-auto'>
             <SearchUsersTextField 
               options = {this.state.searchResults}
@@ -217,17 +241,19 @@ class NavBar extends Component {
               onChange = {this.handleSearch}
               open = {this.state.showSearchUsersTextfieldPopper}
               dismissPopper = {this.dismissSearchUsersTextFieldPopper}
-              width = '500px'
+              width = {window.innerWidth * 1/3}
               anchorEl = {this.searchUsersTextfieldAnchorEl}
             />
           </Nav>
-          <Nav >
+          <Nav>
             <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/variants">List of Variants</Nav.Link>
+            <Nav.Link href="/variants">Variants</Nav.Link>
             <Nav.Link href="/create">Create</Nav.Link>
+            {this.state.collapsed && <Nav.Link href='/discuss'>Discuss</Nav.Link>}
             <Nav.Link href="/about">About</Nav.Link>
             {username? loggedIn : loggedOut}
           </Nav>
+          </Navbar.Collapse>
         </Navbar>
         <Dialog onClose={handleCloseAuth} aria-labelledby="simple-dialog-title" open={showAuth}>
           <Authenticator
