@@ -179,6 +179,7 @@ class NavBar extends Component {
           open = {this.state.showLogoutButtonPopper}
           username = {this.state.username}
           anchorEl = {this.logoutButtonAnchorEl}
+          toggleOff = {this.toggleOffLogoutButtonPopper}
           startIcon={<AccountCircle />}
         />
         </Nav.Item>
