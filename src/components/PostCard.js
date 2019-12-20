@@ -205,7 +205,7 @@ class PostCard extends Component{
         elapsedTime = elapsedTime[elapsedTime.length-1] === Time.SECONDS_REPRESENTATION? 'just now' : elapsedTime
         /* will turn likesCount and commentsCount into something like 1k, 100k, etc if get a chance*/
         return (
-            <Box display='flex' flexDirection='column' style={{backgroundColor: 'white', border:'1px solid lightGray', borderRadius: '4px', marginBottom: '15px'}}>
+            <Box display='flex' flexDirection='column' style={{border:'1px solid #DCDCDC', borderRadius: '4px', marginBottom: '15px'}}>
                 <Box display='flex' flexDirection='column' style={{ margin: '10px 10px 10px 10px' }}>
                     <Typography style={{ fontWeight: 'bold', fontSize: '16px', fontFamily: '"Lucida Sans Unicode", "Lucida Grande", sans-serif' }} variant='h6' color='textPrimary' component='h6'>
                         {this.props.title}

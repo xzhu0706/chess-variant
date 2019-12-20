@@ -104,7 +104,7 @@ class DiscussionBoard extends Component{
 
     render() {
         return (
-            <Box display='flex' flexDirection='column' style={{backgroundColor: 'rgb(253, 253, 253)', marginLeft: '5%', width: '45%', marginTop: '0px'}}>
+            <Box display='flex' flexDirection='column' style={{marginLeft: '5%', width: '45%', marginTop: '0px'}}>
                 <Box display='flex' flexDirection='row' justifyContent='flex-end'>
                     <Fab style={{backgroundColor: Colors.ROYAL_BLUE}} onClick={this.showNewPostDialog} color="primary" aria-label="edit">
                         <EditIcon />
