@@ -17,13 +17,9 @@ import ws from './icons/pieces/fairy/ws.svg'; // "princess" (knight/bishop combo
 import bs from './icons/pieces/fairy/bs.svg'; // "princess"
 import wj from './icons/white_joker.svg'; //
 import bj from './icons/black_joker.svg';
-
-
 import './variant-style.css';
 
 class HumanVsHuman extends Component {
-  static propTypes = { children: PropTypes.func };
-
   constructor(props) {
     super(props);
     const { fen, variant, customPiece } = this.props;
@@ -318,7 +314,14 @@ class HumanVsHuman extends Component {
 }
 
 export default function WithMoveValidation(
-  startFen, variant = 0, showData = true, smallBoard = false, editMode = false, sparePiece, customPiece, handleFenChange,
+  startFen,
+  variant = 0,
+  showData = true,
+  smallBoard = false,
+  editMode = false,
+  sparePiece,
+  customPiece,
+  handleFenChange,
 ) {
   const boardId = variant === 2 ? 'grid-board' : 'false'; // if variant isn't grid chess, boardId will be set to false
   return (
@@ -562,3 +565,5 @@ export default function WithMoveValidation(
     </div>
   );
 }
+
+HumanVsHuman.propTypes = { children: PropTypes.func };

@@ -30,7 +30,12 @@ describe('Commenting on variant pages (/pages/<variantID>)', () => {
     await page.type('input[name="username"]', puppeteerUsername);
     await page.click('input[name="password"]');
     await page.type('input[name="password"]', puppeteerPassword);
-    await page.click('button[data-test="sign-in-sign-in-button"]');
+    // await page.click('button[data-test="sign-in-sign-in-button"]');
+
+    await Promise.all([
+      page.click('button[data-test="sign-in-sign-in-button"]'),
+      page.waitForNavigation({ waitUntil: 'networkidle0' }),
+    ]);
 
     await page.click('.comment-form textarea');
     await page.type('.comment-form textarea', 'puppeteer comment');

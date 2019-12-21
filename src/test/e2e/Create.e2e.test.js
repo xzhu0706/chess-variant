@@ -29,7 +29,12 @@ describe('Variant creation on /create page', () => {
     await page.type('input[name="username"]', puppeteerUsername);
     await page.click('input[name="password"]');
     await page.type('input[name="password"]', puppeteerPassword);
-    await page.click('button[data-test="sign-in-sign-in-button"]');
+    // await page.click('button[data-test="sign-in-sign-in-button"]');
+
+    await Promise.all([
+      page.click('button[data-test="sign-in-sign-in-button"]'),
+      page.waitForNavigation({ waitUntil: 'networkidle0' }),
+    ]);
 
     // save variant
     await page.waitForSelector('form'); // necessary or not?

@@ -39,7 +39,7 @@ export default class CommentForm extends React.Component {
   render() {
     /* render controlled comment form */
     return (
-      <form className="comment-form" onSubmit={this.handleSubmit.bind(this)}>
+      <form className="comment-form" onSubmit={this.handleSubmit}>
         <div style={{ fontStyle: 'italic', padding: '0.25rem 0' }}>
           <TextField
             className="comment-field"
