@@ -116,8 +116,8 @@ class HumanVsHuman extends Component {
   nextMove = () => {
     const { reverseHistory } = this.state;
     const newReverseHistory = [...reverseHistory];
-    if (reverseHistory.length > 0) {
-      const move = reverseHistory.pop();
+    if (newReverseHistory.length > 0) {
+      const move = newReverseHistory.pop();
       this.game.move(move);
       this.setState({
         fen: this.game.fen(),
