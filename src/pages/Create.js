@@ -117,7 +117,7 @@ class Create extends React.Component {
   render() {
     const { icon, offsets, repeatOffsets } = this.state;
     return (
-      <div style={{ textAlign: 'center'}}>
+      <div style={{ textAlign: 'center' }}>
         <div
           id="board"
           style={{

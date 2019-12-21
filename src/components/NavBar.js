@@ -1,38 +1,30 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { Navbar, Nav, NavLink } from 'react-bootstrap';
-import ResponsiveMenu from 'react-responsive-navbar';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { Navbar, Nav } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
-import Input from '@material-ui/core/Input';
 import Image from 'react-bootstrap/Image';
-import TextField from '@material-ui/core/TextField';
-import InputBase from '@material-ui/core/InputBase';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import SearchIcon from '@material-ui/icons/Search';
 import Dialog from '@material-ui/core/Dialog';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import { Authenticator, Greetings } from 'aws-amplify-react';
-//import './NavBar.css';
-import {colorForLetter} from '../Utils/ColorForLetter'
-import * as Colors from '../Constants/Colors'
+// import './NavBar.css';
+import { colorForLetter } from '../Utils/ColorForLetter';
+import * as Colors from '../Constants/Colors';
 import * as customQueries from '../customGraphql/queries';
 import PopupButton from './PopupButton';
 import awsconfig from '../aws-exports';
-import SearchUsersTextField from './SearchUsersTextField'
-import {NAVBAR_COLLAPSE_BREAKPOINT} from '../Constants/NavbarConstants'
-//import { isMainThread } from 'worker_threads';
+import SearchUsersTextField from './SearchUsersTextField';
+import { NAVBAR_COLLAPSE_BREAKPOINT } from '../Constants/NavbarConstants';
+// import { isMainThread } from 'worker_threads';
 
 Amplify.configure(awsconfig);
 
-const PROFILE = 'Profile'
-const ADMIN = 'Admin'
-const SIGNOUT = 'Sign Out'
-const PROFILE_INDEX = 0
-const ADMIN_INDEX = 1
-const LogoutButtonPopperOptions = {[PROFILE]: true, [ADMIN]: false, [SIGNOUT]: true}
+const PROFILE = 'Profile';
+const ADMIN = 'Admin';
+const SIGNOUT = 'Sign Out';
+const PROFILE_INDEX = 0;
+const ADMIN_INDEX = 1;
+const LogoutButtonPopperOptions = { [PROFILE]: true, [ADMIN]: false, [SIGNOUT]: true };
 
 class NavBar extends Component {
   constructor(props) {
@@ -44,14 +36,14 @@ class NavBar extends Component {
       showLogoutButtonPopper: false,
       showSearchUsersTextfieldPopper: false,
       searchResults: [],
-      collapsed: window.innerWidth < NAVBAR_COLLAPSE_BREAKPOINT
+      collapsed: window.innerWidth < NAVBAR_COLLAPSE_BREAKPOINT,
     };
-    this.logoutButtonAnchorEl = null
-    this.searchUsersTextfieldAnchorEl = null
+    this.logoutButtonAnchorEl = null;
+    this.searchUsersTextfieldAnchorEl = null;
   }
 
   async componentDidMount() {
-    window.addEventListener("resize", this.setCollapseState)
+    window.addEventListener('resize', this.setCollapseState);
     try {
       const user = await Auth.currentUserPoolUser();
       if (user) {
@@ -66,16 +58,18 @@ class NavBar extends Component {
     }
   }
 
-  componentWillUnmount(){
-    window.removeEventListener("resize", this.setCollapseState)
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.setCollapseState);
+  }
+
+  onNavbarToggle(e) {
+    console.log('TOGGLED!');
   }
 
   setCollapseState = (e) => {
-    let width = e.target.outerWidth
-      if(width < NAVBAR_COLLAPSE_BREAKPOINT)
-        this.setState({collapsed: true})
-      else
-        this.setState({collapsed: false})
+    const width = e.target.outerWidth;
+    if (width < NAVBAR_COLLAPSE_BREAKPOINT) this.setState({ collapsed: true });
+    else this.setState({ collapsed: false });
   }
 
   handleShowAuth = () => {
@@ -99,7 +93,7 @@ class NavBar extends Component {
         username,
         isAdmin: groups && groups[0] === 'Admin',
       });
-      window.location.reload()
+      window.location.reload();
     }
   }
 
@@ -109,13 +103,12 @@ class NavBar extends Component {
         username: '',
         isAdmin: false,
       });
-      window.location.reload()
+      window.location.reload();
     });
   }
 
   handleSearch = async (e) => {
-    if(this.searchUsersTextfieldAnchorEl === null)
-    this.searchUsersTextfieldAnchorEl = e.target
+    if (this.searchUsersTextfieldAnchorEl === null) this.searchUsersTextfieldAnchorEl = e.target;
     const input = e.target.value;
     // start searching after 2 characters input
     if (input.length > 2) {
@@ -127,55 +120,52 @@ class NavBar extends Component {
       const queryResult = await API.graphql(graphqlOperation(customQueries.listUsers, { filter }));
       this.setState({
         searchResults: queryResult.data.listUsers.items,
-        showSearchUsersTextfieldPopper: true
+        showSearchUsersTextfieldPopper: true,
       });
     } else {
       this.setState({
         showSearchUsersTextfieldPopper: false,
-        searchResults: []
+        searchResults: [],
       });
     }
   }
 
   linkToUser = (e, val) => {
     const { history } = this.props;
-    this.dismissSearchUsersTextFieldPopper()
+    this.dismissSearchUsersTextFieldPopper();
     if (val) {
       history.push(`/account/${val.username}`);
     }
   }
 
   toggleLogoutButtonPopper = (e) => {
-    if(this.logoutButtonAnchorEl === null)
-      this.logoutButtonAnchorEl = e.target
-    this.setState({showLogoutButtonPopper: !this.state.showLogoutButtonPopper})
+    const { showLogoutButtonPopper } = this.state;
+    if (this.logoutButtonAnchorEl === null) this.logoutButtonAnchorEl = e.target;
+    this.setState({ showLogoutButtonPopper: !showLogoutButtonPopper });
   }
-  
-  toggleOffLogoutButtonPopper = () =>{
-    this.setState({showLogoutButtonPopper: false})
+
+  toggleOffLogoutButtonPopper = () => {
+    this.setState({ showLogoutButtonPopper: false });
   }
 
   handleLogoutButtonPopperSelection = (event, selectedIndex) => {
-    this.setState({showLogoutButtonPopper: false})
-    switch(selectedIndex){
-      case PROFILE_INDEX:
-        this.state.username !== '' && this.props.history.push(`/account/${this.state.username}`)
-        break
-      case ADMIN_INDEX:
-        this.state.username !== '' && this.props.history.push("/admin")
-        break
-      default:
-        this.handleSignOut()
-        break
+    const { username } = this.state;
+    this.setState({ showLogoutButtonPopper: false });
+    switch (selectedIndex) {
+    case PROFILE_INDEX:
+      username !== '' && this.props.history.push(`/account/${username}`);
+      break;
+    case ADMIN_INDEX:
+      username !== '' && this.props.history.push('/admin');
+      break;
+    default:
+      this.handleSignOut();
+      break;
     }
   }
 
-  dismissSearchUsersTextFieldPopper = (e) => {    
-    this.setState({showSearchUsersTextfieldPopper: false})
-  }
-
-  onNavbarToggle(e) {
-    console.log('TOGGLED!')
+  dismissSearchUsersTextFieldPopper = (e) => {
+    this.setState({ showSearchUsersTextfieldPopper: false });
   }
 
   render() {
@@ -184,75 +174,95 @@ class NavBar extends Component {
       height: '4em',
       marginBottom: '20px',
     };
-    const {username, showAuth, isAdmin, searchResults,} = this.state;
-    const {handleShowAuth, handleCloseAuth, handleAuthStateChange, handleSignOut,} = this;
-    if(isAdmin)
-      LogoutButtonPopperOptions[ADMIN] = true
+    const {
+      username, showAuth, isAdmin, showLogoutButtonPopper, searchResults, showSearchUsersTextfieldPopper, collapsed,
+    } = this.state;
+    const {
+      handleShowAuth, handleCloseAuth, handleAuthStateChange,
+    } = this;
+    if (isAdmin) LogoutButtonPopperOptions[ADMIN] = true;
     const loggedIn = (
       <Nav.Item>
         <PopupButton
-          options = {LogoutButtonPopperOptions}
-          backgroundColor = {colorForLetter(username.charAt(0).toUpperCase())} 
-          handleMenuItemClick = {this.handleLogoutButtonPopperSelection}
-          handleToggle = {this.toggleLogoutButtonPopper}
-          open = {this.state.showLogoutButtonPopper}
-          username = {this.state.username}
-          anchorEl = {this.logoutButtonAnchorEl}
-          toggleOff = {this.toggleOffLogoutButtonPopper}
+          options={LogoutButtonPopperOptions}
+          backgroundColor={colorForLetter(username.charAt(0).toUpperCase())}
+          handleMenuItemClick={this.handleLogoutButtonPopperSelection}
+          handleToggle={this.toggleLogoutButtonPopper}
+          open={showLogoutButtonPopper}
+          username={username}
+          anchorEl={this.logoutButtonAnchorEl}
+          toggleOff={this.toggleOffLogoutButtonPopper}
           startIcon={<AccountCircle />}
         />
-        </Nav.Item>
-    )
+      </Nav.Item>
+    );
 
     const loggedOut = (
       <Nav.Item>
         <Button
           data-testid="login-button"
-          style={{fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.ROYAL_BLUE, height: 'auto' }}
+          style={{ fontFamily: 'AppleSDGothicNeo-Bold', color: Colors.ROYAL_BLUE, height: 'auto' }}
           variant="outlined"
-          color = 'primary'
+          color="primary"
           startIcon={<AccountCircle />}
           onClick={handleShowAuth}
-          >SIGN IN
+        >
+SIGN IN
         </Button>
-        </Nav.Item>
-    )
-      
+      </Nav.Item>
+    );
+
     return (
       <span>
-        <Navbar onToggle = {this.onNavbarToggle} collapseOnSelect expand="lg" style={{fontWeight: 'semi-bold', boxShadow: '0px 3px 3px lightGray'}}variant='light' bg='white' fixed='top'>
+        <Navbar
+          onToggle={this.onNavbarToggle}
+          collapseOnSelect
+          expand="lg"
+          style={{
+            fontWeight: 'semi-bold',
+            boxShadow: '0px 3px 3px lightGray',
+          }}
+          variant="light"
+          bg="white"
+          fixed="top"
+        >
           <Navbar.Brand style={{
             fontFamily: 'chalkduster',
             display: 'flex',
             height: '50px',
             justifyContent: 'center',
             alignItems: 'center',
-            }}
-            >
-            <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Chess_pWlt26.svg" alt="Chess Piece" style={imgStyle} fluid />
-            <Link to="/" style={{marginLeft: '-10px', fontSize: '25px'}}>Chess Variants</Link>
+          }}
+          >
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Chess_pWlt26.svg"
+              alt="Chess Piece"
+              style={imgStyle}
+              fluid
+            />
+            <Link to="/" style={{ marginLeft: '-10px', fontSize: '25px' }}>Chess Variants</Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className='mr-auto'>
-            <SearchUsersTextField 
-              options = {this.state.searchResults}
-              handleMenuItemClick = {this.linkToUser}
-              onChange = {this.handleSearch}
-              open = {this.state.showSearchUsersTextfieldPopper}
-              dismissPopper = {this.dismissSearchUsersTextFieldPopper}
-              width = {window.innerWidth * 1/3}
-              anchorEl = {this.searchUsersTextfieldAnchorEl}
-            />
-          </Nav>
-          <Nav>
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/variants">Variants</Nav.Link>
-            <Nav.Link href="/create">Create</Nav.Link>
-            {this.state.collapsed && <Nav.Link href='/discuss'>Discuss</Nav.Link>}
-            <Nav.Link href="/about">About</Nav.Link>
-            {username? loggedIn : loggedOut}
-          </Nav>
+            <Nav className="mr-auto">
+              <SearchUsersTextField
+                options={searchResults}
+                handleMenuItemClick={this.linkToUser}
+                onChange={this.handleSearch}
+                open={showSearchUsersTextfieldPopper}
+                dismissPopper={this.dismissSearchUsersTextFieldPopper}
+                width={window.innerWidth * 1 / 3}
+                anchorEl={this.searchUsersTextfieldAnchorEl}
+              />
+            </Nav>
+            <Nav>
+              <Link to="/"><Nav.Item className="nav-link">Home</Nav.Item></Link>
+              <Link to="/variants"><Nav.Item className="nav-link">Variants</Nav.Item></Link>
+              <Link to="/create"><Nav.Item className="nav-link">Create</Nav.Item></Link>
+              {collapsed && <Link to="/"><Nav.Item className="nav-link">Home</Nav.Item></Link>}
+              <Link to="/about"><Nav.Item className="nav-link">About</Nav.Item></Link>
+              {username ? loggedIn : loggedOut}
+            </Nav>
           </Navbar.Collapse>
         </Navbar>
         <Dialog onClose={handleCloseAuth} aria-labelledby="simple-dialog-title" open={showAuth}>

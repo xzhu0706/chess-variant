@@ -24,12 +24,12 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { colors } from '@material-ui/core';
 import * as customMutations from '../customGraphql/mutations';
 import * as customSubscriptions from '../customGraphql/subscriptions';
 import CreateGameDialog from './CreateGameDialog';
 import * as customQueries from '../customGraphql/queries';
-import { colors } from '@material-ui/core';
-import * as Colors from '../Constants/Colors'
+import * as Colors from '../Constants/Colors';
 
 
 const CURRENT_GAME = 'currentGame';
@@ -374,12 +374,18 @@ class Lobby extends Component {
 
     const { showDialog, showJoiningOwnGameDialog, games } = this.state;
     return (
-      <Box style={{position:'fixed', top:'0', right:'0', minHeight: '150px', marginTop: '100px', marginRight:this.props.marginRight, width: this.props.width}} display='flex' flexDirection='column'>
-        <CreateGameDialog closeDialog = {this.closeDialog} showDialog = {this.state.showDialog} createGame = {this.createGame} />
-        <Box display='flex' flexDirection='row' justifyContent='flex-end' alignItems='flex-start'>
-        <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog} id="btncreategame">
+      <Box
+        style={{
+          position: 'fixed', top: '0', right: '0', minHeight: '150px', marginTop: '100px', marginRight: this.props.marginRight, width: this.props.width,
+        }}
+        display="flex"
+        flexDirection="column"
+      >
+        <CreateGameDialog closeDialog={this.closeDialog} showDialog={this.state.showDialog} createGame={this.createGame} />
+        <Box display="flex" flexDirection="row" justifyContent="flex-end" alignItems="flex-start">
+          <Button style={createGameButtonStyle} variant="contained" onClick={this.showDialog} id="btncreategame">
                 Create a game
-        </Button>
+          </Button>
         </Box>
         <Dialog
           open={showJoiningOwnGameDialog}
