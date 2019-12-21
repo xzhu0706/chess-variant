@@ -70,6 +70,7 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -343,6 +344,7 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -406,6 +408,7 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -616,6 +619,7 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -679,6 +683,7 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -889,6 +894,7 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -952,6 +958,7 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -1042,6 +1049,7 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -1195,6 +1203,7 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -1348,6 +1357,7 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2578,6 +2588,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2607,6 +2618,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
         submitted
         approved
         createdAt
+        updatedAt
         creator {
           id
           username
@@ -2633,6 +2645,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2669,6 +2682,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -2707,6 +2721,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2728,6 +2743,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2834,6 +2850,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2863,6 +2880,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
         submitted
         approved
         createdAt
+        updatedAt
         creator {
           id
           username
@@ -2889,6 +2907,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2925,6 +2944,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -2963,6 +2983,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2984,6 +3005,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3090,6 +3112,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -3119,6 +3142,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
         submitted
         approved
         createdAt
+        updatedAt
         creator {
           id
           username
@@ -3145,6 +3169,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -3181,6 +3206,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -3219,6 +3245,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -3240,6 +3267,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3277,6 +3305,12 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
 export const createComplaint = `mutation CreateComplaint($input: CreateComplaintInput!) {
   createComplaint(input: $input) {
     id
+    gameLink
+    content
+    processed
+    result
+    createdAt
+    updatedAt
     user {
       id
       username
@@ -3349,6 +3383,7 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3412,6 +3447,7 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -3502,6 +3538,7 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3565,6 +3602,7 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -3583,9 +3621,6 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
         nextToken
       }
     }
-    gameLink
-    content
-    processed
     processedBy {
       id
       username
@@ -3658,6 +3693,7 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3721,6 +3757,7 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -3739,15 +3776,18 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
         nextToken
       }
     }
-    result
-    createdAt
-    updatedAt
   }
 }
 `;
 export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaintInput!) {
   updateComplaint(input: $input) {
     id
+    gameLink
+    content
+    processed
+    result
+    createdAt
+    updatedAt
     user {
       id
       username
@@ -3820,6 +3860,7 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3883,6 +3924,7 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -3973,6 +4015,7 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4036,6 +4079,7 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -4054,9 +4098,6 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
         nextToken
       }
     }
-    gameLink
-    content
-    processed
     processedBy {
       id
       username
@@ -4129,6 +4170,7 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4192,6 +4234,7 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -4210,15 +4253,18 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
         nextToken
       }
     }
-    result
-    createdAt
-    updatedAt
   }
 }
 `;
 export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaintInput!) {
   deleteComplaint(input: $input) {
     id
+    gameLink
+    content
+    processed
+    result
+    createdAt
+    updatedAt
     user {
       id
       username
@@ -4291,6 +4337,7 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4354,6 +4401,7 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -4444,6 +4492,7 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4507,6 +4556,7 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -4525,9 +4575,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
         nextToken
       }
     }
-    gameLink
-    content
-    processed
     processedBy {
       id
       username
@@ -4600,6 +4647,7 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4663,6 +4711,7 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -4681,9 +4730,6 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
         nextToken
       }
     }
-    result
-    createdAt
-    updatedAt
   }
 }
 `;
@@ -4697,6 +4743,7 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
     submitted
     approved
     createdAt
+    updatedAt
     creator {
       id
       username
@@ -4769,6 +4816,7 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4832,6 +4880,7 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -4881,6 +4930,7 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -4902,6 +4952,7 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4946,6 +4997,7 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
     submitted
     approved
     createdAt
+    updatedAt
     creator {
       id
       username
@@ -5018,6 +5070,7 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -5081,6 +5134,7 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5130,6 +5184,7 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -5151,6 +5206,7 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -5195,6 +5251,7 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
     submitted
     approved
     createdAt
+    updatedAt
     creator {
       id
       username
@@ -5267,6 +5324,7 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -5330,6 +5388,7 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5379,6 +5438,7 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -5400,6 +5460,7 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -5511,6 +5572,7 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -5574,6 +5636,7 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5601,6 +5664,7 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
       submitted
       approved
       createdAt
+      updatedAt
       creator {
         id
         username
@@ -5650,6 +5714,7 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5690,6 +5755,7 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -5728,6 +5794,7 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5826,6 +5893,7 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -5889,6 +5957,7 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5916,6 +5985,7 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
       submitted
       approved
       createdAt
+      updatedAt
       creator {
         id
         username
@@ -5965,6 +6035,7 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -6005,6 +6076,7 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -6043,6 +6115,7 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -6141,6 +6214,7 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -6204,6 +6278,7 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -6231,6 +6306,7 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
       submitted
       approved
       createdAt
+      updatedAt
       creator {
         id
         username
@@ -6280,6 +6356,7 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -6320,6 +6397,7 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -6358,6 +6436,7 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username

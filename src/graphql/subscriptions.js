@@ -70,6 +70,7 @@ export const onCreateGame = `subscription OnCreateGame {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -223,6 +224,7 @@ export const onUpdateGame = `subscription OnUpdateGame {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -376,6 +378,7 @@ export const onDeleteGame = `subscription OnDeleteGame {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -529,6 +532,7 @@ export const onUpdateGameState = `subscription OnUpdateGameState($id: ID!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -802,6 +806,7 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -865,6 +870,7 @@ export const onCreatePlayerGameMapping = `subscription OnCreatePlayerGameMapping
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -1075,6 +1081,7 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1138,6 +1145,7 @@ export const onUpdatePlayerGameMapping = `subscription OnUpdatePlayerGameMapping
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -1348,6 +1356,7 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1411,6 +1420,7 @@ export const onDeletePlayerGameMapping = `subscription OnDeletePlayerGameMapping
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -2059,9 +2069,6 @@ export const onDeletePost = `subscription OnDeletePost {
 export const onCreatePostLike = `subscription OnCreatePostLike {
   onCreatePostLike {
     id
-    liker {
-      id
-    }
     post {
       id
       author {
@@ -2074,17 +2081,61 @@ export const onCreatePostLike = `subscription OnCreatePostLike {
       likes {
         items {
           id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
         }
         nextToken
       }
       comments {
         items {
           id
+          author {
+            id
+            username
+          }
           content
           createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
         }
         nextToken
       }
+    }
+    liker {
+      id
+      username
     }
   }
 }
@@ -2092,17 +2143,147 @@ export const onCreatePostLike = `subscription OnCreatePostLike {
 export const onUpdatePostLike = `subscription OnUpdatePostLike {
   onUpdatePostLike {
     id
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+    liker {
+      id
+      username
+    }
   }
 }
 `;
 export const onDeletePostLike = `subscription OnDeletePostLike {
   onDeletePostLike {
     id
-    post{
+    post {
       id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
     }
-    liker{
+    liker {
       id
+      username
     }
   }
 }
@@ -2118,6 +2299,67 @@ export const onCreatePostComment = `subscription OnCreatePostComment {
     createdAt
     post {
       id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
     }
   }
 }
@@ -2125,12 +2367,152 @@ export const onCreatePostComment = `subscription OnCreatePostComment {
 export const onUpdatePostComment = `subscription OnUpdatePostComment {
   onUpdatePostComment {
     id
+    author {
+      id
+      username
+    }
+    content
+    createdAt
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
   }
 }
 `;
 export const onDeletePostComment = `subscription OnDeletePostComment {
   onDeletePostComment {
     id
+    author {
+      id
+      username
+    }
+    content
+    createdAt
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
   }
 }
 `;
@@ -2206,6 +2588,7 @@ export const onCreateUser = `subscription OnCreateUser {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2235,6 +2618,7 @@ export const onCreateUser = `subscription OnCreateUser {
         submitted
         approved
         createdAt
+        updatedAt
         creator {
           id
           username
@@ -2261,6 +2645,7 @@ export const onCreateUser = `subscription OnCreateUser {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2297,6 +2682,7 @@ export const onCreateUser = `subscription OnCreateUser {
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -2335,6 +2721,7 @@ export const onCreateUser = `subscription OnCreateUser {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2356,6 +2743,7 @@ export const onCreateUser = `subscription OnCreateUser {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2462,6 +2850,7 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2491,6 +2880,7 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
         submitted
         approved
         createdAt
+        updatedAt
         creator {
           id
           username
@@ -2517,6 +2907,7 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2553,6 +2944,7 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -2591,6 +2983,7 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2612,6 +3005,7 @@ export const onUpdateUser = `subscription OnUpdateUser($username: String) {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2718,6 +3112,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2747,6 +3142,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
         submitted
         approved
         createdAt
+        updatedAt
         creator {
           id
           username
@@ -2773,6 +3169,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2809,6 +3206,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -2847,6 +3245,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2868,6 +3267,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2905,6 +3305,12 @@ export const onDeleteUser = `subscription OnDeleteUser {
 export const onCreateComplaint = `subscription OnCreateComplaint {
   onCreateComplaint {
     id
+    gameLink
+    content
+    processed
+    result
+    createdAt
+    updatedAt
     user {
       id
       username
@@ -2977,6 +3383,7 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3040,6 +3447,7 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -3130,6 +3538,7 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3193,6 +3602,7 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -3211,9 +3621,6 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
         nextToken
       }
     }
-    gameLink
-    content
-    processed
     processedBy {
       id
       username
@@ -3286,6 +3693,7 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3349,6 +3757,7 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -3367,15 +3776,18 @@ export const onCreateComplaint = `subscription OnCreateComplaint {
         nextToken
       }
     }
-    result
-    createdAt
-    updatedAt
   }
 }
 `;
 export const onUpdateComplaint = `subscription OnUpdateComplaint {
   onUpdateComplaint {
     id
+    gameLink
+    content
+    processed
+    result
+    createdAt
+    updatedAt
     user {
       id
       username
@@ -3448,6 +3860,7 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3511,6 +3924,7 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -3601,6 +4015,7 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3664,6 +4079,7 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -3682,9 +4098,6 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
         nextToken
       }
     }
-    gameLink
-    content
-    processed
     processedBy {
       id
       username
@@ -3757,6 +4170,7 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3820,6 +4234,7 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -3838,15 +4253,18 @@ export const onUpdateComplaint = `subscription OnUpdateComplaint {
         nextToken
       }
     }
-    result
-    createdAt
-    updatedAt
   }
 }
 `;
 export const onDeleteComplaint = `subscription OnDeleteComplaint {
   onDeleteComplaint {
     id
+    gameLink
+    content
+    processed
+    result
+    createdAt
+    updatedAt
     user {
       id
       username
@@ -3919,6 +4337,7 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -3982,6 +4401,7 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -4072,6 +4492,7 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4135,6 +4556,7 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -4153,9 +4575,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
         nextToken
       }
     }
-    gameLink
-    content
-    processed
     processedBy {
       id
       username
@@ -4228,6 +4647,7 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4291,6 +4711,7 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -4309,9 +4730,6 @@ export const onDeleteComplaint = `subscription OnDeleteComplaint {
         nextToken
       }
     }
-    result
-    createdAt
-    updatedAt
   }
 }
 `;
@@ -4325,6 +4743,7 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
     submitted
     approved
     createdAt
+    updatedAt
     creator {
       id
       username
@@ -4397,6 +4816,7 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4460,6 +4880,7 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -4509,6 +4930,7 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -4530,6 +4952,7 @@ export const onCreateCustomizedVariant = `subscription OnCreateCustomizedVariant
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4574,6 +4997,7 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
     submitted
     approved
     createdAt
+    updatedAt
     creator {
       id
       username
@@ -4646,6 +5070,7 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4709,6 +5134,7 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -4758,6 +5184,7 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -4779,6 +5206,7 @@ export const onUpdateCustomizedVariant = `subscription OnUpdateCustomizedVariant
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4823,6 +5251,7 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
     submitted
     approved
     createdAt
+    updatedAt
     creator {
       id
       username
@@ -4895,6 +5324,7 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -4958,6 +5388,7 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5007,6 +5438,7 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -5028,6 +5460,7 @@ export const onDeleteCustomizedVariant = `subscription OnDeleteCustomizedVariant
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -5139,6 +5572,7 @@ export const onCreateComment = `subscription OnCreateComment {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -5202,6 +5636,7 @@ export const onCreateComment = `subscription OnCreateComment {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5229,6 +5664,7 @@ export const onCreateComment = `subscription OnCreateComment {
       submitted
       approved
       createdAt
+      updatedAt
       creator {
         id
         username
@@ -5278,6 +5714,7 @@ export const onCreateComment = `subscription OnCreateComment {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5318,6 +5755,7 @@ export const onCreateComment = `subscription OnCreateComment {
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -5356,6 +5794,7 @@ export const onCreateComment = `subscription OnCreateComment {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5454,6 +5893,7 @@ export const onUpdateComment = `subscription OnUpdateComment {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -5517,6 +5957,7 @@ export const onUpdateComment = `subscription OnUpdateComment {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5544,6 +5985,7 @@ export const onUpdateComment = `subscription OnUpdateComment {
       submitted
       approved
       createdAt
+      updatedAt
       creator {
         id
         username
@@ -5593,6 +6035,7 @@ export const onUpdateComment = `subscription OnUpdateComment {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5633,6 +6076,7 @@ export const onUpdateComment = `subscription OnUpdateComment {
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -5671,6 +6115,7 @@ export const onUpdateComment = `subscription OnUpdateComment {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5769,6 +6214,7 @@ export const onDeleteComment = `subscription OnDeleteComment {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -5832,6 +6278,7 @@ export const onDeleteComment = `subscription OnDeleteComment {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5859,6 +6306,7 @@ export const onDeleteComment = `subscription OnDeleteComment {
       submitted
       approved
       createdAt
+      updatedAt
       creator {
         id
         username
@@ -5908,6 +6356,7 @@ export const onDeleteComment = `subscription OnDeleteComment {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -5948,6 +6397,7 @@ export const onDeleteComment = `subscription OnDeleteComment {
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -5986,6 +6436,7 @@ export const onDeleteComment = `subscription OnDeleteComment {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username

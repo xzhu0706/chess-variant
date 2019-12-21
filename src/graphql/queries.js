@@ -70,6 +70,7 @@ export const getGame = `query GetGame($id: ID!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -598,8 +599,25 @@ export const listPosts = `query ListPosts(
       likes {
         items {
           id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
           liker {
             id
+            username
           }
         }
         nextToken
@@ -989,6 +1007,7 @@ export const listUsers = `query ListUsers(
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1052,6 +1071,7 @@ export const listUsers = `query ListUsers(
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -1146,6 +1166,7 @@ export const getUser = `query GetUser($id: ID!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -1175,6 +1196,7 @@ export const getUser = `query GetUser($id: ID!) {
         submitted
         approved
         createdAt
+        updatedAt
         creator {
           id
           username
@@ -1201,6 +1223,7 @@ export const getUser = `query GetUser($id: ID!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -1237,6 +1260,7 @@ export const getUser = `query GetUser($id: ID!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -1275,6 +1299,7 @@ export const getUser = `query GetUser($id: ID!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -1296,6 +1321,7 @@ export const getUser = `query GetUser($id: ID!) {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1416,6 +1442,7 @@ export const getUserByUsername = `query GetUserByUsername(
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1479,6 +1506,7 @@ export const getUserByUsername = `query GetUserByUsername(
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -1504,6 +1532,12 @@ export const getUserByUsername = `query GetUserByUsername(
 export const getComplaint = `query GetComplaint($id: ID!) {
   getComplaint(id: $id) {
     id
+    gameLink
+    content
+    processed
+    result
+    createdAt
+    updatedAt
     user {
       id
       username
@@ -1576,6 +1610,7 @@ export const getComplaint = `query GetComplaint($id: ID!) {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1639,6 +1674,7 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -1729,6 +1765,7 @@ export const getComplaint = `query GetComplaint($id: ID!) {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1792,6 +1829,7 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -1810,9 +1848,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
         nextToken
       }
     }
-    gameLink
-    content
-    processed
     processedBy {
       id
       username
@@ -1885,6 +1920,7 @@ export const getComplaint = `query GetComplaint($id: ID!) {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -1948,6 +1984,7 @@ export const getComplaint = `query GetComplaint($id: ID!) {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -1966,9 +2003,6 @@ export const getComplaint = `query GetComplaint($id: ID!) {
         nextToken
       }
     }
-    result
-    createdAt
-    updatedAt
   }
 }
 `;
@@ -1980,6 +2014,12 @@ export const listComplaints = `query ListComplaints(
   listComplaints(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      gameLink
+      content
+      processed
+      result
+      createdAt
+      updatedAt
       user {
         id
         username
@@ -2029,6 +2069,7 @@ export const listComplaints = `query ListComplaints(
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -2069,6 +2110,7 @@ export const listComplaints = `query ListComplaints(
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -2123,6 +2165,7 @@ export const listComplaints = `query ListComplaints(
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -2163,14 +2206,12 @@ export const listComplaints = `query ListComplaints(
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
         }
       }
-      gameLink
-      content
-      processed
       processedBy {
         id
         username
@@ -2220,6 +2261,7 @@ export const listComplaints = `query ListComplaints(
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -2260,14 +2302,12 @@ export const listComplaints = `query ListComplaints(
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
         }
       }
-      result
-      createdAt
-      updatedAt
     }
     nextToken
   }
@@ -2292,6 +2332,7 @@ export const listCustomizedVariants = `query ListCustomizedVariants(
       submitted
       approved
       createdAt
+      updatedAt
       creator {
         id
         username
@@ -2341,6 +2382,7 @@ export const listCustomizedVariants = `query ListCustomizedVariants(
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -2381,6 +2423,7 @@ export const listCustomizedVariants = `query ListCustomizedVariants(
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -2419,6 +2462,7 @@ export const listCustomizedVariants = `query ListCustomizedVariants(
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -2451,6 +2495,7 @@ export const getCustomizedVariant = `query GetCustomizedVariant($id: ID!) {
     submitted
     approved
     createdAt
+    updatedAt
     creator {
       id
       username
@@ -2523,6 +2568,7 @@ export const getCustomizedVariant = `query GetCustomizedVariant($id: ID!) {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2586,6 +2632,7 @@ export const getCustomizedVariant = `query GetCustomizedVariant($id: ID!) {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -2635,6 +2682,7 @@ export const getCustomizedVariant = `query GetCustomizedVariant($id: ID!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -2656,6 +2704,7 @@ export const getCustomizedVariant = `query GetCustomizedVariant($id: ID!) {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2767,6 +2816,7 @@ export const getComment = `query GetComment($id: ID!) {
           submitted
           approved
           createdAt
+          updatedAt
           creator {
             id
             username
@@ -2830,6 +2880,7 @@ export const getComment = `query GetComment($id: ID!) {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -2857,6 +2908,7 @@ export const getComment = `query GetComment($id: ID!) {
       submitted
       approved
       createdAt
+      updatedAt
       creator {
         id
         username
@@ -2906,6 +2958,7 @@ export const getComment = `query GetComment($id: ID!) {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -2946,6 +2999,7 @@ export const getComment = `query GetComment($id: ID!) {
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -2984,6 +3038,7 @@ export const getComment = `query GetComment($id: ID!) {
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -3064,6 +3119,7 @@ export const listComments = `query ListComments(
             submitted
             approved
             createdAt
+            updatedAt
             creator {
               id
               username
@@ -3104,6 +3160,7 @@ export const listComments = `query ListComments(
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
@@ -3118,6 +3175,7 @@ export const listComments = `query ListComments(
         submitted
         approved
         createdAt
+        updatedAt
         creator {
           id
           username
@@ -3144,6 +3202,7 @@ export const listComments = `query ListComments(
               submitted
               approved
               createdAt
+              updatedAt
             }
             nextToken
           }
@@ -3180,6 +3239,7 @@ export const listComments = `query ListComments(
               submitted
               approved
               createdAt
+              updatedAt
             }
           }
           nextToken
