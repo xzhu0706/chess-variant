@@ -13,9 +13,11 @@ import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
 import './Game.css';
 // import Clock from '../components/Clock';
+import getUserInfo from '../Utils/CurrentUser'
 import GameData from '../components/GameData';
 import GameInfo from '../components/GameInfo';
 import awsconfig from '../aws-exports';
+
 
 
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
@@ -60,7 +62,7 @@ class Game extends Component {
 
   async componentDidMount() {
     const gameId = this.props.match.params.id;
-    this.currentUser = await this.getUserInfo();
+    this.currentUser = await getUserInfo();
     const queryResult = await API.graphql(graphqlOperation(customQueries.getGame, { id: gameId }));
     this.gameInfo = queryResult.data.getGame;
     let initialMessages = this.gameInfo.messages.items;
@@ -143,7 +145,6 @@ class Game extends Component {
         const gameId = message.game.id;
         const authorId = message.author.id;
         if (gameId === this.gameId && authorId !== this.currentUser.id) {
-          // addResponseMessage(message.content)
           const widgetOpen = this.state.isChatWidgetOpen;
           const messagesCount = widgetOpen ? 0 : this.state.messagesCount + 1;
           this.setState({
@@ -191,7 +192,7 @@ class Game extends Component {
           //   this.gameUpdateSubscription.unsubscribe();
           //   yourTurn = false;
           // }
-          if (gameState.gameResult && this.addedLeaveGameListener) {
+          if (gameState.ended && this.addedLeaveGameListener) {
             window.removeEventListener('beforeunload', this.handleLeavePage);
             window.removeEventListener('unload', this.leaveGame);
           }
@@ -394,20 +395,6 @@ class Game extends Component {
     this.setState({ messageList: [...this.state.messageList, message] });
   }
 
-  getUserInfo = async () => {
-    const currentUser = {};
-    await Auth.currentAuthenticatedUser().then((user) => {
-      currentUser.id = user.attributes.sub;
-      currentUser.username = user.username;
-    }).catch(async (e) => {
-      await Auth.currentCredentials().then((credential) => {
-        currentUser.id = credential.identityId.split(':')[1];
-        currentUser.username = 'anonymous';
-      });
-    });
-    return currentUser;
-  }
-
   toggleWidget = () => {
     this.setState({ isChatWidgetOpen: !this.state.isChatWidgetOpen });
     this.setState({ messagesCount: 0 });
@@ -460,7 +447,7 @@ class Game extends Component {
             />
           </div>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent="center" width="50%">
+        <Box display="flex" flexDirection="column" justifyContent="center" width="30%">
           <GameData
             style={{ width: '100%' }}
             turn={state.turn}

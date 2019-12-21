@@ -10,6 +10,10 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -31,6 +35,11 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -41,6 +50,10 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -48,9 +61,25 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -86,6 +115,10 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -107,6 +140,11 @@ export const updateGameState = `mutation UpdateGameState($input: UpdateGameState
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -127,6 +165,17 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -137,6 +186,9 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -144,10 +196,19 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -180,6 +241,17 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
           content
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -190,6 +262,9 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
         }
@@ -207,6 +282,17 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -217,6 +303,9 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -224,10 +313,19 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -252,12 +350,26 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -273,10 +385,19 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -288,6 +409,19 @@ export const createPlayerGameMapping = `mutation CreatePlayerGameMapping($input:
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -306,6 +440,17 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -316,6 +461,9 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -323,10 +471,19 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -359,6 +516,17 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
           content
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -369,6 +537,9 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
         }
@@ -386,6 +557,17 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -396,6 +578,9 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -403,10 +588,19 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -431,12 +625,26 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -452,10 +660,19 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -467,6 +684,19 @@ export const updatePlayerGameMapping = `mutation UpdatePlayerGameMapping($input:
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -485,6 +715,17 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -495,6 +736,9 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -502,10 +746,19 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -538,6 +791,17 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
           content
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -548,6 +812,9 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
         }
@@ -565,6 +832,17 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -575,6 +853,9 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -582,10 +863,19 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -610,12 +900,26 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -631,10 +935,19 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -646,6 +959,19 @@ export const deletePlayerGameMapping = `mutation DeletePlayerGameMapping($input:
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -663,6 +989,10 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -684,6 +1014,11 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -694,6 +1029,10 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -701,9 +1040,25 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -739,6 +1094,10 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -760,6 +1119,11 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -779,6 +1143,10 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -800,6 +1168,11 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -810,6 +1183,10 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -817,9 +1194,25 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -855,6 +1248,10 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -876,6 +1273,11 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -895,6 +1297,10 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -916,6 +1322,11 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -926,6 +1337,10 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -933,9 +1348,25 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -971,6 +1402,10 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -992,6 +1427,11 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1017,6 +1457,17 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1027,6 +1478,9 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -1034,10 +1488,19 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1070,6 +1533,17 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
           content
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1080,6 +1554,9 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
         }
@@ -1105,6 +1582,17 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1115,6 +1603,9 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -1122,10 +1613,19 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1158,6 +1658,17 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
           content
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1168,6 +1679,9 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
         }
@@ -1193,6 +1707,17 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1203,6 +1728,9 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -1210,10 +1738,19 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1246,6 +1783,17 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
           content
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1256,6 +1804,9 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
         }
@@ -1263,6 +1814,705 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
       }
     }
     createdAt
+  }
+}
+`;
+export const createPost = `mutation CreatePost($input: CreatePostInput!) {
+  createPost(input: $input) {
+    id
+    author {
+      id
+      username
+    }
+    title
+    content
+    createdAt
+    likes {
+      items {
+        id
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        liker {
+          id
+          username
+        }
+      }
+      nextToken
+    }
+    comments {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        createdAt
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const updatePost = `mutation UpdatePost($input: UpdatePostInput!) {
+  updatePost(input: $input) {
+    id
+    author {
+      id
+      username
+    }
+    title
+    content
+    createdAt
+    likes {
+      items {
+        id
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        liker {
+          id
+          username
+        }
+      }
+      nextToken
+    }
+    comments {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        createdAt
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const deletePost = `mutation DeletePost($input: DeletePostInput!) {
+  deletePost(input: $input) {
+    id
+    author {
+      id
+      username
+    }
+    title
+    content
+    createdAt
+    likes {
+      items {
+        id
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+        liker {
+          id
+          username
+        }
+      }
+      nextToken
+    }
+    comments {
+      items {
+        id
+        author {
+          id
+          username
+        }
+        content
+        createdAt
+        post {
+          id
+          author {
+            id
+            username
+          }
+          title
+          content
+          createdAt
+          likes {
+            items {
+              id
+            }
+            nextToken
+          }
+          comments {
+            items {
+              id
+              content
+              createdAt
+            }
+            nextToken
+          }
+        }
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const createPostLike = `mutation CreatePostLike($input: CreatePostLikeInput!) {
+  createPostLike(input: $input) {
+    id
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+    liker {
+      id
+      username
+    }
+  }
+}
+`;
+export const updatePostLike = `mutation UpdatePostLike($input: UpdatePostLikeInput!) {
+  updatePostLike(input: $input) {
+    id
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+    liker {
+      id
+      username
+    }
+  }
+}
+`;
+export const deletePostLike = `mutation DeletePostLike($input: DeletePostLikeInput!) {
+  deletePostLike(input: $input) {
+    id
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+    liker {
+      id
+      username
+    }
+  }
+}
+`;
+export const createPostComment = `mutation CreatePostComment($input: CreatePostCommentInput!) {
+  createPostComment(input: $input) {
+    id
+    author {
+      id
+      username
+    }
+    content
+    createdAt
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const updatePostComment = `mutation UpdatePostComment($input: UpdatePostCommentInput!) {
+  updatePostComment(input: $input) {
+    id
+    author {
+      id
+      username
+    }
+    content
+    createdAt
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const deletePostComment = `mutation DeletePostComment($input: DeletePostCommentInput!) {
+  deletePostComment(input: $input) {
+    id
+    author {
+      id
+      username
+    }
+    content
+    createdAt
+    post {
+      id
+      author {
+        id
+        username
+      }
+      title
+      content
+      createdAt
+      likes {
+        items {
+          id
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+          liker {
+            id
+            username
+          }
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          author {
+            id
+            username
+          }
+          content
+          createdAt
+          post {
+            id
+            author {
+              id
+              username
+            }
+            title
+            content
+            createdAt
+            likes {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
+          }
+        }
+        nextToken
+      }
+    }
   }
 }
 `;
@@ -1278,6 +2528,10 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -1299,6 +2553,11 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1309,6 +2568,10 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -1316,9 +2579,25 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1346,6 +2625,10 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -1353,9 +2636,25 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1364,6 +2663,27 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
             id
             content
             createdAt
+            user {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            variant {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
           }
           nextToken
         }
@@ -1381,6 +2701,10 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -1388,9 +2712,25 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1409,12 +2749,26 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1436,6 +2790,10 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -1457,6 +2815,11 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1467,6 +2830,10 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -1474,9 +2841,25 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1504,6 +2887,10 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -1511,9 +2898,25 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1522,6 +2925,27 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
             id
             content
             createdAt
+            user {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            variant {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
           }
           nextToken
         }
@@ -1539,6 +2963,10 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -1546,9 +2974,25 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1567,12 +3011,26 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1594,6 +3052,10 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
         game {
           id
           players {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           creator {
@@ -1615,6 +3077,11 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
           winner
           createdAt
           messages {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1625,6 +3092,10 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -1632,9 +3103,25 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1662,6 +3149,10 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -1669,9 +3160,25 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1680,6 +3187,27 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
             id
             content
             createdAt
+            user {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            variant {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
           }
           nextToken
         }
@@ -1697,6 +3225,10 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -1704,9 +3236,25 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1725,12 +3273,26 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1743,6 +3305,12 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
 export const createComplaint = `mutation CreateComplaint($input: CreateComplaintInput!) {
   createComplaint(input: $input) {
     id
+    gameLink
+    content
+    processed
+    result
+    createdAt
+    updatedAt
     user {
       id
       username
@@ -1753,6 +3321,17 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1763,6 +3342,9 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -1770,10 +3352,19 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1798,12 +3389,26 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1819,10 +3424,19 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -1834,6 +3448,19 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1849,6 +3476,17 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1859,6 +3497,9 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -1866,10 +3507,19 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1894,12 +3544,26 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -1915,10 +3579,19 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -1930,14 +3603,24 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
       }
     }
-    gameLink
-    content
-    processed
     processedBy {
       id
       username
@@ -1948,6 +3631,17 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -1958,6 +3652,9 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -1965,10 +3662,19 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -1993,12 +3699,26 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2014,10 +3734,19 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2029,20 +3758,36 @@ export const createComplaint = `mutation CreateComplaint($input: CreateComplaint
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
       }
     }
-    result
-    createdAt
-    updatedAt
   }
 }
 `;
 export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaintInput!) {
   updateComplaint(input: $input) {
     id
+    gameLink
+    content
+    processed
+    result
+    createdAt
+    updatedAt
     user {
       id
       username
@@ -2053,6 +3798,17 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2063,6 +3819,9 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2070,10 +3829,19 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2098,12 +3866,26 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2119,10 +3901,19 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2134,6 +3925,19 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2149,6 +3953,17 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2159,6 +3974,9 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2166,10 +3984,19 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2194,12 +4021,26 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2215,10 +4056,19 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2230,14 +4080,24 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
       }
     }
-    gameLink
-    content
-    processed
     processedBy {
       id
       username
@@ -2248,6 +4108,17 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2258,6 +4129,9 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2265,10 +4139,19 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2293,12 +4176,26 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2314,10 +4211,19 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2329,20 +4235,36 @@ export const updateComplaint = `mutation UpdateComplaint($input: UpdateComplaint
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
       }
     }
-    result
-    createdAt
-    updatedAt
   }
 }
 `;
 export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaintInput!) {
   deleteComplaint(input: $input) {
     id
+    gameLink
+    content
+    processed
+    result
+    createdAt
+    updatedAt
     user {
       id
       username
@@ -2353,6 +4275,17 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2363,6 +4296,9 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2370,10 +4306,19 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2398,12 +4343,26 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2419,10 +4378,19 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2434,6 +4402,19 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2449,6 +4430,17 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2459,6 +4451,9 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2466,10 +4461,19 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2494,12 +4498,26 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2515,10 +4533,19 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2530,14 +4557,24 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
       }
     }
-    gameLink
-    content
-    processed
     processedBy {
       id
       username
@@ -2548,6 +4585,17 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2558,6 +4606,9 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2565,10 +4616,19 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2593,12 +4653,26 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2614,10 +4688,19 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2629,14 +4712,24 @@ export const deleteComplaint = `mutation DeleteComplaint($input: DeleteComplaint
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
       }
     }
-    result
-    createdAt
-    updatedAt
   }
 }
 `;
@@ -2661,6 +4754,17 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2671,6 +4775,9 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2678,10 +4785,19 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2706,12 +4822,26 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2727,10 +4857,19 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2742,6 +4881,19 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2758,6 +4910,10 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -2765,9 +4921,25 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2786,12 +4958,26 @@ export const createCustomizedVariant = `mutation CreateCustomizedVariant($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2822,6 +5008,17 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2832,6 +5029,9 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -2839,10 +5039,19 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2867,12 +5076,26 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2888,10 +5111,19 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -2903,6 +5135,19 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -2919,6 +5164,10 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -2926,9 +5175,25 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2947,12 +5212,26 @@ export const updateCustomizedVariant = `mutation UpdateCustomizedVariant($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -2983,6 +5262,17 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -2993,6 +5283,9 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -3000,10 +5293,19 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3028,12 +5330,26 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -3049,10 +5365,19 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3064,6 +5389,19 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3080,6 +5418,10 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
           email
           phoneNumber
           pastGames {
+            items {
+              id
+              createdAt
+            }
             nextToken
           }
           points
@@ -3087,9 +5429,25 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
           rank
           createdAt
           variants {
+            items {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
             nextToken
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -3108,12 +5466,26 @@ export const deleteCustomizedVariant = `mutation DeleteCustomizedVariant($input:
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -3138,6 +5510,17 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -3148,6 +5531,9 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -3155,10 +5541,19 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3183,12 +5578,26 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -3204,10 +5613,19 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3219,6 +5637,19 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3242,7 +5673,30 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
         pastGames {
           items {
             id
+            game {
+              id
+              creatorOrientation
+              time
+              variant
+              fen
+              available
+              ended
+              history
+              result
+              winner
+              createdAt
+            }
             createdAt
+            player {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
           }
           nextToken
         }
@@ -3261,6 +5715,19 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
           nextToken
         }
@@ -3269,6 +5736,27 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             id
             content
             createdAt
+            user {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            variant {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
           }
           nextToken
         }
@@ -3283,10 +5771,19 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3298,6 +5795,19 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3321,6 +5831,17 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -3331,6 +5852,9 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -3338,10 +5862,19 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3366,12 +5899,26 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -3387,10 +5934,19 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3402,6 +5958,19 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3425,7 +5994,30 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
         pastGames {
           items {
             id
+            game {
+              id
+              creatorOrientation
+              time
+              variant
+              fen
+              available
+              ended
+              history
+              result
+              winner
+              createdAt
+            }
             createdAt
+            player {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
           }
           nextToken
         }
@@ -3444,6 +6036,19 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
           nextToken
         }
@@ -3452,6 +6057,27 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             id
             content
             createdAt
+            user {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            variant {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
           }
           nextToken
         }
@@ -3466,10 +6092,19 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3481,6 +6116,19 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3504,6 +6152,17 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
           id
           game {
             id
+            players {
+              nextToken
+            }
+            creator {
+              id
+              username
+            }
+            opponent {
+              id
+              username
+            }
             creatorOrientation
             time
             variant
@@ -3514,6 +6173,9 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             result
             winner
             createdAt
+            messages {
+              nextToken
+            }
           }
           createdAt
           player {
@@ -3521,10 +6183,19 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3549,12 +6220,26 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           comments {
+            items {
+              id
+              content
+              createdAt
+            }
             nextToken
           }
         }
@@ -3570,10 +6255,19 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3585,6 +6279,19 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken
@@ -3608,7 +6315,30 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
         pastGames {
           items {
             id
+            game {
+              id
+              creatorOrientation
+              time
+              variant
+              fen
+              available
+              ended
+              history
+              result
+              winner
+              createdAt
+            }
             createdAt
+            player {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
           }
           nextToken
         }
@@ -3627,6 +6357,19 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
           nextToken
         }
@@ -3635,6 +6378,27 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             id
             content
             createdAt
+            user {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            variant {
+              id
+              name
+              baseVariant
+              startFen
+              customPiece
+              submitted
+              approved
+              createdAt
+              updatedAt
+            }
           }
           nextToken
         }
@@ -3649,10 +6413,19 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             username
             email
             phoneNumber
+            pastGames {
+              nextToken
+            }
             points
             skillLevel
             rank
             createdAt
+            variants {
+              nextToken
+            }
+            comments {
+              nextToken
+            }
           }
           variant {
             id
@@ -3664,6 +6437,19 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
             approved
             createdAt
             updatedAt
+            creator {
+              id
+              username
+              email
+              phoneNumber
+              points
+              skillLevel
+              rank
+              createdAt
+            }
+            comments {
+              nextToken
+            }
           }
         }
         nextToken

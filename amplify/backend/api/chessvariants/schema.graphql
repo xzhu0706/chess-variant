@@ -7,8 +7,8 @@ type User @model
 ]) {
   id: ID!
   username: String!
-  email: String
-  phoneNumber: String
+  email: String!
+  phoneNumber: String!
   pastGames: [PlayerGameMapping] @connection(name: "userPlayer", sortField: "createdAt")
   variants: [CustomizedVariant] @connection(name: "userVariant", sortField: "updatedAt")
   comments: [Comment] @connection(name: "userComment", sortField: "createdAt")
@@ -17,6 +17,8 @@ type User @model
   rank: Int
   createdAt: String
 }
+
+
 
 type Complaint @model
 @auth(
@@ -59,12 +61,12 @@ type CustomizedVariant @model
 }
 
 type Comment @model
-@auth(
-  rules: [
-    { allow: public, operations: [read, create, delete] }
-    { allow: groups, groups: ["Admin"] }
-  ]
-) {
+  @auth(
+    rules: [
+      { allow: public, operations: [read, create, delete] }
+      { allow: groups, groups: ["Admin"] }
+    ]
+  ) {
   id: ID!
   user: User! @connection(name: "userComment")
   content: String!
@@ -104,6 +106,30 @@ type Message @model {
   content: String!
   game: Game @connection(name: "GameMessages")
   createdAt: String
+}
+
+type Post @model{
+  id: ID!
+  author: PlayerInfo!
+  title: String!
+  content: String!
+  createdAt: AWSDateTime!
+  likes: [PostLike] @connection(name: "PostLikes")
+  comments: [PostComment] @connection(name: "PostComments", sortField: "createdAt") 
+}
+
+type PostLike @model{
+  id: ID!
+  post: Post! @connection(name: "PostLikes")
+  liker: PlayerInfo!
+}
+
+type PostComment @model {
+  id: ID!
+  author: PlayerInfo!
+  content: String!
+  createdAt: AWSDateTime!
+  post: Post! @connection(name: "PostComments", sortField: "createdAt")
 }
 
 type PlayerInfo {
