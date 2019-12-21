@@ -9,7 +9,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 
@@ -62,21 +61,22 @@ class CreateGameDialog extends Component {
       return (
         <Dialog open={props.showDialog} maxWidth="sm" fullWidth onClose={props.closeDialog}>
           <DialogTitle id="form-dialog-title">Create a game</DialogTitle>
-          <DialogContent style={{marginTop: '-15px'}}>
-            <FormControl style={{width: '100%' }}>
-              <Box display='flex' flexDirection='row' justifyContent='space-between'>
-              <Box 
-                display='flex' flexDirection='row' 
-                justifyContent='flex-start'
-                alignItems='center'
-              >
-                  <Typography style={{marginRight: '10px'}}>Variant</Typography>
+          <DialogContent style={{ marginTop: '-15px' }}>
+            <FormControl style={{ width: '100%' }}>
+              <Box display="flex" flexDirection="row" justifyContent="space-between">
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                >
+                  <Typography style={{ marginRight: '10px' }}>Variant</Typography>
                   <select
                     id="select-variant"
                     data-testid="select-variant"
                     value={state.variant}
                     onChange={this.setVariant}
-                    style={{height: '30px'}}
+                    style={{ height: '30px' }}
                   >
                     <option value="Standard">Standard</option>
                     <option value="Antichess">Antichess</option>
@@ -85,7 +85,7 @@ class CreateGameDialog extends Component {
                   </select>
                   <br />
                 </Box>
-                <Box display='flex' flexDirection='row' justifyContent='flex-end' alignItems='center'>
+                <Box display="flex" flexDirection="row" justifyContent="flex-end" alignItems="center">
                   <Autocomplete
                     className="d-inline-block"
                     id="search-bar"
@@ -104,7 +104,7 @@ class CreateGameDialog extends Component {
                     )}
                   />
                 </Box>
-                </Box>
+              </Box>
             </FormControl>
             <div style={{ width: '100%', marginTop: '15px' }}>
 

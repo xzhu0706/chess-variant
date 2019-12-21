@@ -7,51 +7,49 @@ import Variants from './pages/Variants';
 import Create from './pages/Create';
 import Tutorial from './pages/Tutorial';
 import Analysis from './pages/Analysis';
-import DiscussionBoard from './pages/DiscussionBoard'
+import DiscussionBoard from './pages/DiscussionBoard';
 import UserVariant from './pages/UserVariant';
 import Pieces from './pages/Pieces';
 import './App.css';
 import NavBar from './components/NavBar';
 import AdminDashboard from './pages/AdminDashboard';
 import About from './pages/About';
-import {NAVBAR_COLLAPSE_BREAKPOINT} from './Constants/NavbarConstants'
-
+import { NAVBAR_COLLAPSE_BREAKPOINT } from './Constants/NavbarConstants';
 
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: window.innerWidth < NAVBAR_COLLAPSE_BREAKPOINT
+      collapsed: window.innerWidth < NAVBAR_COLLAPSE_BREAKPOINT,
     };
   }
 
   componentDidMount() {
-    window.addEventListener("resize", this.setCollapseState)
+    window.addEventListener('resize', this.setCollapseState);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.setCollapseState)
+    window.removeEventListener('resize', this.setCollapseState);
   }
 
   setCollapseState = (e) => {
-    let width = e.target.outerWidth
-      if(width < NAVBAR_COLLAPSE_BREAKPOINT)
-        this.setState({collapsed: true})
-      else
-        this.setState({collapsed: false})
+    const width = e.target.outerWidth;
+    if (width < NAVBAR_COLLAPSE_BREAKPOINT) this.setState({ collapsed: true });
+    else this.setState({ collapsed: false });
   }
 
   render() {
+    const { collapsed } = this.state;
     return (
       <Router>
-        <NavBar onNavbarToggle={this.onNavbarToggle}/>
-        <Switch >
-          <Route path="/" exact render={(routeProps) => <Home {...routeProps} collapsed={this.state.collapsed}/>}/>
+        <NavBar onNavbarToggle={this.onNavbarToggle} />
+        <Switch>
+          <Route path="/" exact render={(routeProps) => <Home {...routeProps} collapsed={collapsed} />} />
           <Route path="/game/:id" component={Game} />
           <Route path="/variants" component={Variants} />
           <Route path="/home" component={Home} />
-          <Route path="/discuss" render={() => <DiscussionBoard marginLeft='20%' width='60%' />} />
+          <Route path="/discuss" render={() => <DiscussionBoard marginLeft="20%" width="60%" />} />
           <Route
             path="/account/:username"
             render={(props) => (

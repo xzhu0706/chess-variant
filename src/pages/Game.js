@@ -13,11 +13,10 @@ import * as Colors from '../Constants/Colors';
 import '../variant-style.css';
 import './Game.css';
 // import Clock from '../components/Clock';
-import getUserInfo from '../Utils/CurrentUser'
+import getUserInfo from '../Utils/CurrentUser';
 import GameData from '../components/GameData';
 import GameInfo from '../components/GameInfo';
 import awsconfig from '../aws-exports';
-
 
 
 const YOUR_TURN_MESSAGE = 'It\'s your turn!';
