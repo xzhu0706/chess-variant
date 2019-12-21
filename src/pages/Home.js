@@ -6,6 +6,9 @@ import Lobby from './Lobby';
 import PopularVariants from '../components/PopularVariants';
 import AntiChess from '../Images/AntiChess.png';
 import GridChess from '../Images/GridChess.png';
+import DiscussionBoard from './DiscussionBoard';
+import { ListItemText, Box, Container, ListItemAvatar, Avatar, CardContent, Typography } from '@material-ui/core';
+
 // import * as mutations from '../graphql/mutations';
 
 class Home extends Component {
@@ -16,34 +19,30 @@ class Home extends Component {
     };
   }
 
+
   render() {
     const { history } = this.props;
-    return (
-      <div className="text-center">
-        <Lobby history={history} />
+    let content;
+    if(this.props.collapsed) content = (
+        <Container>
+          <Lobby marginRight='5%' width='90%' history={this.props.history} />
+        </Container>
+    )
 
-        <h1 style={{ fontFamily: 'AppleSDGothicNeo-Bold' }}>Featured Variants</h1>
-        <Row className="justify-content-md-center">
-          <Col md="auto">
-            <PopularVariants
-              name="Antichess"
-              src={AntiChess}
-              description="Win by losing all your pieces or being stalemated"
-              link="antichess"
-            />
-          </Col>
-          <Col md="auto">
-            <PopularVariants
-              name="Grid Chess"
-              description="Each move must cross one or multiple grid lines"
-              src={GridChess}
-              link="grid"
-            />
-          </Col>
-        </Row>
-      </div>
-    );
+    else content = (
+      <Box style={{marginTop: '100px'}} display='flex' flexDirection='row' justifyContent='space-between'>
+        <DiscussionBoard marginLeft='5%' width='40%' />
+        <Lobby marginRight='5%' width='40%' history={this.props.history} /> 
+      </Box>   
+    )
+
+    return (
+      <div>
+        {content}
+        </div>
+    )
   }
+
 }
 
 export default Home;

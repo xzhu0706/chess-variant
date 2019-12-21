@@ -3,6 +3,8 @@ import Dialog from '@material-ui/core/Dialog';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -60,16 +62,21 @@ class CreateGameDialog extends Component {
       return (
         <Dialog open={props.showDialog} maxWidth="sm" fullWidth onClose={props.closeDialog}>
           <DialogTitle id="form-dialog-title">Create a game</DialogTitle>
-          <DialogContent>
-            <FormControl style={{ minWidth: 120 }}>
-              <Grid container spacing={3}>
-                <Grid item xs={6}>
-                  <InputLabel htmlFor="select-variant">Game Type</InputLabel>
+          <DialogContent style={{marginTop: '-15px'}}>
+            <FormControl style={{width: '100%' }}>
+              <Box display='flex' flexDirection='row' justifyContent='space-between'>
+              <Box 
+                display='flex' flexDirection='row' 
+                justifyContent='flex-start'
+                alignItems='center'
+              >
+                  <Typography style={{marginRight: '10px'}}>Variant</Typography>
                   <select
                     id="select-variant"
                     data-testid="select-variant"
                     value={state.variant}
                     onChange={this.setVariant}
+                    style={{height: '30px'}}
                   >
                     <option value="Standard">Standard</option>
                     <option value="Antichess">Antichess</option>
@@ -77,8 +84,8 @@ class CreateGameDialog extends Component {
                     <option value="Extinction">Extinction chess</option>
                   </select>
                   <br />
-                </Grid>
-                <Grid item xs={6}>
+                </Box>
+                <Box display='flex' flexDirection='row' justifyContent='flex-end' alignItems='center'>
                   <Autocomplete
                     className="d-inline-block"
                     id="search-bar"
@@ -96,8 +103,8 @@ class CreateGameDialog extends Component {
                       />
                     )}
                   />
-                </Grid>
-              </Grid>
+                </Box>
+                </Box>
             </FormControl>
             <div style={{ width: '100%', marginTop: '15px' }}>
 
@@ -117,7 +124,6 @@ class CreateGameDialog extends Component {
               </InputLabel>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-              <InputLabel htmlFor="white-button">White</InputLabel>
               <Button
                 style={{ marginRight: '20px', padding: '20px', color: 'black' }}
                 variant="contained"

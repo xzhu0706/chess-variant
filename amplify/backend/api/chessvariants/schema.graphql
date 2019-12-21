@@ -7,16 +7,18 @@ type User @model
 ]) {
   id: ID!
   username: String!
-  email: String
-  phoneNumber: String
+  email: String!
+  phoneNumber: String!
   pastGames: [PlayerGameMapping] @connection(name: "userPlayer", sortField: "createdAt")
-  variants: [CustomizedVariant] @connection(name: "userVariant", sortField: "updatedAt")
+  variants: [CustomizedVariant] @connection(name: "userVariant", sortField: "createdAt")
   comments: [Comment] @connection(name: "userComment", sortField: "createdAt")
   points: Int
   skillLevel: String
   rank: Int
   createdAt: String
 }
+
+
 
 type Complaint @model
 @auth(
@@ -26,12 +28,12 @@ type Complaint @model
   ]
 ) {
   id: ID!
-  user: User @connection
-  reportedUser: User @connection
+  user: User
+  reportedUser: User
   gameLink: String
   content: String!
   processed: Boolean!
-  processedBy: User @connection
+  processedBy: User
   result: String
   createdAt: String
   updatedAt: String
@@ -53,18 +55,17 @@ type CustomizedVariant @model
   customPiece: String
   submitted: Boolean!
   approved: Boolean!
-  comments: [Comment] @connection(name: "variantComment", sortField: "createdAt")
+  comments: [Comment] @connection(name: "variantComment")
   createdAt: String
-  updatedAt: String
 }
 
 type Comment @model
-@auth(
-  rules: [
-    { allow: public, operations: [read, create, delete] }
-    { allow: groups, groups: ["Admin"] }
-  ]
-) {
+  @auth(
+    rules: [
+      { allow: public, operations: [read, create, delete] }
+      { allow: groups, groups: ["Admin"] }
+    ]
+  ) {
   id: ID!
   user: User! @connection(name: "userComment")
   content: String!
@@ -104,6 +105,29 @@ type Message @model {
   content: String!
   game: Game @connection(name: "GameMessages")
   createdAt: String
+}
+
+type Post @model{
+  id: ID!
+  author: PlayerInfo!
+  title: String!
+  content: String!
+  createdAt: AWSDateTime!
+  likes: [PostLike] @connection(name: "PostLikes")
+  comments: [PostComment] @connection(name: "PostComments", sortField: "createdAt") 
+}
+
+type PostLike @model{
+  id: ID!
+  post: Post! @connection(name: "PostLikes")
+  liker: PlayerInfo!
+}
+type PostComment @model {
+  id: ID!
+  author: PlayerInfo!
+  content: String!
+  createdAt: AWSDateTime!
+  post: Post! @connection(name: "PostComments")
 }
 
 type PlayerInfo {
