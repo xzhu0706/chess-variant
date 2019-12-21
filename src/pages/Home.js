@@ -25,14 +25,14 @@ class Home extends Component {
     let content;
     if(this.props.collapsed) content = (
         <Container>
-          <Lobby marginRight='5%' width='90%' history={this.props.history} />
+          <Lobby marginRight='5%' width='90%' history={history} />
         </Container>
     )
 
     else content = (
       <Box style={{marginTop: '100px'}} display='flex' flexDirection='row' justifyContent='space-between'>
         <DiscussionBoard marginLeft='5%' width='40%' />
-        <Lobby marginRight='5%' width='40%' history={this.props.history} /> 
+        <Lobby marginRight='5%' width='40%' history={history} /> 
       </Box>   
     )
 

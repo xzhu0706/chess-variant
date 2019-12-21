@@ -192,7 +192,7 @@ class Game extends Component {
           //   this.gameUpdateSubscription.unsubscribe();
           //   yourTurn = false;
           // }
-          if (gameState.gameResult && this.addedLeaveGameListener) {
+          if (gameState.ended && this.addedLeaveGameListener) {
             window.removeEventListener('beforeunload', this.handleLeavePage);
             window.removeEventListener('unload', this.leaveGame);
           }

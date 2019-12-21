@@ -51,7 +51,7 @@ class CommentBox extends React.Component {
         isAdmin: groups && groups[0] === 'Admin',
       });
     } catch (e) {
-      throw new Error('error checking for admin');
+      console.log(e);
     }
   }
 

@@ -31,7 +31,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListenr("resize", this.setCollapseState)
+    window.removeEventListener("resize", this.setCollapseState)
   }
 
   setCollapseState = (e) => {
@@ -47,7 +47,7 @@ class App extends Component {
       <Router>
         <NavBar onNavbarToggle={this.onNavbarToggle}/>
         <Switch >
-          <Route path="/" exact render={() => <Home collapsed={this.state.collapsed}/>}/>
+          <Route path="/" exact render={(routeProps) => <Home {...routeProps} collapsed={this.state.collapsed}/>}/>
           <Route path="/game/:id" component={Game} />
           <Route path="/variants" component={Variants} />
           <Route path="/home" component={Home} />
