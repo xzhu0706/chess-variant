@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import Comment from '../../components/Comment';
 
 describe('Comment test', () => {
-  test('display comment', () => {
+  test('displays comment', () => {
     const { getByText } = render(
       <BrowserRouter>
         <Comment
@@ -41,7 +41,7 @@ describe('Comment test', () => {
     expect(queryByTestId('test-element')).toBeNull();
   });
 
-  test('delete icon calls deleteComment()', () => {
+  test('clicking the delete icon calls deleteComment()', () => {
     const mockDeleteComment = jest.fn();
     const { getByTestId } = render(
       <BrowserRouter>

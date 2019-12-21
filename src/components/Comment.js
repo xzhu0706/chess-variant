@@ -31,6 +31,7 @@ export default function Comment(props) {
         <p>{content}</p>
         <span className="float-right text-muted">
           {createdAt.slice(0, 10)}
+          {' '}
           {createdAt.slice(11, 19)}
         </span>
       </div>
