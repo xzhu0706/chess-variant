@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
 
-
 export default function Comment(props) {
   const {
     id, author, content, createdAt, isAdmin, deleteComment,
@@ -22,7 +21,11 @@ export default function Comment(props) {
       <div className="col-10">
         {isAdmin && (
           <a href="/#" className="float-right">
-            <DeleteForeverTwoToneIcon onClick={(e) => deleteComment(e, id)} style={{ color: '#708070' }} />
+            <DeleteForeverTwoToneIcon
+              data-testid="test-element"
+              onClick={(e) => deleteComment(e, id)}
+              style={{ color: '#708070' }}
+            />
           </a>
         )}
         <p>{content}</p>
