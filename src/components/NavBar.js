@@ -62,6 +62,10 @@ class NavBar extends Component {
     window.removeEventListener('resize', this.setCollapseState);
   }
 
+  onNavbarToggle(e) {
+    console.log('TOGGLED!');
+  }
+
   setCollapseState = (e) => {
     const width = e.target.outerWidth;
     if (width < NAVBAR_COLLAPSE_BREAKPOINT) this.setState({ collapsed: true });
@@ -135,8 +139,9 @@ class NavBar extends Component {
   }
 
   toggleLogoutButtonPopper = (e) => {
+    const { showLogoutButtonPopper } = this.state;
     if (this.logoutButtonAnchorEl === null) this.logoutButtonAnchorEl = e.target;
-    this.setState({ showLogoutButtonPopper: !this.state.showLogoutButtonPopper });
+    this.setState({ showLogoutButtonPopper: !showLogoutButtonPopper });
   }
 
   toggleOffLogoutButtonPopper = () => {
@@ -144,13 +149,14 @@ class NavBar extends Component {
   }
 
   handleLogoutButtonPopperSelection = (event, selectedIndex) => {
+    const { username } = this.state;
     this.setState({ showLogoutButtonPopper: false });
     switch (selectedIndex) {
     case PROFILE_INDEX:
-      this.state.username !== '' && this.props.history.push(`/account/${this.state.username}`);
+      username !== '' && this.props.history.push(`/account/${username}`);
       break;
     case ADMIN_INDEX:
-      this.state.username !== '' && this.props.history.push('/admin');
+      username !== '' && this.props.history.push('/admin');
       break;
     default:
       this.handleSignOut();
@@ -160,10 +166,6 @@ class NavBar extends Component {
 
   dismissSearchUsersTextFieldPopper = (e) => {
     this.setState({ showSearchUsersTextfieldPopper: false });
-  }
-
-  onNavbarToggle(e) {
-    console.log('TOGGLED!');
   }
 
   render() {
@@ -218,7 +220,7 @@ SIGN IN
           expand="lg"
           style={{
             fontWeight: 'semi-bold',
-            boxShadow: '0px 3px 3px lightGray'
+            boxShadow: '0px 3px 3px lightGray',
           }}
           variant="light"
           bg="white"
@@ -254,11 +256,11 @@ SIGN IN
               />
             </Nav>
             <Nav>
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/variants">Variants</Nav.Link>
-              <Nav.Link href="/create">Create</Nav.Link>
-              {collapsed && <Nav.Link href="/discuss">Discuss</Nav.Link>}
-              <Nav.Link href="/about">About</Nav.Link>
+              <Link to="/"><Nav.Item className="nav-link">Home</Nav.Item></Link>
+              <Link to="/variants"><Nav.Item className="nav-link">Variants</Nav.Item></Link>
+              <Link to="/create"><Nav.Item className="nav-link">Create</Nav.Item></Link>
+              {collapsed && <Link to="/"><Nav.Item className="nav-link">Home</Nav.Item></Link>}
+              <Link to="/about"><Nav.Item className="nav-link">About</Nav.Item></Link>
               {username ? loggedIn : loggedOut}
             </Nav>
           </Navbar.Collapse>
