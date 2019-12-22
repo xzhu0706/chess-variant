@@ -259,7 +259,7 @@ SIGN IN
               <Link to="/"><Nav.Item className="nav-link">Home</Nav.Item></Link>
               <Link to="/variants"><Nav.Item className="nav-link">Variants</Nav.Item></Link>
               <Link to="/create"><Nav.Item className="nav-link">Create</Nav.Item></Link>
-              {collapsed && <Link to="/"><Nav.Item className="nav-link">Home</Nav.Item></Link>}
+              {collapsed && <Link to="/discuss"><Nav.Item className="nav-link">Discuss</Nav.Item></Link>}
               <Link to="/about"><Nav.Item className="nav-link">About</Nav.Item></Link>
               {username ? loggedIn : loggedOut}
             </Nav>
